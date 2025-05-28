@@ -173,3 +173,9 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 unfiltered_pseudobulks
+
+*rds
+*h5ad
+.nextflow*
+results/
+work/

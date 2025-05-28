@@ -1,0 +1,73 @@
+sample_id	sample_name	organism	1000G_ancestry	Age_death	Biological_Sex	Cohort	Disorder	Genotype_data	Individual_ID	PMI	RIN	pH	snATAC-Seq
+1203302	BD20	homo_sapiens	EUR	51	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD20	30.1	NA	NA	None
+1203303	CON22	homo_sapiens	EUR	62	female	SZBDMulti-Seq	control	Array	CON22	16.4	NA	NA	None
+1203304	CON21	homo_sapiens	EUR	58	female	SZBDMulti-Seq	control	Array	CON21	18.5	NA	NA	None
+1203305	CON24	homo_sapiens	AFR	44	female	SZBDMulti-Seq	control	Array	CON24	10.7	NA	NA	None
+1203306	BD19	homo_sapiens	EUR	85	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD19	27.5	NA	NA	None
+1203307	CON23	homo_sapiens	EUR	48	male	SZBDMulti-Seq	control	Array	CON23	15.4	NA	NA	None
+1203308	BD18	homo_sapiens	EUR	83	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD18	17.5	NA	NA	None
+1203309	BD17	homo_sapiens	EUR	51	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD17	31	NA	NA	None
+1203310	BD16	homo_sapiens	EUR	85	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD16	15.5	NA	NA	None
+1203311	BD15	homo_sapiens	EUR	74	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD15	14.3	NA	NA	None
+1203312	BD14	homo_sapiens	EUR	36	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD14	9	NA	NA	None
+1203313	BD13	homo_sapiens	EUR	77	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD13	24.2	NA	NA	None
+1203314	BD12	homo_sapiens	EUR	77	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD12	11.5	NA	NA	None
+1203315	BD11	homo_sapiens	EUR	89+	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD11	13	NA	NA	None
+1203316	BD10	homo_sapiens	EUR	65	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD10	11.2	NA	NA	None
+1203317	SZ23	homo_sapiens	EUR	22	male	SZBDMulti-Seq	Schizophrenia	Array	SZ23	21.4	NA	NA	None
+1203318	SZ22	homo_sapiens	EUR	61	female	SZBDMulti-Seq	Schizophrenia	Array	SZ22	14.1	NA	NA	None
+1203319	SZ21	homo_sapiens	EUR	56	female	SZBDMulti-Seq	Schizophrenia	Array	SZ21	10.5	NA	NA	None
+1203320	SZ20	homo_sapiens	EUR	76	female	SZBDMulti-Seq	Schizophrenia	Array	SZ20	15.5	NA	NA	None
+1203321	CON9	homo_sapiens	EUR	47	male	SZBDMulti-Seq	control	Array	CON9	18.8	NA	NA	None
+1203322	CON8	homo_sapiens	EUR	80	male	SZBDMulti-Seq	control	Array	CON8	15.5	NA	NA	None
+1203323	CON7	homo_sapiens	EUR	82	male	SZBDMulti-Seq	control	Array	CON7	17.2	NA	NA	None
+1203324	CON6	homo_sapiens	EUR	69	female	SZBDMulti-Seq	control	Array	CON6	20.7	NA	NA	None
+1203325	CON5	homo_sapiens	EUR	36	male	SZBDMulti-Seq	control	Array	CON5	21.5	NA	NA	None
+1203326	CON4	homo_sapiens	EUR	52	male	SZBDMulti-Seq	control	Array	CON4	7.8	NA	NA	None
+1203327	SZ24	homo_sapiens	EUR	44	male	SZBDMulti-Seq	Schizophrenia	Array	SZ24	8.5	NA	NA	None
+1203328	CON3	homo_sapiens	EUR	68	female	SZBDMulti-Seq	control	Array	CON3	11.5	NA	NA	None
+1203329	CON2	homo_sapiens	EUR	88	male	SZBDMulti-Seq	control	Array	CON2	11.1	NA	NA	None
+1203330	CON1	homo_sapiens	EUR	72	female	SZBDMulti-Seq	control	Array	CON1	18.3	NA	NA	None
+1203331	BD24	homo_sapiens	EUR	75	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD24	20.3	NA	NA	None
+1203332	BD23	homo_sapiens	EUR	80	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD23	11.6	NA	NA	None
+1203333	BD22	homo_sapiens	EUR	64	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD22	11	NA	NA	None
+1203334	BD21	homo_sapiens	EUR	66	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD21	25	NA	NA	None
+1203335	SZ12	homo_sapiens	EUR	55	male	SZBDMulti-Seq	Schizophrenia	Array	SZ12	21.4	NA	NA	None
+1203336	SZ11	homo_sapiens	EUR	83	female	SZBDMulti-Seq	Schizophrenia	Array	SZ11	23.3	NA	NA	None
+1203337	SZ10	homo_sapiens	EUR	42	male	SZBDMulti-Seq	Schizophrenia	Array	SZ10	14.2	NA	NA	None
+1203338	SZ1	homo_sapiens	EUR	54	female	SZBDMulti-Seq	Schizophrenia	Array	SZ1	25	NA	NA	None
+1203339	SZ19	homo_sapiens	EUR	79	female	SZBDMulti-Seq	Schizophrenia	Array	SZ19	8	NA	NA	None
+1203340	SZ18	homo_sapiens	EUR	89+	female	SZBDMulti-Seq	Schizophrenia	Array	SZ18	6.9	NA	NA	None
+1203341	SZ3	homo_sapiens	EUR	67	female	SZBDMulti-Seq	Schizophrenia	Array	SZ3	21.8	NA	NA	None
+1203342	SZ2	homo_sapiens	EUR	44	male	SZBDMulti-Seq	Schizophrenia	Array	SZ2	19	NA	NA	None
+1203343	SZ17	homo_sapiens	EUR	49	male	SZBDMulti-Seq	Schizophrenia	Array	SZ17	19.1	NA	NA	None
+1203344	SZ16	homo_sapiens	EUR	46	male	SZBDMulti-Seq	Schizophrenia	Array	SZ16	18.5	NA	NA	None
+1203345	SZ5	homo_sapiens	EUR	80	male	SZBDMulti-Seq	Schizophrenia	Array	SZ5	11	NA	NA	None
+1203346	SZ15	homo_sapiens	EUR	87	female	SZBDMulti-Seq	Schizophrenia	Array	SZ15	16.7	NA	NA	None
+1203347	SZ4	homo_sapiens	EUR	89+	male	SZBDMulti-Seq	Schizophrenia	Array	SZ4	23.8	NA	NA	None
+1203348	SZ7	homo_sapiens	EUR	85	female	SZBDMulti-Seq	Schizophrenia	Array	SZ7	12.8	NA	NA	None
+1203349	BD2	homo_sapiens	EUR	80	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD2	27.1	NA	NA	None
+1203350	SZ14	homo_sapiens	EUR	88	female	SZBDMulti-Seq	Schizophrenia	Array	SZ14	13.3	NA	NA	None
+1203351	SZ13	homo_sapiens	EUR	58	male	SZBDMulti-Seq	Schizophrenia	Array	SZ13	26.3	NA	NA	None
+1203352	SZ6	homo_sapiens	EUR	64	female	SZBDMulti-Seq	Schizophrenia	Array	SZ6	19.8	NA	NA	None
+1203353	BD1	homo_sapiens	EUR	73	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD1	17	NA	NA	None
+1203354	SZ9	homo_sapiens	EUR	77	male	SZBDMulti-Seq	Schizophrenia	Array	SZ9	25.3	NA	NA	None
+1203355	BD4	homo_sapiens	EUR	76	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD4	22.8	NA	NA	None
+1203356	BD3	homo_sapiens	EUR	24	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD3	24.7	NA	NA	None
+1203357	SZ8	homo_sapiens	EUR	49	male	SZBDMulti-Seq	Schizophrenia	Array	SZ8	24.5	NA	NA	None
+1203358	BD6	homo_sapiens	EUR	61	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD6	16.6	NA	NA	None
+1203359	BD5	homo_sapiens	EUR	71	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD5	16.1	NA	NA	None
+1203360	BD8	homo_sapiens	EUR	82	female	SZBDMulti-Seq	Bipolar Disorder	Array	BD8	13.9	NA	NA	None
+1203361	BD7	homo_sapiens	EUR	73	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD7	26.1	NA	NA	None
+1203362	BD9	homo_sapiens	EUR	82	male	SZBDMulti-Seq	Bipolar Disorder	Array	BD9	5	NA	NA	None
+1203363	CON20	homo_sapiens	EUR	52	female	SZBDMulti-Seq	control	Array	CON20	17.9	NA	NA	None
+1203364	CON15	homo_sapiens	EUR	59	female	SZBDMulti-Seq	control	Array	CON15	17.8	NA	NA	None
+1203365	CON14	homo_sapiens	EUR	72	male	SZBDMulti-Seq	control	Array	CON14	16.5	NA	NA	None
+1203366	CON17	homo_sapiens	EUR	89+	female	SZBDMulti-Seq	control	Array	CON17	15.4	NA	NA	None
+1203367	CON16	homo_sapiens	EUR	42	male	SZBDMulti-Seq	control	Array	CON16	18.3	NA	NA	None
+1203368	CON11	homo_sapiens	EUR	52	male	SZBDMulti-Seq	control	Array	CON11	18.4	NA	NA	None
+1203369	CON10	homo_sapiens	EUR	62	female	SZBDMulti-Seq	control	Array	CON10	16	NA	NA	None
+1203370	CON13	homo_sapiens	EUR	68	male	SZBDMulti-Seq	control	Array	CON13	17.7	NA	NA	None
+1203371	CON12	homo_sapiens	EUR	68	male	SZBDMulti-Seq	control	Array	CON12	10.8	NA	NA	None
+1203372	CON19	homo_sapiens	EUR	58	female	SZBDMulti-Seq	control	Array	CON19	14.3	NA	NA	None
+1203373	CON18	homo_sapiens	EUR	53	female	SZBDMulti-Seq	control	Array	CON18	16.6	NA	NA	None

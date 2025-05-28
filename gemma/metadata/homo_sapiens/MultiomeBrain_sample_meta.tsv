@@ -1,0 +1,22 @@
+sample_id	sample_name	organism	1000G_ancestry	Age_death	Biological_Sex	Cohort	Disorder	Genotype_data	Individual_ID	PMI	RIN	pH	snATAC-Seq
+1203374	1320	homo_sapiens	AFR	53	male	MultiomeBrain	Schizophrenia	WGS	1320	NA	8.9	NA	snMultiome
+1203375	2781	homo_sapiens	EUR	39	male	MultiomeBrain	control	WGS	2781	NA	8.8	NA	snMultiome
+1203376	1461	homo_sapiens	EUR	31	male	MultiomeBrain	Bipolar Disorder	WGS	1461	NA	NA	NA	snMultiome
+1203377	2275	homo_sapiens	EUR	45	female	MultiomeBrain	Bipolar Disorder	WGS	2275	NA	7.6	NA	snMultiome
+1203378	2780	homo_sapiens	EUR	18	male	MultiomeBrain	control	WGS	2780	NA	NA	NA	snMultiome
+1203379	2791	homo_sapiens	EAS	56	male	MultiomeBrain	control	WGS	2791	NA	7.6	NA	snMultiome
+1203380	1041	homo_sapiens	AFR	37	female	MultiomeBrain	Schizophrenia	WGS	1041	NA	8.4	NA	snMultiome
+1203381	2052	homo_sapiens	EUR	40	male	MultiomeBrain	control	WGS	2052	NA	NA	NA	snMultiome
+1203382	1390	homo_sapiens	AFR	43	female	MultiomeBrain	control	WGS	1390	NA	8	NA	snMultiome
+1203383	2083	homo_sapiens	EUR	38	female	MultiomeBrain	Bipolar Disorder	WGS	2083	NA	NA	NA	snMultiome
+1203384	1713	homo_sapiens	EUR	21	male	MultiomeBrain	Bipolar Disorder	WGS	1713	NA	8.3	NA	snMultiome
+1203385	1317	homo_sapiens	EUR	57	female	MultiomeBrain	Bipolar Disorder	WGS	1317	NA	NA	NA	snMultiome
+1203386	1734	homo_sapiens	EUR	26	male	MultiomeBrain	Bipolar Disorder	WGS	1734	NA	NA	NA	snMultiome
+1203387	1414	homo_sapiens	EUR	35	male	MultiomeBrain	Bipolar Disorder	WGS	1414	NA	8.8	NA	snMultiome
+1203388	1601	homo_sapiens	EUR	76	male	MultiomeBrain	Bipolar Disorder	WGS	1601	NA	8.3	NA	snMultiome
+1203389	1676	homo_sapiens	EUR	68	male	MultiomeBrain	Schizophrenia	WGS	1676	NA	NA	NA	snMultiome
+1203390	2677	homo_sapiens	EAS	44	female	MultiomeBrain	Schizophrenia	WGS	2677	NA	NA	NA	snMultiome
+1203391	2686	homo_sapiens	EUR	46	female	MultiomeBrain	Bipolar Disorder	WGS	2686	NA	8.5	NA	snMultiome
+1203392	2653	homo_sapiens	EAS	45	female	MultiomeBrain	Schizophrenia	WGS	2653	NA	6.8	NA	snMultiome
+1203393	2520	homo_sapiens	EUR	25	male	MultiomeBrain	Bipolar Disorder	WGS	2520	NA	NA	NA	snMultiome
+1203394	1507	homo_sapiens	EUR	31	male	MultiomeBrain	Schizophrenia	WGS	1507	NA	NA	NA	snMultiome
