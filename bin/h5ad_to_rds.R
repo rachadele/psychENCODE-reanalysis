@@ -5,7 +5,7 @@ use_condaenv("/home/rschwartz/anaconda3/envs/r4.3/")
 library(sceasy)
 library(argparse)
 library(tidyr)
-options(future.globals.maxSize = 5 * 1024^3)  # 5 GB
+options(future.globals.maxSize = 50 * 1024^3)  # 20 GB
 
 rename_features <- function(seurat_obj) {
     counts <- seurat_obj[["RNA"]]@counts
@@ -30,7 +30,7 @@ rename_features <- function(seurat_obj) {
 
 parser = argparse::ArgumentParser(description = "Convert H5AD to H5Seurat.")
 parser$add_argument("--h5ad_file", type="character", help="Path to H5AD file.", 
-        default = "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/null_author_false_sample_split_false/homo_sapiens/DevBrain.h5ad")
+        default = "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/work/2d/d837d55dce4ace78d7f9ff9d4a7af1/UCLA-ASD.h5ad")
 
 args = parser$parse_args()
 h5ad_file = args$h5ad_file

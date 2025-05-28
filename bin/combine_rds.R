@@ -9,7 +9,7 @@ options(future.globals.maxSize = 10 * 1024^3)  # 5 GB
 
 
 parser = argparse::ArgumentParser(description = "Convert H5AD to H5Seurat.")
-parser$add_argument("--rds_files", type="character", help="Paths to H5AD files", nargs='+')
+parser$add_argument("--rds_files", type="character", help="Paths to rds files", nargs='+')
 
 args = parser$parse_args()
 rds_files = args$rds_files
