@@ -63,7 +63,6 @@ filtered_metadata <- metadata[matching_samples, ]
 pseudobulk_matrix <- pseudobulk_matrix[, matching_samples]
 
 # find NAs in pseudobulk matrix
-na_samples <- colnames(pseudobulk_matrix)[colSums(is.na(pseudobulk_matrix)) > 0]
 
 
 # create DESeq2 object
