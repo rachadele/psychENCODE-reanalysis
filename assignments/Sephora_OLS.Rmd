@@ -718,11 +718,30 @@ Which of these coefficients are **interaction terms**? Which are the
 > main effects - skin types, complexion, undertone
 
 Print the first 5 rows of the design matrix for this model using the
-`model.matrix` function. Look at observation for customer 1. Can you
+`model.matrix` function. Look at the observation for customer 1. Can you
 write the the linear equation for this observation in matrix notation
 using the values of $X$ you see in the design matrix?
 
-```{r paged.print=TRUE}
+$$
+\hat{Y} = X\beta = 
+\begin{bmatrix}
+1 & 47.19762 & -0.08336907 & 1 & 0 & -0.08336907\\
+\end{bmatrix}
+\begin{bmatrix}
+\beta_0 \\
+\beta_{\text{complexion}} \\
+\beta_{\text{undertone}} \\
+\beta_{\text{dry}} \\
+\beta_{\text{oily}} \\
+\beta_{\text{skintype:undertone}} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\hat{foundation} \\
+\end{bmatrix}
+$$
+
+```{r paged.print=FALSE}
 # your answer here
 head(model.matrix(interaction_model), 5)
 ```
@@ -743,19 +762,26 @@ plot_fits(df = interaction_df, model = interaction_model, type_colors = type_col
 Which skin type has the largest interaction effect with undertone? What
 color is it on the plot?
 
-> respond
+> dry, blue
 
 *Challenge* Why did we include an interaction between skin type and
 undertone? Would we know which interaction terms to include in real
 life?
 
-> answer
+> skin type and undertone may affect each other differently depending on
+> their values....? I'm not too sure about this specific case, but in
+> real life we would know to include an interaction term if the features
+> have a joint effect. From what I understand an example would be:
+>
+> The cost of a house can depend on size/sqm and location, where a
+> better location would affect how much more an additional sqm would
+> cost, so size and location would have an interaction effect.
 
 # Assumptions of Linear Models
 
 Let's imagine Yesenia's homegirl Ashley Marie visits Sephora to purchase
 a new shade of foundation for her birthday. Little does Ashley Marie
-know, Yesenia caught Sevanna sliding into Yesenia's baby daddy DMs.
+know, Yesenia caught Ashley Marie sliding into Yesenia's baby daddy DMs.
 Yesenia decides to sabotage Ashley Marie's birthday makeup by giving her
 the wrong foundation match. However, she just put in a PTO request for a
 girl's trip to Tulum. How can Yesenia get her revenge without getting
@@ -941,8 +967,16 @@ Print the design matrix for the continuous interaction model using the
 `model.matrix` function. Write out the linear equation for observations
 1 and 2. Can you see why the hyperplane is curving?
 
-```{r, answer}
+$$
+\text{foundation_shade} = \beta_0 + (\beta_1 \cdot 47.19762) + (\beta_2 \cdot -0.08336907) + \beta_3 \cdot (47.19762 \times-0.08336907)
+$$
 
+$$
+\text{foundation_shade} = \beta_0 + (\beta_1 \cdot 48.84911) + (\beta_2 \cdot 0.25331851) + \beta_3 \cdot (48.84911 \times0.25331851)
+$$
+
+```{r, answer}
+head(model.matrix(interaction_model2), 5)
 ```
 
 # References
