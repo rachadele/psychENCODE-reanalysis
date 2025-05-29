@@ -1,0 +1,17 @@
+sample_id	sample_name	organism	1000G_ancestry	Age_death	Biological_Sex	Cohort	Disorder	Genotype_data	Individual_ID	PMI	RIN	pH	snATAC-Seq
+1203395	HSB378_DFC	homo_sapiens	AMR	33	male	DevBrain	ASD	WGS	HSB378_DFC	50	6.4	6.2	None
+1203396	HSB373_DFC	homo_sapiens	EUR	14	male	DevBrain	ASD	RNA	HSB373_DFC	9	NA	6.4	None
+1203397	HSB290_DFC	homo_sapiens	EUR	42	male	DevBrain	control	RNA	HSB290_DFC	18	NA	NA	None
+1203398	HSB384_DFC	homo_sapiens	EUR	17	male	DevBrain	ASD	WGS	HSB384_DFC	35	NA	6.7	None
+1203399	HSB517_DFC	homo_sapiens	EAS	27	male	DevBrain	ASD	WGS	HSB517_DFC	22	NA	NA	None
+1203400	HSB434_DFC	homo_sapiens	EUR	21	male	DevBrain	ASD	WGS	HSB434_DFC	14	NA	NA	None
+1203401	HSB189_DFC	homo_sapiens	EUR	36	male	DevBrain	control	RNA	HSB189_DFC	24	NA	NA	None
+1203402	HSB533_DFC	homo_sapiens	EUR	27	male	DevBrain	ASD	WGS	HSB533_DFC	42	NA	NA	None
+1203403	HSB375_DFC	homo_sapiens	EUR	46	male	DevBrain	ASD	WGS	HSB375_DFC	29	NA	6.6	None
+1203404	HSB317_DFC	homo_sapiens	EUR	47	male	DevBrain	control	RNA	HSB317_DFC	5	NA	NA	None
+1203405	HSB379_DFC	homo_sapiens	EUR	16	female	DevBrain	ASD	WGS	HSB379_DFC	13	NA	6.8	None
+1203406	HSB1574_DFC	homo_sapiens	EUR	34	male	DevBrain	Williams Syndrome	RNA	HSB1574_DFC	NA	NA	NA	None
+1203407	HSB340_DFC	homo_sapiens	AFR	19	male	DevBrain	control	WGS	HSB340_DFC	11	NA	NA	None
+1203408	HSB380_DFC	homo_sapiens	EUR	19	male	DevBrain	ASD	WGS	HSB380_DFC	16	NA	6.2	None
+1203409	HSB5857_DFC	homo_sapiens	EUR	42	female	DevBrain	Williams Syndrome	RNA	HSB5857_DFC	NA	NA	NA	None
+1203410	HSB5437_DFC	homo_sapiens	AMR	17	male	DevBrain	Williams Syndrome	RNA	HSB5437_DFC	NA	NA	NA	None

@@ -1,0 +1,18 @@
+sample_id	sample_name	organism	1000G_ancestry	Age_death	Biological_Sex	Cohort	Disorder	Genotype_data	Individual_ID	PMI	RIN	organism part	pH	snATAC-Seq
+1231330	5978_BA9	homo_sapiens	EUR	11	male	Velmeshev_et_al	ASD	WES	5978_BA9	21	NA	anterior cingulate cortex	NA	None
+1231331	5546_BA9_Nova	homo_sapiens	EUR	34	female	Velmeshev_et_al	Control	RNA	5546_BA9_Nova	27	NA	anterior cingulate cortex	NA	None
+1231332	5387_BA9	homo_sapiens	EUR	12	male	Velmeshev_et_al	Control	RNA	5387_BA9	13	NA	anterior cingulate cortex	NA	None
+1231333	5787_BA9_Nova	homo_sapiens	EUR	39	male	Velmeshev_et_al	Control	RNA	5787_BA9_Nova	16	NA	anterior cingulate cortex	NA	None
+1231334	5577_BA9	homo_sapiens	EUR	21	male	Velmeshev_et_al	Control	RNA	5577_BA9	19	NA	anterior cingulate cortex	NA	None
+1231335	5893_BA9	homo_sapiens	EUR	19	male	Velmeshev_et_al	Control	RNA	5893_BA9	11	NA	anterior cingulate cortex	NA	None
+1231336	5841_BA9	homo_sapiens	EUR	12	male	Velmeshev_et_al	ASD	WES	5841_BA9	15	NA	anterior cingulate cortex	NA	None
+1231337	5294_BA9	homo_sapiens	EUR	19	male	Velmeshev_et_al	ASD	WES	5294_BA9	16	NA	anterior cingulate cortex	NA	None
+1231338	5958_BA9	homo_sapiens	AFR	22	male	Velmeshev_et_al	Control	RNA	5958_BA9	24	NA	anterior cingulate cortex	NA	None
+1231339	5864_BA9	homo_sapiens	AMR	20	male	Velmeshev_et_al	ASD	WES	5864_BA9	42	NA	anterior cingulate cortex	NA	None
+1231340	5531_BA9	homo_sapiens	EUR	15	male	Velmeshev_et_al	ASD	WES	5531_BA9	32	NA	anterior cingulate cortex	NA	None
+1231341	6033_BA9	homo_sapiens	EUR	14	female	Velmeshev_et_al	ASD	WES	6033_BA9	25	NA	anterior cingulate cortex	NA	None
+1231342	5976_BA9	homo_sapiens	UNKNOWN	4	female	Velmeshev_et_al	Control	RNA	5976_BA9	21	NA	anterior cingulate cortex	NA	None
+1231343	5565_BA9	homo_sapiens	AFR	12	male	Velmeshev_et_al	ASD	WES	5565_BA9	22	NA	anterior cingulate cortex	NA	None
+1231344	5939_BA9	homo_sapiens	EUR	21	male	Velmeshev_et_al	ASD	WES	5939_BA9	22	NA	anterior cingulate cortex	NA	None
+1231345	5981_BA9_Nova	homo_sapiens	EUR	44	female	Velmeshev_et_al	Control	RNA	5981_BA9_Nova	19	NA	anterior cingulate cortex	NA	None
+1231346	4341_BA46	homo_sapiens	EUR	13	male	Velmeshev_et_al	Control	RNA	4341_BA46	16	NA	anterior cingulate cortex	NA	None
