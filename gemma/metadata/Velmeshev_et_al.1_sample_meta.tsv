@@ -1,0 +1,11 @@
+sample_id	sample_name	organism	1000G_ancestry	Age_death	Biological_Sex	Cohort	Disorder	Genotype_data	Individual_ID	PMI	RIN	organism part	pH	snATAC-Seq
+1231320	5408_PFC_Nova	homo_sapiens	AFR	6	male	Velmeshev_et_al	Control	RNA	5408_PFC_Nova	16	NA	prefrontal cortex	NA	None
+1231321	5936_PFC_Nova	homo_sapiens	AFR	14	female	Velmeshev_et_al	Control	RNA	5936_PFC_Nova	23	NA	prefrontal cortex	NA	None
+1231322	5879_PFC_Nova	homo_sapiens	AFR	15	male	Velmeshev_et_al	Control	RNA	5879_PFC_Nova	18	NA	prefrontal cortex	NA	None
+1231323	5538_PFC_Nova	homo_sapiens	EUR	19	female	Velmeshev_et_al	Control	RNA	5538_PFC_Nova	24	NA	prefrontal cortex	NA	None
+1231324	5945_PFC_Nova	homo_sapiens	EUR	20	male	Velmeshev_et_al	ASD	WES	5945_PFC_Nova	24	NA	prefrontal cortex	NA	None
+1231325	5893_PFC_Nova	homo_sapiens	EUR	19	male	Velmeshev_et_al	Control	RNA	5893_PFC_Nova	11	NA	prefrontal cortex	NA	None
+1231326	5419_PFC	homo_sapiens	EUR	19	female	Velmeshev_et_al	ASD	WES	5419_PFC	22	NA	prefrontal cortex	NA	None
+1231327	5144_PFC_Nova	homo_sapiens	EUR	7	male	Velmeshev_et_al	ASD	WES	5144_PFC_Nova	3	NA	prefrontal cortex	NA	None
+1231328	5403_PFC_Nova	homo_sapiens	EUR	16	male	Velmeshev_et_al	ASD	WES	5403_PFC_Nova	35	NA	prefrontal cortex	NA	None
+1231329	5278_PFC_Nova	homo_sapiens	EUR	15	female	Velmeshev_et_al	ASD	WES	5278_PFC_Nova	13	NA	prefrontal cortex	NA	None
