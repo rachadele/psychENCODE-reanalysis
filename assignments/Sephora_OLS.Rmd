@@ -1,0 +1,948 @@
+---
+title: "Multivariate Linear Regression at Sephora"
+author: "Rachel Schwartz"
+output: 
+  html_document:
+    number_sections: true
+    toc: true
+    toc_depth: 4
+bibliography: refs.bib
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+getwd()
+library(tidyr)
+library(ggplot2)
+library(plotly)
+library(scales)
+```
+
+# Introduction
+
+Multiple Linear Regression is a statistical method used to model the
+relationship between two or more independent variables and a dependent
+variable by fitting a linear equation. You are probably familiar with
+the formulation of a univariate linear regression:
+
+$$
+Y = \beta_0 + \beta_1 X_1 + \epsilon
+$$
+
+Where:
+
+1.  $Y$ is the dependent variable (also known as the **response**)
+2.  $X_1, X_2, \dots, X_n$ are the **predictor** variables aka
+    **features**
+3.  $\beta_0$ is the **intercept**
+4.  $\beta_1$ is the the \*\*coefficients\*
+5.  $\epsilon$ is the **error** term, also known as a **residual**
+
+In this primer, we will extend univariate regression to take into
+account multiple predictor variables.
+
+# Simulating a Multivariate Dataset
+
+Yesenia is a Sephora employee who spends most of her shifts matching
+foundation to customers' skin complexion. This is a time consuming
+process by hand. Yesenia decides to build a statistical model to quickly
+predict the best foundation shade for any customer based on their
+complexion, undertone, and the oil content of their skin. Let's imagine
+she has compiled a **training dataset** of customers, their
+aformentioned features, and their self-reported perfect foundation match
+(this will be our response variable). Let's now simulate some data to
+represent this scenario:
+
+```{r, simulate}
+set.seed(123)
+n <- 30 # we're sampling from 30 Sephora customers
+
+# Simulate training data
+skin_complexion <- rnorm(n, mean = 50, sd = 5)  # Complexion ~ N(50, 25)
+skin_type <- factor(sample(c("Oily", "Dry", "Combination"), n, replace = TRUE))
+undertone <- rnorm(n, mean = 0, sd = 1)  # Undertone ~ N(0,1)
+
+# Each categorical may have a different coefficient
+# something about this is broken
+skin_type_effect <- c(Oily = -5, Combination = 0, Dry = 20)
+
+# Simulate foundation shade from linear combo of predictors with normally distributed errors
+# Let this be the matched foundation shade by the Sephora employee
+foundation_shade <- 0.5 * skin_complexion +
+                    skin_type_effect[as.character(skin_type)] +  # correct indexing
+                    3 * undertone +
+                    rnorm(n, sd = 2)  # e ~ N(0,4)
+# make sure variance doesn't exceed effect sizes
+
+# Response = foundation_shade
+df <- data.frame(
+  foundation_shade,
+  skin_complexion,
+  skin_type,
+  undertone
+)
+
+head(df)
+```
+
+Here we can see that the overall foundation shade is represented as a
+**continuous** response variable which depends on continuous variables
+(skin complexion and undertone) as well as a **categorical** variable
+(skin type). To better visualize the data, let's plot it in a three
+dimensional space:
+
+```{r, visualize}
+# Visualize effect of predictors
+# Define consistent colors
+# make this random
+
+
+default_colors <- c("#e78ac3", "#a6cee3", "#d4b9da")  # Soft pink, light blue, peach
+type_colors <- setNames(default_colors[seq_along(levels(df$skin_type))], levels(df$skin_type))
+
+
+p <- plot_ly(df,
+        x = ~skin_complexion,
+        y = ~undertone,
+        z = ~foundation_shade,
+        type = "scatter3d",
+        mode = "markers",
+        color = ~skin_type,  # map to skin_type for legend
+        marker = list(size = 4),
+        colors = type_colors
+      ) %>%
+  layout(scene = list(
+    xaxis = list(title = "Skin Complexion"),
+    yaxis = list(title = "Undertone"),
+    zaxis = list(title = "Foundation Shade")
+  ))
+
+p
+
+```
+
+When we fit a linear model in two dimensions, we assume that the
+response variable is approximately linear; that is, it lies on a line
+(think $Y = Mx + B$). In a univariate linear model, we find the
+coefficient $M$ (often represented as $\beta_1$) and intercept $B$
+(often represented as $\beta_0$) which transforms the predictor vector
+into a line best approximating the response variable $Y$:
+
+$$
+y = \beta_0 + \beta_1 x_1 + \epsilon
+$$
+
+In a multiple linear regression, we assume that the response variable
+lies approximately on a **hyperplane** instead of a line (or, as we will
+see, three hyperplanes). This is formulated as:
+
+$$
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_n X_n + \epsilon
+$$
+
+Where $\beta_1, \beta_2, \dots, \beta_n$ are the **coefficients** which
+define this hyperplane.
+
+When we fit a linear model, we solve for *estimates* the coefficients
+$\beta_1, \beta_2, \dots, \beta_n$. Their linear combination gives us
+the predicted or *fitted* value of the response variable. Because these
+are estimated from the sample $n$, they are represented using a **hat**,
+$\hat{}$ to distinguish them from the true population statistics.
+
+-   $\hat{Y}$: the fitted value of the response variable
+-   $\hat{\beta}_0, \hat{\beta}_1, \dots, \hat{\beta}_n$: the estimated
+    coefficients and intercept
+
+The fitted model is:
+
+$$
+\hat{Y} = \hat{\beta}_0 + \hat{\beta}_1 X_1 + \hat{\beta}_2 X_2 + \dots + \hat{\beta}_n X_n
+$$
+
+Notice that the error term (residual) is absent. This is the difference
+between the observed and fitted values:
+
+$$
+\boldsymbol{\varepsilon} = {Y} - \hat{Y}
+$$
+
+Therefore:
+
+$$
+{Y} = \hat{\beta}_0 + \hat{\beta}_1 X_1 + \hat{\beta}_2 X_2 + \dots + \hat{\beta}_n X_n + \boldsymbol{\varepsilon}
+$$
+
+We solve for coefficients by minimizing this residual, a.k.a. our *loss
+function*. Once we find our $\beta$ values, we can use them to predict a
+response (in this case, a foundation shade) for unseen customers.
+
+# Solving a Multivariate Linear Equation
+
+The procedure for finding the coefficients
+$\beta_0, \beta_1, \ldots \beta_n$ to projected our predictors onto a
+hyperplane is the same as for univariate linear regression, where they
+are projected onto a line. This procedure is known as\* **Ordinary Least
+Squares (OLS)**.
+
+## The Design Matrix
+
+To solve OLS, we will need to use matrix algebra. Instead of a single
+predictor vector $x$, we have a matrix of predictor variables $X$ called
+the **design matrix**. We can simplify all the coefficients
+$\beta_1, \beta_2, \dots, \beta_n$ into a vector $\boldsymbol{\beta}$,
+and write the model in matrix form:
+
+$$
+Y = X \boldsymbol{\hat\beta} + \boldsymbol{\varepsilon} = \hat{Y} + \boldsymbol{\varepsilon}
+$$
+
+In full matrix notation:
+
+$$
+\begin{bmatrix}
+y_1 \\
+y_2 \\
+\vdots \\
+y_m
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & x_{11} & x_{12} & \dots & x_{1n} \\
+1 & x_{21} & x_{22} & \dots & x_{2n} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & x_{m1} & x_{m2} & \dots & x_{mn}
+\end{bmatrix}
+\begin{bmatrix}
+\beta_0 \\
+\beta_1 \\
+\beta_2 \\
+\vdots \\
+\beta_n
+\end{bmatrix}
++
+\begin{bmatrix}
+\varepsilon_1 \\
+\varepsilon_2 \\
+\vdots \\
+\varepsilon_m
+\end{bmatrix}
+$$
+
+Where:
+
+-   $\mathbf{Y}$ is the $n \times 1$ vector of observed responses
+-   $\mathbf{X}$ is the $n \times (p+1)$ design matrix
+-   $\boldsymbol{\beta}$ is the $(p+1) \times 1$ vector of coefficients
+-   $\boldsymbol{\varepsilon}$ is the $n \times 1$ vector of errors
+
+The design matrix is very similar to our data itself `df` with some
+important transformations. To demonstrate, let's fit the linear model
+and look at its design matrix:
+
+```{r, model}
+# Fit full model including skin_type (with Combination as baseline)
+# Specify a model using a linear formula of predictors
+model <- lm(foundation_shade ~ skin_complexion + undertone + skin_type, data = df)
+design=model.matrix(model)
+head(design, 10)
+```
+
+As you can see, there are 5 columns of our design matrix, although we
+only have 3 predictors. Each row of our design matrix represents a
+customer, and each column represents his or her complexion, undertone,
+and skin type as well as an **intercept** term.
+
+The intercept (also called $\beta_0$) is the baseline value of the
+response variable when all predictors are zero. To include the intercept
+in our linear model, we add a column of 1s to the design matrix. This
+allows the model to learn the intercept as a coefficient just like any
+other variable.
+
+Because skin type is a **categorical** variable, it is **one-hot
+encoded**. That means each category (e.g., oily, dry, combination) is
+turned into its own binary column:
+
+-   `"Oily"` → [0, 1, 0]\
+-   `"Dry"` → [1, 0, 0]\
+-   `"Combination"` → [0, 0, 1]
+
+Only one of these columns is 1 for each row (customer), and the others
+are 0. This lets the linear model assign a different coefficient to each
+skin type.
+
+You may notice that **combination** skin is absent from the columns of
+the design matrix. When encoding categorical variables, one level is
+dropped to avoid **linear dependency**. This means that once we know the
+values for oily and dry skin, we can deduce the factor value for
+"combination skin. In other words, the columns for oily, dry, and
+combination skin types are **linearly dependent**. As we will see later,
+linear dependency prevents us from fitting the model. One categorical
+column must always be "dropped" to avoid this.
+
+Any level can be dropped to avoid linear dependency. is known as the
+**reference level**. In this case, **combination** skin is the
+reference, and its effect is absorbed into the intercept $\beta_0$. In
+full matrix notation:
+
+$$
+\hat{Y} = X\beta = 
+\begin{bmatrix}
+1 & \text{complexion}_1 & \text{undertone}_1 & 1 & 0 \\
+1 & \text{complexion}_2 & \text{undertone}_2 & 0 & 1 \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & \text{complexion}_n & \text{undertone}_n & 0 & 0 \\
+\end{bmatrix}
+\begin{bmatrix}
+\beta_0 \\
+\beta_{\text{complexion}} \\
+\beta_{\text{undertone}} \\
+\beta_{\text{dry}} \\
+\beta_{\text{oily}} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\hat{foundation}_1 \\
+\hat{foundation}_2 \\
+\vdots \\
+\hat{foundation}_n
+\end{bmatrix}
+$$
+
+## Matrix Multiplication
+
+Columns of the design matrix represent the values of our predictor
+variables. When we multiply the design matrix by our coefficient vector,
+each predictor vector (column) is scaled by its corresponding
+coefficient. Columns are then added to obtain fitted values $\hat{Y}$.
+For an overview of matrix arithmetic, see [@psu_matrix].
+
+## The Normal Equation
+
+As previously mentioned, we want to minimize:
+
+$$
+\varepsilon = Y - \hat{Y}
+$$
+
+Where $Y$ is the true foundation match and $\hat{Y}$ is the predicted
+foundation match.
+
+We generalize this to the **Residual Sum of Squares (RSS)** across all
+predictions:
+
+$$
+RSS = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \| Y - X \boldsymbol{\hat\beta} \|^2
+$$
+
+Where $\| Y - X \boldsymbol{\hat\beta} \|^2$ is the **L2 norm** of the
+residual vector. The **norm** is the distance between any point in an
+N-dimensional space and the origin. We use the norm in this case to
+ignore +/- signs in the residual vector.
+
+It turns out that there is a unique solution to finding the value of
+$\boldsymbol{\hat\beta}$ that minimizes the norm of the residuals. The
+shortest distance between the true values $Y$ and the fitted values
+$\hat{Y}$ occurs when we **orthogonally project** $Y$ onto the column
+space of $X$. In other words, we’re finding $\hat{Y} \in \text{Col}(X)$
+such that the residual vector $Y - X\boldsymbol{\hat\beta}$ is
+orthogonal (perpendicular, $90^o$) to every column of $X$. We find this
+by multiplying the residual vector by the transpose of the design and
+setting to 0: $$
+X^T (Y - X\boldsymbol{\hat\beta}) = 0
+$$
+
+By the property of distributivity:
+
+$$
+X^TY - (X^TX)\boldsymbol{\hat\beta} = 0
+$$
+
+Solving for $\boldsymbol{\hat\beta}$ gives us the **Normal Equation**:
+
+$$
+X^T X \boldsymbol{\hat\beta} = X^T Y
+$$
+
+This provides the exact solution for $\boldsymbol{\hat\beta}$, assuming
+$X^T X$ is **invertible**:
+
+$$
+\boldsymbol{\hat\beta} = (X^T X)^{-1} X^T Y
+$$
+
+Some important terms:
+
+1.  Matrix Inverse - The inverse of a matrix $A$, written $A^{-1}$,
+    satisfies $AA^{-1} = I$, where $I$ is the identity matrix.
+
+2.  Hat Matrix - $X{\beta} = X(X^T X)^{-1} X^T Y = HY$ where $H$ is that
+    "hat" matrix as it puts a "hat" on $Y$ (also known as the
+    "projection matrix").
+
+3.  Linear Independence - columns of $X$ must be linearly independent so
+    $X^T X$ is invertible. This is why we must drop
+    `skin_typeCombination` from our design matrix $X$.
+
+## Geometric Proof
+
+How do we know that the orthogonal projection of $Y$ onto the column
+space of $X$ is the **unique** solution that minimizes the **norm** of
+the residual vector? Let's visualize the problem in 2 dimensions:
+
+![](OLS_geometric_interpretation.svg)
+
+In fact, the **Pythagorean Theorem** tells us that the shortest distance
+between two non-parallel vectors $y$ and $X^T\beta$ is achieved by the
+orthogonal (perpendicular) projection of $y$ onto the plane where
+$X^T\beta$ lies. This minimizes the residual vector $\epsilon$, forming
+a right triangle.
+
+# Visualizing Model Fits
+
+We have already implemented the OLS solution using the `lm()` function
+and a desing matrix specific by
+`foundation_shade ~ skin_complexion + undertone + skin_type`. We can now
+visualize our model fits and residuals for training data:
+
+```{r, add residuals}
+
+plot_fits <- function(df, model, type_colors) {
+  # Define grid resolution
+  grid_x <- seq(min(df$skin_complexion), max(df$skin_complexion), length.out = 30)
+  grid_y <- seq(min(df$undertone), max(df$undertone), length.out = 30)
+  grid <- expand.grid(skin_complexion = grid_x, undertone = grid_y)
+  
+  
+  # Start with an empty plot
+  p <- plot_ly()
+  
+  # Loop over each skin type
+  for (type in levels(df$skin_type)) {
+    grid_temp <- grid
+    grid_temp$skin_type <- factor(type, levels = levels(df$skin_type)) # add skin type (changes intercept)
+    grid_temp$foundation_shade <- predict(model, newdata = grid_temp) # predict
+    z_matrix <- matrix(grid_temp$foundation_shade, nrow = length(grid_x), ncol=length(grid_y)) # get the plane
+  
+    p <- p %>% add_surface(
+      x = grid_x, y = grid_y, z = z_matrix,
+      opacity = 0.4, showlegend = FALSE, showscale = FALSE,
+      surfacecolor = matrix(1, length(grid_x), length(grid_y)),
+      colorscale = list(
+                         list(0, type_colors[[type]]),
+                         list(1, type_colors[[type]])
+                      )
+    )
+    
+    
+    # Add residual lines for each data point in df
+    for (i in 1:nrow(df)) {
+      if (df$skin_type[i] == type) {
+        
+        # Calculate the predicted value for the current data point using the model
+        predicted_value <- predict(model, newdata = data.frame(skin_complexion = df$skin_complexion[i], skin_type = df$skin_type[i], undertone=df$undertone[i]))
+        
+        # Add the residual lines (observed vs predicted)
+        p <- p %>% add_trace(
+          type = "scatter3d",
+          mode = "lines",
+          x = rep(df$skin_complexion[i], 2),  # Replicate x value
+          y = rep(df$undertone[i], 2),         # Replicate y value
+          z = c(df$foundation_shade[i], predicted_value),  # Residual line between observed and predicted
+          line = list(color = type_colors[[type]], width = 2),
+          showlegend = FALSE
+        )
+      }
+    }
+  }
+  
+  
+  
+  # Add points (markers)
+  p <- p %>% add_trace(
+    data = df,
+    x = ~skin_complexion,
+    y = ~undertone,
+    z = ~foundation_shade,
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(
+      size = 4,
+      color = type_colors[df$skin_type]  # Map skin_type to colors manually
+    )) # legend missing
+  
+  # Layout for 3D scene with axis titles
+  p <- p %>% layout(
+    scene = list(
+      xaxis = list(title = "Skin Complexion"),
+      yaxis = list(title = "Undertone"),
+      zaxis = list(title = "Foundation Shade")
+    )
+  )
+  
+  p
+}
+
+plot_fits(df, model, type_colors)
+```
+
+Yesenia sees from this visualization that foundation shade can be
+represented as a plane defined by customer's skin complexion, undertone,
+and skin type. The scalar value associated with foundation incorporates
+information from these all of these dimensions. Lines from our data
+points to the plane represent residuals between the model fit and true
+foundation shade.
+
+# Understanding Model Fits
+
+Let's dive deeper into what our model is telling us about the effect of
+each predictor:
+
+```{r, coefficients}
+summary(model)
+```
+
+*What is each of these metrics telling us?*
+
+## Coefficients Table
+
+-   **Estimate** ($\hat{\beta}_j$)\
+    The estimated effect of predictor $X_j$ on the response variable.
+    Represents the expected change in the outcome for a one-unit
+    increase in $X_j$, holding all else constant.
+
+-   **Std. Error** ($\text{SE}(\hat{\beta}_j)$)\
+    The standard deviation of the sampling distribution of
+    $\hat{\beta}_j$. It quantifies uncertainty in the coefficient
+    estimate.
+
+-   **t value**\
+    $$
+    t = \frac{\hat{\beta}_j}{\text{SE}(\hat{\beta}_j)}
+    $$\
+    $H_0: \beta_j = 0$ represents the null hypothesis that the
+    coefficient for parameter $\beta$ is 0. The a large T value rejects
+    $H_0: \beta_j = 0$, indicating the parameter has significant effect
+    on the response.
+
+-   **Pr(\>\|t\|)**\
+    The p-value: probability of observing such a t-statistic (or more
+    extreme) if the null hypothesis $H_0$ is true. Small values (e.g.
+    $< 0.05$) suggest the predictor is statistically significant.
+
+## Model Fit Statistics
+
+To understand the model fit statistics, we need to know the formulations
+of **Sum of Squares (SS)**:
+
+-   **Total Sum of Squares (**$\text{SS}_{\text{tot}}$)\
+    Total variation in the response: $$
+    \text{SS}_{\text{tot}} = \sum (y_i - \bar{y})^2
+    $$
+
+    where $\bar{y})^2$ is the expected value (mean) foundation shade
+    averaged across all Sephora customers.
+
+-   **Residual Sum of Squares (**$\text{SS}_{\text{res}}$)\
+    Variation not explained by the model: $$
+    \text{SS}_{\text{res}} = \sum (y_i - \hat{y}_i)^2
+    $$
+
+    where $\hat{y}_i)=$ is the predicted value of foundation for
+    customer *i*.
+
+These define the following model fit statistics:
+
+-   **Residual Standard Error (RSE)**\
+    $$
+    \text{RSE} = \sqrt{\frac{1}{n - p} \sum (y_i - \hat{y}_i)^2}
+    $$\
+    Measures the typical size of the residuals (prediction errors).
+    Lower is better.
+
+-   **Multiple** $R^2$\
+    Proportion of variance in the response explained by the predictors:
+    $$
+    R^2 = 1 - \frac{\text{SS}_{\text{res}}}{\text{SS}_{\text{tot}}}
+    $$
+
+-   **Adjusted** $R^2$\
+    Corrects $R^2$ for the number of predictors, penalizing overfitting:
+    $$
+    \text{Adjusted } R^2 = 1 - \frac{\text{SS}_{\text{res}}/(n - p)}{\text{SS}_{\text{tot}}/(n - 1)}
+    $$
+
+-   **F-statistic**\
+    Tests whether the model explains more variance than a model with no
+    predictors: $$
+    F = \frac{\text{MS}_{\text{reg}}}{\text{MS}_{\text{res}}}
+    $$\
+    A high F and low p-value suggest that at least one predictor has a
+    significant effect.
+
+### Deliverible
+
+Briefly summarize what each coefficient, p-value, and model fit
+statistic is telling us about the predictive power of Yesenia's model.
+
+> Estimate - skin type has the greatest effect on the response/dependent
+> variable, and complexion has the smallest effect.
+>
+> Std. Error - standard error for all predictors are quite low, meaning
+> the sample mean is closer to the true mean of the population, with the
+> lowest being that of skin complexion.
+>
+> T-value - none of the t values are/are close to 0, indicating the
+> parameter has a significant effect on the response
+>
+> P values for all predictors are very small and les than 0.05, which
+> indicates that all of them are statistically significant
+>
+> RSE - low value indicates that the mode fits well/makes better
+> predictions
+>
+> Multiple R\^2 -  Close to 1 means that most of the variance is because
+> of the predictors
+>
+> Adjusted R\^2 - takes into account the number of predictors in the
+> model, close to 1 also means good model fit
+>
+> F-statistic - very high value (along with low P-values) means that at
+> least one of the predictors has a significant effect on the response
+
+## Categorical Predictors
+
+Yesenia notices that there are three hyperplanes, one for each level of
+`skin_type`. To understand why we see this, let's solve for one
+$\hat{y}$ on the hyperplane $Y$: for each value of`skin_type`:
+
+-   $\beta_0$ is the intercept for the **reference level** of
+    `skin_type` (here, "Combination").
+-   $\beta_1$ is the continuous effect of `complextion`
+-   $\beta_2$ is the continuous effect of `undertone`
+-   $\beta_3$, $\beta_4$ are the effects of `skin_type` being "Oily" or
+    "Dry", respectively.
+-   $X_3 = 1$ if "Oily", 0 otherwise.
+-   $X_4 = 1$ if "Dry", 0 otherwise.
+
+Then, solving for each level of `skin_type`:
+
+-   **Combination** (reference level): $$
+    \hat{y} = \beta_0 + \beta_1X_1  + \beta_2X_2 + (\beta_3\cdot0) + (\beta_4\cdot0)
+    $$
+
+-   **Oily**: $$
+    \hat{y} = \beta_0 + \beta_1X_1  + \beta_2X_2 + (\beta_3\cdot1) + (\beta_4\cdot0)
+    $$
+
+-   **Dry**: $$
+    \hat{y} = \beta_0 + \beta_1X_1  + \beta_2X_2+ (\beta_3\cdot0) + (\beta_4\cdot1)
+    $$
+
+Since categorical variables are encoded by either 1 or 0, they can only
+change the intercept $\beta_0$, not the slope of the plane
+$\beta_1X_1  + \beta_2X_2$.
+
+### Deliverable
+
+Look at the coefficients for the three categorical predictors in our
+model fit (hint: one is the intercept). How do these relate to the 3D
+plot of our fitted values?
+
+> The three heights of the hyperplanes represent the different skin
+> types
+
+You may notice that the legend is missing from the second plot. Can you
+figure out which color corresponds to which level of `skin_type` based
+on their coefficients?
+
+> from highest to lowest, dry, combination, and oily based on estimate
+> coefficients of skin types and the intercept
+
+Explain how this relates to the significance codes for the coefficients:
+
+> honestly not very sure about this other than that the effects are
+> significant and not for the intercept because it's the intercept...?
+
+# Interaction terms
+
+Let's now imagine that a customer's skin type has an effect on the
+relationship between complexion, undertone, and the resulting foundation
+shade. We can simulate some new data to model this scenario:
+
+## Simulating interactions
+
+```{r, simulate_interactions}
+# Main effects
+skin_type_effect <- c(Oily = -5, Combination = 0, Dry = 20)
+
+# Simulate foundation shade with interaction effect between undertone and skin_type
+interaction_effect <- c(Oily = 2 , Combination = 5, Dry = 15)
+
+# Response = foundation_shade, including interaction term
+foundation_shade <- 0.5 * skin_complexion + 
+                    skin_type_effect[as.character(skin_type)] +  # main effects only, no interactions
+                    interaction_effect[as.character(skin_type)] * undertone +  # interaction term between undertone and skin type
+                    3 * undertone +  # effect of undertone
+                    rnorm(n, sd = 2)  # errors ~ N(0, 4)
+
+# Response = foundation_shade
+interaction_df <- data.frame(
+  skin_complexion,
+  skin_type,
+  undertone,
+  foundation_shade
+)
+```
+
+```{r, model_interaction}
+
+# Fit the linear model with one interaction term
+# we can add both the main effects of skin type and undertone as well as their interaction using the *
+# this is equivalent to writing skin complextion + skin type + undertone + skin_type:undertone
+interaction_model <- lm(foundation_shade ~ skin_complexion + skin_type * undertone, data = interaction_df)
+
+# View the summary of the model
+summary(interaction_model)
+```
+
+### Deliverable
+
+Which of these coefficients are **interaction terms**? Which are the
+**main effects** (non-interaction terms)?
+
+> interaction terms - skin_typeDry:undertone and skin_typeOily:undertone
+>
+> main effects - skin types, complexion, undertone
+
+Print the first 5 rows of the design matrix for this model using the
+`model.matrix` function. Look at observation for customer 1. Can you
+write the the linear equation for this observation in matrix notation
+using the values of $X$ you see in the design matrix?
+
+```{r paged.print=TRUE}
+# your answer here
+head(model.matrix(interaction_model), 5)
+```
+
+## Visualizing Interaction Effects
+
+Let's plot the interaction model fit:
+
+```{r}
+# plot interactive model
+
+plot_fits(df = interaction_df, model = interaction_model, type_colors = type_colors)
+
+```
+
+### Deliverable
+
+Which skin type has the largest interaction effect with undertone? What
+color is it on the plot?
+
+> respond
+
+*Challenge* Why did we include an interaction between skin type and
+undertone? Would we know which interaction terms to include in real
+life?
+
+> answer
+
+# Assumptions of Linear Models
+
+Let's imagine Yesenia's homegirl Ashley Marie visits Sephora to purchase
+a new shade of foundation for her birthday. Little does Ashley Marie
+know, Yesenia caught Sevanna sliding into Yesenia's baby daddy DMs.
+Yesenia decides to sabotage Ashley Marie's birthday makeup by giving her
+the wrong foundation match. However, she just put in a PTO request for a
+girl's trip to Tulum. How can Yesenia get her revenge without getting
+her PTO denied....or worse? She decides to violate the base assumptions
+of linear regression so that her model will pick the wrong foundation
+shade for this 304.
+
+Yesenia decides to simulate a new training dataset which violates the
+assumptions of linear regression:
+
+```{r}
+n <- 30
+
+# Simulate predictors from non-normal distributions
+# Right-skewed complexion (e.g., using exponential)
+skin_complexion <- rexp(n, rate = 1/50)  # mean ~50, but skewed
+
+# Simulate categorical variable as before
+skin_type <- factor(sample(c("Oily", "Dry", "Combination"), n, replace = TRUE))
+
+# Simulate undertone from a uniform distribution (non-normal)
+undertone <- runif(n, min = -1, max = 1)  # uniform distribution
+
+# Categorical effects
+skin_type_effect <- c(Oily = -5, Combination = 0, Dry = 20)
+
+#Nonlinear relationship (quadratic term)
+nonlinear_term <- -2 * (skin_complexion^2)
+
+# Heteroskedastic errors: variance increases with complexion
+error_sd <- 0.1 * skin_complexion  # e.g. SD = 5 when complexion = 50
+heteroscedastic_error <- rnorm(n, mean = 0, sd = error_sd)
+
+#Non-normal errors (using exponential distribution)
+non_normal_error <- rexp(n, rate = 5) - 1  # shifted to mean ~0
+
+#Add outliers
+outlier_effect <- rep(0, n)
+outlier_indices <- sample(1:n, 2)
+outlier_effect[outlier_indices] <- 200  # add two outliers (200)
+
+# Combine all to simulate response
+foundation_shade <- 0.5 * skin_complexion +
+                    skin_type_effect[as.character(skin_type)] +
+                    3 * undertone +
+                    nonlinear_term +
+                    heteroscedastic_error +
+                    non_normal_error -
+                    outlier_effect
+
+
+# Data frame
+bad_df <- data.frame(
+  foundation_shade,
+  skin_complexion,
+  skin_type,
+  undertone
+)
+
+p <- plot_ly(bad_df,
+        x = ~skin_complexion,
+        y = ~undertone,
+        z = ~foundation_shade,
+        type = "scatter3d",
+        mode = "markers",
+        color = ~skin_type,  # map to skin_type for legend
+        marker = list(size = 4),
+        colors = type_colors
+      ) %>%
+  layout(scene = list(
+    xaxis = list(title = "Skin Complexion"),
+    yaxis = list(title = "Undertone"),
+    zaxis = list(title = "Foundation Shade")
+  ))
+
+p
+```
+
+Yesenia then re-builds her model with the bad training data.
+
+```{r}
+# Fit a linear model (ignoring the known nonlinear and heteroscedastic structure)
+model_violation <- lm(foundation_shade ~ skin_complexion + skin_type + undertone, data = bad_df)
+# Summary of the model
+summary(model_violation)
+```
+
+From the model summary, Yesenia sees her $R^2$ and $F$-statistic appear
+high. Yesenia hopes that because of this, her manager won't notice she
+manipulated the training data. Unfortunately for Yesenia, her manager
+Sevanna decides to check some model diagnostics:
+
+```{r, bad diagnostics}
+# Diagnostic plots to see assumption violations
+par(mfrow = c(2, 2))
+plot(model_violation)
+```
+
+Sevanna notices the following:
+
+1.  **Residuals vs Fitted**: Deviation from the dashed line indicates
+    **heteroscedasticity**, or non-uniformity of residuals around
+    predicted values. Yesenia introduced this to the data when she added
+    a vector of residuals for which the variance and standard deviation
+    increase with skin complexion.
+2.  **Quantile-Quantile (Q-Q) Residuals**: A diagonal (straight) line
+    indicates normally distributed residuals. Deviations from the
+    diagonal are deviations from normality, which yesenia introduced
+    with \`\`.
+3.  **Scale-Location**: A horizontal line implies homoscedasticity, or
+    equal variance of residuals. Sevanna sees the heteroscedasticity
+    Yesenia introduced with \`\`.
+4.  **Residuals vs Leverage Plot**: The **Leverage** for a data point (a
+    customer) quantifies their effect on the predicted values (defined
+    by the slope and intercept) for the regression fit. Yesenia
+    introduced high leverage points by subtracting `200` to two random
+    foundation shades. These points end up outside of "Cook's Distance",
+    indicating they have an unusually large influence on the model
+    coefficients.
+
+Compared to appropriate training data:
+
+```{r, good diagnostics}
+par(mfrow = c(2, 2))
+plot(model)
+```
+
+For more information on diagnostics plots, see [@uva_diagnostics]. For
+an explanation of leverage and Cook's Distance, see [@stack_hatmatrix].
+
+# Bonus - Continuous Interactions
+
+Let's simulate an interaction between two continuous variables
+(complexion and undertone):
+
+```{r, continuous interaction}
+
+#go back to our oriiginal data
+# we don't want to use the bad data
+
+skin_complexion <- df$skin_complexion
+undertone <- df$undertone
+skin_type <- df$skin_type
+
+interaction_strength <- 0.5  # strength of the interaction
+# Simulate foundation shade with interaction between complexion and undertone
+foundation_shade <- 0.5 * skin_complexion + 3 * undertone + 
+                    interaction_strength * skin_complexion * undertone +
+                    skin_type_effect[as.character(skin_type)] +
+                    rnorm(n, sd = 2)  # error
+
+# Combine into a data frame
+sim_df <- data.frame(
+  skin_complexion,
+  undertone,
+  skin_type,
+  foundation_shade
+)
+
+
+interaction_model2 <- lm(foundation_shade ~ skin_complexion * undertone + skin_type, data = sim_df)
+summary(interaction_model2)
+
+plot_fits(df=sim_df, model=interaction_model2, type_colors = type_colors)
+```
+
+This causes a **curved manifold** in the 3D predictor space because of
+the **multiplicative interaction term**:
+
+$$
+\text{foundation_shade} = \beta_0 + (\beta_1 \cdot \text{skin_complexion}) + (\beta_2 \cdot \text{undertone}) + \beta_3 \cdot (\text{skin_complexion} \times \text{undertone})
+$$
+
+With interaction, the product term bends the surface into a saddle or
+curved manifold, because the effect of complexion depends on undertone
+and vice versa. Visually, this looks like a twist or warping in the
+fitted surface—a hallmark of interaction between two continuous
+variables in a linear model.
+
+## Deliverable
+
+Print the design matrix for the continuous interaction model using the
+`model.matrix` function. Write out the linear equation for observations
+1 and 2. Can you see why the hyperplane is curving?
+
+```{r, answer}
+
+```
+
+# References
