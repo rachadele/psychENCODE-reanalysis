@@ -6,8 +6,8 @@ from functools import reduce
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description="aggreate pseudobulk matrices by cell type from Gemma data")
-  parser.add_argument("--pseudobulk_matrix_dir", type=str, default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/aggregated",
-                      help="Path to the pseudobulk matrix files directory")
+  parser.add_argument("--pseudobulk_matrices", type=str, nargs="+", default = ["/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/aggregated/51182_DevBrain_606866_10x_MEX_expmat.unfilt.aggregated.tsv.gz",
+                                                                               "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/aggregated/51181_MultiomeBrain_606582_10x_MEX_expmat.unfilt.aggregated.tsv.gz"])
   parser.add_argument("--metadata_files", type=str, default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata",
                       help="Path to the metadata files from Gemma")
   if __name__ == "__main__":
@@ -17,7 +17,8 @@ def parse_arguments():
 def main():
   args = parse_arguments()
 
-  matrix_files = glob.glob(os.path.join(args.pseudobulk_matrix_dir, "*.tsv.gz"))
+  #matrix_files = glob.glob(os.path.join(args.pseudobulk_matrix_dir, "*.tsv.gz"))
+  matrix_files = args.pseudobulk_matrices
   pseudobulks = {}
   for file in matrix_files:
       df = pd.read_csv(file, sep="\t", comment="#", dtype=str, compression="gzip")
@@ -65,7 +66,7 @@ def main():
     outdir = cell_type.strip().replace("/", "_")
     os.makedirs(outdir, exist_ok=True)
     output_path = cell_type.strip().replace("/", "_") + "_pseudobulk_matrix.tsv.gz"
-    combined.to_csv(os.path.join(outdir,output_path), sep="\t", index=True, na_rep=0, compression="gzip")
+    combined.to_csv(os.path.join(outdir,output_path), sep="\t", index=True, na_rep="NaN", compression="gzip")
     
     # make some kind of summary plot for this pseudobulk matrix
     # PCA?

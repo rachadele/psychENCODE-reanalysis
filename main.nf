@@ -13,10 +13,47 @@ process save_params_to_file {
     script:
     """
     cat <<EOF > params.yaml
+    from_gemma : ${params.from_gemma}
+    gemma_meta_dir : ${params.gemma_meta_dir}
+    study_names : ${params.study_names}
 	  h5ad_files : ${params.h5ad_files}
     outdir: ${params.outdir}
 	  EOF
     """
+}
+
+process get_gemma_pseudobulks {
+  publishDir "${params.outdir}/aggregated", mode: "copy"
+
+  input:
+  val experiment
+
+  output:
+  path("**.tsv.gz"), emit: aggregated_data
+
+  script:
+  """
+  bash $projectDir/bin/aggregateData.sh $experiment
+  """
+}
+
+process aggregate_celltypes_gemma {
+  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
+  publishDir "${params.outdir}/pseudobulks", mode: "copy"
+
+  input:
+  path pseudobulk_matrices
+  
+  output:
+  path "**pseudobulk_matrix.tsv.gz", emit: aggregated_pseudobulks
+  
+  script:
+  """
+  python $projectDir/bin/aggregate_celltypes_gemma.py \\
+        --pseudobulk_matrices ${pseudobulk_matrices} \\
+        --metadata_files ${params.gemma_meta_dir}
+  """
+  
 }
 
 process h5ad_to_rds {
@@ -28,7 +65,7 @@ process h5ad_to_rds {
 	tuple val(name), path(h5ad_file)
 
 	output:
-	tuple val(name), path("${name}.rds"), emit: rds
+	path "${name}.rds", emit: rds
 
 	script:
 
@@ -37,45 +74,43 @@ process h5ad_to_rds {
 	"""
 }
 
-process combine_rds {
-  memory = '32 GB'
-  publishDir "${params.outdir}/combined", mode: "copy"
-
-  conda "/home/rschwartz/anaconda3/envs/r4.3"
-
-  input:
-  path rds_files
-
-  output:
-  path "combined.rds", emit: combined_rds
-
-  script:
-  """
-  Rscript $projectDir/bin/combine_rds.R --rds_files ${rds_files}
-  """
-}
 
 workflow {
 	// Save parameters to a file
 	save_params_to_file()
 
-  Channel.fromPath("${params.h5ad_files}/*.h5ad").map { h5ad_file ->
-      def name = h5ad_file.getBaseName()
-      [name, h5ad_file]
+  if (params.from_gemma) {
+    Channel
+            .fromPath(params.study_names)
+            .flatMap { file -> file.readLines().collect { it.trim() } }
+            .set { study_names }
+    // Aggregate data from GEMMA
+    get_gemma_pseudobulks(study_names)
+    .set { aggregated_data_channel }
+  
+    aggregated_data_channel.collect()
+    .set { aggregated_data }
+    aggregate_celltypes_gemma(aggregated_data)
+    
   }
-  .set { h5ad_files_channel }
 
-  h5ad_files_channel.view()
-	// Convert h5ad files to RDS format
-	h5ad_to_rds(h5ad_files_channel)
+  else {
+    Channel.fromPath("${params.h5ad_files}/*.h5ad").map { h5ad_file ->
+        def name = h5ad_file.getBaseName()
+        [name, h5ad_file]
+    }
+    .set { h5ad_files_channel }
 
-  h5ad_to_rds.out.rds.collect().toList()
-  .set { rds_files_channel }
+    // Convert h5ad files to RDS format
+    h5ad_to_rds(h5ad_files_channel)
 
-  rds_files_channel.view()
+    h5ad_to_rds.out.rds.collect()
+    .set { rds_files_channel }
+
+  }
 
   // Combine RDS files into a single RDS file
-  //combine_rds(rds_files_channel)
+  // combine_rds(rds_files_channel)
 
 
 }
