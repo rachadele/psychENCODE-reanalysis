@@ -66,7 +66,7 @@ def main():
     outdir = cell_type.strip().replace("/", "_")
     os.makedirs(outdir, exist_ok=True)
     output_path = cell_type.strip().replace("/", "_") + "_pseudobulk_matrix.tsv.gz"
-    combined.to_csv(os.path.join(outdir,output_path), sep="\t", index=True, na_rep="NaN", compression="gzip")
+    combined.to_csv(os.path.join(outdir,output_path), sep="\t", index=True, na_rep=0, compression="gzip")
     
     # make some kind of summary plot for this pseudobulk matrix
     # PCA?
