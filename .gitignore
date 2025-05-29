@@ -179,3 +179,4 @@ unfiltered_pseudobulks
 .nextflow*
 results/
 work/
+.vscode*
