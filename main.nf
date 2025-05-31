@@ -23,7 +23,7 @@ process save_params_to_file {
 }
 
 process get_gemma_pseudobulks {
-  publishDir "${params.outdir}/aggregated", mode: "copy"
+  publishDir "${params.outdir}/aggregated/gemma/${experiment}", mode: "copy"
 
   input:
   val experiment
@@ -45,7 +45,7 @@ process aggregate_celltypes_gemma {
   path pseudobulk_matrices
   
   output:
-  path "**pseudobulk_matrix.tsv.gz", emit: aggregated_pseudobulks
+  path "**pseudobulk_matrix.tsv.gz", emit: aggregated_celltypes
   
   script:
   """
@@ -56,22 +56,39 @@ process aggregate_celltypes_gemma {
   
 }
 
-process h5ad_to_rds {
-  publishDir "${params.outdir}/rds", mode: "copy"
+process aggregate_data_manual {
+  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
+  publishDir "${params.outdir}/aggregated/manual/${experiment}", mode: "copy"
 
-	conda "/home/rschwartz/anaconda3/envs/r4.3"
+  input:
+  tuple val(experiment), path(h5ad_file)
 
-	input:
-	tuple val(name), path(h5ad_file)
+  output:
+  path "**pseudobulk_matrix.tsv.gz", emit: aggregated_experiments
 
-	output:
-	path "${name}.rds", emit: rds
+  script:
+  """
+  python $projectDir/bin/aggregate_data_manual.py \\
+        --h5ad_files ${h5ad_file} \\
+  """
+}
 
-	script:
+process DESeq2_analysis {
+  conda "/home/rschwartz/anaconda3/envs/r4.3"
+  publishDir "${params.outdir}/DESeq2/${cell_type}", mode: "copy"
 
-	"""
-	Rscript $projectDir/bin/h5ad_to_rds.R --h5ad_file ${h5ad_file}
-	"""
+  input:
+  tuple val(cell_type), path(pseudobulk_matrix)
+
+  output:
+  path "**tsv"
+  path "**png"
+
+  script:
+  """
+  Rscript $projectDir/bin/DESeq2_analysis.R --pseudobulk_matrix ${pseudobulk_matrix} \\
+        --gemma_metadata ${params.gemma_meta_dir}
+  """
 }
 
 
@@ -81,31 +98,36 @@ workflow {
 
   if (params.from_gemma) {
     Channel
-            .fromPath(params.study_names)
-            .flatMap { file -> file.readLines().collect { it.trim() } }
-            .set { study_names }
+      .fromPath(params.study_names)
+      .flatMap { file -> file.readLines().collect { it.trim() } }
+      .set { study_names }
     // Aggregate data from GEMMA
     get_gemma_pseudobulks(study_names)
     .set { aggregated_data_channel }
-  
+
     aggregated_data_channel.collect()
     .set { aggregated_data }
     aggregate_celltypes_gemma(aggregated_data)
-    
-  }
+    aggregate_celltypes_gemma.out.aggregated_celltypes.flatMap()
+    .set { aggregated_celltypes } 
 
-  else {
+    // extract cell type from channel
+    aggregated_celltypes.map { it ->
+      def cell_type = it.getBaseName().split("_pseudobulk_matrix.tsv.gz")[0] // e.g., "Astrocyte_pseudobulk_matrix.tsv.gz"
+      [cell_type, it]
+    }
+    .set { aggregated_celltypes_channel }
+    // Run DESeq2 analysis
+    DESeq2_analysis(aggregated_celltypes_channel)
+ 
+  } else {
     Channel.fromPath("${params.h5ad_files}/*.h5ad").map { h5ad_file ->
         def name = h5ad_file.getBaseName()
         [name, h5ad_file]
     }
     .set { h5ad_files_channel }
 
-    // Convert h5ad files to RDS format
-    h5ad_to_rds(h5ad_files_channel)
 
-    h5ad_to_rds.out.rds.collect()
-    .set { rds_files_channel }
 
   }
 
