@@ -21,7 +21,7 @@ base_theme <- theme(
 )
 
 parser = argparse::ArgumentParser(description = "Run DESeq2 analysis on pseudobulk matrix")
-parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/pseudobulks/manual/astrocyte/astrocyte_pseudobulk_matrix.tsv.gz",
+parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/pseudobulks/gemma/astrocyte/astrocyte_pseudobulk_matrix.tsv.gz",
 					help = "Path to the pseudobulk matrix tsv gzipped file.")
 
 parser$add_argument("--gemma_metadata", type = "character",
@@ -159,7 +159,7 @@ df_list <- list()
 
 # Loop through result names
 for (res_name in res_names) {
-  outdir <- res_name %>% gsub(".tsv.gz", "", .)  # replace ":" with "_" for directory name
+  outdir <- res_name 
   dir.create(outdir, recursive = TRUE)
   # Get results
   res <- results(dds, name = res_name)
