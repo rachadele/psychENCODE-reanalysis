@@ -9,7 +9,7 @@ import numpy as np
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description="aggreate pseudobulk matrices by cell type from Gemma data")
-  parser.add_argument("--h5ad_file", type=str, nargs="+", default = "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/homo_sapiens/Velmeshev_et_al.1.h5ad")
+  parser.add_argument("--h5ad_file", type=str, default = "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/homo_sapiens/Velmeshev_et_al.1.h5ad")
   
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
@@ -33,7 +33,7 @@ def filter_celltypes(adata, min_celltypes):
 
 def aggregate_data(adata, cohort):
     # generate pseudobulk matrix
-    aggregated =  sc.get.aggregate(adata, by=["sample_id","cell_type"], func=["mean", "count_nonzero"])
+    aggregated =  sc.get.aggregate(adata, by=["sample_id","cell_type"], func=["sum", "count_nonzero", "mean"])
     aggregated.obs["cohort"] = cohort
     return aggregated
 
