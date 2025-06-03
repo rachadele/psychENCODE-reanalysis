@@ -39,7 +39,7 @@ process get_gemma_pseudobulks {
 
 process aggregate_celltypes_gemma {
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/pseudobulks", mode: "copy"
+  publishDir "${params.outdir}/pseudobulks/gemma", mode: "copy"
 
   input:
   path pseudobulk_matrices
@@ -64,18 +64,35 @@ process aggregate_data_manual {
   tuple val(experiment), path(h5ad_file)
 
   output:
-  path "**pseudobulk_matrix.tsv.gz", emit: aggregated_experiments
+  path "**pseudobulk.h5ad", emit: aggregated_experiments
 
   script:
   """
   python $projectDir/bin/aggregate_data_manual.py \\
-        --h5ad_files ${h5ad_file} \\
+        --h5ad_file ${h5ad_file} \\
+  """
+}
+
+process aggregate_celltypes_manual {
+  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
+  publishDir "${params.outdir}/pseudobulks/manual", mode: "copy"
+
+  input:
+  path h5ad_files
+
+  output:
+  path "**pseudobulk_matrix.tsv.gz", emit: aggregated_celltypes
+
+  script:
+  """
+  python $projectDir/bin/aggregate_celltypes_manual.py \\
+        --h5ad_files ${h5ad_files}
   """
 }
 
 process DESeq2_analysis {
   conda "/home/rschwartz/anaconda3/envs/r4.3"
-  publishDir "${params.outdir}/DESeq2/${cell_type}", mode: "copy"
+  publishDir "${params.outdir}/DESeq2/gemma/${cell_type}", mode: "copy"
 
   input:
   tuple val(cell_type), path(pseudobulk_matrix)
@@ -127,8 +144,12 @@ workflow {
     }
     .set { h5ad_files_channel }
 
+    h5ad_files_channel.view()
 
+    aggregate_data_manual(h5ad_files_channel).collect()
+    .set { aggregated_experiments_channel }
 
+    aggregate_celltypes_manual(aggregated_experiments_channel)
   }
 
   // Combine RDS files into a single RDS file
