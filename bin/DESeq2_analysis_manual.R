@@ -21,31 +21,22 @@ base_theme <- theme(
 )
 
 parser = argparse::ArgumentParser(description = "Run DESeq2 analysis on pseudobulk matrix")
-parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/work/58/f0b3f79095ceb613f23b13d5439370/L6bglutamatergiccorticalneuron_pseudobulk_matrix.tsv.gz",
+parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/pseudobulks/manual/oligodendrocyte/oligodendrocyte_pseudobulk_matrix.tsv.gz",
 					help = "Path to the pseudobulk matrix tsv gzipped file.")
 
-parser$add_argument("--gemma_metadata", type = "character",
-					default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata",
+parser$add_argument("--metadata", type = "character",
+					default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/pseudobulks/manual/oligodendrocyte/oligodendrocyte_pseudobulk_metadata.tsv",
 					help = "Path to the gemma metadata directory")
 
 args = parser$parse_args()
 pseudobulk_matrix_path <- args$pseudobulk_matrix
-gemma_metadata <- args$gemma_metadata
+metadata <- args$metadata
 
 
 # metadata processing ---------------------------------------------------
 
-# combine the gemma metadata files into one metadata file
-metadata_files <- list.files(gemma_metadata, full.names = TRUE, pattern = ".tsv")
-metadata_list <- lapply(metadata_files, function(x) {
-  df <- read.table(x, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
-  df$Cohort <- gsub("_sample_meta.tsv", "", basename(x))  # extract cohort name from file path
-  df[] <- lapply(df, as.character)  # convert all columns to character
-
-  return(df)
-})
-# Combine while filling missing columns with NA
-metadata <- bind_rows(metadata_list)
+# read the metadata
+metadata <- read.table(metadata, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 # for age death, remove +/- and convert to numeric
 
 # make all controls the same
@@ -66,7 +57,7 @@ rownames(metadata) <- metadata$sample_id
 # read the pseudobulk matrix
 pseudobulk_matrix <- read.table(pseudobulk_matrix_path, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
-rownames(pseudobulk_matrix) <- pseudobulk_matrix$X
+rownames(pseudobulk_matrix) <- pseudobulk_matrix$feature_name
 pseudobulk_matrix <- pseudobulk_matrix[, -which(colnames(pseudobulk_matrix)=="feature_name")]  # remove the feature_name column
 
 # remove leading "X" from column names
@@ -116,7 +107,8 @@ dds <- DESeqDataSetFromMatrix(
   countData = as.matrix(pseudobulk_matrix),
   colData = filtered_metadata,
   # need to add average UMI at earlier step
-  design = ~Disorder  + Age_death + PMI + Biological_Sex + X1000G_ancestry # genotype missing
+  design = ~Disorder  + Age_death + PMI + Biological_Sex + X1000G_ancestry + avg_UMI_sample # genotype missing
+  # not sure if average umi should be per sample or per sample*cell type
   # add other covariates from manuscript
 )
 

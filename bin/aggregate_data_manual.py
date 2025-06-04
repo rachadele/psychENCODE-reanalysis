@@ -15,7 +15,15 @@ def parse_arguments():
     known_args, _ = parser.parse_known_args()
     return known_args
 
-    
+def get_avg_umi(adata):
+# compute average log umi per cell per sample 
+  sc.pp.calculate_qc_metrics(adata, inplace=True)
+  adata.obs["avg_UMI_ct"] = adata.obs.groupby(["sample_id","cell_type"])["total_counts"].transform("mean")
+  adata.obs["avg_UMI_sample"] = adata.obs.groupby("sample_id")["total_counts"].transform("mean")
+  # return a vector mapping sample id to average umi
+  umi_mapping = adata.obs[["sample_id","cell_type","avg_UMI_sample","avg_UMI_ct"]].value_counts().reset_index()
+  return umi_mapping
+
 # donors with <50 cells detected. 
 # After filtering, cell types with <16 samples also removed
     
@@ -34,7 +42,6 @@ def filter_celltypes(adata, min_celltypes):
 def aggregate_data(adata, cohort):
     # generate pseudobulk matrix
     aggregated =  sc.get.aggregate(adata, by=["sample_id","cell_type"], func=["sum", "count_nonzero", "mean"])
-    aggregated.obs["cohort"] = cohort
     return aggregated
 
 def main():
@@ -47,10 +54,34 @@ def main():
   new_var = adata.var.dropna(subset=["feature_name"])
   adata = adata[:, new_var.index].copy()
   
+  # get original metadata for sample id characteristics
+  characteristics = [
+      "sample_id",
+      "sample_name",
+      "1000G_ancestry",
+      "Age_death",
+      "Biological_Sex",
+      "Cohort",
+      "Disorder",
+      "Genotype_data",
+      "Individual_ID",
+      "PMI",
+      "RIN",
+      "pH"
+  ]
+
+  # get sample id characteristics value counts
+  sample_characteristics = adata.obs[characteristics].value_counts(dropna=False).reset_index()
+
+  
+  umi_mapping = get_avg_umi(adata)
   adata = filter_samples(adata, min_samples=50)
   adata = filter_celltypes(adata, min_celltypes=16)
   pseudobulk = aggregate_data(adata, cohort)
 
+  # add avg_UMI to obs
+  pseudobulk.obs = pseudobulk.obs.merge(umi_mapping, on=["sample_id","cell_type"], how="left")
+  pseudobulk.obs = pseudobulk.obs.merge(sample_characteristics, on=["sample_id"], how="left") 
   pseudobulk.write_h5ad(os.path.join(f"{cohort}_pseudobulk.h5ad"))	
 
 
