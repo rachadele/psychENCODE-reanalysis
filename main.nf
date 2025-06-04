@@ -130,10 +130,11 @@ workflow {
 
     // extract cell type from channel
     aggregated_celltypes.map { it ->
-      def cell_type = it.getBaseName().split("_pseudobulk_matrix.tsv.gz")[0] // e.g., "Astrocyte_pseudobulk_matrix.tsv.gz"
+      def cell_type = it.getBaseName().split("_pseudobulk_matrix.tsv")[0] // e.g., "Astrocyte_pseudobulk_matrix.tsv.gz"
       [cell_type, it]
     }
     .set { aggregated_celltypes_channel }
+    aggregated_celltypes_channel.view()
     // Run DESeq2 analysis
     DESeq2_analysis(aggregated_celltypes_channel)
  
