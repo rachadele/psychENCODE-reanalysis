@@ -90,7 +90,7 @@ process aggregate_celltypes_manual {
   """
 }
 
-process DESeq2_analysis {
+process DESeq2_analysis_gemma {
   conda "/home/rschwartz/anaconda3/envs/r4.3"
   publishDir "${params.outdir}/DESeq2/gemma/${cell_type}", mode: "copy"
 
@@ -108,6 +108,22 @@ process DESeq2_analysis {
   """
 }
 
+process DESeq2_analysis_manual {
+  conda "/home/rschwartz/anaconda3/envs/r4.3"
+  publishDir "${params.outdir}/DESeq2/manual/${cell_type}", mode: "copy"
+
+  input:
+  tuple val(cell_type), path(pseudobulk_matrix)
+
+  output:
+  path "**tsv"
+  path "**png"
+
+  script:
+  """
+  Rscript $projectDir/bin/DESeq2_analysis_manual.R --pseudobulk_matrix ${pseudobulk_matrix}
+  """
+}
 
 workflow {
 	// Save parameters to a file
@@ -150,7 +166,17 @@ workflow {
     aggregate_data_manual(h5ad_files_channel).collect()
     .set { aggregated_experiments_channel }
 
-    aggregate_celltypes_manual(aggregated_experiments_channel)
+    aggregate_celltypes_manual(aggregated_experiments_channel).flatMap()
+    .set { aggregated_celltypes }
+
+    // extract cell type from channel
+    aggregated_celltypes.map { it ->
+      def cell_type = it.getBaseName().split("_pseudobulk_matrix.tsv")[0] // e.g., "Astrocyte_pseudobulk_matrix.tsv.gz"
+      [cell_type, it]
+    }
+    .set { aggregated_celltypes_channel }
+
+    DESeq2_analysis_manual(aggregated_celltypes_channel)
   }
 
   // Combine RDS files into a single RDS file
