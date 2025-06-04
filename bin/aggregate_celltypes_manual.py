@@ -52,8 +52,10 @@ def main():
     os.makedirs(newname, exist_ok=True)
     combined = reduce(lambda left, right: pd.merge(left, right, left_index=True, right_index=True, how="outer"),
                       ct_pseudobulks[cell_type].values())
+    combined.index.name = "feature_name"
+    print(combined.shape)
     combined.to_csv(os.path.join(newname,f"{newname}_pseudobulk_matrix.tsv.gz"), sep="\t", index=True, # fill NA with 0
-                  na_rep="0", header=True, compression="gzip")
+                  na_rep="0", compression="gzip")
       
       # append columns to the pseudobulk matrix row wise
       
