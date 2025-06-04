@@ -21,7 +21,7 @@ base_theme <- theme(
 )
 
 parser = argparse::ArgumentParser(description = "Run DESeq2 analysis on pseudobulk matrix")
-parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/pseudobulks/manual/astrocyte/astrocyte_pseudobulk_matrix.tsv.gz",
+parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/work/58/f0b3f79095ceb613f23b13d5439370/L6bglutamatergiccorticalneuron_pseudobulk_matrix.tsv.gz",
 					help = "Path to the pseudobulk matrix tsv gzipped file.")
 
 parser$add_argument("--gemma_metadata", type = "character",
@@ -57,7 +57,8 @@ metadata$Age_death[metadata$Age_death == "NaN"] <- NA  # replace NaN with NA
 metadata$Age_death <- as.numeric(gsub("\\+", "", metadata$Age_death))
 
 # make sample rownames
-rownames(metadata) <- metadata$Individual_ID
+ # if mode is gemma use Individual_ID, otherwise use Sample_ID
+rownames(metadata) <- metadata$sample_id
 
 
 # pseudobulk processing ----------------------------------------------------
@@ -80,7 +81,6 @@ if (length(bad_samples) > 0) {
   pseudobulk_matrix <- pseudobulk_matrix[, !colnames(pseudobulk_matrix) %in% bad_samples]
   message("Removed samples with 0 library sizes: ", paste(bad_samples, collapse = ", "))
 }
-
 
 #get matching samples
 matching_samples <- intersect(rownames(metadata), colnames(pseudobulk_matrix))
