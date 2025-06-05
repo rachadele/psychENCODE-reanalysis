@@ -43,8 +43,7 @@ def main():
   
   # extract cell type names for each result
   author_cell_type = author_df["cell_type"].unique()[0]
-  gemma_cell_type = gemma_df["cell_type"].unique()[0]
-  
+  gemma_cell_type = gemma_df["cell_type"].unique()[0] 
  
   # sort genes in the same order and make sure they are the same genes
   # merge dataframe on gene column
@@ -57,6 +56,15 @@ def main():
   only_in_gemma = set(gemma_df["gene"]) - set(author_df["gene"])
   only_in_author = set(author_df["gene"]) - set(gemma_df["gene"])
 
+  # writing missing genes to one file with two columns
+  missing_genes_df = pd.DataFrame({
+      "gene": list(only_in_author.union(only_in_gemma)),
+      "in_author": [gene in only_in_author for gene in only_in_author.union(only_in_gemma)],
+      "in_gemma": [gene in only_in_gemma for gene in only_in_author.union(only_in_gemma)]
+  })
+  
+  missing_genes_df.to_csv("missing_genes.tsv", sep="\t", index=False)
+  
   
  # check if df is empty
   if merged_df.empty:
@@ -69,7 +77,7 @@ def main():
   correlation = merged_df["log2FoldChange_author"].corr(
       merged_df["log2FoldChange_gemma"], method="spearman") 
 
-  hue_order = ["Not Significant","Author Only", "Gemma Only", "Both"]
+  hue_order = ["Not Significant","Author Only", "Gemma Only","Both"]
   # make hues static colors
   palette = {
     "Not Significant": "lightgray",
@@ -110,8 +118,8 @@ def main():
   plt.text(0.05, 0.85, f"Only in Gemma: {len(only_in_gemma)}",
            transform=plt.gca().transAxes, fontsize=12, verticalalignment='top')
   
-  plt.xlabel(f"{author_cell_type} Log2 Fold Change")
-  plt.ylabel(f"{gemma_cell_type} Log2 Fold Change")
+  plt.xlabel(f"Author: {author_cell_type} Log2 Fold Change")
+  plt.ylabel(f"Gemma: {gemma_cell_type} Log2 Fold Change")
   plt.legend(title="Significance")
   plt.grid(True)
   plt.tight_layout()
