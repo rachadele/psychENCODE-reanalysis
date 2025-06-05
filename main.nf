@@ -219,7 +219,7 @@ workflow {
     // Run DESeq2 analysis
     DESeq2_analysis_gemma(aggregated_celltypes_channel)
 
-    DESeq2_analysis_gemma.out.all_contrasts_manual.flatMap { it ->
+    DESeq2_analysis_gemma.out.all_contrasts_gemma.flatMap { it ->
       def cell_type = it[0]
       def files = it[1]
       files.collect { results_file ->
@@ -284,13 +284,12 @@ workflow {
   
 
   // combine manual contrasts and author contrasts
-  //all_contrasts_manual_ct.combine(author_contrasts_channel)
+  
   all_contrasts_gemma_ct.map { full_contrast, ct, file ->
-      
       def contrast = full_contrast.replaceAll(/Disorder_|_vs_Control/, '')
       tuple(contrast, ct, file)
   }.set { manual_contrast_channel }
-
+  manual_contrast_channel.view()
   //view
   manual_contrast_channel.combine(all_contrasts_author_ct, by: 0)
   .set { all_contrasts_channel }
