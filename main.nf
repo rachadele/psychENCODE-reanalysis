@@ -24,13 +24,15 @@ process save_params_to_file {
 
 process wrangle_author {
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/author_contrasts/${contrast}", mode: "copy"
+  publishDir "${params.outdir}/author_contrasts/${contrast}/files", mode: "copy", pattern: "**tsv"
+  publishDir "${params.outdir}/author_contrasts/${contrast}/figs", mode: "copy", pattern: "**png"
 
   input:
   tuple val(contrast), path(author_results)
 
   output:
   tuple val(contrast), path("**tsv"), emit: ct_contrasts
+  path "**png"
 
   script:
   """
@@ -124,7 +126,8 @@ process DESeq2_analysis_gemma {
   """
   Rscript $projectDir/bin/DESeq2_analysis.R --pseudobulk_matrix ${pseudobulk_matrix} \\
         --gemma_metadata ${params.gemma_meta_dir} \\
-        --cell_type ${cell_type}
+        --cell_type ${cell_type} \\
+        --mode gemma
   """
 }
 
