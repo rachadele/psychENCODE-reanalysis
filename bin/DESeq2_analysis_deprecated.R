@@ -21,22 +21,31 @@ base_theme <- theme(
 )
 
 parser = argparse::ArgumentParser(description = "Run DESeq2 analysis on pseudobulk matrix")
-parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/pseudobulks/manual/oligodendrocyte/oligodendrocyte_pseudobulk_matrix.tsv.gz",
+parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/pseudobulks/gemma/astrocyte/astrocyte_pseudobulk_matrix.tsv.gz",
 					help = "Path to the pseudobulk matrix tsv gzipped file.")
 
-parser$add_argument("--metadata", type = "character",
-					default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/pseudobulks/manual/oligodendrocyte/oligodendrocyte_pseudobulk_metadata.tsv",
+parser$add_argument("--gemma_metadata", type = "character",
+					default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata",
 					help = "Path to the gemma metadata directory")
 
 args = parser$parse_args()
-pseudobulk_matrix_path <- args$pseudobulk_matrix
-metadata <- args$metadata
+pseudobulk_matrix <- args$pseudobulk_matrix
+gemma_metadata <- args$gemma_metadata
 
 
 # metadata processing ---------------------------------------------------
 
-# read the metadata
-metadata <- read.table(metadata, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+# combine the gemma metadata files into one metadata file
+metadata_files <- list.files(gemma_metadata, full.names = TRUE, pattern = ".tsv")
+metadata_list <- lapply(metadata_files, function(x) {
+  df <- read.table(x, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+  df$Cohort <- gsub("_sample_meta.tsv", "", basename(x))  # extract cohort name from file path
+  df[] <- lapply(df, as.character)  # convert all columns to character
+
+  return(df)
+})
+# Combine while filling missing columns with NA
+metadata <- bind_rows(metadata_list)
 # for age death, remove +/- and convert to numeric
 
 # make all controls the same
@@ -48,14 +57,13 @@ metadata$Age_death[metadata$Age_death == "NaN"] <- NA  # replace NaN with NA
 metadata$Age_death <- as.numeric(gsub("\\+", "", metadata$Age_death))
 
 # make sample rownames
- # if mode is gemma use Individual_ID, otherwise use Sample_ID
-rownames(metadata) <- metadata$sample_id
+rownames(metadata) <- metadata$Individual_ID
 
 
 # pseudobulk processing ----------------------------------------------------
 
 # read the pseudobulk matrix
-pseudobulk_matrix <- read.table(pseudobulk_matrix_path, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+pseudobulk_matrix <- read.table(pseudobulk_matrix, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
 rownames(pseudobulk_matrix) <- pseudobulk_matrix$feature_name
 pseudobulk_matrix <- pseudobulk_matrix[, -which(colnames(pseudobulk_matrix)=="feature_name")]  # remove the feature_name column
@@ -72,6 +80,7 @@ if (length(bad_samples) > 0) {
   pseudobulk_matrix <- pseudobulk_matrix[, !colnames(pseudobulk_matrix) %in% bad_samples]
   message("Removed samples with 0 library sizes: ", paste(bad_samples, collapse = ", "))
 }
+
 
 #get matching samples
 matching_samples <- intersect(rownames(metadata), colnames(pseudobulk_matrix))
@@ -107,8 +116,7 @@ dds <- DESeqDataSetFromMatrix(
   countData = as.matrix(pseudobulk_matrix),
   colData = filtered_metadata,
   # need to add average UMI at earlier step
-  design = ~Disorder  + Age_death + PMI + Biological_Sex + X1000G_ancestry + avg_UMI_sample # genotype missing
-  # not sure if average umi should be per sample or per sample*cell type
+  design = ~Disorder  + Age_death + PMI + Biological_Sex + X1000G_ancestry # genotype missing
   # add other covariates from manuscript
 )
 
@@ -151,7 +159,7 @@ df_list <- list()
 
 # Loop through result names
 for (res_name in res_names) {
-  outdir <- res_name %>% gsub(".tsv", "", .) 
+  outdir <- res_name 
   dir.create(outdir, recursive = TRUE)
   # Get results
   res <- results(dds, name = res_name)
