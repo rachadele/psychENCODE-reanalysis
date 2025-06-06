@@ -43,7 +43,7 @@ process wrangle_author {
 }
 
 process get_gemma_pseudobulks {
-  publishDir "${params.outdir}/aggregated/gemma/${experiment}", mode: "copy"
+  publishDir "${params.outdir}/experiment_pseudobulks/gemma/${experiment}", mode: "copy"
 
   input:
   val experiment
@@ -59,7 +59,7 @@ process get_gemma_pseudobulks {
 
 process aggregate_celltypes_gemma {
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/pseudobulks/gemma", mode: "copy"
+  publishDir "${params.outdir}/ct_pseudobulks/gemma", mode: "copy"
 
   input:
   path pseudobulk_matrices
@@ -78,7 +78,7 @@ process aggregate_celltypes_gemma {
 
 process aggregate_data_manual {
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/aggregated/manual/${experiment}", mode: "copy"
+  publishDir "${params.outdir}/experiment_pseudobulks/manual/${experiment}", mode: "copy"
 
   input:
   tuple val(experiment), path(h5ad_file)
@@ -95,7 +95,7 @@ process aggregate_data_manual {
 
 process aggregate_celltypes_manual {
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/pseudobulks/manual", mode: "copy"
+  publishDir "${params.outdir}/ct_pseudobulks/manual", mode: "copy"
 
   input:
   path h5ad_files
@@ -125,9 +125,9 @@ process DESeq2_analysis_gemma {
   script:
   """
   Rscript $projectDir/bin/DESeq2_analysis.R --pseudobulk_matrix ${pseudobulk_matrix} \\
-        --gemma_metadata ${params.gemma_meta_dir} \\
-        --cell_type ${cell_type} \\
-        --mode gemma
+        --metadata ${params.gemma_meta_dir} \\
+        --mode gemma \\
+        --cell_type ${cell_type}
   """
 }
 
@@ -154,7 +154,7 @@ process DESeq2_analysis_manual {
 process DE_corr_manual {
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
   publishDir "${params.outdir}/DE_corr/manual/${contrast}/figs/${gemma_ct}/${author_ct}", mode: 'copy', pattern: '**png'
-  publishDir "${params.outdir}/DE_corr/manual/${contrast}/merged_results/${gemma_ct}/${author_ct}", mode: 'copy', pattern: '**tsv'
+  publishDir "${params.outdir}/DE_corr/manual/${contrast}/files/${gemma_ct}/${author_ct}", mode: 'copy', pattern: '**tsv'
 
 
   input:
