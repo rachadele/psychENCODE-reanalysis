@@ -26,7 +26,7 @@ parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/g
 
 parser$add_argument("--metadata", type = "character",
 					default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/pseudobulks/manual/lamp5GABAergiccorticalinterneuron/lamp5GABAergiccorticalinterneuron_pseudobulk_metadata.tsv",
-					help = "Path to the gemma metadata directory")
+					help = "Path to metadata (directory if mode is gemma, or file if mode is manual).")
 
 parser$add_argument("--mode", type = "character", default="gemma",
           help = "Mode of analysis, either 'gemma' or 'manual'. If gemma, use Individual_ID, otherwise use Sample_ID.")
@@ -41,10 +41,23 @@ cell_type <- args$cell_type
 
 # metadata processing ---------------------------------------------------
 
-# read the metadata
-metadata <- read.table(args$metadata, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
-# for age death, remove +/- and convert to numeric
+if (mode == "gemma") {
+  metadata_files <- list.files(args$metadata, full.names = TRUE, pattern = ".tsv")
+  metadata_list <- lapply(metadata_files, function(x) {
+    df <- read.table(x, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+    df$Cohort <- gsub("_sample_meta.tsv", "", basename(x))  # extract cohort name from file path
+    df[] <- lapply(df, as.character)  # convert all columns to character
 
+    return(df)
+  })
+  # Combine while filling missing columns with NA
+  metadata <- bind_rows(metadata_list)
+} else if (mode == "manual") {
+  # read the metadata file directly
+  metadata <- read.table(args$metadata, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+} else {
+  stop("Mode must be either 'gemma' or 'manual'.")
+}
 # make all controls the same
 metadata$Disorder <- as.character(metadata$Disorder)
 metadata$Disorder[metadata$Disorder == "control"] <- "Control"  # make sure control is capitalized
@@ -83,7 +96,7 @@ if (length(bad_samples) > 0) {
   message("Removed samples with 0 library sizes: ", paste(bad_samples, collapse = ", "))
 }
 
-#get matching samples
+#get matching samples ---------------------------------------------------------
 matching_samples <- intersect(rownames(metadata), colnames(pseudobulk_matrix))
 
 # put them in the same order
@@ -111,13 +124,18 @@ cpm_mat <- cpm(pseudobulk_matrix, log = FALSE)
 keep_genes <- rowSums(cpm_mat > 0.5) >= 0.3 * ncol(pseudobulk_matrix)
 pseudobulk_matrix <- pseudobulk_matrix[keep_genes, ]
 
+if (mode == "gemma") {
+  formula = as.formula("~Disorder  + Age_death + PMI + Biological_Sex + X1000G_ancestry")
 
+} else if (mode == "manual") {
+  formula = as.formula("~Disorder  + Age_death + PMI + Biological_Sex + X1000G_ancestry + avg_UMI_sample")
+}
 # create DESeq2 object ----------------
 dds <- DESeqDataSetFromMatrix(
   countData = as.matrix(pseudobulk_matrix),
   colData = filtered_metadata,
   # need to add average UMI at earlier step
-  design = ~Disorder  + Age_death + PMI + Biological_Sex + X1000G_ancestry + avg_UMI_sample # genotype missing
+  design = formula # genotype missing
   # not sure if average umi should be per sample or per sample*cell type
   # add other covariates from manuscript
 )
