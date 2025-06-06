@@ -8,7 +8,7 @@ def parse_arguments():
   parser = argparse.ArgumentParser(description="aggreate pseudobulk matrices by cell type from Gemma data")
   parser.add_argument("--pseudobulk_matrices", type=str, nargs="+", default = ["/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/aggregated/51182_DevBrain_606866_10x_MEX_expmat.unfilt.aggregated.tsv.gz",
                                                                                "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/aggregated/51181_MultiomeBrain_606582_10x_MEX_expmat.unfilt.aggregated.tsv.gz"])
-  parser.add_argument("--metadata_files", type=str, default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata",
+  parser.add_argument("--metadata_files", type=str, default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/source_data/PEC2_sample_metadata.txt",
                       help="Path to the metadata files from Gemma")
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
