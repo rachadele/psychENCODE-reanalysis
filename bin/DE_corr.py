@@ -17,7 +17,7 @@ def parse_arguments():
   parser.add_argument("--contrast", type=str, default="Schizophrenia",
 					  help="Contrast to use for DE analysis")
   parser.add_argument("--author_results", type=str, default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/author_contrasts/Schizophrenia/Schizophrenia_L2.3.IT_degs.tsv")
-  parser.add_argument("--gemma_results", type=str, default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/DESeq2/manual/L2_3-6intratelencephalicprojectingglutamatergicneuron/Disorder_Schizophrenia_vs_Control/results.tsv")
+  parser.add_argument("--pavlab_results", type=str, default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/DESeq2/manual/L2_3-6intratelencephalicprojectingglutamatergicneuron/Disorder_Schizophrenia_vs_Control/results.tsv")
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
     return known_args
@@ -36,10 +36,10 @@ def main():
   args = parse_arguments()
   contrast = args.contrast
   author_results = args.author_results
-  gemma_results = args.gemma_results
+  pavlab_results = args.pavlab_results
   # Load
   author_df = pd.read_csv(author_results, sep="\t")
-  gemma_df = pd.read_csv(gemma_results, sep="\t")
+  gemma_df = pd.read_csv(pavlab_results, sep="\t")
   
   # extract cell type names for each result
   author_cell_type = author_df["cell_type"].unique()[0]
