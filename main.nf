@@ -151,14 +151,15 @@ process DESeq2_analysis_manual {
   """
 }
 
-process DE_corr_manual {
+process DE_corr {
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/DE_corr/manual/${contrast}/figs/${gemma_ct}/${author_ct}", mode: 'copy', pattern: '**png'
-  publishDir "${params.outdir}/DE_corr/manual/${contrast}/files/${gemma_ct}/${author_ct}", mode: 'copy', pattern: '**tsv'
+  publishDir "${params.outdir}/DE_corr/${mode}/${contrast}/figs/${pavlab_ct}/${author_ct}", mode: 'copy', pattern: '**png'
+  publishDir "${params.outdir}/DE_corr/${mode}/${contrast}/files/${pavlab_ct}/${author_ct}", mode: 'copy', pattern: '**tsv'
 
 
   input:
-  tuple val(contrast), val(gemma_ct), path(gemma_results), val(author_ct), val(author_results)
+  val(mode)
+  tuple val(contrast), val(pavlab_ct), path(pavlab_results), val(author_ct), val(author_results)
 
   output:
   path "**png"
@@ -167,13 +168,48 @@ process DE_corr_manual {
   script:
   """
   python $projectDir/bin/DE_corr.py \\
-        --gemma_results ${gemma_results} \\
+        --pavlab_results ${pavlab_results} \\
         --author_results ${author_results} \\
-        --contrast ${contrast}
+        --contrast ${contrast} \\
+        --mode ${mode}
   """
 }
 
+process compare_pseudobulks {
+  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
+  publishDir "${params.outdir}/pseudobulk_comparisons/${mode}/files/${pavlab_cell_type}/${author_cell_type}", mode: "copy", pattern: "**tsv"
+  publishDir "${params.outdir}/pseudobulk_comparisons/${mode}/figs/${pavlab_cell_type}/${author_cell_type}", mode: "copy", pattern: "**png"
+
+  input:
+  val(mode)
+  tuple val(author_cell_type), path(author_pseudobulk), val(pavlab_cell_type), path(pavlab_pseudobulk)
+
+  output:
+  path "**tsv", emit: comparison_results
+  path "**png"
+
+  script:
+  """
+  python $projectDir/bin/compare_pseudobulks.py \\
+        --author_pseudobulk ${author_pseudobulk} \\
+        --author_cell_type ${author_cell_type} \\
+        --pavlab_pseudobulk ${pavlab_pseudobulk} \\
+        --pavlab_cell_type ${pavlab_cell_type} \\
+        --gemma_metadata ${params.gemma_meta_dir} \\
+        --mode ${mode}
+  """
+}
+
+
 workflow {
+
+  def mode
+  if (params.from_gemma) {
+    mode = "gemma"
+  } else {
+    mode = "manual"
+  }
+
 	// Save parameters to a file
 	save_params_to_file()
 
@@ -196,6 +232,12 @@ workflow {
   }
   .set { all_contrasts_author_ct }
 
+  author_pseudobulks = Channel.fromPath(params.author_pseudobulks)
+  author_pseudobulks.map { file ->
+    def cell_type = file.getBaseName().split(".expr.bed")[0] // e.g., "Astrocyte_pseudobulk_matrix.tsv.gz"
+    [cell_type, file]
+  }
+  .set { author_pseudobulks_channel }
 
   if (params.from_gemma) {
     Channel
@@ -230,7 +272,20 @@ workflow {
         [contrast, cell_type, results_file]
       }
     }
-    .set { all_contrasts_gemma_ct }
+    .set { all_contrasts_pavlab_ct }
+
+        .set { all_contrasts_pavlab_ct }
+
+    // combine manual contrasts and author contrasts
+    
+    all_contrasts_pavlab_ct.map { full_contrast, ct, file ->
+        def contrast = full_contrast.replaceAll(/Disorder_|_vs_Control/, '')
+        tuple(contrast, ct, file)
+    }.set { gemma_contrast_channel }
+
+    gemma_contrast_channel.combine(all_contrasts_author_ct, by: 0)
+    .set { all_contrasts_channel }
+
  
   } else {
     Channel.fromPath("${params.h5ad_files}/*.h5ad").map { h5ad_file ->
@@ -261,6 +316,7 @@ workflow {
     }
     .set { aggregated_celltypes_channel }
 
+
     aggregated_celltypes_meta.map { it ->
       def cell_type = it.getBaseName().split("_pseudobulk_metadata")[0] // e.g., "Astrocyte_pseudobulk_metadata.tsv"
       [cell_type, it]
@@ -270,6 +326,7 @@ workflow {
     aggregated_celltypes_channel.combine(aggregated_celltypes_meta_channel, by: 0)
     .set { ct_pseudobulks_meta_channel }
 
+    
 
     DESeq2_analysis_manual(ct_pseudobulks_meta_channel) 
     // flatMap results
@@ -282,23 +339,31 @@ workflow {
         [contrast, cell_type, results_file]
       }
     }
-    .set { all_contrasts_gemma_ct }
+    .set { all_contrasts_pavlab_ct }
 
   
-
   // combine manual contrasts and author contrasts
   
-  all_contrasts_gemma_ct.map { full_contrast, ct, file ->
+  all_contrasts_pavlab_ct.map { full_contrast, ct, file ->
       def contrast = full_contrast.replaceAll(/Disorder_|_vs_Control/, '')
       tuple(contrast, ct, file)
   }.set { manual_contrast_channel }
-  manual_contrast_channel.view()
-  //view
+
   manual_contrast_channel.combine(all_contrasts_author_ct, by: 0)
   .set { all_contrasts_channel }
-
-  // Run DE correlation
-    DE_corr_manual(all_contrasts_channel)
   }
+  all_contrasts_channel.view()
+  // Run DE correlation
+  DE_corr(mode, all_contrasts_channel)
+
+  // Compare pseudobulks
+  // only compare for valid cell type mappings
+  // need a mapping dictionary of author cell types to pavlab cell types since strings don't map exactly
+  author_pseudobulks_channel.combine(aggregated_celltypes_channel)
+  .set { pseudobulks_combined }
+
+
+  compare_pseudobulks(mode, pseudobulks_combined)
+
 
 }
