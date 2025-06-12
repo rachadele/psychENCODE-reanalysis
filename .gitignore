@@ -186,3 +186,4 @@ work/
 .vscode*
 source_data/pseudobulks/
 source_data/DEGs/
+source_data/PEC2_sample_metadata.txt
