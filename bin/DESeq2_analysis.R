@@ -121,8 +121,15 @@ filtered_metadata$PMI[is.na(filtered_metadata$PMI)] <- median(filtered_metadata$
 
 # Gene filter
 cpm_mat <- cpm(pseudobulk_matrix, log = FALSE)
+
+# removes genes with less than 0.5 CPM in at least 30% of samples
 keep_genes <- rowSums(cpm_mat > 0.5) >= 0.3 * ncol(pseudobulk_matrix)
+
 pseudobulk_matrix <- pseudobulk_matrix[keep_genes, ]
+
+# remove genes with less than 20 total counts across all samples
+pseudobulk_matrix <- pseudobulk_matrix[rowSums(pseudobulk_matrix) >= 20, ]
+
 
 if (mode == "gemma") {
   formula = as.formula("~Disorder  + Age_death + PMI + Biological_Sex + X1000G_ancestry")
@@ -203,6 +210,15 @@ for (res_name in res_names) {
     base_theme
 
   ggsave(file.path(outdir, "pvalue_dist.png"), plot = p, width = 8, height = 6)
+
+  # plot fold change histogram
+  p <- ggplot(df, aes(x = log2FoldChange)) +
+    geom_histogram(bins = 50, fill = "gray", color = "black") +
+    labs(title = paste("Log2 Fold Change Distribution:", res_name),
+         x = "Log2 Fold Change", y = "Frequency") +
+    base_theme
+  ggsave(file.path(outdir, "log2_fold_change_dist.png"), plot = p, width = 8, height = 6)
+
 
   # sort by p-value and save DF
   df <- df %>%

@@ -29,17 +29,28 @@ def main():
     if ct_subset["gene"].duplicated().any():
       # send warning to stderr
       sys.stderr.write(f"Warning: Duplicates found in {cell_type} for {contrast}.\n")
-      ct_subset = ct_subset.drop_duplicates(subset=["gene"])
+      #ct_subset = ct_subset.drop_duplicates(subset=["gene"])
     
     ct_subset.to_csv(f"{contrast}_{cell_type}_degs.tsv", sep="\t", index=False)
     # plot pvalue distribution
-    
+      
+    # --- P-value distribution ---
     plt.figure(figsize=(10, 6))
-    ct_subset["pvalue"].hist(bins=50, grid=False, alpha=0.7)
+    plt.hist(ct_subset["pvalue"].dropna(), bins=50, color="grey", edgecolor="black", alpha=0.7)
     plt.title(f"{cell_type} {contrast} p-value distribution")
     plt.xlabel("p-value")
     plt.ylabel("Frequency")
     plt.savefig(f"{contrast}_{cell_type}_pvalue_distribution.png")
+
+    # --- log2 fold change distribution ---
+    plt.figure(figsize=(10, 6))
+    plt.hist(ct_subset["log2FoldChange"].dropna(), bins=50, color="grey", edgecolor="black", alpha=0.7)
+    plt.title(f"{cell_type} {contrast} log2 fold change distribution")
+    plt.xlabel("log2 fold change")
+    plt.ylabel("Frequency")
+    plt.savefig(f"{contrast}_{cell_type}_log2_fold_change_distribution.png")
+
+      
   
 if __name__ == "__main__":
   main()

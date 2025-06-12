@@ -27,23 +27,26 @@ def get_avg_umi(adata):
 # donors with <50 cells detected. 
 # After filtering, cell types with <16 samples also removed
     
-def filter_samples(adata, min_samples=50):
-    cell_counts_per_samples = adata.obs["sample_id"].value_counts()
-    samples_to_keep = cell_counts_per_samples[cell_counts_per_samples >= min_samples].index
-    adata_filtered = adata[adata.obs["sample_id"].isin(samples_to_keep)].copy()
-    return adata_filtered
+def filter_samples(pseudobulk, cell_counts, min_cells=50):
+    subsets_to_keep = cell_counts[cell_counts["count"] >= min_cells][["sample_id","cell_type"]]
+    subsets_to_keep = subsets_to_keep.set_index(["sample_id","cell_type"], drop=False)
+
+    pseudobulk.obs = pseudobulk.obs.set_index(["sample_id","cell_type"], drop=False) 
+    pseudobulk_filtered = pseudobulk[pseudobulk.obs.index.isin(subsets_to_keep.index)].copy()
+    return pseudobulk_filtered
     
-def filter_celltypes(adata, min_celltypes):
-	cell_counts_per_celltype = adata.obs["cell_type"].value_counts()
-	celltypes_to_keep = cell_counts_per_celltype[cell_counts_per_celltype >= min_celltypes].index
-	adata_filtered = adata[adata.obs["cell_type"].isin(celltypes_to_keep)].copy()
-	return adata_filtered
+#def filter_celltypes(adata, min_celltypes):
+	#cell_counts_per_celltype = adata.obs["cell_type"].value_counts()
+	#celltypes_to_keep = cell_counts_per_celltype[cell_counts_per_celltype >= min_celltypes].index
+	#adata_filtered = adata[adata.obs["cell_type"].isin(celltypes_to_keep)].copy()
+	#return adata_filtered
 
 def aggregate_data(adata, cohort):
     # generate pseudobulk matrix
     aggregated =  sc.get.aggregate(adata, by=["sample_id","cell_type"], func=["sum", "count_nonzero", "mean"])
     return aggregated
-
+  
+  
 def main():
   args = parse_arguments()
   h5ad_file = args.h5ad_file
@@ -75,10 +78,11 @@ def main():
 
   
   umi_mapping = get_avg_umi(adata)
-  adata = filter_samples(adata, min_samples=50)
-  adata = filter_celltypes(adata, min_celltypes=16)
+  #adata = filter_samples(adata, min_samples=50)
+  #adata = filter_celltypes(adata, min_celltypes=16)
+  cell_counts = adata.obs[["sample_id","cell_type"]].value_counts().reset_index()
   pseudobulk = aggregate_data(adata, cohort)
-
+  pseudobulk = filter_samples(pseudobulk, cell_counts, min_cells=50) 
   # add avg_UMI to obs
   pseudobulk.obs = pseudobulk.obs.merge(umi_mapping, on=["sample_id","cell_type"], how="left")
   pseudobulk.obs = pseudobulk.obs.merge(sample_characteristics, on=["sample_id"], how="left") 

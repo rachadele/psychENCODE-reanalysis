@@ -9,13 +9,20 @@ import numpy as np
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description="aggreate pseudobulk matrices by cell type from Gemma data")
-  parser.add_argument("--h5ad_files", type=str, nargs="+", default = ["/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/aggregated/manual/DevBrain/DevBrain_pseudobulk.h5ad",
-                                                                      "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/aggregated/manual/MultiomeBrain/MultiomeBrain_pseudobulk.h5ad"])
+  parser.add_argument("--h5ad_files", type=str, nargs="+", default = ["/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/experiment_pseudobulks/manual/DevBrain/DevBrain_pseudobulk.h5ad",
+                                                                      "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/experiment_pseudobulks/manual/MultiomeBrain/MultiomeBrain_pseudobulk.h5ad"])
   
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
     return known_args
+  
+def filter_samples(adata, min_cells=50):
+    cell_counts_per_samples = adata.obs["sample_id"].value_counts().reset_index()
+    samples_to_keep = cell_counts_per_samples[cell_counts_per_samples >= min_cells].index
+    adata_filtered = adata[adata.obs["sample_id"].isin(samples_to_keep)].copy()
+    return adata_filtered
 
+    
 def main():
   args = parse_arguments()
   h5ad_files =args.h5ad_files
@@ -60,6 +67,10 @@ def main():
                       ct_pseudobulks[cell_type].values())
     combined.index.name = "feature_name"
     print(combined.shape)
+    # if less than 16 samples, skip saving
+    if combined.shape[1] < 16:
+        print(f"Skipping {newname} as it has less than 16 samples.")
+        continue
     combined.to_csv(os.path.join(newname,f"{newname}_pseudobulk_matrix.tsv.gz"), sep="\t", index=True, # fill NA with 0
                   na_rep="0", compression="gzip")
      

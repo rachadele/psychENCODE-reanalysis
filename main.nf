@@ -352,7 +352,6 @@ workflow {
   manual_contrast_channel.combine(all_contrasts_author_ct, by: 0)
   .set { all_contrasts_channel }
   }
-  all_contrasts_channel.view()
   // Run DE correlation
   DE_corr(mode, all_contrasts_channel)
 

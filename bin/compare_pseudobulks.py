@@ -34,12 +34,14 @@ def parse_args():
       default="Endo__VLMC", help="Cell type name in PavLab pseudobulk file")
   parser.add_argument("--mode", type=str, default="manual", help="Mode of comparison: 'manual' or 'gemma'")
 
-  return parser.parse_args()
+  if __name__ == "__main__":
+    known_args, _ = parser.parse_known_args()
+    return known_args
 
 def log_cpm(counts_df, prior_count=1):
     """Calculate log2 CPM with a small prior."""
     lib_sizes = counts_df.sum(axis=0)
-    cpm = (counts_df) / lib_sizes * 1e6
+    cpm = (counts_df / lib_sizes) * 1e6
     return np.log2(cpm + prior_count)  # add prior to avoid log(0)
   
 def plot_corr(merged, spearman_corr):
