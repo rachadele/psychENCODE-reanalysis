@@ -177,7 +177,11 @@ unfiltered_pseudobulks
 *rds
 *h5ad
 .nextflow*
-results/
+results/**tsv
+results/**mtx
+*tsv
+*mtx
+*h5ad
 work/
 .vscode*
 source_data/pseudobulks/
