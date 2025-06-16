@@ -1,0 +1,379 @@
+---
+output: 
+  html_document: 
+    fig_width: 10
+---
+
+```{r}
+CMCAuthor <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/cell_type_assignments/CMC.celltypes.tsv", show_col_types = FALSE))
+
+CMCGemma <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/CMC.celltypes.tsv", show_col_types = FALSE))
+
+DevBrainAuthor <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/cell_type_assignments/DevBrain.celltypes.tsv", show_col_types = FALSE))
+
+DevBrainGemma <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/DevBrain.celltypes.tsv", show_col_types = FALSE))
+
+MultiBrainAuthor <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/cell_type_assignments/MultiomeBrain.celltypes.tsv", show_col_types = FALSE))
+
+MultiBrainGemma <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/MultiomeBrain.celltypes.tsv", show_col_types = FALSE))
+
+PTSDAuthor <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/cell_type_assignments/PTSDBrainomics.celltypes.tsv", show_col_types = FALSE))
+
+PTSDGemma <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/PTSDBrainomics.celltypes.tsv", show_col_types = FALSE))
+
+SZBDAuthor <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/cell_type_assignments/SZBDMulti-Seq.celltypes.tsv", show_col_types = FALSE))
+
+SZBDGemma <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/SZBDMulti-Seq.celltypes.tsv", show_col_types = FALSE))
+
+ASDAuthor <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/cell_type_assignments/UCLA-ASD.celltypes.tsv", show_col_types = FALSE))
+
+ASDGemma <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/UCLA-ASD.celltypes.tsv", show_col_types = FALSE))
+
+Vel1Author <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/cell_type_assignments/Velmeshev_et_al.1.celltypes.tsv", show_col_types = FALSE))
+
+Vel1Gemma <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/Velmeshev_et_al.1.celltypes.tsv", show_col_types = FALSE))
+
+Vel2Author <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/cell_type_assignments/Velmeshev_et_al.2.celltypes.tsv", show_col_types = FALSE))
+
+Vel2Gemma <- data.frame(read_tsv(
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/Velmeshev_et_al.2.celltypes.tsv", show_col_types = FALSE))
+
+#reading all gemma files
+
+GemmaFile_list <- list.files(path = "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/", pattern = "\\.tsv$", full.names = TRUE)
+
+GemmaTSVs <- map(GemmaFile_list, read_tsv)
+
+
+#mainly for plot visualization
+GemmaAbbreviations <- c(
+  "astrocyte",
+  "caudal ganglionic ED GABA CI",
+  "chandelier pvalb GABA CI",
+  "endothelial cell",
+  "L2/3-6 IT proj. glutamatergic neuron",
+  "L5 ET proj.glutamatergic CN",
+  "L6 CT-proj. glutamatergic CN",
+  "L6b glutamatergic CN",
+  "lamp5 GABA CI",
+  "microglial cell",
+  "near-proj. glutamatergic CN",
+  "oligodendrocyte",
+  "oligodendrocyte PC",
+  "pvalb GABA CI",
+  "sncg GABA CI",
+  "sst GABA CI",
+  "vascular leptomeningeal cell",
+  "vip GABA CI"
+  )
+
+GemmaCellTypes <- c(
+  "astrocyte",
+  "caudal ganglionic eminence derived GABAergic cortical interneuron",
+  "chandelier pvalb GABAergic cortical interneuron",
+  "endothelial cell",
+  "L2/3-6 intratelencephalic projecting glutamatergic neuron",
+  "L5 extratelencephalic projecting glutamatergic cortical neuron",
+  "L6 corticothalamic-projecting glutamatergic cortical neuron",
+  "L6b glutamatergic cortical neuron",
+  "lamp5 GABAergic cortical interneuron",
+  "microglial cell",
+  "near-projecting glutamatergic cortical neuron",
+  "oligodendrocyte",
+  "oligodendrocyte precursor cell",
+  "pvalb GABAergic cortical interneuron",
+  "sncg GABAergic cortical interneuron",
+  "sst GABAergic cortical interneuron",
+  "vascular leptomeningeal cell",
+  "vip GABAergic cortical interneuron"
+)
+#add a column with abbreviation for cell types to make plot more readable
+add_abbreviation_column <- function(data, from_col, to_col = "abbr",default = "OTHER") {
+
+  from_col_sym <- ensym(from_col)
+  
+  conditions <- purrr::map2(
+    GemmaCellTypes, GemmaAbbreviations,
+    ~ expr((!!from_col_sym) == !!.x ~ !!.y))
+  
+  conditions <- append(conditions, expr(TRUE ~ !!default))
+  
+  data %>%
+    mutate(!!to_col := case_when(!!!conditions))
+}
+
+#filtering out cells that have matching gemma and author annotations
+mismatchFilter <- function(df) {
+  df %>% filter(
+    !(df$cell_type.x == "Astro" & df$cell_type.y == "astrocyte") &
+    !(df$cell_type.x == "Oligo" & df$cell_type.y == "oligodendrocyte") &
+    !(df$cell_type.x == "Chandelier" & df$cell_type.y == "chandelier pvalb GABAergic cortical interneuron") &
+    !(df$cell_type.x == "Endo" & df$cell_type.y == "endothelial cell") &
+    !(df$cell_type.x == "L5_ET" & df$cell_type.y == "L5 extratelencephalic projecting glutamatergic cortical neuron") &
+    !(df$cell_type.x == "L2/3_IT" & df$cell_type.y == "L2/3-6 intratelencephalic projecting glutamatergic neuron") & #L2/3-6 is more broad?
+    !(df$cell_type.x == "Lamp5" & df$cell_type.y == "lamp5 GABAergic cortical interneuron") &
+    !(df$cell_type.x == "OPC" & df$cell_type.y == "oligodendrocyte precursor cell") &
+    !(df$cell_type.x == "Vip" & df$cell_type.y == "vip GABAergic cortical interneuron") &
+    !(df$cell_type.x == "Sst" & df$cell_type.y == "sst GABAergic cortical interneuron") &
+    !(df$cell_type.x == "Sncg" & df$cell_type.y == "sncg GABAergic cortical interneuron") &
+    !(df$cell_type.x == "Pvalb" & df$cell_type.y == "pvalb GABAergic cortical interneuron") &
+    !(df$cell_type.x == "L6b" & df$cell_type.y == "L6b glutamatergic cortical neuron") &
+    !(df$cell_type.x == "L6_CT" & df$cell_type.y == "L6 corticothalamic-projecting glutamatergic cortical neuron") &
+    !(df$cell_type.x == "Micro" & df$cell_type.y == "microglial cell") &
+    !(df$cell_type.x == "VLMC" & df$cell_type.y == "vascular leptomeningeal cell")
+  )
+}
+
+matchFilter <- function(df) {
+  df %>% filter(
+    (df$cell_type.x == "Astro" & df$cell_type.y == "astrocyte") |
+    (df$cell_type.x == "Oligo" & df$cell_type.y == "oligodendrocyte") |
+    (df$cell_type.x == "Chandelier" & df$cell_type.y == "chandelier pvalb GABAergic cortical interneuron") |
+    (df$cell_type.x == "Endo" & df$cell_type.y == "endothelial cell") |
+    (df$cell_type.x == "L5_ET" & df$cell_type.y == "L5 extratelencephalic projecting glutamatergic cortical neuron") |
+    (df$cell_type.x == "L2/3_IT" & df$cell_type.y == "L2/3-6 intratelencephalic projecting glutamatergic neuron") |
+    (df$cell_type.x == "Lamp5" & df$cell_type.y == "lamp5 GABAergic cortical interneuron") |
+    (df$cell_type.x == "OPC" & df$cell_type.y == "oligodendrocyte precursor cell") |
+    (df$cell_type.x == "Vip" & df$cell_type.y == "vip GABAergic cortical interneuron") |
+    (df$cell_type.x == "Sst" & df$cell_type.y == "sst GABAergic cortical interneuron") |
+    (df$cell_type.x == "Sncg" & df$cell_type.y == "sncg GABAergic cortical interneuron") |
+    (df$cell_type.x == "Pvalb" & df$cell_type.y == "pvalb GABAergic cortical interneuron") |
+    (df$cell_type.x == "L6b" & df$cell_type.y == "L6b glutamatergic cortical neuron") |
+    (df$cell_type.x == "L6_CT" & df$cell_type.y == "L6 corticothalamic-projecting glutamatergic cortical neuron") |
+    (df$cell_type.x == "Micro" & df$cell_type.y == "microglial cell") |
+    (df$cell_type.x == "VLMC" & df$cell_type.y == "vascular leptomeningeal cell")
+  )
+}
+
+#renaming columns to make less confusing and remove author cell type URI column since it's empty
+columnRename <- function(df){
+  colNames <- c(sample_id.x = "author_sample_id",
+    cell_id = "cell_id",
+    cell_type.x = "author_cell_type",
+    cell_type_uri.x = "author_cell_type_uri",
+    sample_id.y = "gemma_sample_id",
+    cell_type.y = "gemma_cell_type",
+    cell_type_uri.y = "gemma_cell_type_uri")
+  rename(df, colNames) %>%
+  select(cell_id, everything(), -author_cell_type_uri) 
+}
+
+cellCountPlot <- function(df, plotTitle, type_col, angle, ylim){
+  
+  ggplot(df, aes(x = type_col, fill = type_col)) +
+  geom_bar() +
+  geom_text(stat = "count",
+            aes(label= ..count..), 
+            vjust=-0.3, 
+            color = "black", 
+            size = 2.5,) +
+  labs(
+    title = plotTitle,
+    x = "cell types",
+    y = "Count") +
+    scale_y_continuous(
+      limits = c(0, ylim),
+      labels = label_comma(),
+      expand = expansion(mult = c(0, 0.05)))+
+     theme(plot.title = element_text(size = 10, hjust = 0.5),
+        legend.position = "none", 
+        axis.text.x = element_text(size = 7, angle = angle, hjust = 1))
+  
+}
+
+```
+
+# Counts of Gemma cell type annotations vs. author cell type annotations
+
+## CMC
+
+```{r}
+
+CMCGemma <- add_abbreviation_column(CMCGemma, cell_type, to_col = "abbr")
+
+cellCountPlot(CMCGemma, "CMC Gemma Annotations", CMCGemma$abbr, 17, 200500)
+
+cellCountPlot(CMCAuthor, "CMC Author Annotations", CMCAuthor$cell_type, 45, 200500)
+
+```
+```{r}
+#mismatches
+
+CMCMismatch <- left_join(CMCAuthor, CMCGemma, by = "cell_id") %>%
+ mismatchFilter() %>% columnRename()
+  
+
+cellCountPlot(CMCMismatch, "Gemma Cell Types Annotated differently from Author Cell Types", CMCMismatch$abbr, 17, 110000)
+cellCountPlot(CMCMismatch, "Author Cell Types Annotated differently from Gemma Cell Types", CMCMismatch$author_cell_type, 45, 110000)
+
+#matches
+
+CMCMatch <- left_join(CMCAuthor, CMCGemma, by = "cell_id") %>%
+ matchFilter() %>% columnRename()
+
+cellCountPlot(CMCMatch, "Matching Gemma and author cell types", CMCMatch$author_cell_type, 25, 110000)
+
+CMCL23 <- subset(CMCMismatch, gemma_cell_type == "L2/3-6 intratelencephalic projecting glutamatergic neuron")
+
+cellCountPlot(CMCL23, "Mismatched author annotations of Gemma-annotated L2/3-6 intratelencephalic projecting glutamatergic neurons", CMCL23$author_cell_type, 25, 40000)
+
+```
+
+## DevBrain
+
+```{r}
+DevBrainGemmaCount <- as.data.frame(table(DevBrainGemma$cell_type))
+
+DevBrainGemmaCount$abbr <- abbreviations
+
+DevBrainAuthorCount <- as.data.frame(table(DevBrainAuthor$cell_type))
+
+cellCountPlot(DevBrainGemmaCount, "DevBrain Gemma Annotations", DevBrainGemmaCount$abbr, 17, 40000)
+
+cellCountPlot(DevBrainAuthorCount, "DevBrain Author Annotations", DevBrainAuthorCount$Var1, 45, 40000)
+
+```
+
+```{r}
+#mismatches
+DevBrainMismatch <- left_join(DevBrainAuthor, DevBrainGemma, by = "cell_id") %>%
+ mismatchFilter() %>% columnRename()
+```
+
+
+## MultiomeBrain
+
+```{r}
+
+MultiBrainGemmaCount <- as.data.frame(table(MultiBrainGemma$cell_type))
+
+MultiBrainGemmaCount$abbr <- abbreviations
+
+MultiBrainAuthorCount <- as.data.frame(table(MultiBrainAuthor$cell_type))
+
+cellCountPlot(MultiBrainGemmaCount, "MultiomeBrain Gemma Annotations", MultiBrainGemmaCount$abbr, 17, 45000)
+
+cellCountPlot(MultiBrainAuthorCount, "MultiomeBrain Author Annotations", MultiBrainAuthorCount$Var1, 45 ,45000)
+
+```
+```{r}
+#mismatches
+MultiBrainMismatch <- left_join(MultiBrainAuthor, MultiBrainGemma, by = "cell_id") %>%
+ mismatchFilter() %>% columnRename()
+```
+
+## PTSDBrainomics
+
+```{r}
+PTSDGemmaCount <- as.data.frame(table(PTSDGemma$cell_type))
+
+PTSDGemmaCount$abbr <- abbreviations
+
+PTSDAuthorCount <- as.data.frame(table(PTSDAuthor$cell_type))
+
+cellCountPlot(PTSDGemmaCount, "PTSDBrainomics Gemma Annotations", PTSDGemmaCount$abbr, 17, 80000)
+
+cellCountPlot(PTSDAuthorCount, "PTSDBrainomics Author Annotations", PTSDAuthorCount$Var1, 45, 80000)
+```
+```{r}
+#mismatches
+PTSDMismatch <- left_join(PTSDAuthor, PTSDGemma, by = "cell_id") %>%
+ mismatchFilter() %>% columnRename()
+```
+
+## SZBDMulti-Seq
+
+```{r}
+SZBDGemmaCount <- as.data.frame(table(SZBDGemma$cell_type))
+
+SZBDGemmaCount$abbr <- abbreviations
+
+SZBDAuthorCount <- as.data.frame(table(SZBDAuthor$cell_type))
+
+cellCountPlot(SZBDGemmaCount, "SZBDMulti-Seq Gemma Annotations", SZBDGemmaCount$abbr, 17, 350000)
+
+cellCountPlot(SZBDAuthorCount, "SZBDMulti-Seq Author Annotations", SZBDAuthorCount$Var1, 45, 350000)
+```
+```{r}
+#mismatches
+SZBDMismatch <- left_join(SZBDAuthor, SZBDGemma, by = "cell_id") %>%
+ mismatchFilter() %>% columnRename()
+```
+
+## UCLA-ASD
+
+```{r}
+
+ASDGemmaCount <- as.data.frame(table(ASDGemma$cell_type))
+
+ASDGemmaCount$abbr <- abbreviations
+
+ASDAuthorCount <- as.data.frame(table(ASDAuthor$cell_type))
+
+cellCountPlot(ASDGemmaCount, "UCLA-ASD Gemma Annotations", ASDGemmaCount$abbr, 17, 175000)
+
+cellCountPlot(ASDAuthorCount, "UCLA-ASD Author Annotations", ASDAuthorCount$Var1, 45, 175000)
+
+```
+```{r}
+#mismatches
+ASDMismatch <- left_join(ASDAuthor, ASDGemma, by = "cell_id") %>%
+ mismatchFilter() %>% columnRename()
+```
+
+## Velmeshev et al.1
+
+```{r}
+
+Vel1GemmaCount <- as.data.frame(table(Vel1Gemma$cell_type))
+
+Vel1GemmaCount$abbr <- abbreviations
+
+Vel1AuthorCount <- as.data.frame(table(Vel1Author$cell_type))
+
+cellCountPlot(Vel1GemmaCount, "Velmeshev et al.1 Gemma Annotations", Vel1GemmaCount$abbr, 17, 6000)
+
+cellCountPlot(Vel1AuthorCount, "Velmeshev et al.1 Author Annotations", Vel1AuthorCount$Var1, 45, 6000)
+
+```
+```{r}
+#mismatches
+Vel1Mismatch <- left_join(Vel1Author, Vel1Gemma, by = "cell_id") %>%
+ mismatchFilter() %>% columnRename()
+```
+
+## Velmeshev et al.2
+
+```{r}
+
+Vel2GemmaCount <- as.data.frame(table(Vel2Gemma$cell_type))
+
+Vel2GemmaCount$abbr <- abbreviations
+
+Vel2AuthorCount <- as.data.frame(table(Vel2Author$cell_type))
+
+cellCountPlot(Vel2GemmaCount, "Velmeshev et al.2 Gemma Annotations", Vel2GemmaCount$abbr, 17, 15000)
+
+cellCountPlot(Vel2AuthorCount, "Velmeshev et al.2 Author Annotations", Vel2AuthorCount$Var1, 45, 15000)
+
+```
+```{r}
+#mismatches
+Vel2Mismatch <- left_join(Vel2Author, Vel2Gemma, by = "cell_id") %>%
+ mismatchFilter() %>% columnRename()
+```
