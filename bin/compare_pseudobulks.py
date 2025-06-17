@@ -17,10 +17,10 @@ def parse_args():
   """Parse command line arguments."""
   parser = argparse.ArgumentParser(description="Wrangle author pseudobulks")
   parser.add_argument("--author_pseudobulk", type=str,
-      default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/source_data/pseudobulks/pseudobulk_expr/Endo__VLMC.expr.bed.gz",
+      default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/source_data/pseudobulks/pseudobulk_expr/Astro.expr.bed.gz",
       help="Author pseudobulk file in bed format")
   parser.add_argument("--pavlab_pseudobulk", type=str,
-      default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/ct_pseudobulks/gemma/endothelialcell/endothelialcell_pseudobulk_matrix.tsv.gz",
+      default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/ct_pseudobulks/gemma/astrocyte/astrocyte_pseudobulk_matrix.tsv.gz",
       help="PavLab pseudobulk file in tsv format (either GEMMA or manually created)")
   parser.add_argument("--gemma_metadata", type=str,
       default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata",
@@ -29,10 +29,10 @@ def parse_args():
       default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/source_data/PEC2_sample_metadata.txt",
       help="Author metadata file in text format")
   parser.add_argument("--author_cell_type", type=str,
-      default="L5.6.NP", help="Cell type name in author pseudobulk file")
+      default="Astro", help="Cell type name in author pseudobulk file")
   parser.add_argument("--pavlab_cell_type", type=str,
-      default="Endo__VLMC", help="Cell type name in PavLab pseudobulk file")
-  parser.add_argument("--mode", type=str, default="manual", help="Mode of comparison: 'manual' or 'gemma'")
+      default="astrocyte", help="Cell type name in PavLab pseudobulk file")
+  parser.add_argument("--mode", type=str, default="gemma", help="Mode of comparison: 'manual' or 'gemma'")
 
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
@@ -228,7 +228,10 @@ def main():
       on="Individual_ID",
       how="left"
   )
-
+    # save merged data
+  merged.to_csv(
+      f"gene_by_sample_{args.author_cell_type}_{args.pavlab_cell_type}.tsv",
+      sep="\t", index=False, compression="gzip")
   # Calculate Spearman correlation
   # don't group by cohort, just calculate overall
   

@@ -42,7 +42,7 @@ def main():
       # get hgnc
       var_names = ct_subset.var["feature_name"].tolist()
       meta = ct_subset.obs.copy()
-      new_pseudobulk = pd.DataFrame(matrix.T, index=var_names, columns = ct_subset.obs["sample_id"].tolist())
+      new_pseudobulk = pd.DataFrame(matrix.T, index=var_names, columns = ct_subset.obs["sample_name"].tolist())
       # transpose matrix and make rownames var_names
       if cell_type not in ct_pseudobulks:
         ct_pseudobulks[cell_type] = {}
@@ -63,11 +63,15 @@ def main():
     print(f"Number of cohorts: {len(cohorts)}")
     newname = cell_type.replace(" ", "").replace("/", "_")
     os.makedirs(newname, exist_ok=True)
+    # print first 5 genes in cohort rows
+    for cohort, mat in cohorts.items():
+        print(f"{mat.index.tolist()[:5]}")
     combined = reduce(lambda left, right: pd.merge(left, right, left_index=True, right_index=True, how="outer"),
                       ct_pseudobulks[cell_type].values())
     combined.index.name = "feature_name"
     print(combined.shape)
     # if less than 16 samples, skip saving
+    # if filter_cells
     if combined.shape[1] < 16:
         print(f"Skipping {newname} as it has less than 16 samples.")
         continue

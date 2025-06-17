@@ -15,7 +15,6 @@ process save_params_to_file {
     cat <<EOF > params.yaml
     from_gemma : ${params.from_gemma}
     gemma_meta_dir : ${params.gemma_meta_dir}
-    study_names : ${params.study_names}
 	  h5ad_files : ${params.h5ad_files}
     outdir: ${params.outdir}
 	  EOF
@@ -53,7 +52,7 @@ process get_gemma_pseudobulks {
 
   script:
   """
-  bash $projectDir/bin/aggregateData.sh $experiment
+  bash $projectDir/bin/aggregateGemma.sh $experiment
   """
 }
 
@@ -158,12 +157,13 @@ process DE_corr {
 
 
   input:
-  val(mode)
+  val mode 
   tuple val(contrast), val(pavlab_ct), path(pavlab_results), val(author_ct), val(author_results)
 
   output:
   path "**png"
-  path "**tsv"
+  path "missing_genes.tsv", emit: missing_genes
+  path "**DE_merge**.tsv", emit: merged_results
 
   script:
   """
@@ -174,6 +174,29 @@ process DE_corr {
         --mode ${mode}
   """
 }
+
+process aggregate_pairwise {
+  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
+  publishDir "${params.outdir}/all_corr/${contrast}/figs/", mode: "copy", pattern: "**png"
+  publishDir "${params.outdir}/all_corr/${contrast}/files/", mode: "copy", pattern: "**tsv"
+
+  input:
+  tuple val(contrast), path(pavlab_files), path(author_files)
+
+  output:
+  path "pairwise_corr**png"
+  path "pairwise_corr**tsv"
+
+  script:
+
+  """
+  python $projectDir/bin/aggregate_pairwise.py \\
+      --contrast ${contrast} \\
+      --pavlab_paths ${pavlab_files} \\
+      --author_paths ${author_files}
+  """
+}
+
 
 process compare_pseudobulks {
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
@@ -246,9 +269,12 @@ workflow {
       .set { study_names }
     // Aggregate data from GEMMA
     get_gemma_pseudobulks(study_names)
-    .set { aggregated_data_channel }
+   // Channel.fromPath(params.gemma_pseudobulks)
+   // .set { aggregated_data_channel }
 
-    aggregated_data_channel.collect()
+   // aggregated_data_channel.collect()
+    //.set { aggregated_data }
+    get_gemma_pseudobulks.out.aggregated_data.collect()
     .set { aggregated_data }
     aggregate_celltypes_gemma(aggregated_data)
     aggregate_celltypes_gemma.out.aggregated_celltypes.flatMap()
@@ -273,19 +299,15 @@ workflow {
       }
     }
     .set { all_contrasts_pavlab_ct }
-
-        .set { all_contrasts_pavlab_ct }
-
     // combine manual contrasts and author contrasts
     
     all_contrasts_pavlab_ct.map { full_contrast, ct, file ->
         def contrast = full_contrast.replaceAll(/Disorder_|_vs_Control/, '')
-        tuple(contrast, ct, file)
-    }.set { gemma_contrast_channel }
+        [contrast, ct, file]
+    }.set { pavlab_contrast_channel }
 
-    gemma_contrast_channel.combine(all_contrasts_author_ct, by: 0)
+    pavlab_contrast_channel.combine(all_contrasts_author_ct, by: 0)
     .set { all_contrasts_channel }
-
  
   } else {
     Channel.fromPath("${params.h5ad_files}/*.h5ad").map { h5ad_file ->
@@ -341,19 +363,38 @@ workflow {
     }
     .set { all_contrasts_pavlab_ct }
 
-  
-  // combine manual contrasts and author contrasts
-  
-  all_contrasts_pavlab_ct.map { full_contrast, ct, file ->
-      def contrast = full_contrast.replaceAll(/Disorder_|_vs_Control/, '')
-      tuple(contrast, ct, file)
-  }.set { manual_contrast_channel }
+    
+    // combine manual contrasts and author contrasts
+    
+    all_contrasts_pavlab_ct.map { full_contrast, ct, file ->
+        def contrast = full_contrast.replaceAll(/Disorder_|_vs_Control/, '')
+        [contrast, ct, file]
+    }.set { pavlab_contrast_channel }
 
-  manual_contrast_channel.combine(all_contrasts_author_ct, by: 0)
-  .set { all_contrasts_channel }
+    pavlab_contrast_channel.combine(all_contrasts_author_ct, by: 0)
+    .set { all_contrasts_channel }
   }
+
+
   // Run DE correlation
   DE_corr(mode, all_contrasts_channel)
+ 
+  pavlab_contrast_channel.map {contrast, ct, file ->
+    [contrast, file]
+  }.groupTuple(by: 0)
+  .set { pavlab_files }
+
+
+  all_contrasts_author_ct.map {contrast, ct, file ->
+    [contrast, file]
+  }.groupTuple(by: 0)
+  .set { author_files }
+
+  pavlab_files.combine(author_files, by: 0)
+  .set { pairwise_channel }
+
+  // Aggregate pairwise results
+  aggregate_pairwise(pairwise_channel)
 
   // Compare pseudobulks
   // only compare for valid cell type mappings
@@ -362,7 +403,7 @@ workflow {
   .set { pseudobulks_combined }
 
 
-  compare_pseudobulks(mode, pseudobulks_combined)
+  //compare_pseudobulks(mode, pseudobulks_combined)
 
 
 }

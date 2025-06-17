@@ -102,7 +102,7 @@ def main():
       "sstGABAergiccorticalinterneuron", "chandelierpvalbGABAergiccorticalinterneuron",
       "vipGABAergiccorticalinterneuron", "L2_3-6intratelencephalicprojectingglutamatergicneuron",
       "L6bglutamatergiccorticalneuron", "near-projectingglutamatergiccorticalneuron",
-      "corticothalamic-projectingglutamatergiccorticalneuron", "oligodendrocyte",
+      "L6corticothalamic-projectingglutamatergiccorticalneuron", "oligodendrocyte",
       "oligodendrocyteprecursorcell", "vascularleptomeningealcell", "astrocyte",
       "cerebralcortexendothelialcell", "microglialcell", "pericyte"
   ]
@@ -116,8 +116,8 @@ def main():
   plt.figure(figsize=(30, 15))
   sns.heatmap(ordered,
               cmap="coolwarm",
-              center=0,
-              vmin=-1, vmax=1,
+              center=0.5,
+              vmin=0, vmax=1,
               annot=False,
               linewidths=0)
 

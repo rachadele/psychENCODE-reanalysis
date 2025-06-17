@@ -68,11 +68,12 @@ metadata$Age_death <- as.numeric(gsub("\\+", "", metadata$Age_death))
 
 # make sample rownames
  # if mode is gemma use Individual_ID, otherwise use Sample_ID
-if (mode == "gemma") {
-  rownames(metadata) <- metadata$Individual_ID
-} else if (mode == "manual") {
-  rownames(metadata) <- metadata$sample_id
-}
+#if (mode == "gemma") {
+  #rownames(metadata) <- metadata$Individual_ID
+#} else if (mode == "manual") {
+  #rownames(metadata) <- metadata$sample_id
+#}
+rownames(metadata) <- metadata$Individual_ID
 
 
 # pseudobulk processing ----------------------------------------------------
@@ -226,6 +227,9 @@ for (res_name in res_names) {
     mutate(gene = rownames(df)) %>%
     mutate(cell_type = cell_type) %>%
     select(gene, everything()) # move gene names to the first column
-  write.table(df, file = file.path(outdir, "results.tsv"), sep = "\t", quote = FALSE, row.names = FALSE)
+  
+
+  filename <- paste0(res_name,"_",cell_type, "_results.tsv")
+  write.table(df, file = file.path(outdir, filename), sep = "\t", quote = FALSE, row.names = FALSE)
 }
 

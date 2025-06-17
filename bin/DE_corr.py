@@ -130,7 +130,7 @@ def main():
   outer_merge = pd.merge(
       author_df, gemma_df, on="gene", suffixes=("_author", "_gemma"), how="outer"
   )
-  outer_merge.to_csv(f"{contrast}_{author_cell_type}_{gemma_cell_type}.tsv", sep="\t", index=False)
+  outer_merge.to_csv(f"DE_merge_{contrast}_{author_cell_type}_{gemma_cell_type}.tsv", sep="\t", index=False)
   
 
 if __name__ == "__main__":
