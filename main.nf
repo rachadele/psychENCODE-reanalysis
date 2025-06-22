@@ -41,6 +41,25 @@ process wrangle_author {
   """
 }
 
+
+process get_relevant_samples {
+  publishDir "${params.outdir}/relevant_samples", mode: "copy"
+
+  input:
+  tuple val(pavlab_ct), val(author_ct), path(pseudobulk_matrix)
+
+  output:
+  tuple val(author_ct), path("**relevant_samples.tsv"), emit: relevant_samples
+
+  script:
+  // extract columns of bed.gz
+
+  """
+  zcat ${pseudobulk_matrix} | head -1 |
+  cut -f 7- | tr '\\t' '\\n' > ${author_ct}_relevant_samples.tsv
+  """
+}
+
 process get_gemma_pseudobulks {
   publishDir "${params.outdir}/experiment_pseudobulks/gemma/${experiment}", mode: "copy"
 
@@ -52,7 +71,19 @@ process get_gemma_pseudobulks {
 
   script:
   """
-  bash $projectDir/bin/aggregateGemma.sh $experiment
+  if [ ${params.author_submitted} = true ]; then
+
+    gemma-cli-staging getSingleCellDataMatrix -e $experiment --aggregate-by-assay \\
+    --aggregate-by-cell-type-assignment author-submitted \\
+    --output-file "${experiment}_aggregated_gemma.tsv.gz"
+  
+  else
+
+    gemma-cli-staging getSingleCellDataMatrix -e $experiment --aggregate-by-assay \\
+    --aggregate-by-preferred-cell-type-assignment \\
+    --output-file "${experiment}_aggregated_gemma.tsv.gz"
+  fi
+
   """
 }
 
@@ -112,13 +143,15 @@ process aggregate_celltypes_manual {
 
 process DESeq2_analysis_gemma {
   conda "/home/rschwartz/anaconda3/envs/r4.3"
-  publishDir "${params.outdir}/DESeq2/gemma/${cell_type}", mode: "copy"
+  publishDir "${params.outdir}/DESeq2/gemma/${pavlab_cell_type}", mode: "copy"
 
   input:
-  tuple val(cell_type), path(pseudobulk_matrix)
+  //tuple val(pavlab_cell_type), path(pseudobulk_matrix), val(author_cell_type), path(revelant_samples_file)
+  tuple val(pavlab_cell_type), path(pseudobulk_matrix)
+
 
   output:
-  tuple val(cell_type), path("**results.tsv"), emit: all_contrasts_gemma
+  tuple val(pavlab_cell_type), path("**results.tsv"), emit: all_contrasts_gemma
   path "**png"
 
   script:
@@ -126,7 +159,7 @@ process DESeq2_analysis_gemma {
   Rscript $projectDir/bin/DESeq2_analysis.R --pseudobulk_matrix ${pseudobulk_matrix} \\
         --metadata ${params.gemma_meta_dir} \\
         --mode gemma \\
-        --cell_type ${cell_type}
+        --cell_type ${pavlab_cell_type}
   """
 }
 
@@ -205,7 +238,7 @@ process compare_pseudobulks {
 
   input:
   val(mode)
-  tuple val(author_cell_type), path(author_pseudobulk), val(pavlab_cell_type), path(pavlab_pseudobulk)
+  tuple val(pavlab_cell_type), val(author_cell_type), path(author_pseudobulk),  path(pavlab_pseudobulk)
 
   output:
   path "**tsv", emit: comparison_results
@@ -249,18 +282,32 @@ workflow {
    def contrast = it[0]
    def files = it[1]
     files.collect { file ->
-      def cell_type = file.getBaseName().split("_")[1] // e.g., "Bipolar_Vip_degs.tsv
-      [contrast, cell_type, file]
+      def author_cell_type = file.getBaseName().split("_")[1] // e.g., "Bipolar_Vip_degs.tsv
+      def pavlab_cell_type = params.ct_map[author_cell_type] ?: cell_type.replace(".", "_")
+      [contrast, pavlab_cell_type, author_cell_type, file]
     }
   }
   .set { all_contrasts_author_ct }
 
   author_pseudobulks = Channel.fromPath(params.author_pseudobulks)
   author_pseudobulks.map { file ->
-    def cell_type = file.getBaseName().split(".expr.bed")[0] // e.g., "Astrocyte_pseudobulk_matrix.tsv.gz"
-    [cell_type, file]
+    def author_cell_type = file.getBaseName().split(".expr.bed")[0].split("__")[0] // e.g., "Astrocyte_pseudobulk_matrix.tsv.gz"
+    def pavlab_cell_type = params.ct_map[author_cell_type]
+    [pavlab_cell_type, author_cell_type, file]
   }
   .set { author_pseudobulks_channel }
+
+  get_relevant_samples(author_pseudobulks_channel)
+
+
+
+  get_relevant_samples.out.relevant_samples.map { it ->
+    def author_cell_type = it[0]
+    def relevant_samples_file = it[1]
+    def pavlab_cell_type = params.ct_map[author_cell_type] ?: author_cell_type.replace(".", "_")
+    [pavlab_cell_type, author_cell_type, relevant_samples_file]
+  }
+  .set { relevant_samples_channel }
 
   if (params.from_gemma) {
     Channel
@@ -287,6 +334,11 @@ workflow {
     }
     .set { aggregated_celltypes_channel }
 
+    //aggregated_celltypes_channel.combine(relevant_samples_channel, by: 0)
+   // .set { aggregated_celltypes_map_channel }
+
+
+   // aggregated_celltypes_channel.view()
     // Run DESeq2 analysis
     DESeq2_analysis_gemma(aggregated_celltypes_channel)
 
@@ -306,7 +358,7 @@ workflow {
         [contrast, ct, file]
     }.set { pavlab_contrast_channel }
 
-    pavlab_contrast_channel.combine(all_contrasts_author_ct, by: 0)
+    pavlab_contrast_channel.combine(all_contrasts_author_ct, by: [0,1])
     .set { all_contrasts_channel }
  
   } else {
@@ -366,15 +418,15 @@ workflow {
     
     // combine manual contrasts and author contrasts
     
-    all_contrasts_pavlab_ct.map { full_contrast, ct, file ->
+    all_contrasts_pavlab_ct.map { full_contrast, pavlab_ct, file ->
         def contrast = full_contrast.replaceAll(/Disorder_|_vs_Control/, '')
-        [contrast, ct, file]
+        
+        [contrast, pavlab_ct, file]
     }.set { pavlab_contrast_channel }
 
-    pavlab_contrast_channel.combine(all_contrasts_author_ct, by: 0)
+    pavlab_contrast_channel.combine(all_contrasts_author_ct, by: [0,1])
     .set { all_contrasts_channel }
   }
-
 
   // Run DE correlation
   DE_corr(mode, all_contrasts_channel)
@@ -385,25 +437,23 @@ workflow {
   .set { pavlab_files }
 
 
-  all_contrasts_author_ct.map {contrast, ct, file ->
+  all_contrasts_author_ct.map {contrast, pavlab_ct, author_ct, file ->
     [contrast, file]
   }.groupTuple(by: 0)
   .set { author_files }
 
   pavlab_files.combine(author_files, by: 0)
   .set { pairwise_channel }
-
   // Aggregate pairwise results
   aggregate_pairwise(pairwise_channel)
+  //// Compare pseudobulks
+  //// only compare for valid cell type mappings
+  //// need a mapping dictionary of author cell types to pavlab cell types since strings don't map exactly
 
-  // Compare pseudobulks
-  // only compare for valid cell type mappings
-  // need a mapping dictionary of author cell types to pavlab cell types since strings don't map exactly
-  author_pseudobulks_channel.combine(aggregated_celltypes_channel)
+  author_pseudobulks_channel.combine(aggregated_celltypes_channel, by: 0)
   .set { pseudobulks_combined }
 
-
-  //compare_pseudobulks(mode, pseudobulks_combined)
+  compare_pseudobulks(mode, pseudobulks_combined)
 
 
 }
