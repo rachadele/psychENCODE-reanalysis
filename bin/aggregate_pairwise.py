@@ -88,6 +88,8 @@ def main():
       index="ct_pavlab", columns="ct_author", values="spearman_correlation"
   )
 
+  # rename index with underscores instead of dots
+  all_corrs_pivot.index = all_corrs_pivot.index.str.replace(".", "-", regex=False)
   # --- Optional: Cluster rows and columns ---
   
   # Create the desired order from your list
@@ -96,16 +98,28 @@ def main():
       "L2.3.IT", "L4.IT", "L5.ET", "L5.IT", "L6.IT", "L6.IT.Car3", "L6b", "L5.6.NP", "L6.CT",
       "Oligo", "OPC", "VLMC", "Astro", "Endo", "Immune", "Micro", "PC", "SMC"
   ]
-
-  desired_row_order = [
+  
+  print(all_corrs_pivot.index)
+   
+  if "L2_3_IT" in all_corrs_pivot.index:
+    desired_row_order = [
+        "Lamp5", "Lamp5_Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst_Chodl", "Chandelier", "Vip",
+        "L2_3_IT", "L4_IT", "L5_ET", "L5_IT", "L6_IT", "L6_IT_Car3", "L6b", "L5_6_NP", "L6_CT",
+        "Oligo", "OPC", "VLMC", "Astro", "Endo", "Immune", "Micro", "PC", "SMC"
+    ]
+    
+  elif "L2_3-6intratelencephalicprojectingglutamatergicneuron" in all_corrs_pivot.index:
+    
+    desired_row_order = [
       "lamp5GABAergiccorticalinterneuron", "pvalbGABAergiccorticalinterneuron", "sncgGABAergiccorticalinterneuron",
       "sstGABAergiccorticalinterneuron", "chandelierpvalbGABAergiccorticalinterneuron",
       "vipGABAergiccorticalinterneuron", "L2_3-6intratelencephalicprojectingglutamatergicneuron",
+      "L5extratelencephalicprojectingglutamatergiccorticalneuron", 
       "L6bglutamatergiccorticalneuron", "near-projectingglutamatergiccorticalneuron",
       "L6corticothalamic-projectingglutamatergiccorticalneuron", "oligodendrocyte",
       "oligodendrocyteprecursorcell", "vascularleptomeningealcell", "astrocyte",
-      "cerebralcortexendothelialcell", "microglialcell", "pericyte"
-  ]
+      "endothelialcell", "microglialcell", "pericyte"
+    ]
 
   ordered = all_corrs_pivot.reindex(index=desired_row_order, columns=desired_col_order)
   # drop NA columns
@@ -115,7 +129,8 @@ def main():
   # --- Plot heatmap ---
   plt.figure(figsize=(30, 15))
   sns.heatmap(ordered,
-              cmap="coolwarm",
+              # just red
+              cmap="Reds",
               center=0.5,
               vmin=0, vmax=1,
               annot=False,

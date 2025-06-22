@@ -78,8 +78,6 @@ def main():
 
   
   umi_mapping = get_avg_umi(adata)
-  #adata = filter_samples(adata, min_samples=50)
-  #adata = filter_celltypes(adata, min_celltypes=16)
   cell_counts = adata.obs[["sample_id","cell_type"]].value_counts().reset_index()
   pseudobulk = aggregate_data(adata, cohort)
   pseudobulk = filter_samples(pseudobulk, cell_counts, min_cells=50) 

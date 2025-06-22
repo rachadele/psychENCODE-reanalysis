@@ -35,6 +35,8 @@ def main():
     
     cohort = os.path.basename(file).replace("_pseudobulk.h5ad", "")
     celltypes = adata.obs["cell_type"].unique()
+    # replace "." with "-"
+    celltypes = [ct.replace(".", "-") for ct in celltypes]
     for cell_type in celltypes:
       ct_subset = adata[adata.obs["cell_type"] == cell_type].copy()
       # extract the pseudobulk matrix

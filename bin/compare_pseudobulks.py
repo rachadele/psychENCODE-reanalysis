@@ -17,10 +17,10 @@ def parse_args():
   """Parse command line arguments."""
   parser = argparse.ArgumentParser(description="Wrangle author pseudobulks")
   parser.add_argument("--author_pseudobulk", type=str,
-      default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/source_data/pseudobulks/pseudobulk_expr/Astro.expr.bed.gz",
+      default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/source_data/pseudobulks/pseudobulk_expr/L5.ET.expr.bed.gz",
       help="Author pseudobulk file in bed format")
   parser.add_argument("--pavlab_pseudobulk", type=str,
-      default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/ct_pseudobulks/gemma/astrocyte/astrocyte_pseudobulk_matrix.tsv.gz",
+      default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/ct_pseudobulks/gemma/L5extratelencephalicprojectingglutamatergiccorticalneuron/L5extratelencephalicprojectingglutamatergiccorticalneuron_pseudobulk_matrix.tsv.gz",
       help="PavLab pseudobulk file in tsv format (either GEMMA or manually created)")
   parser.add_argument("--gemma_metadata", type=str,
       default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata",
@@ -29,9 +29,9 @@ def parse_args():
       default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/source_data/PEC2_sample_metadata.txt",
       help="Author metadata file in text format")
   parser.add_argument("--author_cell_type", type=str,
-      default="Astro", help="Cell type name in author pseudobulk file")
-  parser.add_argument("--pavlab_cell_type", type=str,
-      default="astrocyte", help="Cell type name in PavLab pseudobulk file")
+      default="L5.ET", help="Cell type name in author pseudobulk file")
+  parser.add_argument("--pavlab_cell_type",  
+      default="L5extratelencephalicprojectingglutamatergiccorticalneuron", help="Cell type name in PavLab pseudobulk file")
   parser.add_argument("--mode", type=str, default="gemma", help="Mode of comparison: 'manual' or 'gemma'")
 
   if __name__ == "__main__":
@@ -66,6 +66,60 @@ def plot_corr(merged, spearman_corr):
   plt.tight_layout()
   plt.savefig("gene_by_sample_corr_author_vs_pavlab.png")
   plt.close()
+
+def plot_sample_corr(author, pav_cpm, author_cell_type, pavlab_cell_type):
+  # 1. Find common genes and samples
+  common_genes = author.index.intersection(pav_cpm.index)
+  common_samples = author.columns.intersection(pav_cpm.columns)
+
+  # 2. Subset both matrices to shared genes/samples in the same order
+  author_mat = author.loc[common_genes, common_samples]
+  pavlab_mat = pav_cpm.loc[common_genes, common_samples]
+
+  # Initialize correlation matrix: rows = author samples, columns = pavlab samples
+  result = pd.DataFrame(
+      index=author_mat.columns,
+      columns=pavlab_mat.columns,
+      dtype=float
+  )
+
+  # Compute Spearman correlation for each author vs pavlab sample pair
+  for a_sample in author_mat.columns:
+      for p_sample in pavlab_mat.columns:
+          corr, _ = spearmanr(author_mat[a_sample], pavlab_mat[p_sample])
+          result.loc[a_sample, p_sample] = corr
+  
+  # save to csv
+  result.to_csv(
+      f"sample_corr_{author_cell_type}_{pavlab_cell_type}.tsv",
+      sep="\t", index=True, header=True
+  )
+
+  plt.figure(figsize=(12, 10))
+  ax = sns.heatmap(
+      result,
+      cmap="Reds",
+      vmin=0, vmax=1,
+      annot=False,
+      linewidths=0,
+      cbar_kws={"label": "Spearman Correlation"}
+  )
+  #plt.title(f"Sample-wise Spearman Correlation: {author_cell_type} vs {pavlab_cell_type}")
+  plt.xlabel("Author Samples")
+  plt.ylabel("Pavlab Samples")
+# Optional: also remove tick lines entirely
+  ax.tick_params(left=False, bottom=False)
+  if len(result.columns) > 30:
+     # ax.set_xticklabels(result.columns, rotation=90, fontsize=8)
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
+  else:
+    ax.set_xticklabels(result.columns, rotation=90, fontsize=10)
+    ax.set_yticklabels(result.index, fontsize=10)
+  plt.tight_layout()
+  plt.savefig(f"sample_corr_heatmap_{author_cell_type}_{pavlab_cell_type}.png")
+  plt.close()
+
 
 def plot_altmann(comp, args):
     # Bland-Altman plot
@@ -104,9 +158,9 @@ def main():
   gemma = pd.concat(meta, ignore_index=True)
 
   # Map PavLab sample IDs to Individual_ID
-  if args.mode == "manual":
-    mapping = gemma.set_index("sample_id")["Individual_ID"].to_dict()
-    pavlab.columns = [mapping.get(x, np.nan) for x in pavlab.columns]
+  #if args.mode == "manual":
+    #mapping = gemma.set_index("sample_id")["Individual_ID"].to_dict()
+    #pavlab.columns = [mapping.get(x, np.nan) for x in pavlab.columns]
   
   # Load author metadata
   author_meta = pd.read_csv(args.author_metadata, sep="\t", dtype=str)
@@ -116,10 +170,18 @@ def main():
   pavlab_ids = set(pavlab.columns)
   # get rid of floats 
 
+
   # if either are empty, terminate without error
   if not author_ids or not pavlab_ids:
       print("No matching samples found in either author or PavLab pseudobulks.")
-      
+        # Compute CPM and sums
+  
+  author_cell_type = args.author_cell_type
+  pavlab_cell_type = args.pavlab_cell_type
+  
+  pav_cpm = log_cpm(pavlab, prior_count=1)
+  plot_sample_corr(author, pav_cpm, author_cell_type, pavlab_cell_type)
+
     
   all_ids = sorted(author_ids | pavlab_ids)
 
@@ -181,9 +243,6 @@ def main():
   plt.savefig(f"sample_matching_summary_{args.author_cell_type}_{args.pavlab_cell_type}.png")
   plt.close()
 
-  # Compute CPM and sums
-  pav_cpm = log_cpm(pavlab, prior_count=1)
-
   author_sum = author.sum(axis=0)
   pav_sum = pav_cpm.sum(axis=0)
 
@@ -208,36 +267,39 @@ def main():
 
   plot_altmann(comp, args)
   
-  # Gene-wise correlations
-  common_genes = author.index.intersection(pav_cpm.index)
-  common_samples = author.columns.intersection(pav_cpm.columns)
-  author_mat = author.loc[common_genes, common_samples]
-  pavlab_mat = pav_cpm.loc[common_genes, common_samples]
-
-  # Flatten to long format
-  author_long = author_mat.stack().reset_index()
-  pavlab_long = pavlab_mat.stack().reset_index()
-
-  # Combine into a single DataFrame
-  author_long.columns = ["Gene", "Individual_ID", "Author_Expression"]
-  pavlab_long.columns = ["Gene", "Individual_ID", "PavLab_Expression"]
-
-  merged = pd.merge(author_long, pavlab_long, on=["Gene", "Individual_ID"])
-  merged = merged.merge(
-      author_meta[["Individual_ID", "Cohort"]],
-      on="Individual_ID",
-      how="left"
-  )
-    # save merged data
-  merged.to_csv(
-      f"gene_by_sample_{args.author_cell_type}_{args.pavlab_cell_type}.tsv",
-      sep="\t", index=False, compression="gzip")
-  # Calculate Spearman correlation
-  # don't group by cohort, just calculate overall
   
-  spearman_corr, _ = spearmanr(merged["Author_Expression"], merged["PavLab_Expression"])
-  plot_corr(merged, spearman_corr)
+  
+  # Gene-wise correlations
+  #common_genes = author.index.intersection(pav_cpm.index)
+  #common_samples = author.columns.intersection(pav_cpm.columns)
+  #author_mat = author.loc[common_genes, common_samples]
+  #pavlab_mat = pav_cpm.loc[common_genes, common_samples]
 
+  ## Flatten to long format
+  #author_long = author_mat.stack().reset_index()
+  #pavlab_long = pavlab_mat.stack().reset_index()
+
+  ## Combine into a single DataFrame
+  #author_long.columns = ["Gene", "Individual_ID", "Author_Expression"]
+  #pavlab_long.columns = ["Gene", "Individual_ID", "PavLab_Expression"]
+
+  #merged = pd.merge(author_long, pavlab_long, on=["Gene", "Individual_ID"])
+  #merged = merged.merge(
+      #author_meta[["Individual_ID", "Cohort"]],
+      #on="Individual_ID",
+      #how="left"
+  #)
+    ## save merged data
+  #merged.to_csv(
+      #f"gene_by_sample_{args.author_cell_type}_{args.pavlab_cell_type}.tsv",
+      #sep="\t", index=False, compression="gzip")
+  ## Calculate Spearman correlation
+  ## don't group by cohort, just calculate overall
+  
+  #spearman_corr, _ = spearmanr(merged["Author_Expression"], merged["PavLab_Expression"])
+  #plot_corr(merged, spearman_corr)
+
+  
 
 if __name__ == "__main__":
   main()

@@ -34,12 +34,25 @@ parser$add_argument("--mode", type = "character", default="gemma",
 parser$add_argument("--cell_type", type = "character", default="oligodendrocyte",
           help = "Cell type to analyze, e.g., 'lamp5GABAergiccorticalinterneuron")
 
+parser$add_argument("--relevant_samples", type = "character", default=NULL,
+          help = "Path to a file with relevant samples to filter the pseudobulk matrix. If NULL, all samples are used.")
+
+
 args = parser$parse_args()
 pseudobulk_matrix_path <- args$pseudobulk_matrix
 mode <- args$mode
 cell_type <- args$cell_type
+relevant_samples_path <- args$relevant_samples
 
 # metadata processing ---------------------------------------------------
+if (!is.null(relevant_samples_path)) {
+relevant_samples <- read.table(relevant_samples_path, header = FALSE, sep = "\t", stringsAsFactors = FALSE)
+relevant_samples <- relevant_samples$V1  # extract the first column
+message("Relevant samples:", paste(relevant_samples, collapse = ", "))
+} else {
+  relevant_samples <- NULL
+  message("No relevant samples provided, using all samples.")
+}
 
 if (mode == "gemma") {
   metadata_files <- list.files(args$metadata, full.names = TRUE, pattern = ".tsv")
@@ -66,13 +79,6 @@ metadata$Age_death <- as.character(metadata$Age_death)
 metadata$Age_death[metadata$Age_death == "NaN"] <- NA  # replace NaN with NA
 metadata$Age_death <- as.numeric(gsub("\\+", "", metadata$Age_death))
 
-# make sample rownames
- # if mode is gemma use Individual_ID, otherwise use Sample_ID
-#if (mode == "gemma") {
-  #rownames(metadata) <- metadata$Individual_ID
-#} else if (mode == "manual") {
-  #rownames(metadata) <- metadata$sample_id
-#}
 rownames(metadata) <- metadata$Individual_ID
 
 
@@ -99,6 +105,13 @@ if (length(bad_samples) > 0) {
 
 #get matching samples ---------------------------------------------------------
 matching_samples <- intersect(rownames(metadata), colnames(pseudobulk_matrix))
+
+if (length(relevant_samples) > 0) {
+  matching_samples <- intersect(matching_samples, relevant_samples)  # filter to relevant samples if provided
+}
+# print message
+message("Matching samples:", paste(matching_samples, collapse = ", "))
+
 
 # put them in the same order
 filtered_metadata <- metadata[matching_samples, ]
