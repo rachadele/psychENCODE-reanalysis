@@ -1,0 +1,4 @@
+ from_gemma : true
+ gemma_meta_dir : /space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata
+h5ad_files : /space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/homo_sapiens
+ outdir: /space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true

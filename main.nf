@@ -73,13 +73,13 @@ process get_gemma_pseudobulks {
   """
   if [ ${params.author_submitted} = true ]; then
 
-    gemma-cli-staging getSingleCellDataMatrix -e $experiment --aggregate-by-assay \\
+    gemma-cli getSingleCellDataMatrix -e $experiment --aggregate-by-assay \\
     --aggregate-by-cell-type-assignment author-submitted \\
     --output-file "${experiment}_aggregated_gemma.tsv.gz"
   
   else
 
-    gemma-cli-staging getSingleCellDataMatrix -e $experiment --aggregate-by-assay \\
+    gemma-cli getSingleCellDataMatrix -e $experiment --aggregate-by-assay \\
     --aggregate-by-preferred-cell-type-assignment \\
     --output-file "${experiment}_aggregated_gemma.tsv.gz"
   fi
@@ -278,21 +278,33 @@ workflow {
   
   wrangle_author(author_contrasts)
  
+
   wrangle_author.out.ct_contrasts.flatMap{it ->
    def contrast = it[0]
    def files = it[1]
     files.collect { file ->
       def author_cell_type = file.getBaseName().split("_")[1] // e.g., "Bipolar_Vip_degs.tsv
-      def pavlab_cell_type = params.ct_map[author_cell_type] ?: cell_type.replace(".", "_")
+      if (params.author_submitted) {
+        pavlab_cell_type = params.author_ct_map[author_cell_type] //?: cell_type.replace(".", "_")
+      }
+      else {
+        pavlab_cell_type = params.gemma_ct_map[author_cell_type] //?: cell_type.replace(".", "_")
+      }
       [contrast, pavlab_cell_type, author_cell_type, file]
     }
   }
   .set { all_contrasts_author_ct }
 
+
   author_pseudobulks = Channel.fromPath(params.author_pseudobulks)
   author_pseudobulks.map { file ->
     def author_cell_type = file.getBaseName().split(".expr.bed")[0].split("__")[0] // e.g., "Astrocyte_pseudobulk_matrix.tsv.gz"
-    def pavlab_cell_type = params.ct_map[author_cell_type]
+    //def author_cell_type = author_cell_type.split(".")[0] // e.g., "Astrocyte"
+    if (params.author_submitted) {
+      pavlab_cell_type = params.author_ct_map[author_cell_type]
+    } else {
+      pavlab_cell_type = params.gemma_ct_map[author_cell_type]
+    }
     [pavlab_cell_type, author_cell_type, file]
   }
   .set { author_pseudobulks_channel }
@@ -304,7 +316,7 @@ workflow {
   get_relevant_samples.out.relevant_samples.map { it ->
     def author_cell_type = it[0]
     def relevant_samples_file = it[1]
-    def pavlab_cell_type = params.ct_map[author_cell_type] ?: author_cell_type.replace(".", "_")
+    def pavlab_cell_type = params.gemma_ct_map[author_cell_type] ?: author_cell_type.replace(".", "_")
     [pavlab_cell_type, author_cell_type, relevant_samples_file]
   }
   .set { relevant_samples_channel }
@@ -316,11 +328,6 @@ workflow {
       .set { study_names }
     // Aggregate data from GEMMA
     get_gemma_pseudobulks(study_names)
-   // Channel.fromPath(params.gemma_pseudobulks)
-   // .set { aggregated_data_channel }
-
-   // aggregated_data_channel.collect()
-    //.set { aggregated_data }
     get_gemma_pseudobulks.out.aggregated_data.collect()
     .set { aggregated_data }
     aggregate_celltypes_gemma(aggregated_data)
@@ -351,13 +358,19 @@ workflow {
       }
     }
     .set { all_contrasts_pavlab_ct }
+
     // combine manual contrasts and author contrasts
     
     all_contrasts_pavlab_ct.map { full_contrast, ct, file ->
         def contrast = full_contrast.replaceAll(/Disorder_|_vs_Control/, '')
+        
         [contrast, ct, file]
     }.set { pavlab_contrast_channel }
 
+    //pavlab_contrast_channel.view()
+
+
+  
     pavlab_contrast_channel.combine(all_contrasts_author_ct, by: [0,1])
     .set { all_contrasts_channel }
  
@@ -415,7 +428,7 @@ workflow {
     }
     .set { all_contrasts_pavlab_ct }
 
-    
+    all_contrasts_pavlab_ct.view() 
     // combine manual contrasts and author contrasts
     
     all_contrasts_pavlab_ct.map { full_contrast, pavlab_ct, file ->
@@ -424,9 +437,16 @@ workflow {
         [contrast, pavlab_ct, file]
     }.set { pavlab_contrast_channel }
 
+    if (params.author_submitted) {
+      all_contrasts_author_ct.map { contrast, pavlab_ct, author_ct, file ->
+        [contrast, author_ct, pavlab_ct, file ]}
+    }.set { all_contrasts_author_ct }
+
     pavlab_contrast_channel.combine(all_contrasts_author_ct, by: [0,1])
     .set { all_contrasts_channel }
   }
+
+
 
   // Run DE correlation
   DE_corr(mode, all_contrasts_channel)
@@ -449,7 +469,8 @@ workflow {
   //// Compare pseudobulks
   //// only compare for valid cell type mappings
   //// need a mapping dictionary of author cell types to pavlab cell types since strings don't map exactly
-
+  author_pseudobulks_channel.view()
+  aggregated_celltypes_channel.view()
   author_pseudobulks_channel.combine(aggregated_celltypes_channel, by: 0)
   .set { pseudobulks_combined }
 
