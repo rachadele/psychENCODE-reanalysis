@@ -1,28 +1,29 @@
-author_cell_type	true_cell_type	abbr
-Chandelier	chandelier pvalb GABAergic cortical interneuron	chandelier pvalb GABA CI
-Lamp5	lamp5 GABAergic cortical interneuron	lamp5 GABA CI
-Lamp5_Lhx6	lamp5 GABAergic cortical interneuron	lamp5 GABA CI
-Pax6	lamp5 GABAergic cortical interneuron	lamp5 GABA CI
-Pvalb	pvalb GABAergic cortical interneuron	pvalb GABA CI
-Sncg	sncg GABAergic cortical interneuron	sncg GABA CI
-Sst	sst GABAergic cortical interneuron	sst GABA CI
-Sst_Chodl	sst GABAergic cortical interneuron	sst GABA CI
-Vip	vip GABAergic cortical interneuron	vip GABA CI
-L2_3_IT	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron
-L4_IT	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron
-L5_6_NP	near-projecting glutamatergic cortical neuron	near-proj. glutamatergic CN
-L5_ET	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron
-L5_IT	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron
-L6_CT	corticothalamic-projecting glutamatergic cortical neuron	CT-proj. glutamatergic CN
-L6_IT	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron
-L6_IT_Car3	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron
-L6b	L6b glutamatergic cortical neuron	L6b glutamatergic CN
-Astro	astrocyte	astrocyte
-Endo	cerebral cortex endothelial cell	cerebral cortex endothelial cell
-Immune	no match	no match
-Micro	microglial cell	microglial cell
-Oligo	oligodendrocyte	oligodendrocyte
-OPC	oligodendrocyte precursor cell	oligodendrocyte precursor cell
-PC	pericyte	pericyte
-SMC	no match	no match
-VLMC	vascular leptomeningeal cell	vascular leptomeningeal cell
+author_cell_type	gemma_cell_type	ontology_abbreviation	subclass	class	family
+Chandelier	chandelier pvalb GABAergic cortical interneuron	chandelier pvalb GABA CI	Chandelier	MGE	GABAergic
+Lamp5	lamp5 GABAergic cortical interneuron	lamp5 GABA CI	LAMP5	CGE	GABAergic
+Lamp5_Lhx6	lamp5 GABAergic cortical interneuron	lamp5 GABA CI	LAMP5	CGE	GABAergic
+Pax6	lamp5 GABAergic cortical interneuron	lamp5 GABA CI	LAMP5	CGE	GABAergic
+Pvalb	pvalb GABAergic cortical interneuron	pvalb GABA CI	PVALB	MGE	GABAergic
+Sncg	sncg GABAergic cortical interneuron	sncg GABA CI	SNCG	CGE	GABAergic
+Sst	sst GABAergic cortical interneuron	sst GABA CI	SST	MGE	GABAergic
+Sst_Chodl	sst GABAergic cortical interneuron	sst GABA CI	SST	MGE	GABAergic
+Vip	vip GABAergic cortical interneuron	vip GABA CI	VIP	CGE	GABAergic
+L2/3_IT	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron	L2/3-6 IT	L2/3-6 IT	Glutamatergic
+L4_IT	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron	L2/3-6 IT	L2/3-6 IT	Glutamatergic
+L5/6_NP	near-projecting glutamatergic cortical neuron	near-proj. glutamatergic CN	L5/6 NP	deep layer non-IT	Glutamatergic
+L5_ET	L5 extratelencephalic projecting glutamatergic cortical neuron	L5 ET proj. glutamatergic neuron	deep layer non-IT	Glutamatergic	Glutamatergic
+L5_IT	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron	L2/3-6 IT	L2/3-6 IT	Glutamatergic
+L6_CT	L6 corticothalamic-projecting glutamatergic cortical neuron	L6 CT-proj. glutamatergic CN	L6 CT	deep layer non-IT	Glutamatergic
+L6_IT	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron	L2/3-6 IT	L2/3-6 IT	Glutamatergic
+L6_IT_Car3	L2/3-6 intratelencephalic projecting glutamatergic neuron	L2/3-6 IT proj. glutamatergic neuron	L2/3-6 IT	L2/3-6 IT	Glutamatergic
+L6b	L6b glutamatergic cortical neuron	L6b glutamatergic CN	L6b	deep layer non-IT	Glutamatergic
+Astro	astrocyte	astrocyte	Astrocyte	Glia	Non-neuron
+Endo	endothelial cell	endothelial cell	Endothelial	Vascular	Non-neuron
+Immune	no match	no match	Non-neuron	Non-neuron	Non-neuron
+Micro	microglial cell	microglial cell	Microglia	CNS macrophage	Non-neuron
+Oligo	oligodendrocyte	oligodendrocyte	Oligodendrocyte	Glia	Non-neuron
+OPC	oligodendrocyte precursor cell	oligodendrocyte PC	OPC	Glia	Non-neuron
+PC	pericyte	pericyte	Pericyte	Mural	Non-neuron
+SMC	no match	no match	Mural	Mural	Non-neuron
+VLMC	vascular leptomeningeal cell	vascular leptomeningeal cell	VLMC	Stromal	Non-neuron
+	caudal ganglionic eminence derived GABAergic cortical interneuron				

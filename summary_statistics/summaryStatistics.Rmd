@@ -53,16 +53,16 @@ ASDAuthor <- data.frame(read_tsv(
 ASDGemma <- data.frame(read_tsv(
   "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/UCLA-ASD.celltypes.tsv", show_col_types = FALSE))
 
-Vel1Author <- data.frame(read_tsv(
+Velmeshev1Author <- data.frame(read_tsv(
   "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/cell_type_assignments/Velmeshev_et_al.1.celltypes.tsv", show_col_types = FALSE))
 
-Vel1Gemma <- data.frame(read_tsv(
+Velmeshev1Gemma <- data.frame(read_tsv(
   "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/Velmeshev_et_al.1.celltypes.tsv", show_col_types = FALSE))
 
-Vel2Author <- data.frame(read_tsv(
+Velmeshev2Author <- data.frame(read_tsv(
   "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/cell_type_assignments/Velmeshev_et_al.2.celltypes.tsv", show_col_types = FALSE))
 
-Vel2Gemma <- data.frame(read_tsv(
+Velmeshev2Gemma <- data.frame(read_tsv(
   "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/cell_type_assignments/Velmeshev_et_al.2.celltypes.tsv", show_col_types = FALSE))
 
 cellTypeMap <- data.frame(read_tsv("~/ProjectLB/psychENCODE-reanalysis/summary_statistics/cellTypeMapping.tsv", show_col_types = FALSE))
@@ -285,8 +285,6 @@ tableSummary <- function(df, summary_col){
 
 ```
 
-# Counts of Gemma cell type annotations vs. author cell type annotations
-
 ## CMC
 
 ```{r cmc}
@@ -305,7 +303,7 @@ cellCountPlot(CMCAll, "CMC Gemma Annotations", CMCAll$gemma_abbr, 20, 200500)
 
 cellCountPlot(CMCAll, "CMC Author Annotations", CMCAll$author_cell_type, 45, 200500)
 
-stackPlot(CMCCount,"author_cell_type", "gemma_abbr", " CMC Gemma annotations mapped to author annotations", 100100)
+percentPlot(CMCPercent, "Composition of CMC Gemma annotations mapped to author annotations")
 
 matchPlot(CMCMapped, plot_type = "count", 100000)
 
@@ -319,6 +317,9 @@ CMCMatchTable <- matchCount(CMCMapped)
 datatable(CMCMatchTable, caption = "Counts of correct and incorrect Gemma annotations")
 
 ```
+
+## DevBrain
+
 ```{r devbrain}
 
 cellTypeMapping("DevBrainAll", DevBrainAuthor, DevBrainGemma)
@@ -335,7 +336,7 @@ cellCountPlot(DevBrainAll, "DevBrain Gemma Annotations", DevBrainAll$gemma_abbr,
 
 cellCountPlot(DevBrainAll, "DevBrain Author Annotations", DevBrainAll$author_cell_type, 45, 40000)
 
-stackPlot(DevBrainCount,"author_cell_type", "gemma_abbr", " DevBrain Gemma annotations mapped to author annotations", 18000)
+percentPlot(DevBrainPercent, "Composition of DevBrain Gemma annotations mapped to author annotations")
 
 matchPlot(DevBrainMapped, plot_type = "count", 18000)
 
@@ -349,6 +350,9 @@ DevBrainMatchTable <- matchCount(DevBrainMapped)
 datatable(DevBrainMatchTable, caption = "Counts of correct and incorrect Gemma annotations")
 
 ```
+
+## MultiomeBrain
+
 ```{r MultiBrain}
 
 cellTypeMapping("MultiBrainAll", MultiBrainAuthor, MultiBrainGemma)
@@ -365,7 +369,7 @@ cellCountPlot(MultiBrainAll, "MultiBrain Gemma Annotations", MultiBrainAll$gemma
 
 cellCountPlot(MultiBrainAll, "MultiBrain Author Annotations", MultiBrainAll$author_cell_type, 45, 45000)
 
-stackPlot(MultiBrainCount,"author_cell_type", "gemma_abbr", " MultiBrain Gemma annotations mapped to author annotations", 40000)
+percentPlot(MultiBrainPercent, "Composition of MultiBrain Gemma annotations mapped to author annotations")
 
 matchPlot(MultiBrainMapped, plot_type = "count", 40000)
 
@@ -379,6 +383,9 @@ MultiBrainMatchTable <- matchCount(MultiBrainMapped)
 datatable(MultiBrainMatchTable, caption = "Counts of correct and incorrect Gemma annotations")
 
 ```
+
+## PTSDBrainomics
+
 ```{r PTSD}
 
 cellTypeMapping("PTSDAll", PTSDAuthor, PTSDGemma)
@@ -395,7 +402,7 @@ cellCountPlot(PTSDAll, "PTSD Gemma Annotations", PTSDAll$gemma_abbr, 20, 82000)
 
 cellCountPlot(PTSDAll, "PTSD Author Annotations", PTSDAll$author_cell_type, 45, 82000)
 
-stackPlot(PTSDCount,"author_cell_type", "gemma_abbr", " PTSD Gemma annotations mapped to author annotations", 50000)
+percentPlot(PTSDPercent, "Composition of PTSD Gemma annotations mapped to author annotations")
 
 matchPlot(PTSDMapped, plot_type = "count", 50000)
 
@@ -408,6 +415,9 @@ datatable(PTSDPercentTable, caption = "Percentages of each Gemma annotation mapp
 PTSDMatchTable <- matchCount(PTSDMapped)
 datatable(PTSDMatchTable, caption = "Counts of correct and incorrect Gemma annotations")
 ```
+
+## SZBDMulti-Seq
+
 ```{r SZBD}
 
 cellTypeMapping("SZBDAll", SZBDAuthor, SZBDGemma)
@@ -424,7 +434,7 @@ cellCountPlot(SZBDAll, "SZBD Gemma Annotations", SZBDAll$gemma_abbr, 20, 350000)
 
 cellCountPlot(SZBDAll, "SZBD Author Annotations", SZBDAll$author_cell_type, 45, 350000)
 
-stackPlot(SZBDCount,"author_cell_type", "gemma_abbr", " SZBD Gemma annotations mapped to author annotations", 180000)
+percentPlot(SZBDPercent, "Composition of SZBD Gemma annotations mapped to author annotations")
 
 matchPlot(SZBDMapped, plot_type = "count", 180000)
 
@@ -438,6 +448,9 @@ SZBDMatchTable <- matchCount(SZBDMapped)
 datatable(SZBDMatchTable, caption = "Counts of correct and incorrect Gemma annotations")
 
 ```
+
+## UCLA-ASD
+
 ```{r ASD}
 
 cellTypeMapping("ASDAll", ASDAuthor, ASDGemma)
@@ -454,7 +467,7 @@ cellCountPlot(ASDAll, "ASD Gemma Annotations", ASDAll$gemma_abbr, 20, 170000)
 
 cellCountPlot(ASDAll, "ASD Author Annotations", ASDAll$author_cell_type, 45, 170000)
 
-stackPlot(ASDCount,"author_cell_type", "gemma_abbr", " ASD Gemma annotations mapped to author annotations", 90000)
+percentPlot(ASDPercent, "Composition of ASD Gemma annotations mapped to author annotations")
 
 matchPlot(ASDMapped, plot_type = "count", 90000)
 
@@ -467,65 +480,74 @@ datatable(ASDPercentTable, caption = "Percentages of each Gemma annotation mappe
 ASDMatchTable <- matchCount(ASDMapped)
 datatable(ASDMatchTable, caption = "Counts of correct and incorrect Gemma annotations")
 ```
-```{r Vel1}
 
-cellTypeMapping("Vel1All", Vel1Author, Vel1Gemma)
+## Velmeshev et al.1
 
-Vel1Count <- countSummary(Vel1All)
+```{r Velmeshev1}
 
-Vel1Percent <- addPercentages(Vel1Count)
+cellTypeMapping("Velmeshev1All", Velmeshev1Author, Velmeshev1Gemma)
 
-checkMatch("Vel1Mapped", Vel1All)
+Velmeshev1Count <- countSummary(Velmeshev1All)
 
-#plots below
+Velmeshev1Percent <- addPercentages(Velmeshev1Count)
 
-cellCountPlot(Vel1All, "Vel1 Gemma Annotations", Vel1All$gemma_abbr, 20, 5500) 
-
-cellCountPlot(Vel1All, "Vel1 Author Annotations", Vel1All$author_cell_type, 45, 5500)
-
-stackPlot(Vel1Count,"author_cell_type", "gemma_abbr", " Vel1 Gemma annotations mapped to author annotations", 5500)
-
-matchPlot(Vel1Mapped, plot_type = "count", 5500)
-
-matchPlot(Vel1Mapped, plot_type = "percent")
-
-Vel1CountTable <- tableSummary(Vel1Percent, summary_col = "n")
-datatable(Vel1CountTable, caption = "Counts of each Gemma annotation mapped to author annotations")
-Vel1PercentTable <- tableSummary(Vel1Percent, summary_col = "percentage")
-datatable(Vel1PercentTable, caption = "Percentages of each Gemma annotation mapped to author annotations")
-Vel1MatchTable <- matchCount(Vel1Mapped)
-datatable(Vel1MatchTable, caption = "Counts of correct and incorrect Gemma annotations")
-```
-```{r Vel2}
-
-cellTypeMapping("Vel2All", Vel2Author, Vel2Gemma)
-
-Vel2Count <- countSummary(Vel2All)
-
-Vel2Percent <- addPercentages(Vel2Count)
-
-checkMatch("Vel2Mapped", Vel2All)
+checkMatch("Velmeshev1Mapped", Velmeshev1All)
 
 #plots below
 
-cellCountPlot(Vel2All, "Vel2 Gemma Annotations", Vel2All$gemma_abbr, 20, 15000) 
+cellCountPlot(Velmeshev1All, "Velmeshev1 Gemma Annotations", Velmeshev1All$gemma_abbr, 20, 5500) 
 
-cellCountPlot(Vel2All, "Vel2 Author Annotations", Vel2All$author_cell_type, 45, 15000)
+cellCountPlot(Velmeshev1All, "Velmeshev1 Author Annotations", Velmeshev1All$author_cell_type, 45, 5500)
 
-stackPlot(Vel2Count,"author_cell_type", "gemma_abbr", " Vel2 Gemma annotations mapped to author annotations", 8000)
+percentPlot(Velmeshev1Percent, "Composition of Velmeshev1 Gemma annotations mapped to author annotations")
 
-matchPlot(Vel2Mapped, plot_type = "count", 8000)
+matchPlot(Velmeshev1Mapped, plot_type = "count", 5500)
 
-matchPlot(Vel2Mapped, plot_type = "percent")
+matchPlot(Velmeshev1Mapped, plot_type = "percent")
 
-Vel2CountTable <- tableSummary(Vel2Percent, summary_col = "n")
-datatable(Vel2CountTable, caption = "Counts of each Gemma annotation mapped to author annotations")
-Vel2PercentTable <- tableSummary(Vel2Percent, summary_col = "percentage")
-datatable(Vel2PercentTable, caption = "Percentages of each Gemma annotation mapped to author annotations")
-Vel2MatchTable <- matchCount(Vel2Mapped)
-datatable(Vel2MatchTable, caption = "Counts of correct and incorrect Gemma annotations")
+Velmeshev1CountTable <- tableSummary(Velmeshev1Percent, summary_col = "n")
+datatable(Velmeshev1CountTable, caption = "Counts of each Gemma annotation mapped to author annotations")
+Velmeshev1PercentTable <- tableSummary(Velmeshev1Percent, summary_col = "percentage")
+datatable(Velmeshev1PercentTable, caption = "Percentages of each Gemma annotation mapped to author annotations")
+Velmeshev1MatchTable <- matchCount(Velmeshev1Mapped)
+datatable(Velmeshev1MatchTable, caption = "Counts of correct and incorrect Gemma annotations")
+```
+
+## Velmeshev et al.2
+
+```{r Velmeshev2}
+
+cellTypeMapping("Velmeshev2All", Velmeshev2Author, Velmeshev2Gemma)
+
+Velmeshev2Count <- countSummary(Velmeshev2All)
+
+Velmeshev2Percent <- addPercentages(Velmeshev2Count)
+
+checkMatch("Velmeshev2Mapped", Velmeshev2All)
+
+#plots below
+
+cellCountPlot(Velmeshev2All, "Velmeshev2 Gemma Annotations", Velmeshev2All$gemma_abbr, 20, 15000) 
+
+cellCountPlot(Velmeshev2All, "Velmeshev2 Author Annotations", Velmeshev2All$author_cell_type, 45, 15000)
+
+percentPlot(Velmeshev2Percent, "Composition of Velmeshev2 Gemma annotations mapped to author annotations")
+
+matchPlot(Velmeshev2Mapped, plot_type = "count", 8000)
+
+matchPlot(Velmeshev2Mapped, plot_type = "percent")
+
+Velmeshev2CountTable <- tableSummary(Velmeshev2Percent, summary_col = "n")
+datatable(Velmeshev2CountTable, caption = "Counts of each Gemma annotation mapped to author annotations")
+Velmeshev2PercentTable <- tableSummary(Velmeshev2Percent, summary_col = "percentage")
+datatable(Velmeshev2PercentTable, caption = "Percentages of each Gemma annotation mapped to author annotations")
+Velmeshev2MatchTable <- matchCount(Velmeshev2Mapped)
+datatable(Velmeshev2MatchTable, caption = "Counts of correct and incorrect Gemma annotations")
 
 ```
+
+## PsychENCODE Compiled
+
 ```{r all}
 
 CMCAll$Source <- "CMC"
@@ -534,10 +556,10 @@ MultiBrainAll$Source <- "MultiBrain"
 PTSDAll$Source <- "PTSD"
 ASDAll$Source <- "ASD"
 SZBDAll$Source <- "SZBD"
-Vel1All$Source <- "Vel1"
-Vel2All$Source <- "Vel2"
+Velmeshev1All$Source <- "Velmeshev1"
+Velmeshev2All$Source <- "Velmeshev2"
 
-PsychEncodeAll <- rbind(CMCAll, DevBrainAll, MultiBrainAll, PTSDAll, SZBDAll, ASDAll, Vel1All, Vel2All)
+PsychEncodeAll <- rbind(CMCAll, DevBrainAll, MultiBrainAll, PTSDAll, SZBDAll, ASDAll, Velmeshev1All, Velmeshev2All)
 
 PsychEncodeCount <- countSummary(PsychEncodeAll)
 
@@ -551,7 +573,7 @@ cellCountPlot(PsychEncodeAll, "PsychEncode Gemma Annotations", PsychEncodeAll$ge
 
 cellCountPlot(PsychEncodeAll, "PsychEncode Author Annotations", PsychEncodeAll$author_cell_type, 45, 900000)
 
-stackPlot(PsychEncodeCount,"author_cell_type", "gemma_abbr", " PsychEncode Gemma annotations mapped to author annotations", 500000)
+percentPlot(PsychEncodePercent, "Composition of PsychEncode Gemma annotations mapped to author annotations")
 
 matchPlot(PsychEncodeMapped, plot_type = "count", 450000)
 
