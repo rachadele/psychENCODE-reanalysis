@@ -586,3 +586,11 @@ datatable(PsychEncodePercentTable, caption = "Percentages of each Gemma annotati
 PsychEncodeMatchTable <- matchCount(PsychEncodeMapped)
 datatable(PsychEncodeMatchTable, caption = "Counts of correct and incorrect Gemma annotations")
 ```
+
+Cells annotated as **smooth muscle cells (SMCs)** and **pericytes (PCs)** by the authors have mainly been classified as vascular **leptomeningeal cells (VLMCs)** and **endothelial cells** in Gemma despite pericytes being a more "correct" classification as the only other mural cell type.
+
+36.14% of **L5 extratelencephalic projecting glutamatergic cortical neurons (L5_ETs)** have also been classified as **L2/3-6 intratelencephalic projecting glutamatergic neurons**.
+
+The majority (90.5%) of **PAX6** cells were classified as **caudal ganglionic eminence derived GABAergic cortical interneurons**, though this cell type was not included in the mapping and thus cannot be verified to be correct.
+
+Some **L6 corticothalamic neurons** were misclassified as **L6b glutamatergic cortical neurons** (18.51%) and vice versa (11.49%).
