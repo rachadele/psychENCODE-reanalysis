@@ -37,9 +37,9 @@ process aggregate_pairwise {
   script:
 
   """
-  python $projectDir/bin/aggregate_pairwise.py \\
+  python $projectDir/bin/aggregate_pairwise_gemma.py \\
       --contrast ${contrast} \\
-      --pavlab_paths ${pavlab_files} \\
+      --sc_pipeline_paths ${pavlab_files} \\
       --author_paths ${author_files}
   """
 }
@@ -58,7 +58,7 @@ workflow {
     def parts = it.toString().split("/")
     def cell_type = parts[-3]
     def contrast = parts[-2]
-    [contrast, cell_type, it]
+    [contrast, it]
     }.groupTuple(by: [0])
     .set { all_contrasts_pavlab_ct }
 
@@ -69,7 +69,7 @@ workflow {
     def cell_type = parts[-3]
     def pavlab_cell_type = params.gemma_to_gemma_map[cell_type] ?: cell_type
     def contrast = parts[-2]
-    [contrast, cell_type, it]
+    [contrast, it]
     }
     .groupTuple(by: [0])
     .set { all_contrasts_author_ct }
@@ -78,7 +78,7 @@ workflow {
   all_contrasts_pavlab_ct
     .combine(all_contrasts_author_ct, by: 0)
     .set { pairwise_channel }
+
   //view
-  pairwise_channel.view()
-  //aggregate_pairwise(pairwise_channel)
+  aggregate_pairwise(pairwise_channel)
 }

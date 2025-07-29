@@ -98,9 +98,7 @@ def main():
       "L2.3.IT", "L4.IT", "L5.ET", "L5.IT", "L6.IT", "L6.IT.Car3", "L6b", "L5.6.NP", "L6.CT",
       "Oligo", "OPC", "VLMC", "Astro", "Endo", "Immune", "Micro", "PC", "SMC"
   ]
-  
-  print(all_corrs_pivot.index)
-   
+     
   if "L2_3_IT" in all_corrs_pivot.index:
     desired_row_order = [
         "Lamp5", "Lamp5_Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst_Chodl", "Chandelier", "Vip",
