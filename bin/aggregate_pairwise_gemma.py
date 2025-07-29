@@ -94,15 +94,15 @@ def main():
   
   # Create the desired order from your list
   desired_col_order = [
-      "Lamp5", "Lamp5.Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst.Chodl", "Chandelier", "Vip",
-      "L2.3.IT", "L4.IT", "L5.ET", "L5.IT", "L6.IT", "L6.IT.Car3", "L6b", "L5.6.NP", "L6.CT",
-      "Oligo", "OPC", "VLMC", "Astro", "Endo", "Immune", "Micro", "PC", "SMC"
-  ]
+        "Lamp5", "Lamp5_Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst_Chodl", "Chandelier", "Vip",
+        "L2_3_IT", "L4_IT", "L5_IT", "L6_IT", "L6_IT_Car3", "L5_ET", "L6b", "L5_6_NP", "L6_CT",
+        "Oligo", "OPC", "VLMC", "Astro", "Endo", "Immune", "Micro", "PC", "SMC"
+    ]
      
   if "L2_3_IT" in all_corrs_pivot.index:
-    desired_row_order = [
+    [
         "Lamp5", "Lamp5_Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst_Chodl", "Chandelier", "Vip",
-        "L2_3_IT", "L4_IT", "L5_ET", "L5_IT", "L6_IT", "L6_IT_Car3", "L6b", "L5_6_NP", "L6_CT",
+        "L2_3_IT", "L4_IT", "L5_IT", "L6_IT", "L6_IT_Car3", "L5_ET", "L6b", "L5_6_NP", "L6_CT",
         "Oligo", "OPC", "VLMC", "Astro", "Endo", "Immune", "Micro", "PC", "SMC"
     ]
     
