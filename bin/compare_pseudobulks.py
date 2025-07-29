@@ -150,12 +150,12 @@ def main():
   )
 
   # Load and combine GEMMA metadata
-  meta = []
-  for fn in Path(args.gemma_metadata).glob("*.tsv"):
-      df = pd.read_csv(fn, sep="\t", dtype=str)
-      df["Cohort"] = fn.name.replace("_sample_meta.tsv", "")
-      meta.append(df)
-  gemma = pd.concat(meta, ignore_index=True)
+  #meta = []
+  #for fn in Path(args.gemma_metadata).glob("*.tsv"):
+      #df = pd.read_csv(fn, sep="\t", dtype=str)
+      #df["Cohort"] = fn.name.replace("_sample_meta.tsv", "")
+      #meta.append(df)
+  #gemma = pd.concat(meta, ignore_index=True)
 
   # Map PavLab sample IDs to Individual_ID
   #if args.mode == "manual":
