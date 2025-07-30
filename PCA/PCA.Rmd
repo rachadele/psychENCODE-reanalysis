@@ -1,0 +1,395 @@
+---
+output: 
+  html_document: 
+    fig_width: 10
+---
+
+```{r}
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(patchwork)
+```
+
+```{r}
+astrocyte_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/astrocyte/astrocyte_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+caudal_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/caudalganglioniceminencederivedGABAergiccorticalinterneuron/caudalganglioniceminencederivedGABAergiccorticalinterneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+chandelier_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/chandelierpvalbGABAergiccorticalinterneuron/chandelierpvalbGABAergiccorticalinterneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+endothelial_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/endothelialcell/endothelialcell_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L2_36_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/L2_3.6intratelencephalicprojectingglutamatergicneuron/L2_3.6intratelencephalicprojectingglutamatergicneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L5_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/L5extratelencephalicprojectingglutamatergiccorticalneuron/L5extratelencephalicprojectingglutamatergiccorticalneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L6bGlut_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/L6bglutamatergiccorticalneuron/L6bglutamatergiccorticalneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L6CT_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/L6corticothalamic.projectingglutamatergiccorticalneuron/L6corticothalamic.projectingglutamatergiccorticalneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+lamp5_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/lamp5GABAergiccorticalinterneuron/lamp5GABAergiccorticalinterneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+microglia_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/microglialcell/microglialcell_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+NPglut_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/near.projectingglutamatergiccorticalneuron/near.projectingglutamatergiccorticalneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+oligo_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/oligodendrocyte/oligodendrocyte_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+oligoPC_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/oligodendrocyteprecursorcell/oligodendrocyteprecursorcell_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+pvalbGABA_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/pvalbGABAergiccorticalinterneuron/pvalbGABAergiccorticalinterneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+sncg_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/sncgGABAergiccorticalinterneuron/sncgGABAergiccorticalinterneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+sstGABA_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/sstGABAergiccorticalinterneuron/sstGABAergiccorticalinterneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+VLMC_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/vascularleptomeningealcell/vascularleptomeningealcell_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+vipGABA_gemma <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/ct_pseudobulks/gemma/vipGABAergiccorticalinterneuron/vipGABAergiccorticalinterneuron_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+```
+
+```{r}
+astrocyte_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Astro/Astro_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+chandelier_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Chandelier/Chandelier_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+endothelial_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Endo/Endo_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+immune_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Immune/Immune_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L2_3_IT_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/L2_3_IT/L2_3_IT_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L4_IT_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/L4_IT/L4_IT_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L5_6_NP_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/L5_6_NP/L5_6_NP_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L5_ET_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/L5_ET/L5_ET_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L5_IT_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/L5_IT/L5_IT_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L6_CT_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/L6_CT/L6_CT_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L6_IT_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/L6_IT/L6_IT_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L6_IT_car3_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/L6_IT_Car3/L6_IT_Car3_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+L6b_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/L6b/L6b_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+Lamp5_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Lamp5/Lamp5_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+Lamp5_Lhx6_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Lamp5_Lhx6/Lamp5_Lhx6_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+micro_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Micro/Micro_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+oligo_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Oligo/Oligo_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+oligoPC_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/OPC/OPC_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+Pax6_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Pax6/Pax6_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+PC_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/PC/PC_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+Pvalb_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Pvalb/Pvalb_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+SMC_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/SMC/SMC_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+sncg_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Sncg/Sncg_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+sst_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Sst/Sst_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+sst_chodl_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Sst_Chodl/Sst_Chodl_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+vip_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/Vip/Vip_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+VLMC_author <- as.data.frame(read_tsv("/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_true_from_gemma_true/ct_pseudobulks/gemma/VLMC/VLMC_pseudobulk_matrix.tsv.gz", show_col_types = FALSE))
+
+
+for (file in list.files(path = "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode.txt_author_true_sample_split_true/metadata/homo_sapiens", pattern = "*.tsv", full.names = TRUE)){
+  
+  object_name <- tools::file_path_sans_ext(basename(file))
+  
+  data <- read.delim(file, stringsAsFactors = FALSE, check.names = FALSE)
+  assign(object_name, data, envir = .GlobalEnv)
+rm (data)
+}
+
+Velmeshev_et_al.1_sample_meta$`organism part` <- NULL
+Velmeshev_et_al.2_sample_meta$`organism part` <- NULL
+dfs <-  c("CMC_sample_meta", "DevBrain_sample_meta", "MultiomeBrain_sample_meta", "PTSDBrainomics_sample_meta", "SZBDMulti-Seq_sample_meta", "UCLA-ASD_sample_meta","Velmeshev_et_al.1_sample_meta","Velmeshev_et_al.2_sample_meta")
+df_list <- lapply(dfs, get)
+
+metadata <- do.call(rbind, df_list)
+colnames(metadata)[colnames(metadata) == "1000G_ancestry"] <- "Ancestry"
+metadata$Age_death <- as.numeric(as.character(metadata$Age_death))
+metadata$Disorder[metadata$Disorder == "control"] <- "Control"
+
+```
+
+```{r}
+transposePCA <- function(data){
+rownames(data) <- data[[1]]
+
+data <- data[, -1]
+
+data <- t(data)
+
+return(data)
+}
+
+#transposing
+
+gemma_objs <- ls(pattern = "_gemma")
+gemma_objs <- gemma_objs[sapply(gemma_objs, function(x) is.data.frame(get(x)))]
+
+for (obj_name in gemma_objs) {
+  df <- get(obj_name)
+  df <- transposePCA(df)
+  assign(obj_name, df, envir = .GlobalEnv)
+}
+
+author_objs <- ls(pattern = "_author")
+author_objs <- author_objs[sapply(author_objs, function(x) is.data.frame(get(x)))]
+
+for (obj_name in author_objs) {
+  df <- get(obj_name)
+  df <- transposePCA(df)
+  assign(obj_name, df, envir = .GlobalEnv)
+}
+
+#plotting
+pseudobulk_pca_plots <- function(expr_data, metadata, sample_id_col, color_columns, plotTitle) {
+
+  rownames(metadata) <- metadata[[sample_id_col]]
+
+  common_samples <- intersect(rownames(expr_data), rownames(metadata))
+  if (length(common_samples) == 0) {
+    stop("No matching samples found between expression data and metadata.")
+  }
+  expr_data <- expr_data[common_samples, , drop = FALSE]
+  metadata <- metadata[common_samples, , drop = FALSE]
+
+  data_to_pca <- log2(expr_data + 1) 
+
+  gene_sds <- apply(data_to_pca, 2, sd)
+  data_to_pca <- data_to_pca[, gene_sds > 0, drop = FALSE]
+
+  if (ncol(data_to_pca) == 0) {
+    stop("No genes remaining after removing zero-variance genes.")
+  }
+
+  pca_res <- prcomp(data_to_pca, center = TRUE, scale. = TRUE)
+
+  pca_df <- as.data.frame(pca_res$x)
+  pca_df$Sample <- rownames(pca_df)
+  pca_df <- cbind(pca_df, metadata)
+
+  plot_list <- list()
+  for (col in color_columns) {
+    if (!col %in% colnames(metadata)) {
+      warning(paste("Metadata column", col, "not found. Skipping."))
+      next
+    }
+
+    p <- ggplot(pca_df, aes_string(x = "PC1", y = "PC2", color = col)) +
+      geom_point(size = 1) +
+      theme_minimal() +
+      labs(title = plotTitle,
+           x = "PC1", y = "PC2")
+    
+    print(p)
+    plot_list[[col]] <- p
+  }
+
+  invisible(plot_list)
+}
+
+
+pcaPlot <- function(expr_data, metadata, sample_id_col, color_columns, plotTitle) {
+  # Match samples
+  rownames(metadata) <- metadata[[sample_id_col]]
+  common_samples <- intersect(rownames(expr_data), rownames(metadata))
+  expr_data <- expr_data[common_samples, , drop = FALSE]
+  metadata <- metadata[common_samples, , drop = FALSE]
+
+
+  lib_size <- rowSums(expr_data)
+
+    expr_data <- log2(expr_data + 1)
+
+  # Remove zero-variance genes
+  gene_sds <- apply(expr_data, 2, sd)
+  expr_data <- expr_data[, gene_sds > 0, drop = FALSE]
+
+  # PCA
+  pca_res <- prcomp(expr_data, center = TRUE, scale. = TRUE)
+  pca_df <- as.data.frame(pca_res$x)
+  pca_df$Sample <- rownames(pca_df)
+  pca_df$lib_size <- lib_size[rownames(pca_df)]
+
+  # Add metadata
+  pca_df <- cbind(pca_df, metadata[rownames(pca_df), , drop = FALSE])
+
+  # Generate plots for each color column
+  plots <- lapply(color_columns, function(col) {
+    is_continuous <- is.numeric(pca_df[[col]])
+    p <- ggplot(pca_df, aes(x = PC1, y = PC2, color = .data[[col]])) +
+      geom_point(size = 1) +
+      theme_minimal() +
+      labs(color = col,
+           x = "PC1", y = "PC2")
+    if (is_continuous) {
+      p <- p + scale_color_gradient(low = "blue", high = "red")
+    } else {
+      p <- p + scale_color_brewer(palette = "Set1")
+    }
+    return(p)
+  })
+
+  # Combine all plots into one image
+  combined_plot <- wrap_plots(plots) + 
+    plot_layout(ncol = 2) +
+  plot_annotation(title = plotTitle)
+
+  return(lplot = combined_plot)
+  
+}
+
+```
+
+```{r plots}
+pcaPlot(astrocyte_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "astrocyte_author PCA")
+```
+
+```{r}
+pcaPlot(astrocyte_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "astrocyte_gemma PCA")
+```
+
+```{r}
+pcaPlot(caudal_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "caudal_gemma PCA")
+```
+
+```{r}
+pcaPlot(chandelier_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "chandelier_author PCA")
+```
+
+```{r}
+pcaPlot(chandelier_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "chandelier_gemma PCA")
+```
+
+```{r}
+pcaPlot(endothelial_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "endothelial_author PCA")
+```
+
+```{r}
+pcaPlot(endothelial_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "endothelial_gemma PCA")
+```
+
+```{r}
+pcaPlot(immune_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "immune_author PCA")
+```
+
+```{r}
+pcaPlot(L2_3_IT_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L2_3_IT_author PCA")
+```
+
+```{r}
+pcaPlot(L2_36_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L2_36_gemma PCA")
+```
+
+```{r}
+pcaPlot(L4_IT_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L4_IT_author PCA")
+```
+
+```{r}
+pcaPlot(L5_6_NP_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L5_6_NP_author PCA")
+```
+
+```{r}
+pcaPlot(L5_ET_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L5_ET_author PCA")
+```
+
+```{r}
+pcaPlot(L5_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L5_gemma PCA")
+```
+
+```{r}
+pcaPlot(L5_IT_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L5_IT_author PCA")
+```
+
+```{r}
+pcaPlot(L6_CT_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6_CT_author PCA")
+```
+
+```{r}
+pcaPlot(L6_IT_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6_IT_author PCA")
+```
+
+```{r}
+pcaPlot(L6_IT_car3_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6_IT_car3_author PCA")
+```
+
+```{r}
+pcaPlot(L6b_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6b_author PCA")
+```
+
+```{r}
+pcaPlot(L6bGlut_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6bGlut_gemma PCA")
+```
+
+```{r}
+pcaPlot(L6CT_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6CT_gemma PCA")
+```
+
+```{r}
+pcaPlot(Lamp5_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "Lamp5_author PCA")
+```
+
+```{r}
+pcaPlot(lamp5_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "lamp5_gemma PCA")
+```
+
+```{r}
+pcaPlot(Lamp5_Lhx6_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "Lamp5_Lhx6_author PCA")
+```
+
+```{r}
+pcaPlot(micro_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "micro_author PCA")
+```
+
+```{r}
+pcaPlot(microglia_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "microglia_gemma PCA")
+```
+
+```{r}
+pcaPlot(NPglut_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "NPglut_gemma PCA")
+```
+
+```{r}
+pcaPlot(oligo_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "oligo_author PCA")
+```
+
+```{r}
+pcaPlot(oligo_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "oligo_gemma PCA")
+```
+
+```{r}
+pcaPlot(oligoPC_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "oligoPC_author PCA")
+```
+
+```{r}
+pcaPlot(oligoPC_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "oligoPC_gemma PCA")
+```
+
+```{r}
+pcaPlot(Pax6_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "Pax6_author PCA")
+```
+
+```{r}
+pcaPlot(PC_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "PC_author PCA")
+```
+
+```{r}
+pcaPlot(Pvalb_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "Pvalb_author PCA")
+```
+
+```{r}
+pcaPlot(pvalbGABA_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "pvalbGABA_gemma PCA")
+```
+
+```{r}
+pcaPlot(SMC_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "SMC_author PCA")
+```
+
+```{r}
+pcaPlot(sncg_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "sncg_author PCA")
+```
+
+```{r}
+pcaPlot(sncg_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "sncg_gemma PCA")
+```
+
+```{r}
+pcaPlot(sst_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "sst_author PCA")
+```
+
+```{r}
+pcaPlot(sst_chodl_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "sst_chodl_author PCA")
+```
+
+```{r}
+pcaPlot(sstGABA_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "sstGABA_gemma PCA")
+```
+
+```{r}
+pcaPlot(vip_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "vip_author PCA")
+```
+
+```{r}
+pcaPlot(vipGABA_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "vipGABA_gemma PCA")
+```
+
+```{r}
+pcaPlot(VLMC_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "VLMC_author PCA")
+```
+
+```{r}
+pcaPlot(VLMC_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "VLMC_gemma PCA")
+```
