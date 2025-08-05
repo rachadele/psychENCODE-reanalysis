@@ -7,8 +7,10 @@ output:
 ```{r}
 library(dplyr)
 library(readr)
+library(DESeq2)
 library(ggplot2)
 library(patchwork)
+set.seed(42)
 ```
 
 ```{r}
@@ -83,7 +85,7 @@ metadata$Disorder[metadata$Disorder == "control"] <- "Control"
 
 ```
 
-```{r}
+```{r functions}
 transposePCA <- function(data){
 rownames(data) <- data[[1]]
 
@@ -115,62 +117,16 @@ for (obj_name in author_objs) {
 }
 
 #plotting
-pseudobulk_pca_plots <- function(expr_data, metadata, sample_id_col, color_columns, plotTitle) {
 
-  rownames(metadata) <- metadata[[sample_id_col]]
-
-  common_samples <- intersect(rownames(expr_data), rownames(metadata))
-  if (length(common_samples) == 0) {
-    stop("No matching samples found between expression data and metadata.")
-  }
-  expr_data <- expr_data[common_samples, , drop = FALSE]
-  metadata <- metadata[common_samples, , drop = FALSE]
-
-  data_to_pca <- log2(expr_data + 1) 
-
-  gene_sds <- apply(data_to_pca, 2, sd)
-  data_to_pca <- data_to_pca[, gene_sds > 0, drop = FALSE]
-
-  if (ncol(data_to_pca) == 0) {
-    stop("No genes remaining after removing zero-variance genes.")
-  }
-
-  pca_res <- prcomp(data_to_pca, center = TRUE, scale. = TRUE)
-
-  pca_df <- as.data.frame(pca_res$x)
-  pca_df$Sample <- rownames(pca_df)
-  pca_df <- cbind(pca_df, metadata)
-
-  plot_list <- list()
-  for (col in color_columns) {
-    if (!col %in% colnames(metadata)) {
-      warning(paste("Metadata column", col, "not found. Skipping."))
-      next
-    }
-
-    p <- ggplot(pca_df, aes_string(x = "PC1", y = "PC2", color = col)) +
-      geom_point(size = 1) +
-      theme_minimal() +
-      labs(title = plotTitle,
-           x = "PC1", y = "PC2")
-    
-    print(p)
-    plot_list[[col]] <- p
-  }
-
-  invisible(plot_list)
-}
-
-
-pcaPlot <- function(expr_data, metadata, sample_id_col, color_columns, plotTitle) {
+pcaPlotOld <- function(expr_data, color_columns, plotTitle) {
   # Match samples
-  rownames(metadata) <- metadata[[sample_id_col]]
+  rownames(metadata) <- metadata[["sample_name"]]
   common_samples <- intersect(rownames(expr_data), rownames(metadata))
   expr_data <- expr_data[common_samples, , drop = FALSE]
   metadata <- metadata[common_samples, , drop = FALSE]
 
 
-  lib_size <- rowSums(expr_data)
+  Library_size <- rowSums(expr_data)
 
     expr_data <- log2(expr_data + 1)
 
@@ -182,7 +138,7 @@ pcaPlot <- function(expr_data, metadata, sample_id_col, color_columns, plotTitle
   pca_res <- prcomp(expr_data, center = TRUE, scale. = TRUE)
   pca_df <- as.data.frame(pca_res$x)
   pca_df$Sample <- rownames(pca_df)
-  pca_df$lib_size <- lib_size[rownames(pca_df)]
+  pca_df$Library_size <- Library_size[rownames(pca_df)]
 
   # Add metadata
   pca_df <- cbind(pca_df, metadata[rownames(pca_df), , drop = FALSE])
@@ -212,184 +168,320 @@ pcaPlot <- function(expr_data, metadata, sample_id_col, color_columns, plotTitle
   
 }
 
+cleanup <- function(expr_data) {
+  
+  expr_data_name <- deparse(substitute(expr_data))
+  cleaned_name <- paste0(expr_data_name, "_clean")
+
+  
+  rownames(metadata) <- metadata[["sample_name"]]
+  common_samples <- intersect(rownames(expr_data), rownames(metadata))
+  expr_matched <- expr_data[common_samples, , drop = FALSE]
+  metadata_matched <- metadata[common_samples, , drop = FALSE]
+
+  # Library size (total counts per sample)
+  Library_size <- rowSums(expr_matched)
+
+  # Log2 transform
+  expr_log <- log2(expr_matched + 1)
+
+  # Remove zero-variance genes
+  gene_sds <- apply(expr_log, 2, sd)
+  expr_filtered <- expr_log[, gene_sds > 0, drop = FALSE]
+
+  # Return all relevant data in a structured object
+  cleaned_obj <- list(
+    expr_raw = expr_matched,
+    expr_log = expr_log,
+    expr_filtered = expr_filtered,
+    metadata = metadata_matched,
+    Library_size = Library_size,
+    sample_ids = common_samples
+  )
+  class(cleaned_obj) <- "CleanedExprData"
+assign(cleaned_name, cleaned_obj, envir = parent.frame())
+  return(invisible(cleaned_obj))
+}
+
+runPCA <- function(cleaned_data) {
+
+  expr_filtered <- cleaned_data$expr_filtered
+  metadata <- cleaned_data$metadata
+  Library_size <- cleaned_data$Library_size
+
+  pca_result <- prcomp(expr_filtered, center = TRUE, scale. = TRUE)
+
+  pca_scores <- as.data.frame(pca_result$x)
+  pca_scores$Sample <- rownames(pca_scores)
+  pca_scores$Library_size <- Library_size[rownames(pca_scores)]
+
+  pca_scores <- cbind(pca_scores, metadata[rownames(pca_scores), , drop = FALSE])
+
+  pca_output <- list(
+    pca_scores = pca_scores,         
+    pca_model = pca_result,          
+    rotation = pca_result$rotation,  
+    sdev = pca_result$sdev,          
+    var_explained = pca_result$sdev^2 / sum(pca_result$sdev^2) 
+  )
+  class(pca_output) <- "PCAResult"
+
+  return(pca_output)
+}
+
+pcaPlot <- function(pca_result, plotTitle) {
+
+  pca_df <- pca_result$pca_scores
+
+  plots <- lapply(c("Age_death", "Biological_Sex", "Ancestry", "Disorder", "Cohort", "Library_size"), function(col) {
+    is_continuous <- is.numeric(pca_df[[col]])
+    p <- ggplot(pca_df, aes(x = PC1, y = PC2, color = .data[[col]])) +
+      geom_point(size = 1) +
+      theme(element_text(size = 3)) +
+      theme_minimal() +
+      labs(color = col, x = "PC1", y = "PC2")
+
+    if (is_continuous) {
+      p <- p + scale_color_gradient(low = "blue", high = "red")
+    } else {
+      p <- p + scale_color_brewer(palette = "Set1")
+    }
+
+    return(p)
+  })
+
+  combined_plot <- wrap_plots(plots) +
+    plot_layout(ncol = 2) +
+    plot_annotation(title = plotTitle)
+
+  return(combined_plot)
+}
+
+
 ```
 
-```{r plots}
-pcaPlot(astrocyte_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "astrocyte_author PCA")
+```{r astrocyte_author}
+cleanup(astrocyte_author)
+astrocyte_author_PCA <- runPCA(astrocyte_author_clean)
+pcaPlot(astrocyte_author_PCA, "astrocyte_author PCA")
 ```
-
-```{r}
-pcaPlot(astrocyte_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "astrocyte_gemma PCA")
+```{r astrocyte_gemma}
+cleanup(astrocyte_gemma)
+astrocyte_gemma_PCA <- runPCA(astrocyte_gemma_clean)
+pcaPlot(astrocyte_gemma_PCA, "astrocyte_gemma PCA")
 ```
-
-```{r}
-pcaPlot(caudal_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "caudal_gemma PCA")
+```{r caudal_gemma}
+cleanup(caudal_gemma)
+caudal_gemma_PCA <- runPCA(caudal_gemma_clean)
+pcaPlot(caudal_gemma_PCA, "caudal_gemma PCA")
 ```
-
-```{r}
-pcaPlot(chandelier_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "chandelier_author PCA")
+```{r chandelier_author}
+cleanup(chandelier_author)
+chandelier_author_PCA <- runPCA(chandelier_author_clean)
+pcaPlot(chandelier_author_PCA, "chandelier_author PCA")
 ```
-
-```{r}
-pcaPlot(chandelier_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "chandelier_gemma PCA")
+```{r chandelier_gemma}
+cleanup(chandelier_gemma)
+chandelier_gemma_PCA <- runPCA(chandelier_gemma_clean)
+pcaPlot(chandelier_gemma_PCA, "chandelier_gemma PCA")
 ```
-
-```{r}
-pcaPlot(endothelial_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "endothelial_author PCA")
+```{r endothelial_author}
+cleanup(endothelial_author)
+endothelial_author_PCA <- runPCA(endothelial_author_clean)
+pcaPlot(endothelial_author_PCA, "endothelial_author PCA")
 ```
-
-```{r}
-pcaPlot(endothelial_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "endothelial_gemma PCA")
+```{r endothelial_gemma}
+cleanup(endothelial_gemma)
+endothelial_gemma_PCA <- runPCA(endothelial_gemma_clean)
+pcaPlot(endothelial_gemma_PCA, "endothelial_gemma PCA")
 ```
-
-```{r}
-pcaPlot(immune_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "immune_author PCA")
+```{r immune_author}
+cleanup(immune_author)
+immune_author_PCA <- runPCA(immune_author_clean)
+pcaPlot(immune_author_PCA, "immune_author PCA")
 ```
-
-```{r}
-pcaPlot(L2_3_IT_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L2_3_IT_author PCA")
+```{r L2_3_IT_author}
+cleanup(L2_3_IT_author)
+L2_3_IT_author_PCA <- runPCA(L2_3_IT_author_clean)
+pcaPlot(L2_3_IT_author_PCA, "L2_3_IT_author PCA")
 ```
-
-```{r}
-pcaPlot(L2_36_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L2_36_gemma PCA")
+```{r L2_36_gemma}
+cleanup(L2_36_gemma)
+L2_36_gemma_PCA <- runPCA(L2_36_gemma_clean)
+pcaPlot(L2_36_gemma_PCA, "L2_36_gemma PCA")
 ```
-
-```{r}
-pcaPlot(L4_IT_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L4_IT_author PCA")
+```{r L4_IT_author}
+cleanup(L4_IT_author)
+L4_IT_author_PCA <- runPCA(L4_IT_author_clean)
+pcaPlot(L4_IT_author_PCA, "L4_IT_author PCA")
 ```
-
-```{r}
-pcaPlot(L5_6_NP_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L5_6_NP_author PCA")
+```{r L5_6_NP_author}
+cleanup(L5_6_NP_author)
+L5_6_NP_author_PCA <- runPCA(L5_6_NP_author_clean)
+pcaPlot(L5_6_NP_author_PCA, "L5_6_NP_author PCA")
 ```
-
-```{r}
-pcaPlot(L5_ET_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L5_ET_author PCA")
+```{r L5_ET_author}
+cleanup(L5_ET_author)
+L5_ET_author_PCA <- runPCA(L5_ET_author_clean)
+pcaPlot(L5_ET_author_PCA, "L5_ET_author PCA")
 ```
-
-```{r}
-pcaPlot(L5_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L5_gemma PCA")
+```{r L5_gemma}
+cleanup(L5_gemma)
+L5_gemma_PCA <- runPCA(L5_gemma_clean)
+pcaPlot(L5_gemma_PCA, "L5_gemma PCA")
 ```
-
-```{r}
-pcaPlot(L5_IT_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L5_IT_author PCA")
+```{r L5_IT_author}
+cleanup(L5_IT_author)
+L5_IT_author_PCA <- runPCA(L5_IT_author_clean)
+pcaPlot(L5_IT_author_PCA, "L5_IT_author PCA")
 ```
-
-```{r}
-pcaPlot(L6_CT_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6_CT_author PCA")
+```{r L6_CT_author}
+cleanup(L6_CT_author)
+L6_CT_author_PCA <- runPCA(L6_CT_author_clean)
+pcaPlot(L6_CT_author_PCA, "L6_CT_author PCA")
 ```
-
-```{r}
-pcaPlot(L6_IT_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6_IT_author PCA")
+```{r L6_IT_author}
+cleanup(L6_IT_author)
+L6_IT_author_PCA <- runPCA(L6_IT_author_clean)
+pcaPlot(L6_IT_author_PCA, "L6_IT_author PCA")
 ```
-
-```{r}
-pcaPlot(L6_IT_car3_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6_IT_car3_author PCA")
+```{r L6_IT_car3_author}
+cleanup(L6_IT_car3_author)
+L6_IT_car3_author_PCA <- runPCA(L6_IT_car3_author_clean)
+pcaPlot(L6_IT_car3_author_PCA, "L6_IT_car3_author PCA")
 ```
-
-```{r}
-pcaPlot(L6b_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6b_author PCA")
+```{r L6b_author}
+cleanup(L6b_author)
+L6b_author_PCA <- runPCA(L6b_author_clean)
+pcaPlot(L6b_author_PCA, "L6b_author PCA")
 ```
-
-```{r}
-pcaPlot(L6bGlut_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6bGlut_gemma PCA")
+```{r L6bGlut_gemma}
+cleanup(L6bGlut_gemma)
+L6bGlut_gemma_PCA <- runPCA(L6bGlut_gemma_clean)
+pcaPlot(L6bGlut_gemma_PCA, "L6bGlut_gemma PCA")
 ```
-
-```{r}
-pcaPlot(L6CT_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "L6CT_gemma PCA")
+```{r L6CT_gemma}
+cleanup(L6CT_gemma)
+L6CT_gemma_PCA <- runPCA(L6CT_gemma_clean)
+pcaPlot(L6CT_gemma_PCA, "L6CT_gemma PCA")
 ```
-
-```{r}
-pcaPlot(Lamp5_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "Lamp5_author PCA")
+```{r Lamp5_author}
+cleanup(Lamp5_author)
+Lamp5_author_PCA <- runPCA(Lamp5_author_clean)
+pcaPlot(Lamp5_author_PCA, "Lamp5_author PCA")
 ```
-
-```{r}
-pcaPlot(lamp5_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "lamp5_gemma PCA")
+```{r lamp5_gemma}
+cleanup(lamp5_gemma)
+lamp5_gemma_PCA <- runPCA(lamp5_gemma_clean)
+pcaPlot(lamp5_gemma_PCA, "lamp5_gemma PCA")
 ```
-
-```{r}
-pcaPlot(Lamp5_Lhx6_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "Lamp5_Lhx6_author PCA")
+```{r Lamp5_Lhx6_author}
+cleanup(Lamp5_Lhx6_author)
+Lamp5_Lhx6_author_PCA <- runPCA(Lamp5_Lhx6_author_clean)
+pcaPlot(Lamp5_Lhx6_author_PCA, "Lamp5_Lhx6_author PCA")
 ```
-
-```{r}
-pcaPlot(micro_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "micro_author PCA")
+```{r micro_author}
+cleanup(micro_author)
+micro_author_PCA <- runPCA(micro_author_clean)
+pcaPlot(micro_author_PCA, "micro_author PCA")
 ```
-
-```{r}
-pcaPlot(microglia_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "microglia_gemma PCA")
+```{r microglia_gemma}
+cleanup(microglia_gemma)
+microglia_gemma_PCA <- runPCA(microglia_gemma_clean)
+pcaPlot(microglia_gemma_PCA, "microglia_gemma PCA")
 ```
-
-```{r}
-pcaPlot(NPglut_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "NPglut_gemma PCA")
+```{r NPglut_gemma}
+cleanup(NPglut_gemma)
+NPglut_gemma_PCA <- runPCA(NPglut_gemma_clean)
+pcaPlot(NPglut_gemma_PCA, "NPglut_gemma PCA")
 ```
-
-```{r}
-pcaPlot(oligo_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "oligo_author PCA")
+```{r oligo_author}
+cleanup(oligo_author)
+oligo_author_PCA <- runPCA(oligo_author_clean)
+pcaPlot(oligo_author_PCA, "oligo_author PCA")
 ```
-
-```{r}
-pcaPlot(oligo_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "oligo_gemma PCA")
+```{r oligo_gemma}
+cleanup(oligo_gemma)
+oligo_gemma_PCA <- runPCA(oligo_gemma_clean)
+pcaPlot(oligo_gemma_PCA, "oligo_gemma PCA")
 ```
-
-```{r}
-pcaPlot(oligoPC_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "oligoPC_author PCA")
+```{r oligoPC_author}
+cleanup(oligoPC_author)
+oligoPC_author_PCA <- runPCA(oligoPC_author_clean)
+pcaPlot(oligoPC_author_PCA, "oligoPC_author PCA")
 ```
-
-```{r}
-pcaPlot(oligoPC_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "oligoPC_gemma PCA")
+```{r oligoPC_gemma}
+cleanup(oligoPC_gemma)
+oligoPC_gemma_PCA <- runPCA(oligoPC_gemma_clean)
+pcaPlot(oligoPC_gemma_PCA, "oligoPC_gemma PCA")
 ```
-
-```{r}
-pcaPlot(Pax6_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "Pax6_author PCA")
+```{r Pax6_author}
+cleanup(Pax6_author)
+Pax6_author_PCA <- runPCA(Pax6_author_clean)
+pcaPlot(Pax6_author_PCA, "Pax6_author PCA")
 ```
-
-```{r}
-pcaPlot(PC_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "PC_author PCA")
+```{r PC_author}
+cleanup(PC_author)
+PC_author_PCA <- runPCA(PC_author_clean)
+pcaPlot(PC_author_PCA, "PC_author PCA")
 ```
-
-```{r}
-pcaPlot(Pvalb_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "Pvalb_author PCA")
+```{r Pvalb_author}
+cleanup(Pvalb_author)
+Pvalb_author_PCA <- runPCA(Pvalb_author_clean)
+pcaPlot(Pvalb_author_PCA, "Pvalb_author PCA")
 ```
-
-```{r}
-pcaPlot(pvalbGABA_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "pvalbGABA_gemma PCA")
+```{r pvalbGABA_gemma}
+cleanup(pvalbGABA_gemma)
+pvalbGABA_gemma_PCA <- runPCA(pvalbGABA_gemma_clean)
+pcaPlot(pvalbGABA_gemma_PCA, "pvalbGABA_gemma PCA")
 ```
-
-```{r}
-pcaPlot(SMC_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "SMC_author PCA")
+```{r SMC_author}
+cleanup(SMC_author)
+SMC_author_PCA <- runPCA(SMC_author_clean)
+pcaPlot(SMC_author_PCA, "SMC_author PCA")
 ```
-
-```{r}
-pcaPlot(sncg_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "sncg_author PCA")
+```{r sncg_author}
+cleanup(sncg_author)
+sncg_author_PCA <- runPCA(sncg_author_clean)
+pcaPlot(sncg_author_PCA, "sncg_author PCA")
 ```
-
-```{r}
-pcaPlot(sncg_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "sncg_gemma PCA")
+```{r sncg_gemma}
+cleanup(sncg_gemma)
+sncg_gemma_PCA <- runPCA(sncg_gemma_clean)
+pcaPlot(sncg_gemma_PCA, "sncg_gemma PCA")
 ```
-
-```{r}
-pcaPlot(sst_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "sst_author PCA")
+```{r sst_author}
+cleanup(sst_author)
+sst_author_PCA <- runPCA(sst_author_clean)
+pcaPlot(sst_author_PCA, "sst_author PCA")
 ```
-
-```{r}
-pcaPlot(sst_chodl_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "sst_chodl_author PCA")
+```{r sst_chodl_author}
+cleanup(sst_chodl_author)
+sst_chodl_author_PCA <- runPCA(sst_chodl_author_clean)
+pcaPlot(sst_chodl_author_PCA, "sst_chodl_author PCA")
 ```
-
-```{r}
-pcaPlot(sstGABA_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "sstGABA_gemma PCA")
+```{r sstGABA_gemma}
+cleanup(sstGABA_gemma)
+sstGABA_gemma_PCA <- runPCA(sstGABA_gemma_clean)
+pcaPlot(sstGABA_gemma_PCA, "sstGABA_gemma PCA")
 ```
-
-```{r}
-pcaPlot(vip_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "vip_author PCA")
+```{r vip_author}
+cleanup(vip_author)
+vip_author_PCA <- runPCA(vip_author_clean)
+pcaPlot(vip_author_PCA, "vip_author PCA")
 ```
-
-```{r}
-pcaPlot(vipGABA_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "vipGABA_gemma PCA")
+```{r vipGABA_gemma}
+cleanup(vipGABA_gemma)
+vipGABA_gemma_PCA <- runPCA(vipGABA_gemma_clean)
+pcaPlot(vipGABA_gemma_PCA, "vipGABA_gemma PCA")
 ```
-
-```{r}
-pcaPlot(VLMC_author, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "VLMC_author PCA")
+```{r VLMC_author}
+cleanup(VLMC_author)
+VLMC_author_PCA <- runPCA(VLMC_author_clean)
+pcaPlot(VLMC_author_PCA, "VLMC_author PCA")
 ```
-
-```{r}
-pcaPlot(VLMC_gemma, metadata, sample_id_col = "sample_name", color_columns = c("Age_death", "Biological_Sex", "Ancestry", "Disorder"), "VLMC_gemma PCA")
+```{r VLMC_gemma}
+cleanup(VLMC_gemma)
+VLMC_gemma_PCA <- runPCA(VLMC_gemma_clean)
+pcaPlot(VLMC_gemma_PCA, "VLMC_gemma PCA")
 ```
