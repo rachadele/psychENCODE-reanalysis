@@ -202,23 +202,19 @@ pcaPlot <- function(pca_result, plotTitle, x_pc = 1, y_pc = 2) {
             legend.title = element_text(size = 9),
             legend.key.size = unit(0.4, "cm"),
             legend.spacing = unit(0.2, "cm"),
-            legend.margin = margin(2, 2, 2, 2, "pt")) +
-      labs(color = col,
-           x = x_pc_col,
-           y = y_pc_col)
+            legend.margin = margin(2, 2, 2, 2, "pt"))
+
+    # Set custom legend title
+    legend_title <- if (col == "Library_size") "Library size \n(Log2-transformed)" else col
+
+    p <- p + labs(color = legend_title,
+                  x = x_pc_col,
+                  y = y_pc_col)
 
     if (is_continuous) {
       p <- p + scale_color_gradient(low = "blue", high = "red")
     } else {
       p <- p + scale_color_brewer(palette = "Set1")
-    }
-
-    if (col == "Library_size") {
-      p <- p + annotate("text",
-                        x = Inf, y = -Inf,
-                        label = "log-transformed",
-                        hjust = 1.1, vjust = -1.2,
-                        size = 3, fontface = "italic", color = "gray40")
     }
 
     return(p)
@@ -230,6 +226,7 @@ pcaPlot <- function(pca_result, plotTitle, x_pc = 1, y_pc = 2) {
 
   return(combined_plot)
 }
+
 
 screePlot <- function(variance_percent, plotTitle = "Scree Plot") {
   library(ggplot2)
@@ -257,27 +254,35 @@ screePlot <- function(variance_percent, plotTitle = "Scree Plot") {
                        labels = paste0("PC", seq_along(variance_percent))) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 }
-plotLoadingsByPC <- function(pca_output, pcs = 1:4, top_n = 10) {
+plotLoadingsByPC <- function(pca_output, title = "top 10 gene loadings by PC", pcs = 1:4, top_n = 10) {
   rotation <- as.data.frame(pca_output$rotation)
   rotation$feature <- rownames(rotation)
   
   rotation <- rotation[, c("feature", paste0("PC", pcs))]
   
-  rotation_long <- melt(rotation, id.vars = "feature", variable.name = "PC", value.name = "value")
+  rotation_long <- reshape2::melt(rotation, id.vars = "feature", variable.name = "PC", value.name = "value")
   
   top_genes <- rotation_long %>%
-    group_by(PC) %>%
-    slice_max(order_by = abs(value), n = top_n, with_ties = FALSE) %>%
-    ungroup()
-  
+    dplyr::group_by(PC) %>%
+    dplyr::slice_max(order_by = abs(value), n = top_n, with_ties = FALSE) %>%
+    dplyr::ungroup()
+
+  # Set label offset
+  offset <- 0.005
+
   ggplot(top_genes, aes(x = PC, y = value, fill = feature)) +
     geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
-    labs(title = "Top 10 Gene Loadings by Principal Component",
+    geom_text(aes(label = feature,
+                  y = ifelse(value >= 0, value - offset, value + offset)),
+              position = position_dodge(width = 0.8), size = 3, hjust = 0.5) +
+    labs(title = title,
          x = "Principal Component",
          y = "Loading Value") +
     theme_minimal() +
-    theme(legend.position = "right")
+    coord_flip() +
+    theme(legend.position = "none")
 }
+
 
 
 ```
@@ -305,8 +310,8 @@ pcaPlot(L5_gemma_PCA, "L5_gemma PCA", x_pc = 1, y_pc = 2)
 pcaPlot(L5_gemma_PCA, "L5_gemma PCA", x_pc = 3, y_pc = 4)
 pcaPlot(L5_gemma_PCA, "L5_gemma PCA", x_pc = 5, y_pc = 6)
 
-plotLoadingsByPC(L5_ET_author_PCA)
-plotLoadingsByPC(L5_gemma_PCA)
+plotLoadingsByPC(L5_ET_author_PCA, "Top 10 gene loadings by PC for L5 ET author annotations")
+plotLoadingsByPC(L5_gemma_PCA, "Top 10 gene loadings by PC for L5 ET Gemma annotations")
 
 screePlot(L5_ET_author_PCA$var_explained, "PCA scree of author-annotated L5 extratelencephalic projecting glutamatergic cortical neurons")
 screePlot(L5_gemma_PCA$var_explained, "PCA scree of Gemma-annotated L5 extratelencephalic projecting glutamatergic cortical neurons")
