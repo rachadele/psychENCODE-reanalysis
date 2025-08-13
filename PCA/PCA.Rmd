@@ -1,15 +1,25 @@
 ---
 output: 
   html_document: 
-    fig_width: 10
+    fig_width: 13
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  fig.width = 13,
+  fig.height = 7,
+  fig.align = "center"
+)
+```
 
 ```{r}
 library(dplyr)
+library(tidyr)
 library(readr)
 library(DESeq2)
 library(ggplot2)
 library(patchwork)
+library(reshape2)
 set.seed(42)
 ```
 
@@ -118,55 +128,6 @@ for (obj_name in author_objs) {
 
 #plotting
 
-pcaPlotOld <- function(expr_data, color_columns, plotTitle) {
-  # Match samples
-  rownames(metadata) <- metadata[["sample_name"]]
-  common_samples <- intersect(rownames(expr_data), rownames(metadata))
-  expr_data <- expr_data[common_samples, , drop = FALSE]
-  metadata <- metadata[common_samples, , drop = FALSE]
-
-
-  Library_size <- rowSums(expr_data)
-
-    expr_data <- log2(expr_data + 1)
-
-  # Remove zero-variance genes
-  gene_sds <- apply(expr_data, 2, sd)
-  expr_data <- expr_data[, gene_sds > 0, drop = FALSE]
-
-  # PCA
-  pca_res <- prcomp(expr_data, center = TRUE, scale. = TRUE)
-  pca_df <- as.data.frame(pca_res$x)
-  pca_df$Sample <- rownames(pca_df)
-  pca_df$Library_size <- Library_size[rownames(pca_df)]
-
-  # Add metadata
-  pca_df <- cbind(pca_df, metadata[rownames(pca_df), , drop = FALSE])
-
-  # Generate plots for each color column
-  plots <- lapply(color_columns, function(col) {
-    is_continuous <- is.numeric(pca_df[[col]])
-    p <- ggplot(pca_df, aes(x = PC1, y = PC2, color = .data[[col]])) +
-      geom_point(size = 1) +
-      theme_minimal() +
-      labs(color = col,
-           x = "PC1", y = "PC2")
-    if (is_continuous) {
-      p <- p + scale_color_gradient(low = "blue", high = "red")
-    } else {
-      p <- p + scale_color_brewer(palette = "Set1")
-    }
-    return(p)
-  })
-
-  # Combine all plots into one image
-  combined_plot <- wrap_plots(plots) + 
-    plot_layout(ncol = 2) +
-  plot_annotation(title = plotTitle)
-
-  return(lplot = combined_plot)
-  
-}
 
 cleanup <- function(expr_data) {
   
@@ -179,17 +140,13 @@ cleanup <- function(expr_data) {
   expr_matched <- expr_data[common_samples, , drop = FALSE]
   metadata_matched <- metadata[common_samples, , drop = FALSE]
 
-  # Library size (total counts per sample)
-  Library_size <- rowSums(expr_matched)
+  Library_size <- log2(rowSums(expr_matched) + 1)
 
-  # Log2 transform
   expr_log <- log2(expr_matched + 1)
 
-  # Remove zero-variance genes
   gene_sds <- apply(expr_log, 2, sd)
   expr_filtered <- expr_log[, gene_sds > 0, drop = FALSE]
 
-  # Return all relevant data in a structured object
   cleaned_obj <- list(
     expr_raw = expr_matched,
     expr_log = expr_log,
@@ -229,22 +186,39 @@ runPCA <- function(cleaned_data) {
   return(pca_output)
 }
 
-pcaPlot <- function(pca_result, plotTitle) {
-
+pcaPlot <- function(pca_result, plotTitle, x_pc = 1, y_pc = 2) {
   pca_df <- pca_result$pca_scores
+
+  x_pc_col <- paste0("PC", x_pc)
+  y_pc_col <- paste0("PC", y_pc)
 
   plots <- lapply(c("Age_death", "Biological_Sex", "Ancestry", "Disorder", "Cohort", "Library_size"), function(col) {
     is_continuous <- is.numeric(pca_df[[col]])
-    p <- ggplot(pca_df, aes(x = PC1, y = PC2, color = .data[[col]])) +
+
+    p <- ggplot(pca_df, aes(x = .data[[x_pc_col]], y = .data[[y_pc_col]], color = .data[[col]])) +
       geom_point(size = 1) +
-      theme(element_text(size = 3)) +
       theme_minimal() +
-      labs(color = col, x = "PC1", y = "PC2")
+      theme(legend.text = element_text(size = 8),
+            legend.title = element_text(size = 9),
+            legend.key.size = unit(0.4, "cm"),
+            legend.spacing = unit(0.2, "cm"),
+            legend.margin = margin(2, 2, 2, 2, "pt")) +
+      labs(color = col,
+           x = x_pc_col,
+           y = y_pc_col)
 
     if (is_continuous) {
       p <- p + scale_color_gradient(low = "blue", high = "red")
     } else {
       p <- p + scale_color_brewer(palette = "Set1")
+    }
+
+    if (col == "Library_size") {
+      p <- p + annotate("text",
+                        x = Inf, y = -Inf,
+                        label = "log-transformed",
+                        hjust = 1.1, vjust = -1.2,
+                        size = 3, fontface = "italic", color = "gray40")
     }
 
     return(p)
@@ -257,231 +231,444 @@ pcaPlot <- function(pca_result, plotTitle) {
   return(combined_plot)
 }
 
+screePlot <- function(variance_percent, plotTitle = "Scree Plot") {
+  library(ggplot2)
 
+  # Ensure it's numeric
+  variance_percent <- as.numeric(variance_percent)[1:10]
+
+  # Create data frame
+  scree_df <- data.frame(
+    PC = paste0("PC", seq_along(variance_percent)),
+    Variance = variance_percent,
+    Cumulative = cumsum(variance_percent)
+  )
+
+  ggplot(scree_df, aes(x = seq_along(Variance), y = Variance)) +
+    geom_line(color = "red", size = 1) +
+    geom_point(color = "red", size = 2) +
+    geom_text(aes(y = Variance, label = paste0(round(Variance, 3), "%")),
+              vjust = -0.8, size = 3.5, color = "black") +
+    theme_minimal() +
+    labs(title = plotTitle,
+         x = "Principal Component",
+         y = "Variance Explained (%)") +
+    scale_x_continuous(breaks = seq_along(variance_percent),
+                       labels = paste0("PC", seq_along(variance_percent))) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+plotLoadingsByPC <- function(pca_output, pcs = 1:4, top_n = 10) {
+  rotation <- as.data.frame(pca_output$rotation)
+  rotation$feature <- rownames(rotation)
+  
+  rotation <- rotation[, c("feature", paste0("PC", pcs))]
+  
+  rotation_long <- melt(rotation, id.vars = "feature", variable.name = "PC", value.name = "value")
+  
+  top_genes <- rotation_long %>%
+    group_by(PC) %>%
+    slice_max(order_by = abs(value), n = top_n, with_ties = FALSE) %>%
+    ungroup()
+  
+  ggplot(top_genes, aes(x = PC, y = value, fill = feature)) +
+    geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
+    labs(title = "Top 10 Gene Loadings by Principal Component",
+         x = "Principal Component",
+         y = "Loading Value") +
+    theme_minimal() +
+    theme(legend.position = "right")
+}
+
+
+```
+
+summary: cohort-specific effect in multiple cell types, particularly **microglia** and **OPCs**
+
+**library size** correlated to PC1
+
+outliers seem to be mostly **UCLA-ASD** samples and **male** samples?
+
+slight cohort clustering across multiple cell types for **PC3&4**
+
+```{r L5 comparison}
+cleanup(L5_ET_author)
+L5_ET_author_PCA <- runPCA(L5_ET_author_clean)
+
+cleanup(L5_gemma)
+L5_gemma_PCA <- runPCA(L5_gemma_clean)
+
+pcaPlot(L5_ET_author_PCA, "L5_ET_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L5_ET_author_PCA, "L5_ET_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L5_ET_author_PCA, "L5_ET_author PCA", x_pc = 5, y_pc = 6)
+
+pcaPlot(L5_gemma_PCA, "L5_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L5_gemma_PCA, "L5_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L5_gemma_PCA, "L5_gemma PCA", x_pc = 5, y_pc = 6)
+
+plotLoadingsByPC(L5_ET_author_PCA)
+plotLoadingsByPC(L5_gemma_PCA)
+
+screePlot(L5_ET_author_PCA$var_explained, "PCA scree of author-annotated L5 extratelencephalic projecting glutamatergic cortical neurons")
+screePlot(L5_gemma_PCA$var_explained, "PCA scree of Gemma-annotated L5 extratelencephalic projecting glutamatergic cortical neurons")
 ```
 
 ```{r astrocyte_author}
 cleanup(astrocyte_author)
 astrocyte_author_PCA <- runPCA(astrocyte_author_clean)
-pcaPlot(astrocyte_author_PCA, "astrocyte_author PCA")
+pcaPlot(astrocyte_author_PCA, "astrocyte_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(astrocyte_author_PCA, "astrocyte_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(astrocyte_author_PCA, "astrocyte_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(astrocyte_author_PCA)
 ```
 ```{r astrocyte_gemma}
 cleanup(astrocyte_gemma)
 astrocyte_gemma_PCA <- runPCA(astrocyte_gemma_clean)
-pcaPlot(astrocyte_gemma_PCA, "astrocyte_gemma PCA")
+pcaPlot(astrocyte_gemma_PCA, "astrocyte_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(astrocyte_gemma_PCA, "astrocyte_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(astrocyte_gemma_PCA, "astrocyte_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(astrocyte_gemma_PCA)
 ```
 ```{r caudal_gemma}
 cleanup(caudal_gemma)
 caudal_gemma_PCA <- runPCA(caudal_gemma_clean)
-pcaPlot(caudal_gemma_PCA, "caudal_gemma PCA")
+pcaPlot(caudal_gemma_PCA, "caudal_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(caudal_gemma_PCA, "caudal_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(caudal_gemma_PCA, "caudal_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(caudal_gemma_PCA)
 ```
 ```{r chandelier_author}
 cleanup(chandelier_author)
 chandelier_author_PCA <- runPCA(chandelier_author_clean)
-pcaPlot(chandelier_author_PCA, "chandelier_author PCA")
+pcaPlot(chandelier_author_PCA, "chandelier_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(chandelier_author_PCA, "chandelier_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(chandelier_author_PCA, "chandelier_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(chandelier_author_PCA)
 ```
 ```{r chandelier_gemma}
 cleanup(chandelier_gemma)
 chandelier_gemma_PCA <- runPCA(chandelier_gemma_clean)
-pcaPlot(chandelier_gemma_PCA, "chandelier_gemma PCA")
+pcaPlot(chandelier_gemma_PCA, "chandelier_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(chandelier_gemma_PCA, "chandelier_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(chandelier_gemma_PCA, "chandelier_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(chandelier_gemma_PCA)
 ```
 ```{r endothelial_author}
 cleanup(endothelial_author)
 endothelial_author_PCA <- runPCA(endothelial_author_clean)
-pcaPlot(endothelial_author_PCA, "endothelial_author PCA")
+pcaPlot(endothelial_author_PCA, "endothelial_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(endothelial_author_PCA, "endothelial_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(endothelial_author_PCA, "endothelial_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(endothelial_author_PCA)
 ```
 ```{r endothelial_gemma}
 cleanup(endothelial_gemma)
 endothelial_gemma_PCA <- runPCA(endothelial_gemma_clean)
-pcaPlot(endothelial_gemma_PCA, "endothelial_gemma PCA")
+pcaPlot(endothelial_gemma_PCA, "endothelial_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(endothelial_gemma_PCA, "endothelial_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(endothelial_gemma_PCA, "endothelial_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(endothelial_gemma_PCA)
 ```
 ```{r immune_author}
 cleanup(immune_author)
 immune_author_PCA <- runPCA(immune_author_clean)
-pcaPlot(immune_author_PCA, "immune_author PCA")
+pcaPlot(immune_author_PCA, "immune_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(immune_author_PCA, "immune_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(immune_author_PCA, "immune_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(immune_author_PCA)
 ```
 ```{r L2_3_IT_author}
 cleanup(L2_3_IT_author)
 L2_3_IT_author_PCA <- runPCA(L2_3_IT_author_clean)
-pcaPlot(L2_3_IT_author_PCA, "L2_3_IT_author PCA")
+pcaPlot(L2_3_IT_author_PCA, "L2_3_IT_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L2_3_IT_author_PCA, "L2_3_IT_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L2_3_IT_author_PCA, "L2_3_IT_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L2_3_IT_author_PCA)
 ```
 ```{r L2_36_gemma}
 cleanup(L2_36_gemma)
 L2_36_gemma_PCA <- runPCA(L2_36_gemma_clean)
-pcaPlot(L2_36_gemma_PCA, "L2_36_gemma PCA")
+pcaPlot(L2_36_gemma_PCA, "L2_36_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L2_36_gemma_PCA, "L2_36_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L2_36_gemma_PCA, "L2_36_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L2_36_gemma_PCA)
 ```
 ```{r L4_IT_author}
 cleanup(L4_IT_author)
 L4_IT_author_PCA <- runPCA(L4_IT_author_clean)
-pcaPlot(L4_IT_author_PCA, "L4_IT_author PCA")
+pcaPlot(L4_IT_author_PCA, "L4_IT_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L4_IT_author_PCA, "L4_IT_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L4_IT_author_PCA, "L4_IT_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L4_IT_author_PCA)
 ```
 ```{r L5_6_NP_author}
 cleanup(L5_6_NP_author)
 L5_6_NP_author_PCA <- runPCA(L5_6_NP_author_clean)
-pcaPlot(L5_6_NP_author_PCA, "L5_6_NP_author PCA")
+pcaPlot(L5_6_NP_author_PCA, "L5_6_NP_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L5_6_NP_author_PCA, "L5_6_NP_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L5_6_NP_author_PCA, "L5_6_NP_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L5_6_NP_author_PCA)
 ```
 ```{r L5_ET_author}
 cleanup(L5_ET_author)
 L5_ET_author_PCA <- runPCA(L5_ET_author_clean)
-pcaPlot(L5_ET_author_PCA, "L5_ET_author PCA")
+pcaPlot(L5_ET_author_PCA, "L5_ET_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L5_ET_author_PCA, "L5_ET_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L5_ET_author_PCA, "L5_ET_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L5_ET_author_PCA)
 ```
 ```{r L5_gemma}
 cleanup(L5_gemma)
 L5_gemma_PCA <- runPCA(L5_gemma_clean)
-pcaPlot(L5_gemma_PCA, "L5_gemma PCA")
+pcaPlot(L5_gemma_PCA, "L5_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L5_gemma_PCA, "L5_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L5_gemma_PCA, "L5_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L5_gemma_PCA)
 ```
 ```{r L5_IT_author}
 cleanup(L5_IT_author)
 L5_IT_author_PCA <- runPCA(L5_IT_author_clean)
-pcaPlot(L5_IT_author_PCA, "L5_IT_author PCA")
+pcaPlot(L5_IT_author_PCA, "L5_IT_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L5_IT_author_PCA, "L5_IT_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L5_IT_author_PCA, "L5_IT_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L5_IT_author_PCA)
 ```
 ```{r L6_CT_author}
 cleanup(L6_CT_author)
 L6_CT_author_PCA <- runPCA(L6_CT_author_clean)
-pcaPlot(L6_CT_author_PCA, "L6_CT_author PCA")
+pcaPlot(L6_CT_author_PCA, "L6_CT_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L6_CT_author_PCA, "L6_CT_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L6_CT_author_PCA, "L6_CT_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L6_CT_author_PCA)
 ```
 ```{r L6_IT_author}
 cleanup(L6_IT_author)
 L6_IT_author_PCA <- runPCA(L6_IT_author_clean)
-pcaPlot(L6_IT_author_PCA, "L6_IT_author PCA")
+pcaPlot(L6_IT_author_PCA, "L6_IT_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L6_IT_author_PCA, "L6_IT_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L6_IT_author_PCA, "L6_IT_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L6_IT_author_PCA)
 ```
 ```{r L6_IT_car3_author}
 cleanup(L6_IT_car3_author)
 L6_IT_car3_author_PCA <- runPCA(L6_IT_car3_author_clean)
-pcaPlot(L6_IT_car3_author_PCA, "L6_IT_car3_author PCA")
+pcaPlot(L6_IT_car3_author_PCA, "L6_IT_car3_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L6_IT_car3_author_PCA, "L6_IT_car3_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L6_IT_car3_author_PCA, "L6_IT_car3_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L6_IT_car3_author_PCA)
 ```
 ```{r L6b_author}
 cleanup(L6b_author)
 L6b_author_PCA <- runPCA(L6b_author_clean)
-pcaPlot(L6b_author_PCA, "L6b_author PCA")
+pcaPlot(L6b_author_PCA, "L6b_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L6b_author_PCA, "L6b_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L6b_author_PCA, "L6b_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L6b_author_PCA)
 ```
 ```{r L6bGlut_gemma}
 cleanup(L6bGlut_gemma)
 L6bGlut_gemma_PCA <- runPCA(L6bGlut_gemma_clean)
-pcaPlot(L6bGlut_gemma_PCA, "L6bGlut_gemma PCA")
+pcaPlot(L6bGlut_gemma_PCA, "L6bGlut_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L6bGlut_gemma_PCA, "L6bGlut_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L6bGlut_gemma_PCA, "L6bGlut_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L6bGlut_gemma_PCA)
 ```
 ```{r L6CT_gemma}
 cleanup(L6CT_gemma)
 L6CT_gemma_PCA <- runPCA(L6CT_gemma_clean)
-pcaPlot(L6CT_gemma_PCA, "L6CT_gemma PCA")
+pcaPlot(L6CT_gemma_PCA, "L6CT_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(L6CT_gemma_PCA, "L6CT_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(L6CT_gemma_PCA, "L6CT_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(L6CT_gemma_PCA)
 ```
 ```{r Lamp5_author}
 cleanup(Lamp5_author)
 Lamp5_author_PCA <- runPCA(Lamp5_author_clean)
-pcaPlot(Lamp5_author_PCA, "Lamp5_author PCA")
+pcaPlot(Lamp5_author_PCA, "Lamp5_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(Lamp5_author_PCA, "Lamp5_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(Lamp5_author_PCA, "Lamp5_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(Lamp5_author_PCA)
 ```
 ```{r lamp5_gemma}
 cleanup(lamp5_gemma)
 lamp5_gemma_PCA <- runPCA(lamp5_gemma_clean)
-pcaPlot(lamp5_gemma_PCA, "lamp5_gemma PCA")
+pcaPlot(lamp5_gemma_PCA, "lamp5_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(lamp5_gemma_PCA, "lamp5_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(lamp5_gemma_PCA, "lamp5_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(lamp5_gemma_PCA)
 ```
 ```{r Lamp5_Lhx6_author}
 cleanup(Lamp5_Lhx6_author)
 Lamp5_Lhx6_author_PCA <- runPCA(Lamp5_Lhx6_author_clean)
-pcaPlot(Lamp5_Lhx6_author_PCA, "Lamp5_Lhx6_author PCA")
+pcaPlot(Lamp5_Lhx6_author_PCA, "Lamp5_Lhx6_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(Lamp5_Lhx6_author_PCA, "Lamp5_Lhx6_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(Lamp5_Lhx6_author_PCA, "Lamp5_Lhx6_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(Lamp5_Lhx6_author_PCA)
 ```
 ```{r micro_author}
 cleanup(micro_author)
 micro_author_PCA <- runPCA(micro_author_clean)
-pcaPlot(micro_author_PCA, "micro_author PCA")
+pcaPlot(micro_author_PCA, "micro_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(micro_author_PCA, "micro_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(micro_author_PCA, "micro_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(micro_author_PCA)
 ```
 ```{r microglia_gemma}
 cleanup(microglia_gemma)
 microglia_gemma_PCA <- runPCA(microglia_gemma_clean)
-pcaPlot(microglia_gemma_PCA, "microglia_gemma PCA")
+pcaPlot(microglia_gemma_PCA, "microglia_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(microglia_gemma_PCA, "microglia_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(microglia_gemma_PCA, "microglia_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(microglia_gemma_PCA)
 ```
 ```{r NPglut_gemma}
 cleanup(NPglut_gemma)
 NPglut_gemma_PCA <- runPCA(NPglut_gemma_clean)
-pcaPlot(NPglut_gemma_PCA, "NPglut_gemma PCA")
+pcaPlot(NPglut_gemma_PCA, "NPglut_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(NPglut_gemma_PCA, "NPglut_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(NPglut_gemma_PCA, "NPglut_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(NPglut_gemma_PCA)
 ```
 ```{r oligo_author}
 cleanup(oligo_author)
 oligo_author_PCA <- runPCA(oligo_author_clean)
-pcaPlot(oligo_author_PCA, "oligo_author PCA")
+pcaPlot(oligo_author_PCA, "oligo_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(oligo_author_PCA, "oligo_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(oligo_author_PCA, "oligo_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(oligo_author_PCA)
 ```
 ```{r oligo_gemma}
 cleanup(oligo_gemma)
 oligo_gemma_PCA <- runPCA(oligo_gemma_clean)
-pcaPlot(oligo_gemma_PCA, "oligo_gemma PCA")
+pcaPlot(oligo_gemma_PCA, "oligo_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(oligo_gemma_PCA, "oligo_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(oligo_gemma_PCA, "oligo_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(oligo_gemma_PCA)
 ```
 ```{r oligoPC_author}
 cleanup(oligoPC_author)
 oligoPC_author_PCA <- runPCA(oligoPC_author_clean)
-pcaPlot(oligoPC_author_PCA, "oligoPC_author PCA")
+pcaPlot(oligoPC_author_PCA, "oligoPC_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(oligoPC_author_PCA, "oligoPC_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(oligoPC_author_PCA, "oligoPC_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(oligoPC_author_PCA)
 ```
 ```{r oligoPC_gemma}
 cleanup(oligoPC_gemma)
 oligoPC_gemma_PCA <- runPCA(oligoPC_gemma_clean)
-pcaPlot(oligoPC_gemma_PCA, "oligoPC_gemma PCA")
+pcaPlot(oligoPC_gemma_PCA, "oligoPC_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(oligoPC_gemma_PCA, "oligoPC_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(oligoPC_gemma_PCA, "oligoPC_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(oligoPC_gemma_PCA)
 ```
 ```{r Pax6_author}
 cleanup(Pax6_author)
 Pax6_author_PCA <- runPCA(Pax6_author_clean)
-pcaPlot(Pax6_author_PCA, "Pax6_author PCA")
+pcaPlot(Pax6_author_PCA, "Pax6_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(Pax6_author_PCA, "Pax6_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(Pax6_author_PCA, "Pax6_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(Pax6_author_PCA)
 ```
 ```{r PC_author}
 cleanup(PC_author)
 PC_author_PCA <- runPCA(PC_author_clean)
-pcaPlot(PC_author_PCA, "PC_author PCA")
+pcaPlot(PC_author_PCA, "PC_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(PC_author_PCA, "PC_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(PC_author_PCA, "PC_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(PC_author_PCA)
 ```
 ```{r Pvalb_author}
 cleanup(Pvalb_author)
 Pvalb_author_PCA <- runPCA(Pvalb_author_clean)
-pcaPlot(Pvalb_author_PCA, "Pvalb_author PCA")
+pcaPlot(Pvalb_author_PCA, "Pvalb_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(Pvalb_author_PCA, "Pvalb_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(Pvalb_author_PCA, "Pvalb_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(Pvalb_author_PCA)
 ```
 ```{r pvalbGABA_gemma}
 cleanup(pvalbGABA_gemma)
 pvalbGABA_gemma_PCA <- runPCA(pvalbGABA_gemma_clean)
-pcaPlot(pvalbGABA_gemma_PCA, "pvalbGABA_gemma PCA")
+pcaPlot(pvalbGABA_gemma_PCA, "pvalbGABA_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(pvalbGABA_gemma_PCA, "pvalbGABA_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(pvalbGABA_gemma_PCA, "pvalbGABA_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(pvalbGABA_gemma_PCA)
 ```
 ```{r SMC_author}
 cleanup(SMC_author)
 SMC_author_PCA <- runPCA(SMC_author_clean)
-pcaPlot(SMC_author_PCA, "SMC_author PCA")
+pcaPlot(SMC_author_PCA, "SMC_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(SMC_author_PCA, "SMC_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(SMC_author_PCA, "SMC_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(SMC_author_PCA)
 ```
 ```{r sncg_author}
 cleanup(sncg_author)
 sncg_author_PCA <- runPCA(sncg_author_clean)
-pcaPlot(sncg_author_PCA, "sncg_author PCA")
+pcaPlot(sncg_author_PCA, "sncg_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(sncg_author_PCA, "sncg_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(sncg_author_PCA, "sncg_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(sncg_author_PCA)
 ```
 ```{r sncg_gemma}
 cleanup(sncg_gemma)
 sncg_gemma_PCA <- runPCA(sncg_gemma_clean)
-pcaPlot(sncg_gemma_PCA, "sncg_gemma PCA")
+pcaPlot(sncg_gemma_PCA, "sncg_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(sncg_gemma_PCA, "sncg_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(sncg_gemma_PCA, "sncg_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(sncg_gemma_PCA)
 ```
 ```{r sst_author}
 cleanup(sst_author)
 sst_author_PCA <- runPCA(sst_author_clean)
-pcaPlot(sst_author_PCA, "sst_author PCA")
+pcaPlot(sst_author_PCA, "sst_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(sst_author_PCA, "sst_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(sst_author_PCA, "sst_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(sst_author_PCA)
 ```
 ```{r sst_chodl_author}
 cleanup(sst_chodl_author)
 sst_chodl_author_PCA <- runPCA(sst_chodl_author_clean)
-pcaPlot(sst_chodl_author_PCA, "sst_chodl_author PCA")
+pcaPlot(sst_chodl_author_PCA, "sst_chodl_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(sst_chodl_author_PCA, "sst_chodl_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(sst_chodl_author_PCA, "sst_chodl_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(sst_chodl_author_PCA)
 ```
 ```{r sstGABA_gemma}
 cleanup(sstGABA_gemma)
 sstGABA_gemma_PCA <- runPCA(sstGABA_gemma_clean)
-pcaPlot(sstGABA_gemma_PCA, "sstGABA_gemma PCA")
+pcaPlot(sstGABA_gemma_PCA, "sstGABA_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(sstGABA_gemma_PCA, "sstGABA_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(sstGABA_gemma_PCA, "sstGABA_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(sstGABA_gemma_PCA)
 ```
 ```{r vip_author}
 cleanup(vip_author)
 vip_author_PCA <- runPCA(vip_author_clean)
-pcaPlot(vip_author_PCA, "vip_author PCA")
+pcaPlot(vip_author_PCA, "vip_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(vip_author_PCA, "vip_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(vip_author_PCA, "vip_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(vip_author_PCA)
 ```
 ```{r vipGABA_gemma}
 cleanup(vipGABA_gemma)
 vipGABA_gemma_PCA <- runPCA(vipGABA_gemma_clean)
-pcaPlot(vipGABA_gemma_PCA, "vipGABA_gemma PCA")
+pcaPlot(vipGABA_gemma_PCA, "vipGABA_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(vipGABA_gemma_PCA, "vipGABA_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(vipGABA_gemma_PCA, "vipGABA_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(vipGABA_gemma_PCA)
 ```
 ```{r VLMC_author}
 cleanup(VLMC_author)
 VLMC_author_PCA <- runPCA(VLMC_author_clean)
-pcaPlot(VLMC_author_PCA, "VLMC_author PCA")
+pcaPlot(VLMC_author_PCA, "VLMC_author PCA", x_pc = 1, y_pc = 2)
+pcaPlot(VLMC_author_PCA, "VLMC_author PCA", x_pc = 3, y_pc = 4)
+pcaPlot(VLMC_author_PCA, "VLMC_author PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(VLMC_author_PCA)
 ```
 ```{r VLMC_gemma}
 cleanup(VLMC_gemma)
 VLMC_gemma_PCA <- runPCA(VLMC_gemma_clean)
-pcaPlot(VLMC_gemma_PCA, "VLMC_gemma PCA")
+pcaPlot(VLMC_gemma_PCA, "VLMC_gemma PCA", x_pc = 1, y_pc = 2)
+pcaPlot(VLMC_gemma_PCA, "VLMC_gemma PCA", x_pc = 3, y_pc = 4)
+pcaPlot(VLMC_gemma_PCA, "VLMC_gemma PCA", x_pc = 5, y_pc = 6)
+plotLoadingsByPC(VLMC_gemma_PCA)
 ```
