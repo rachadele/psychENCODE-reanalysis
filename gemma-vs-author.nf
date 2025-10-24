@@ -120,6 +120,8 @@ process aggregate_data_manual {
   """
   python $projectDir/bin/aggregate_data_manual.py \\
         --h5ad_file ${h5ad_file} \\
+        --cell_type_column ${params.cell_type_column} \\
+        ${params.filter_samples ? '--filter_samples' : ''}
   """
 }
 
@@ -137,7 +139,8 @@ process aggregate_celltypes_manual {
   script:
   """
   python $projectDir/bin/aggregate_celltypes_manual.py \\
-        --h5ad_files ${h5ad_files}
+        --h5ad_files ${h5ad_files} \\
+        --cell_type_column ${params.cell_type_column}
   """
 }
 

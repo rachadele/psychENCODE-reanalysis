@@ -11,7 +11,7 @@ def parse_arguments():
   parser = argparse.ArgumentParser(description="aggreate pseudobulk matrices by cell type from Gemma data")
   parser.add_argument("--h5ad_files", type=str, nargs="+", default = ["/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/experiment_pseudobulks/manual/DevBrain/DevBrain_pseudobulk.h5ad",
                                                                       "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/experiment_pseudobulks/manual/MultiomeBrain/MultiomeBrain_pseudobulk.h5ad"])
-  
+  parser.add_argument("--cell_type_column", type=str, default="cell_type") 
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
     return known_args
@@ -26,6 +26,7 @@ def filter_samples(adata, min_cells=50):
 def main():
   args = parse_arguments()
   h5ad_files =args.h5ad_files
+  cell_type_column = args.cell_type_column
     
   ct_pseudobulks = {}
   meta_pseudobulks = {}
@@ -34,11 +35,11 @@ def main():
     # print unique samples
     
     cohort = os.path.basename(file).replace("_pseudobulk.h5ad", "")
-    celltypes = adata.obs["cell_type"].unique()
+    celltypes = adata.obs[cell_type_column].unique()
     # replace "." with "-"
     celltypes = [ct.replace(".", "-") for ct in celltypes]
     for cell_type in celltypes:
-      ct_subset = adata[adata.obs["cell_type"] == cell_type].copy()
+      ct_subset = adata[adata.obs[cell_type_column] == cell_type].copy()
       # extract the pseudobulk matrix
       matrix = ct_subset.layers["sum"].copy()
       # get hgnc
