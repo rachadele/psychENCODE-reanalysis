@@ -23,6 +23,7 @@ process save_params_to_file {
 
 
 process aggregate_pairwise {
+
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
   publishDir "${params.outdir}/all_corr/${contrast}/figs/", mode: "copy", pattern: "**png"
   publishDir "${params.outdir}/all_corr/${contrast}/files/", mode: "copy", pattern: "**tsv"
@@ -44,7 +45,6 @@ process aggregate_pairwise {
   """
 }
 
-
 process DE_corr {
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
   publishDir "${params.outdir}/DE_corr/${contrast}/figs/${pavlab_ct}/${author_ct}", mode: 'copy', pattern: '**png'
@@ -65,6 +65,50 @@ process DE_corr {
         --pavlab_results ${pavlab_results} \\
         --author_results ${author_results} \\
         --contrast ${contrast} \\
+  """
+}
+
+process DE_overlap {
+  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
+  publishDir "${params.outdir}/de_overlap/contrast_overlaps/${contrast}", mode: "copy"
+
+  input:
+  tuple val(contrast), path(pavlab_files), path(author_files)
+
+  output:
+  path("**pairwise_overlap.tsv")
+  //path "average_overlap**tsv"
+
+  script:
+
+  """
+  python $projectDir/bin/DE_overlap.py \
+      --contrast ${contrast} \
+      --sc_pipeline_paths ${pavlab_files} \
+      --author_paths ${author_files}
+  """
+}
+
+process average_de_overlaps {
+  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
+  publishDir "${params.outdir}/de_overlap/average_overlaps/filtered_per_contrast", mode: "copy", pattern: "filtered**.tsv"
+  publishDir "${params.outdir}/de_overlap/average_overlaps/per_celltype", mode: "copy", pattern: "per_celltype_averages.tsv"
+  publishDir "${params.outdir}/de_overlap/average_overlaps/overall_average", mode: "copy", pattern: "average_de_overlaps.tsv"
+  publishDir "${params.outdir}/de_overlap/average_overlaps/figs", mode: "copy", pattern: "**png"
+  
+  input:
+  path de_overlap_files
+
+  output:
+  path "filtered**.tsv"
+  path "per_celltype_averages.tsv"
+  path "average_de_overlaps.tsv"
+  path "**png"
+
+  script:
+  """
+  python $projectDir/bin/average_de_overlaps.py \\
+      --de_overlap_paths ${de_overlap_files}
   """
 }
 
@@ -104,6 +148,14 @@ workflow {
     //view
     aggregate_pairwise(pairwise_channel)
 
+    // DE overlap
+    DE_overlap(pairwise_channel)
+
+    DE_overlap_results = DE_overlap.out.collect()
+    average_de_overlaps(DE_overlap_results)
+
+
+     // get cell type, contrast from each path
 
     pavlab_deseq_results.map { it ->
     def parts = it.toString().split("/")
@@ -125,9 +177,6 @@ workflow {
     // combine the cell type specific contrasts from pavlab and author
     ct_contrasts_pavlab.combine(ct_contrasts_author, by: [0,1])
     .set { ct_specific_contrasts }
-
-    ct_specific_contrasts.first().view()
-
     DE_corr(ct_specific_contrasts)
 
 }

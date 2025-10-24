@@ -88,10 +88,9 @@ def main():
       index="ct_sc_pipeline", columns="ct_author", values="spearman_correlation"
   )
 
-  # rename index with underscores instead of dots
-  all_corrs_pivot.index = all_corrs_pivot.index.str.replace(".", "-", regex=False)
   # --- Optional: Cluster rows and columns ---
-  
+  print(all_corrs_pivot.index)
+  print(all_corrs_pivot.columns)
   # Create the desired order from your list
   desired_col_order = [
         "Lamp5", "Lamp5_Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst_Chodl", "Chandelier", "Vip",
@@ -99,25 +98,28 @@ def main():
         "Oligo", "OPC", "VLMC", "Astro", "Endo", "Immune", "Micro", "PC", "SMC"
     ]
      
-  if "L2_3_IT" in all_corrs_pivot.index:
-    [
+  if "L2.3_IT" in all_corrs_pivot.index:
+    desired_row_order = [
         "Lamp5", "Lamp5_Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst_Chodl", "Chandelier", "Vip",
-        "L2_3_IT", "L4_IT", "L5_IT", "L6_IT", "L6_IT_Car3", "L5_ET", "L6b", "L5_6_NP", "L6_CT",
+        "L2.3_IT", "L4_IT", "L5_ET", "L5_IT", "L6_IT", "L6_IT_Car3", "L6b", "L5.6_NP", "L6_CT",
         "Oligo", "OPC", "VLMC", "Astro", "Endo", "Immune", "Micro", "PC", "SMC"
     ]
     
-  elif "L2_3-6intratelencephalicprojectingglutamatergicneuron" in all_corrs_pivot.index:
-    
+  elif "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron" in all_corrs_pivot.index:
+  # change to use periods
+  #
     desired_row_order = [
-      "lamp5GABAergiccorticalinterneuron", "pvalbGABAergiccorticalinterneuron", "sncgGABAergiccorticalinterneuron",
-      "sstGABAergiccorticalinterneuron", "chandelierpvalbGABAergiccorticalinterneuron",
-      "vipGABAergiccorticalinterneuron", "L2_3-6intratelencephalicprojectingglutamatergicneuron",
-      "L5extratelencephalicprojectingglutamatergiccorticalneuron", 
-      "L6bglutamatergiccorticalneuron", "near-projectingglutamatergiccorticalneuron",
-      "L6corticothalamic-projectingglutamatergiccorticalneuron", "oligodendrocyte",
-      "oligodendrocyteprecursorcell", "vascularleptomeningealcell", "astrocyte",
-      "endothelialcell", "microglialcell", "pericyte"
+      "lamp5.GABAergic.cortical.interneuron", "pvalb.GABAergic.cortical.interneuron",
+      "sncg.GABAergic.cortical.interneuron", "sst.GABAergic.cortical.interneuron",
+      "chandelier.pvalb.GABAergic.cortical.interneuron",
+      "vip.GABAergic.cortical.interneuron", "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+      "L5.extratelencephalic.projecting.glutamatergic.cortical.neuron", 
+      "L6b.glutamatergic.cortical.neuron", "near.projecting.glutamatergic.cortical.neuron",
+      "L6.corticothalamic.projecting.glutamatergic.cortical.neuron", "oligodendrocyte",
+      "oligodendrocyte.precursor.cell", "vascular.leptomeningeal.cell", "astrocyte",
+      "endothelial.cell", "microglial.cell", "pericyte"
     ]
+  
 
   ordered = all_corrs_pivot.reindex(index=desired_row_order, columns=desired_col_order)
   # drop NA columns

@@ -464,3 +464,29 @@ workflow {
 
 
 }
+
+
+
+workflow.onComplete {
+    println "Successfully completed"
+    println ( workflow.success ? 
+    """
+    ===============================================================================
+    Pipeline execution summary
+    -------------------------------------------------------------------------------
+
+    Run as      : ${workflow.commandLine}
+    output dir : ${params.outdir}
+
+    --------------------------------------------------------------------------------
+    ================================================================================
+    """.stripIndent() : """
+    Failed: ${workflow.errorReport}
+    exit status : ${workflow.exitStatus}
+    """.stripIndent()
+    )
+}
+
+workflow.onError = {
+println "Error: something went wrong, check the pipeline log at '.nextflow.log"
+}

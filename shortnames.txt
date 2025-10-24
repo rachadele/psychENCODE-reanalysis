@@ -3,6 +3,6 @@ PTSDBrainomics
 SZBDMulti-Seq
 MultiomeBrain
 UCLA-ASD
-Velmeshev_et_al.1
-Velmeshev_et_al.2
+Velmeshev-2019.1
+Velmeshev-2019.2
 DevBrain

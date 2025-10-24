@@ -21,17 +21,17 @@ base_theme <- theme(
 )
 
 parser = argparse::ArgumentParser(description = "Run DESeq2 analysis on pseudobulk matrix")
-parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/work/b1/e327a9471681ce6c7b3befbc7c2cd6/lamp5GABAergiccorticalinterneuron_pseudobulk_matrix.tsv.gz",
+parser$add_argument("--pseudobulk_matrix", type = "character", default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/work/8d/b5bc86c3709c83c30a573c6f8e5346/sncg.GABAergic.cortical.interneuron_pseudobulk_matrix.tsv.gz",
 					help = "Path to the pseudobulk matrix tsv gzipped file.")
 
 parser$add_argument("--metadata", type = "character",
-					default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/pseudobulks/manual/lamp5GABAergiccorticalinterneuron/lamp5GABAergiccorticalinterneuron_pseudobulk_metadata.tsv",
+					default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata",
 					help = "Path to metadata (directory if mode is gemma, or file if mode is manual).")
 
 parser$add_argument("--mode", type = "character", default="gemma",
           help = "Mode of analysis, either 'gemma' or 'manual'. If gemma, use Individual_ID, otherwise use Sample_ID.")
 
-parser$add_argument("--cell_type", type = "character", default="oligodendrocyte",
+parser$add_argument("--cell_type", type = "character", default="sncg.GABAergic.cortical.interneuron",
           help = "Cell type to analyze, e.g., 'lamp5GABAergiccorticalinterneuron")
 
 parser$add_argument("--relevant_samples", type = "character", default=NULL,

@@ -6,8 +6,8 @@ from functools import reduce
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description="aggreate pseudobulk matrices by cell type from Gemma data")
-  parser.add_argument("--pseudobulk_matrices", type=str, nargs="+", default = ["/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/experiment_pseudobulks/gemma/DevBrain/51182_DevBrain_606866_10x_MEX_expmat.unfilt.aggregated.tsv.gz",
-                                                                               "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/experiment_pseudobulks/gemma/MultiomeBrain/51181_MultiomeBrain_606582_10x_MEX_expmat.unfilt.aggregated.tsv.gz"])
+  parser.add_argument("--pseudobulk_matrices", type=str, nargs="+", default = ["/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/experiment_pseudobulks/gemma/Velmeshev-2019.1/Velmeshev-2019.1_aggregated_gemma.tsv.gz",
+                                                                               "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/experiment_pseudobulks/gemma/MultiomeBrain/MultiomeBrain_aggregated_gemma.tsv.gz"])
   parser.add_argument("--metadata_files", type=str, default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata",
                       help="Path to the metadata files from Gemma")
   if __name__ == "__main__":
@@ -46,14 +46,18 @@ def main():
       #mat.columns.values[0:2] = ["ncbi_id", "gene_description"]
       mat["feature_name"] = mat["Sequence"].str.split(" ").str[0]
       mat.index = mat["feature_name"]
-      print(mat.index.values[:5])
       new_mat = mat.drop(columns=["Probe", "Sequence"])
-      
       cols = new_mat.columns
       mapping = pd.DataFrame({"original": cols})
+      # account for two extra .
       mapping["after_delim"] = mapping["original"].str.extract(r"___(.+)")
-      mapping[["sample", "cell_type"]] = mapping["after_delim"].str.extract(r"([^\.]+)\.(.+)")
-
+      # split by 3 dots
+      mapping["sample"] = mapping["after_delim"].str.split(r"\.\.\.").str[0]
+      mapping["cell_type"] = mapping["after_delim"].str.split(r"\.\.\.").str[1]
+     #mapping[["sample", "cell_type"]] = mapping["after_delim"].str.extract(r"([^\.]+)\.(.+)")
+      # Extract sample and cell type directly from before the triple underscores
+     # mapping[["sample", "cell_type"]] = mapping["original"].str.extract(
+      #  r'^X?([^\.]+)\.\.Split\.\.\.\.([^_]+)___')
       for cell_type in mapping["cell_type"].dropna().unique():
           sample_ids = mapping.loc[mapping["cell_type"] == cell_type, "original"]
           mat_subset = new_mat[sample_ids]

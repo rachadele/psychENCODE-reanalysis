@@ -58,7 +58,7 @@ def plot_corr(merged, spearman_corr):
       x="Author_Expression", y="PavLab_Expression",
       scatter=False, color="red"
   )
-  plt.text(0.05, 0.95, f"Spearman r = {spearman_corr:.2f}", transform=plt.gca().transAxes, fontsize=12, color="red")
+  plt.text(0.05, 0.95, f"Spearman r = {spearman_corr:.2f}", transform=plt.gca().transAxes, fontsize=20, color="red")
   plt.title("Gene Expression: Author vs PavLab")
   plt.xlabel("Author Expression")
   plt.ylabel("PavLab Expression")

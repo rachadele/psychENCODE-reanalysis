@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from scipy.stats import rankdata, spearmanr
+plt.rcParams.update({'font.size': 20})
 
 
 def parse_arguments():
@@ -85,7 +86,7 @@ def main():
     "Gemma Only": "darkorange",
     "Both": "crimson"
 }
-  plt.figure(figsize=(10, 6))
+  plt.figure(figsize=(10, 10))
 
   # Scatter plot with color based on significance
   sns.scatterplot(
@@ -110,13 +111,13 @@ def main():
 
   plt.title(f"Contrast: {contrast} - {author_cell_type} vs {gemma_cell_type}")
   plt.text(0.05, 0.95, f"Spearman Correlation: {correlation:.2f}",
-           transform=plt.gca().transAxes, fontsize=12, verticalalignment='top')
+           transform=plt.gca().transAxes, fontsize=20, verticalalignment='top')
   
   # add missing genes length as text
   plt.text(0.05, 0.90, f"Only in Author: {len(only_in_author)}",
-           transform=plt.gca().transAxes, fontsize=12, verticalalignment='top')
+           transform=plt.gca().transAxes, fontsize=20, verticalalignment='top')
   plt.text(0.05, 0.85, f"Only in Gemma: {len(only_in_gemma)}",
-           transform=plt.gca().transAxes, fontsize=12, verticalalignment='top')
+           transform=plt.gca().transAxes, fontsize=20, verticalalignment='top')
   
   plt.xlabel(f"Author: {author_cell_type} Log2 Fold Change")
   plt.ylabel(f"Gemma: {gemma_cell_type} Log2 Fold Change")
