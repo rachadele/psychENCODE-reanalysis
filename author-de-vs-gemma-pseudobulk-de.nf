@@ -406,8 +406,6 @@ workflow {
     aggregated_celltypes_channel.combine(aggregated_celltypes_meta_channel, by: 0)
     .set { ct_pseudobulks_meta_channel }
 
-    
-
     DESeq2_analysis_manual(ct_pseudobulks_meta_channel) 
     // flatMap results
 
