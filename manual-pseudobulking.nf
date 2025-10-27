@@ -22,26 +22,62 @@ process save_params_to_file {
 }
 
 
-process aggregate_pairwise {
-
+process aggregate_data_manual {
   conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/all_corr/${contrast}/figs/", mode: "copy", pattern: "**png"
-  publishDir "${params.outdir}/all_corr/${contrast}/files/", mode: "copy", pattern: "**tsv"
+  publishDir "${params.outdir}/experiment_pseudobulks/manual/${experiment}", mode: "copy"
 
   input:
-  tuple val(contrast), path(pavlab_files), path(author_files)
+  tuple val(experiment), path(h5ad_file)
 
   output:
-  path "pairwise_corr**png"
-  path "pairwise_corr**tsv"
+  path "**pseudobulk.h5ad", emit: aggregated_experiments
 
   script:
-
   """
-  python $projectDir/bin/aggregate_pairwise_gemma.py \\
-      --contrast ${contrast} \\
-      --sc_pipeline_paths ${pavlab_files} \\
-      --author_paths ${author_files}
+  python $projectDir/bin/aggregate_data_manual.py \\
+        --h5ad_file ${h5ad_file} \\
+        --cell_type_column ${params.cell_type_column} \\
+        ${params.filter_samples ? '--filter_samples' : ''}
+  """
+}
+
+process aggregate_celltypes_manual {
+  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
+  publishDir "${params.outdir}/ct_pseudobulks/manual", mode: "copy"
+
+  input:
+  path h5ad_files
+
+  output:
+  path "**pseudobulk_matrix.tsv.gz", emit: aggregated_celltypes
+  path "**pseudobulk_metadata.tsv", emit: aggregated_celltypes_meta
+
+  script:
+  """
+  python $projectDir/bin/aggregate_celltypes_manual.py \\
+        --h5ad_files ${h5ad_files} \\
+        --cell_type_column ${params.cell_type_column}
+  """
+}
+
+
+process DESeq2_analysis_manual {
+  conda "/home/rschwartz/anaconda3/envs/r4.3"
+  publishDir "${params.outdir}/DESeq2/manual/${cell_type}", mode: "copy"
+
+  input:
+  tuple val(cell_type), path(pseudobulk_matrix), path(pseudobulk_metadata)
+
+  output:
+  tuple val(cell_type), path("**results.tsv"), emit: all_contrasts_manual
+  path "**png"
+
+  script:
+  """
+  Rscript $projectDir/bin/DESeq2_analysis.R --pseudobulk_matrix ${pseudobulk_matrix} --metadata ${pseudobulk_metadata} \\
+        --cell_type ${cell_type} \\
+        --mode manual
+
   """
 }
 
@@ -65,6 +101,30 @@ process DE_corr {
         --pavlab_results ${pavlab_results} \\
         --author_results ${author_results} \\
         --contrast ${contrast} \\
+  """
+}
+
+
+process aggregate_pairwise {
+
+  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
+  publishDir "${params.outdir}/all_corr/${contrast}/figs/", mode: "copy", pattern: "**png"
+  publishDir "${params.outdir}/all_corr/${contrast}/files/", mode: "copy", pattern: "**tsv"
+
+  input:
+  tuple val(contrast), path(pavlab_files), path(author_files)
+
+  output:
+  path "pairwise_corr**png"
+  path "pairwise_corr**tsv"
+
+  script:
+
+  """
+  python $projectDir/bin/aggregate_pairwise_gemma.py \\
+      --contrast ${contrast} \\
+      --sc_pipeline_paths ${pavlab_files} \\
+      --author_paths ${author_files}
   """
 }
 

@@ -4,6 +4,15 @@ import glob
 import pandas as pd
 from functools import reduce
 import scanpy as sc
+import numpy as np
+
+
+import os
+import argparse
+import glob
+import pandas as pd
+from functools import reduce
+import scanpy as sc
 import pandas as pd
 import numpy as np
 
@@ -11,6 +20,7 @@ def parse_arguments():
   parser = argparse.ArgumentParser(description="aggreate pseudobulk matrices by cell type from Gemma data")
   parser.add_argument("--h5ad_file", type=str, default = "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychEncode_author_false_sample_split_false/homo_sapiens/Velmeshev_et_al.1.h5ad")
   parser.add_argument("--cell_type_column", type=str, default="cell_type")
+  parser.add_argument("--celltype_annotation_file", type=str, default=None, help="Optional cell type annotation file to join with metadata (must have sample_id and cell_id columns)")
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
     return known_args
@@ -39,7 +49,19 @@ def aggregate_data(adata, cell_type_column="cell_type"):
     # generate pseudobulk matrix
     aggregated =  sc.get.aggregate(adata, by=["sample_id", cell_type_column], func=["sum", "count_nonzero", "mean"])
     return aggregated
-  
+
+# Function to join cell type annotation file to adata.obs
+def join_celltype_annotation(adata, annotation_file):
+    anno_df = pd.read_csv(annotation_file, sep='\t')
+    # Must have sample_id and cell_id columns
+    if not set(['sample_id', 'cell_id']).issubset(anno_df.columns):
+        raise ValueError("Cell type annotation file must contain 'sample_id' and 'cell_id' columns.")
+    if not set(['sample_id', 'cell_id']).issubset(adata.obs.columns):
+        raise ValueError("AnnData.obs must contain 'sample_id' and 'cell_id' columns to join with annotation file.")
+    # Merge annotation dataframe with adata.obs
+    #adata.obs = adata.obs.reset_index(drop=True)
+    adata.obs = adata.obs.merge(anno_df, on=['sample_id', 'cell_id'], how='left')
+    return adata 
   
 def main():
   args = parse_arguments()
@@ -47,6 +69,10 @@ def main():
   cell_type_column = args.cell_type_column
   adata = sc.read_h5ad(h5ad_file)
   cohort = os.path.basename(h5ad_file).replace(".h5ad", "")
+
+  # Optionally join cell type annotation file
+  if args.celltype_annotation_file:
+    adata = join_celltype_annotation(adata, args.celltype_annotation_file)
   
   # drop genes with missing feature_name
   
@@ -71,7 +97,6 @@ def main():
 
   # get sample id characteristics value counts
   sample_characteristics = adata.obs[characteristics].value_counts(dropna=False).reset_index()
-
   
   umi_mapping = get_avg_umi(adata, cell_type_column=cell_type_column)
   cell_counts = adata.obs[["sample_id", cell_type_column]].value_counts().reset_index()
