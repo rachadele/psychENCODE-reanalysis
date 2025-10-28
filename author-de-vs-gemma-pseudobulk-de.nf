@@ -76,112 +76,35 @@ workflow {
   }
   .set { author_pseudobulks_channel }
 
-  GetRelevantSamples(author_pseudobulks_channel)
+ // GetRelevantSamples(author_pseudobulks_channel)
 
-
-  GetRelevantSamples.out.relevant_samples.map { it ->
-    def author_cell_type = it[0]
-    def relevant_samples_file = it[1]
-    def pavlab_cell_type = params.gemma_ct_map[author_cell_type] ?: author_cell_type.replace(".", "_")
-    [pavlab_cell_type, author_cell_type, relevant_samples_file]
-  }
-  .set { relevant_samples_channel }
+  //GetRelevantSamples.out.relevant_samples.map { it ->
+    //def author_cell_type = it[0]
+    //def relevant_samples_file = it[1]
+    //def pavlab_cell_type = params.gemma_ct_map[author_cell_type] ?: author_cell_type.replace(".", "_")
+    //[pavlab_cell_type, author_cell_type, relevant_samples_file]
+  //}
+  //.set { relevant_samples_channel }
 
   if (params.from_gemma) {
-    Channel
-      .fromPath(params.study_names)
-      .flatMap { file -> file.readLines().collect { it.trim() } }
-      .set { study_names }
-    // Aggregate data from GEMMA
-    GetGemmaPseudobulks(study_names)
-    GetGemmaPseudobulks.out.aggregated_data.collect()
-    .set { aggregated_data }
-    AggregateCelltypesGemma(aggregated_data)
-    AggregateCelltypesGemma.out.aggregated_celltypes.flatMap()
-    .set { aggregated_celltypes } 
-
-    // extract cell type from channel
-    aggregated_celltypes.map { it ->
-      def cell_type = it.getBaseName().split("_pseudobulk_matrix.tsv")[0] // e.g., "Astrocyte_pseudobulk_matrix.tsv.gz"
-      [cell_type, it]
-    }
-    .set { aggregated_celltypes_channel }
-    // Run DESeq2 analysis
-    DESeq2AnalysisGemma(aggregated_celltypes_channel)
-
-    DESeq2AnalysisGemma.out.all_contrasts_gemma.flatMap { it ->
-      def cell_type = it[0]
-      def files = it[1]
-      files.collect { results_file ->
-        def contrast = results_file.getParent().getBaseName() // e.g., Disorder_PTSD_vs_Control
-        [contrast, cell_type, results_file]
-      }
+    pavlab_deseq_results = Channel.fromPath(params.pavlab_deseq_results)
+    pavlab_deseq_results.map { it ->
+      def parts = it.toString().split("/")
+      def cell_type = parts[-3]
+      def contrast = parts[-2]
+      [contrast, cell_type, it]
     }
     .set { all_contrasts_pavlab_ct }
 
     // combine manual contrasts and author contrasts
-    
     all_contrasts_pavlab_ct.map { full_contrast, ct, file ->
         def contrast = full_contrast.replaceAll(/Disorder_|_vs_Control/, '')
-        
         [contrast, ct, file]
     }.set { pavlab_contrast_channel }
 
     pavlab_contrast_channel.combine(all_contrasts_author_ct, by: [0,1])
     .set { all_contrasts_channel }
  
-  } else {
-    Channel.fromPath("${params.h5ad_files}/*.h5ad").map { h5ad_file ->
-        def name = h5ad_file.getBaseName()
-        [name, h5ad_file]
-    }
-    .set { h5ad_files_channel }
-
-
-    AggregateDataManual(h5ad_files_channel).collect()
-    .set { aggregated_experiments_channel }
-
-    AggregateCelltypesManual(aggregated_experiments_channel)
-    
-    AggregateCelltypesManual.out.aggregated_celltypes
-    .flatMap()
-    .set { aggregated_celltypes }
-
-    AggregateCelltypesManual.out.aggregated_celltypes_meta
-    .flatMap()
-    .set { aggregated_celltypes_meta }
-    
-
-    // extract cell type from channel
-    aggregated_celltypes.map { it ->
-      def cell_type = it.getBaseName().split("_pseudobulk_matrix.tsv")[0] // e.g., "Astrocyte_pseudobulk_matrix.tsv.gz"
-      [cell_type, it]
-    }
-    .set { aggregated_celltypes_channel }
-
-
-    aggregated_celltypes_meta.map { it ->
-      def cell_type = it.getBaseName().split("_pseudobulk_metadata")[0] // e.g., "Astrocyte_pseudobulk_metadata.tsv"
-      [cell_type, it]
-    }
-    .set { aggregated_celltypes_meta_channel }
-
-    aggregated_celltypes_channel.combine(aggregated_celltypes_meta_channel, by: 0)
-    .set { ct_pseudobulks_meta_channel }
-
-    DESeq2AnalysisManual(ct_pseudobulks_meta_channel) 
-    // flatMap results
-
-    DESeq2AnalysisManual.out.all_contrasts_manual.flatMap { it ->
-      def cell_type = it[0]
-      def files = it[1]
-      files.collect { results_file ->
-        def contrast = results_file.getParent().getBaseName() // e.g., Disorder_PTSD_vs_Control
-        [contrast, cell_type, results_file]
-      }
-    }
-    .set { all_contrasts_pavlab_ct }
-
     all_contrasts_pavlab_ct.view() 
     // combine manual contrasts and author contrasts
     
