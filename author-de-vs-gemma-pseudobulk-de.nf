@@ -46,11 +46,11 @@ workflow {
   wrangle_author(author_contrasts)
  
 
-  wrangle_author.out.ct_contrasts.flatMap{it ->
+  WrangleAuthor.out.ct_contrasts.flatMap{it ->
    def contrast = it[0]
    def files = it[1]
     files.collect { file ->
-      def author_cell_type = file.getBaseName().split("_")[1] // e.g., "Bipolar_Vip_degs.tsv
+      def author_cell_type = file.getBaseName().split("_")[1] // e.g., "Bipolar_Vip_degs.tsv"
       if (params.author_submitted) {
         pavlab_cell_type = params.author_ct_map[author_cell_type] //?: cell_type.replace(".", "_")
       }
@@ -76,11 +76,10 @@ workflow {
   }
   .set { author_pseudobulks_channel }
 
-  get_relevant_samples(author_pseudobulks_channel)
+  GetRelevantSamples(author_pseudobulks_channel)
 
 
-
-  get_relevant_samples.out.relevant_samples.map { it ->
+  GetRelevantSamples.out.relevant_samples.map { it ->
     def author_cell_type = it[0]
     def relevant_samples_file = it[1]
     def pavlab_cell_type = params.gemma_ct_map[author_cell_type] ?: author_cell_type.replace(".", "_")
@@ -94,11 +93,11 @@ workflow {
       .flatMap { file -> file.readLines().collect { it.trim() } }
       .set { study_names }
     // Aggregate data from GEMMA
-    get_gemma_pseudobulks(study_names)
-    get_gemma_pseudobulks.out.aggregated_data.collect()
+    GetGemmaPseudobulks(study_names)
+    GetGemmaPseudobulks.out.aggregated_data.collect()
     .set { aggregated_data }
-    aggregate_celltypes_gemma(aggregated_data)
-    aggregate_celltypes_gemma.out.aggregated_celltypes.flatMap()
+    AggregateCelltypesGemma(aggregated_data)
+    AggregateCelltypesGemma.out.aggregated_celltypes.flatMap()
     .set { aggregated_celltypes } 
 
     // extract cell type from channel
@@ -108,9 +107,9 @@ workflow {
     }
     .set { aggregated_celltypes_channel }
     // Run DESeq2 analysis
-    DESeq2_analysis_gemma(aggregated_celltypes_channel)
+    DESeq2AnalysisGemma(aggregated_celltypes_channel)
 
-    DESeq2_analysis_gemma.out.all_contrasts_gemma.flatMap { it ->
+    DESeq2AnalysisGemma.out.all_contrasts_gemma.flatMap { it ->
       def cell_type = it[0]
       def files = it[1]
       files.collect { results_file ->
@@ -139,16 +138,16 @@ workflow {
     .set { h5ad_files_channel }
 
 
-    aggregate_data_manual(h5ad_files_channel).collect()
+    AggregateDataManual(h5ad_files_channel).collect()
     .set { aggregated_experiments_channel }
 
-    aggregate_celltypes_manual(aggregated_experiments_channel)
+    AggregateCelltypesManual(aggregated_experiments_channel)
     
-    aggregate_celltypes_manual.out.aggregated_celltypes
+    AggregateCelltypesManual.out.aggregated_celltypes
     .flatMap()
     .set { aggregated_celltypes }
 
-    aggregate_celltypes_manual.out.aggregated_celltypes_meta
+    AggregateCelltypesManual.out.aggregated_celltypes_meta
     .flatMap()
     .set { aggregated_celltypes_meta }
     
@@ -170,10 +169,10 @@ workflow {
     aggregated_celltypes_channel.combine(aggregated_celltypes_meta_channel, by: 0)
     .set { ct_pseudobulks_meta_channel }
 
-    DESeq2_analysis_manual(ct_pseudobulks_meta_channel) 
+    DESeq2AnalysisManual(ct_pseudobulks_meta_channel) 
     // flatMap results
 
-    DESeq2_analysis_manual.out.all_contrasts_manual.flatMap { it ->
+    DESeq2AnalysisManual.out.all_contrasts_manual.flatMap { it ->
       def cell_type = it[0]
       def files = it[1]
       files.collect { results_file ->
@@ -202,7 +201,7 @@ workflow {
   }
 
   // Run DE correlation
-  DE_corr(mode, all_contrasts_channel)
+  DECorr(mode, all_contrasts_channel)
  
   pavlab_contrast_channel.map {contrast, ct, file ->
     [contrast, file]
@@ -218,14 +217,14 @@ workflow {
   pavlab_files.combine(author_files, by: 0)
   .set { pairwise_channel }
   // Aggregate pairwise results
-  aggregate_pairwise(pairwise_channel)
+  AggregatePairwise(pairwise_channel)
   //// Compare pseudobulks
   //// only compare for valid cell type mappings
   //// need a mapping dictionary of author cell types to pavlab cell types since strings don't map exactly
   author_pseudobulks_channel.combine(aggregated_celltypes_channel, by: 0)
   .set { pseudobulks_combined }
 
-  compare_pseudobulks(mode, pseudobulks_combined)
+  ComparePseudobulks(mode, pseudobulks_combined)
 
 }
 

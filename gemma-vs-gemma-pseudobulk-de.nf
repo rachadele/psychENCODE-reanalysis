@@ -1,5 +1,11 @@
 #!/usr/bin/env nextflow
 
+// Import all processes from modules
+include { AggregatePairwise } from "${projectDir}/modules/aggregate_pairwise.nf"
+include { DECorr } from "${projectDir}/modules/DE_corr.nf"
+include { DEOverlap } from "${projectDir}/modules/DE_overlap.nf"
+include { AverageDEOverlaps } from "${projectDir}/modules/average_de_overlaps.nf"
+
 
 process save_params_to_file {
     publishDir (
@@ -19,97 +25,6 @@ process save_params_to_file {
     outdir: ${params.outdir}
 	  EOF
     """
-}
-
-
-process aggregate_pairwise {
-
-  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/all_corr/${contrast}/figs/", mode: "copy", pattern: "**png"
-  publishDir "${params.outdir}/all_corr/${contrast}/files/", mode: "copy", pattern: "**tsv"
-
-  input:
-  tuple val(contrast), path(pavlab_files), path(author_files)
-
-  output:
-  path "pairwise_corr**png"
-  path "pairwise_corr**tsv"
-
-  script:
-
-  """
-  python $projectDir/bin/aggregate_pairwise_gemma.py \\
-      --contrast ${contrast} \\
-      --sc_pipeline_paths ${pavlab_files} \\
-      --author_paths ${author_files}
-  """
-}
-
-process DE_corr {
-  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/DE_corr/${contrast}/figs/${pavlab_ct}/${author_ct}", mode: 'copy', pattern: '**png'
-  publishDir "${params.outdir}/DE_corr/${contrast}/files/${pavlab_ct}/${author_ct}", mode: 'copy', pattern: '**tsv'
-
-
-  input:
-  tuple val(contrast), val(pavlab_ct), path(pavlab_results), val(author_ct), path(author_results)
-
-  output:
-  path "**png"
-  path "missing_genes.tsv", emit: missing_genes
-  path "**DE_merge**.tsv", emit: merged_results
-
-  script:
-  """
-  python $projectDir/bin/DE_corr.py \\
-        --pavlab_results ${pavlab_results} \\
-        --author_results ${author_results} \\
-        --contrast ${contrast} \\
-  """
-}
-
-process DE_overlap {
-  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/de_overlap/contrast_overlaps/${contrast}", mode: "copy"
-
-  input:
-  tuple val(contrast), path(pavlab_files), path(author_files)
-
-  output:
-  path("**pairwise_overlap.tsv")
-  //path "average_overlap**tsv"
-
-  script:
-
-  """
-  python $projectDir/bin/DE_overlap.py \
-      --contrast ${contrast} \
-      --sc_pipeline_paths ${pavlab_files} \
-      --author_paths ${author_files}
-  """
-}
-
-process average_de_overlaps {
-  conda "/home/rschwartz/anaconda3/envs/scanpyenv"
-  publishDir "${params.outdir}/de_overlap/average_overlaps/filtered_per_contrast", mode: "copy", pattern: "filtered**.tsv"
-  publishDir "${params.outdir}/de_overlap/average_overlaps/per_celltype", mode: "copy", pattern: "per_celltype_averages.tsv"
-  publishDir "${params.outdir}/de_overlap/average_overlaps/overall_average", mode: "copy", pattern: "average_de_overlaps.tsv"
-  publishDir "${params.outdir}/de_overlap/average_overlaps/figs", mode: "copy", pattern: "**png"
-  
-  input:
-  path de_overlap_files
-
-  output:
-  path "filtered**.tsv"
-  path "per_celltype_averages.tsv"
-  path "average_de_overlaps.tsv"
-  path "**png"
-
-  script:
-  """
-  python $projectDir/bin/average_de_overlaps.py \\
-      --de_overlap_paths ${de_overlap_files}
-  """
 }
 
 workflow {
@@ -146,37 +61,35 @@ workflow {
       .set { pairwise_channel }
 
     //view
-    aggregate_pairwise(pairwise_channel)
+    AggregatePairwise(pairwise_channel)
 
     // DE overlap
-    DE_overlap(pairwise_channel)
+    DEOverlap(pairwise_channel)
 
-    DE_overlap_results = DE_overlap.out.collect()
-    average_de_overlaps(DE_overlap_results)
+    DE_overlap_results = DEOverlap.out.collect()
+    AverageDEOverlaps(DE_overlap_results)
 
-
-     // get cell type, contrast from each path
-
+    // get cell type, contrast from each path
     pavlab_deseq_results.map { it ->
-    def parts = it.toString().split("/")
-    def cell_type = parts[-3]
-    def contrast = parts[-2]
-    [contrast, cell_type, it]
+      def parts = it.toString().split("/")
+      def cell_type = parts[-3]
+      def contrast = parts[-2]
+      [contrast, cell_type, it]
     }
     .set { ct_contrasts_pavlab }
 
-      author_label_deseq_results.map { it ->
-    def parts = it.toString().split("/")
-    def cell_type = parts[-3]
-    def pavlab_cell_type = params.gemma_to_gemma_map[cell_type] ?: cell_type
-    def contrast = parts[-2]
-    [contrast, pavlab_cell_type, cell_type, it]
+    author_label_deseq_results.map { it ->
+      def parts = it.toString().split("/")
+      def cell_type = parts[-3]
+      def pavlab_cell_type = params.gemma_to_gemma_map[cell_type] ?: cell_type
+      def contrast = parts[-2]
+      [contrast, pavlab_cell_type, cell_type, it]
     }
     .set { ct_contrasts_author }
 
     // combine the cell type specific contrasts from pavlab and author
     ct_contrasts_pavlab.combine(ct_contrasts_author, by: [0,1])
     .set { ct_specific_contrasts }
-    DE_corr(ct_specific_contrasts)
+    DECorr(ct_specific_contrasts)
 
 }
