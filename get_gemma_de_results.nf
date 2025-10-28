@@ -44,7 +44,8 @@ workflow {
   } else {
     Channel.fromPath("${params.h5ad_files}/*.h5ad").map { h5ad_file ->
         def name = h5ad_file.getBaseName()
-        [name, h5ad_file]
+        def annotation_file = params.celltype_annotation_files[name]
+        [name, annotation_file,h5ad_file]
     }
     .set { h5ad_files_channel }
 
