@@ -189,8 +189,8 @@ source_data/DEGs/
 source_data/PEC2_sample_metadata.txt
 gemma_aggregates/
 test_pseudo/
-**tsv.gz
-**gz
-**tsv
+*tsv.gz
+*gz
+*tsv
 
 
