@@ -7,11 +7,11 @@ process GetGemmaPseudobulks {
   script:
   """
   if [ ${params.author_submitted} = true ]; then
-    gemma-cli getSingleCellDataMatrix -e $experiment --aggregate-by-assay \
+    gemma-cli-staging getSingleCellDataMatrix -e $experiment --aggregate-by-assay \
     --aggregate-by-cell-type-assignment author-submitted \
     --output-file "${experiment}_aggregated_gemma.tsv.gz"
   else
-    gemma-cli getSingleCellDataMatrix -e $experiment --aggregate-by-assay \
+    gemma-cli-staging getSingleCellDataMatrix -e $experiment --aggregate-by-assay \
      --aggregate-by-cell-type-assignment ${params.cta_name} \
     --output-file "${experiment}_aggregated_gemma.tsv.gz"
   fi
