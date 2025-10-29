@@ -90,18 +90,17 @@ def main():
   
   # Create the desired order from your list
   desired_col_order = [
-      "Lamp5", "Lamp5.Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst.Chodl", "Chandelier", "Vip",
-      "L2.3.IT", "L4.IT", "L5.ET", "L5.IT", "L6.IT", "L6.IT.Car3", "L6b", "L5.6.NP", "L6.CT",
-      "Oligo", "OPC", "VLMC", "Astro", "Endo", "Immune", "Micro", "PC", "SMC"
+      "Lamp5", "Lamp5_Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst_Chodl", "Chandelier", "Vip",
+      "L2_3_IT", "L4_IT", "L5_ET", "L5_IT", "L6_IT", "L6_IT_Car3", "L6b", "L5_6_NP", "L6_CT",
+      "Oligo", "OPC", "Astro", "Micro", "Immune", "VLMC", "Endo", "PC", "SMC",
   ]
   
-  print(all_corrs_pivot.index)
    
   if "L2.3_IT" in all_corrs_pivot.index:
     desired_row_order = [
         "Lamp5", "Lamp5_Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst_Chodl", "Chandelier", "Vip",
         "L2.3_IT", "L4_IT", "L5_ET", "L5_IT", "L6_IT", "L6_IT_Car3", "L6b", "L5.6_NP", "L6_CT",
-        "Oligo", "OPC", "VLMC", "Astro", "Endo", "Immune", "Micro", "PC", "SMC"
+        "Oligo", "OPC", "Astro", "Micro", "Immune", "Endo", "PC", "SMC", "VLMC"
     ]
     
   elif "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron" in all_corrs_pivot.index:
@@ -112,11 +111,9 @@ def main():
       "sncg.GABAergic.cortical.interneuron", "sst.GABAergic.cortical.interneuron",
       "chandelier.pvalb.GABAergic.cortical.interneuron",
       "vip.GABAergic.cortical.interneuron", "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-      "L5.extratelencephalic.projecting.glutamatergic.cortical.neuron", 
-      "L6b.glutamatergic.cortical.neuron", "near.projecting.glutamatergic.cortical.neuron",
-      "L6.corticothalamic.projecting.glutamatergic.cortical.neuron", "oligodendrocyte",
-      "oligodendrocyte.precursor.cell", "vascular.leptomeningeal.cell", "astrocyte",
-      "endothelial.cell", "microglial.cell", "pericyte"
+      "deep.layer.non.IT", "oligodendrocyte",
+      "oligodendrocyte.precursor.cell", "astrocyte",
+      "microglial.cell", "vascular"
     ]
   
   ordered = all_corrs_pivot.reindex(index=desired_row_order, columns=desired_col_order)

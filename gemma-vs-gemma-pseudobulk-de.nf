@@ -34,6 +34,7 @@ workflow {
 
   author_label_deseq_results = Channel
     .fromPath(params.author_label_deseq_results) 
+  // view both
 
   // get cell type, contrast from each path
 
@@ -54,13 +55,13 @@ workflow {
     }
     .groupTuple(by: [0])
     .set { all_contrasts_author_ct }
+    //all_contrasts_author_ct.view()
 
         // combine the two channels on contrast and cell type
   all_contrasts_pavlab_ct
       .combine(all_contrasts_author_ct, by: 0)
       .set { pairwise_channel }
 
-    //view
     AggregatePairwise(pairwise_channel)
 
     // DE overlap
@@ -90,6 +91,10 @@ workflow {
     // combine the cell type specific contrasts from pavlab and author
     ct_contrasts_pavlab.combine(ct_contrasts_author, by: [0,1])
     .set { ct_specific_contrasts }
-    DECorr(ct_specific_contrasts)
+    //ct_specific_contrasts.view()
+    //DECorr(ct_specific_contrasts)
 
+}
+workflow.onComplete {
+  println "Workflow completed successfully. Results are available in the output directory: ${params.outdir}"
 }

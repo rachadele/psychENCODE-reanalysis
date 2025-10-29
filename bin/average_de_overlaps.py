@@ -17,35 +17,36 @@ import seaborn as sns
 import re
 
 gemma_to_gemma_map = {
-	"Chandelier": "chandelier.pvalb.GABAergic.cortical.interneuron",
-	"Lamp5": "lamp5.GABAergic.cortical.interneuron",
-	"Lamp5_Lhx6": "lamp5.GABAergic.cortical.interneuron",
-	"Pax6": "caudal.ganglionic.eminence.derived.GABAergic.cortical.interneuron",
-	"Pvalb": "pvalb.GABAergic.cortical.interneuron",
-	"Sncg": "sncg.GABAergic.cortical.interneuron",
-	"Sst": "sst.GABAergic.cortical.interneuron",
-	"Sst_Chodl": "sst.GABAergic.cortical.interneuron",
-	"Vip": "vip.GABAergic.cortical.interneuron",
-	"L2_3_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-	"L4_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-	"L5_6_NP": "near.projecting.glutamatergic.cortical.neuron",
-	"L5_ET": "L5.extratelencephalic.projecting.glutamatergic.cortical.neuron",
-	"L5_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-	"L6_CT": "L6.corticothalamic.projecting.glutamatergic.cortical.neuron",
-	"L6_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-	"L6_IT_Car3": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-	"L6b": "L6b.glutamatergic.cortical.neuron",
-	"Astro": "astrocyte",
-	"Endo": "endothelial.cell",
-	"Immune": "no match",
-	"Micro": "microglial.cell",
-	"Micro_PVM": "microglial.cell",
-	"Oligo": "oligodendrocyte",
-	"OPC": "oligodendrocyte.precursor.cell",
-	"PC": "pericyte",
-	"SMC": "no match",
-	"VLMC": "vascular.leptomeningeal.cell"
-}
+		"Astro": "astrocyte",
+		"Chandelier": "chandelier.pvalb.GABAergic.cortical.interneuron",
+		"Endo": "vascular",
+		"Immune": "microglial.cell",
+		"L2.3_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+		"L4_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+		"L5.6_NP": "deep.layer.non.IT",
+		"L5_ET": "deep.layer.non.IT",
+		"L5_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+		"L6_CT": "deep.layer.non.IT",
+		"L6_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+		"L6_IT_Car3": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+		"L6b": "deep.layer.non.IT",
+		"Lamp5": "lamp5.GABAergic.cortical.interneuron",
+		"Lamp5_Lhx6": "lamp5.GABAergic.cortical.interneuron",
+		"Micro": "microglial.cell",
+		"OPC": "oligodendrocyte.precursor.cell",
+		"Oligo": "oligodendrocyte",
+		"PC": "vascular",
+		"Pax6": "PAX6.GABAergic.cortical.interneuron",
+		"Pvalb": "pvalb.GABAergic.cortical.interneuron",
+		"SMC": "vascular",
+		"Sncg": "sncg.GABAergic.cortical.interneuron",
+		"Sst": "sst.GABAergic.cortical.interneuron",
+		"Sst_Chodl": "sst.GABAergic.cortical.interneuron",
+		"VLMC": "vascular",
+		"Vip": "vip.GABAergic.cortical.interneuron"
+	}
+
+
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description="aggreate pseudobulk matrices by cell type from Gemma data")
