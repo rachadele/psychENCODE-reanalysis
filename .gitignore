@@ -191,5 +191,6 @@ gemma_aggregates/
 test_pseudo/
 **tsv.gz
 **gz
+**tsv
 
 
