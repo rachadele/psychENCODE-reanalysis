@@ -12,7 +12,7 @@ process GetGemmaPseudobulks {
     --output-file "${experiment}_aggregated_gemma.tsv.gz"
   else
     gemma-cli getSingleCellDataMatrix -e $experiment --aggregate-by-assay \
-    --aggregate-by-preferred-cell-type-assignment \
+     --aggregate-by-cell-type-assignment ${params.cta_name} \
     --output-file "${experiment}_aggregated_gemma.tsv.gz"
   fi
   """
