@@ -7,7 +7,6 @@ include { AggregateDataManual } from "${projectDir}/modules/aggregate_data_manua
 include { AggregateCelltypesManual } from "${projectDir}/modules/aggregate_celltypes_manual.nf"
 include { DESeq2AnalysisGemma } from "${projectDir}/modules/DESeq2_analysis_gemma.nf"
 include { DESeq2AnalysisManual } from "${projectDir}/modules/DESeq2_analysis_manual.nf"
-
 workflow {
   if (params.from_gemma) {
     Channel

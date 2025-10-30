@@ -5,7 +5,7 @@ include { AggregatePairwise } from "${projectDir}/modules/aggregate_pairwise.nf"
 include { DECorr } from "${projectDir}/modules/DE_corr.nf"
 include { DEOverlap } from "${projectDir}/modules/DE_overlap.nf"
 include { AverageDEOverlaps } from "${projectDir}/modules/average_de_overlaps.nf"
-
+include { AverageDECorrelations } from "${projectDir}/modules/average_corr.nf"
 
 process save_params_to_file {
     publishDir (
@@ -58,11 +58,15 @@ workflow {
     //all_contrasts_author_ct.view()
 
         // combine the two channels on contrast and cell type
-  all_contrasts_pavlab_ct
+    all_contrasts_pavlab_ct
       .combine(all_contrasts_author_ct, by: 0)
       .set { pairwise_channel }
 
     AggregatePairwise(pairwise_channel)
+  
+    DE_corr_results = AggregatePairwise.out.pairwise_corrs.collect()
+    AverageDECorrelations(DE_corr_results)
+
 
     // DE overlap
     DEOverlap(pairwise_channel)
