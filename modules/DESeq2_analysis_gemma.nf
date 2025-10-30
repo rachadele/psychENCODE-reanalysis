@@ -8,9 +8,11 @@ process DESeq2AnalysisGemma {
   path "**png"
   script:
   """
-  Rscript $projectDir/bin/DESeq2_analysis.R --pseudobulk_matrix ${pseudobulk_matrix} \
-        --metadata ${params.gemma_meta_dir} \
-        --mode gemma \
-        --cell_type ${pavlab_cell_type}
+  Rscript $projectDir/bin/DESeq2_analysis.R \\
+    --pseudobulk_matrix ${pseudobulk_matrix} \\
+    --metadata ${params.gemma_meta_dir} \\
+    --mode gemma \\
+    --cell_type ${pavlab_cell_type} \\
+    ${params.filter_genes ? "--filter_genes" : ""}
   """
 }

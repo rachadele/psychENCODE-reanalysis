@@ -5,8 +5,8 @@ process AggregatePairwise {
   input:
   tuple val(contrast), path(pavlab_files), path(author_files)
   output:
-  path "pairwise_corr**png"
-  path "pairwise_corr**tsv"
+  path "**pairwise_corr*.png"
+  path "**pairwise_corr*.tsv"
   script:
   """
   python $projectDir/bin/aggregate_pairwise.py \

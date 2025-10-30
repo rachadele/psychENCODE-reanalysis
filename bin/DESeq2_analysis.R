@@ -1,4 +1,3 @@
-
 library(DESeq2)
 library(tibble)
 library(argparse)
@@ -37,12 +36,17 @@ parser$add_argument("--cell_type", type = "character", default="sncg.GABAergic.c
 parser$add_argument("--relevant_samples", type = "character", default=NULL,
           help = "Path to a file with relevant samples to filter the pseudobulk matrix. If NULL, all samples are used.")
 
+parser$add_argument("--filter_genes", type = "logical", default=FALSE,
+          help = "Whether to apply gene filtering (default: FALSE). Set to TRUE to apply gene filtering.")
 
 args = parser$parse_args()
 pseudobulk_matrix_path <- args$pseudobulk_matrix
 mode <- args$mode
 cell_type <- args$cell_type
 relevant_samples_path <- args$relevant_samples
+filter_genes <- args$filter_genes  # default to TRUE
+
+
 
 # metadata processing ---------------------------------------------------
 if (!is.null(relevant_samples_path)) {
@@ -137,7 +141,11 @@ filtered_metadata$PMI[is.na(filtered_metadata$PMI)] <- median(filtered_metadata$
 cpm_mat <- cpm(pseudobulk_matrix, log = FALSE)
 
 # removes genes with less than 0.5 CPM in at least 30% of samples
-keep_genes <- rowSums(cpm_mat > 0.5) >= 0.3 * ncol(pseudobulk_matrix)
+if (filter_genes) {
+  keep_genes <- rowSums(cpm_mat > 0.5) >= 0.3 * ncol(pseudobulk_matrix)
+} else {
+  keep_genes <- rep(TRUE, nrow(cpm_mat))
+}
 
 pseudobulk_matrix <- pseudobulk_matrix[keep_genes, ]
 

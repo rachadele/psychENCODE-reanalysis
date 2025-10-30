@@ -13,7 +13,8 @@ process AverageDEOverlaps {
   path "**png"
   script:
   """
-  python $projectDir/bin/average_de_overlaps.py \
-      --de_overlap_paths ${de_overlap_files}
+  python $projectDir/bin/average_de_overlaps.py \\
+      --de_overlap_paths ${de_overlap_files} \\
+      --annotation_level ${params.level}
   """
 }

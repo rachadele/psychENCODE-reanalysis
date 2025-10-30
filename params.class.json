@@ -27,5 +27,6 @@
 		"Sst_Chodl": "sst.GABAergic.cortical.interneuron",
 		"VLMC": "vascular",
 		"Vip": "vip.GABAergic.cortical.interneuron"
-	}
+	},
+	"level": "class"
 }

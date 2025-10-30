@@ -8,8 +8,9 @@ process DESeq2AnalysisManual {
   path "**png"
   script:
   """
-  Rscript $projectDir/bin/DESeq2_analysis.R --pseudobulk_matrix ${pseudobulk_matrix} --metadata ${pseudobulk_metadata} \
-        --cell_type ${cell_type} \
+  Rscript $projectDir/bin/DESeq2_analysis.R --pseudobulk_matrix ${pseudobulk_matrix} --metadata ${pseudobulk_metadata} \\
+        --cell_type ${cell_type} \\
         --mode manual
+        --filter_genes ${params.filter_genes ? "" : "false"}
   """
 }

@@ -9,7 +9,7 @@
 		"L5.6_NP": "near.projecting.glutamatergic.cortical.neuron",
 		"L5_ET": "L5.extratelencephalic.projecting.glutamatergic.cortical.neuron",
 		"L5_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L6_CT": "L6.corticothalamic.projecting.glutamatergic.cortical.neuron",
+		"L6_CT": "corticothalamic.projecting.glutamatergic.cortical.neuron",
 		"L6_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
 		"L6_IT_Car3": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
 		"L6b": "L6b.glutamatergic.cortical.neuron",
@@ -27,5 +27,6 @@
 		"Sst_Chodl": "sst.GABAergic.cortical.interneuron",
 		"VLMC": "vascular.leptomeningeal.cell",
 		"Vip": "vip.GABAergic.cortical.interneuron"
-	}
+	},
+	"level": "subclass"
 }

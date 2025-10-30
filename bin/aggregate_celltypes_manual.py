@@ -16,13 +16,7 @@ def parse_arguments():
     known_args, _ = parser.parse_known_args()
     return known_args
   
-def filter_samples(adata, min_cells=50):
-    cell_counts_per_samples = adata.obs["sample_id"].value_counts().reset_index()
-    samples_to_keep = cell_counts_per_samples[cell_counts_per_samples >= min_cells].index
-    adata_filtered = adata[adata.obs["sample_id"].isin(samples_to_keep)].copy()
-    return adata_filtered
 
-    
 def main():
   args = parse_arguments()
   h5ad_files =args.h5ad_files
