@@ -154,10 +154,11 @@ def plot_corr_stripplot(df, annotation_level="class", x="spearman_log2FoldChange
         gemma_to_gemma_map = gemma_to_gemma_map_subclass
     else:
         raise ValueError("annotation_level must be 'class' or 'subclass'")
-    plt.figure(figsize=(14, 10))
+    plt.figure(figsize=(15, 15))
     from collections import OrderedDict
     celltype_order = list(OrderedDict.fromkeys(df['ct_sc_pipeline'].unique()))
-    ax = sns.stripplot(y='ct_sc_pipeline', x=x, data=df, order=celltype_order, hue='contrast', dodge=True, jitter=True)
+    # make points larger
+    ax = sns.stripplot(y='ct_sc_pipeline', x=x, data=df, order=celltype_order, hue='contrast', dodge=True, jitter=True, size=5)
     plt.yticks(fontsize=10)
     plt.xlabel(f'Spearman {x}')
     plt.ylabel('Cell Type')
@@ -207,8 +208,8 @@ def main():
 	}).to_csv("average_corr_pvalue_log2FC.tsv", index=False, sep="\t")
 
 	# write per-cell-type averages to file
-	per_celltype_averages = compute_average_per_celltype(combined_df, group_col="spearman_log2FoldChange")
-	pd.DataFrame(per_celltype_averages).to_csv("per_celltype_average_spearman_log2FoldChange.tsv", index=False, sep="\t")
+	per_celltype_averages_fc = compute_average_per_celltype(combined_df, group_col="spearman_log2FoldChange")
+	pd.DataFrame(per_celltype_averages_fc).to_csv("per_celltype_average_spearman_log2FoldChange.tsv", index=False, sep="\t")
  
  
 	per_celltype_averages_pval = compute_average_per_celltype(combined_df, group_col="spearman_pvalue")

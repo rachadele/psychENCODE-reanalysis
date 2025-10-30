@@ -155,10 +155,10 @@ def plot_overlap_stripplot(df, annotation_level="class", x="percent_overlap"):
         gemma_to_gemma_map = gemma_to_gemma_map_subclass
     else:
         raise ValueError("annotation_level must be 'class' or 'subclass'")
-    plt.figure(figsize=(14, 10))
+    plt.figure(figsize=(15, 15))
     from collections import OrderedDict
     celltype_order = list(OrderedDict.fromkeys(df['ct_sc_pipeline'].unique()))
-    ax = sns.stripplot(y='ct_sc_pipeline', x=x, data=df, order=celltype_order, hue='contrast', dodge=True, jitter=True)
+    ax = sns.stripplot(y='ct_sc_pipeline', x=x, data=df, order=celltype_order, hue='contrast', dodge=True, jitter=True, size=5)
     plt.yticks(fontsize=10)
     plt.xlabel(f'Jaccard Index')
     plt.ylabel('Cell Type')
