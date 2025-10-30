@@ -117,14 +117,6 @@ def compute_overall_averages(combined_df):
 	return average_logFC, sd_logFC, average_pval, sd_pval
 
 
-def compute_average_corr_per_celltype(combined_df):
-    result = combined_df.groupby('ct_sc_pipeline')[['spearman_log2FoldChange', 'spearman_pvalue']].agg(['mean', 'std', 'count']).reset_index()
-    # Flatten columns
-    result.columns = ['ct_sc_pipeline', 'avg_corr_log2FoldChange', 'std_log2FoldChange', 'n_log2FoldChange', 'avg_corr_pvalue', 'std_pvalue', 'n_pvalue']
-    # sort from lowest to highest average log2FoldChange correlation
-    result = result.sort_values(by='avg_pvalue', ascending=False)
-    return result
-
 def plot_corr_boxplots(df, annotation_level="class", x="spearman_log2FoldChange"):
     if annotation_level == "class":
         gemma_to_gemma_map = gemma_to_gemma_map_class
@@ -216,11 +208,6 @@ def main():
  
 	per_celltype_averages_pval = compute_average_per_celltype(combined_df, group_col="spearman_pvalue")
 	pd.DataFrame(per_celltype_averages_pval).to_csv("per_celltype_average_spearman_pvalue.tsv", index=False, sep="\t")
-
-
-	avg_corrs = compute_average_corr_per_celltype(combined_df)
-	avg_corrs.to_csv("average_spearman_corrs.tsv", index=False, sep="\t")
-
 
 if __name__ == "__main__":
   main()
