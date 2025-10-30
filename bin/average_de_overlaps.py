@@ -1,4 +1,3 @@
-
 import os
 import argparse
 import glob
@@ -102,9 +101,11 @@ def cell_types_match(row, annotation_level):
 
 # Compute average overlap per cell type across all contrasts
 def compute_average_per_celltype(combined_df):
-	result = combined_df.groupby('ct_sc_pipeline')['percent_overlap'].agg(['mean', 'std', 'count']).reset_index()
-	result.rename(columns={'mean': 'average_percent_overlap', 'std': 'sd_percent_overlap', 'count': 'n_pairs'}, inplace=True)
-	return result
+    result = combined_df.groupby('ct_sc_pipeline')['percent_overlap'].agg(['mean', 'std', 'count']).reset_index()
+    result.rename(columns={'mean': 'average_percent_overlap', 'std': 'sd_percent_overlap', 'count': 'n_pairs'}, inplace=True)
+    # sort from lowest to highest average percent overlap
+    result = result.sort_values(by='average_percent_overlap', ascending=False)
+    return result
 
 def compute_overall_averages(combined_df):
 	# Calculate average percent overlap for matched cell types

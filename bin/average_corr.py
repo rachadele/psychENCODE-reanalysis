@@ -121,6 +121,8 @@ def compute_average_corr_per_celltype(combined_df):
     result = combined_df.groupby('ct_sc_pipeline')[['spearman_log2FoldChange', 'spearman_pvalue']].agg(['mean', 'std', 'count']).reset_index()
     # Flatten columns
     result.columns = ['ct_sc_pipeline', 'avg_log2FoldChange', 'std_log2FoldChange', 'n_log2FoldChange', 'avg_pvalue', 'std_pvalue', 'n_pvalue']
+    # sort from lowest to highest average log2FoldChange correlation
+    result = result.sort_values(by='avg_pvalue', ascending=False)
     return result
 
 def plot_corr_boxplots(df, annotation_level="class", x="spearman_log2FoldChange"):
