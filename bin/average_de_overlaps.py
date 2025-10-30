@@ -86,8 +86,7 @@ def parse_arguments():
     return known_args
 
 def reverse_lookup(mapping, value):
-    # need to return all keys that map to the given value
-    
+    # need to return all keys that map to the given value 
     return [k for k, v in mapping.items() if v == value]
 
 # Filter rows where cell types match according to the mapping
@@ -149,6 +148,27 @@ def plot_overlap_boxplot(df, output_path="overlap_boxplot_per_celltype.png", ann
 	plt.savefig(output_path)
 	plt.close()
 
+def plot_overlap_stripplot(df, annotation_level="class", x="percent_overlap"):
+    if annotation_level == "class":
+        gemma_to_gemma_map = gemma_to_gemma_map_class
+    elif annotation_level == "subclass":
+        gemma_to_gemma_map = gemma_to_gemma_map_subclass
+    else:
+        raise ValueError("annotation_level must be 'class' or 'subclass'")
+    plt.figure(figsize=(14, 10))
+    from collections import OrderedDict
+    celltype_order = list(OrderedDict.fromkeys(df['ct_sc_pipeline'].unique()))
+    ax = sns.stripplot(y='ct_sc_pipeline', x=x, data=df, order=celltype_order, hue='contrast', dodge=True, jitter=True)
+    plt.yticks(fontsize=10)
+    plt.xlabel(f'Jaccard Index')
+    plt.ylabel('Cell Type')
+    plt.title(f'Jaccard Index Across Contrasts (Strip Plot)')
+    plt.legend(title='Contrast', bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout()
+    plt.savefig(f'stripplot_jaccard.png')
+    plt.close()
+
+
 def main():
 	# Plot box and whisker plot for overlaps per cell type
 	args = parse_arguments()
@@ -165,7 +185,7 @@ def main():
 			continue
 		de_overlap_df = pd.read_csv(path, sep="\t")
   # need to add annotation level argument
-  
+		de_overlap_df["contrast"] = contrast
 		filtered_df = de_overlap_df[de_overlap_df.apply(cell_types_match, axis=1, annotation_level=annotation_level)]
 		# save filtered df to tsv
 		filtered_df.to_csv(f"filtered_{os.path.basename(path)}", index=False, sep="\t")
@@ -173,7 +193,7 @@ def main():
 	# Combine all filtered DataFrames
 	combined_df = pd.concat(matched_ct_dfs, ignore_index=True)
 	plot_overlap_boxplot(combined_df, annotation_level=annotation_level)
-
+	plot_overlap_stripplot(combined_df, annotation_level=annotation_level)
 	average_overlap, sd_overlap = compute_overall_averages(combined_df)
 	# write overall average to file
 	pd.DataFrame({
