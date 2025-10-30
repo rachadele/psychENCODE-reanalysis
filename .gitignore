@@ -177,9 +177,7 @@ unfiltered_pseudobulks
 *rds
 *h5ad
 .nextflow*
-results/**tsv
 results/**mtx
-*tsv
 *mtx
 *h5ad
 work/
@@ -192,5 +190,4 @@ test_pseudo/
 *tsv.gz
 *gz
 *tsv
-
 

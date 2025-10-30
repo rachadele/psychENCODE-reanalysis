@@ -1,0 +1,26 @@
+ct_sc_pipeline	ct_author	percent_overlap	contrast
+vascular.leptomeningeal.cell	VLMC	0.0	Disorder_PTSD_vs_Control
+sst.GABAergic.cortical.interneuron	Sst		Disorder_PTSD_vs_Control
+sst.GABAergic.cortical.interneuron	Sst_Chodl		Disorder_PTSD_vs_Control
+lamp5.GABAergic.cortical.interneuron	Lamp5_Lhx6		Disorder_PTSD_vs_Control
+lamp5.GABAergic.cortical.interneuron	Lamp5		Disorder_PTSD_vs_Control
+sncg.GABAergic.cortical.interneuron	Sncg	22.388059701492537	Disorder_PTSD_vs_Control
+microglial.cell	Micro	23.91304347826087	Disorder_PTSD_vs_Control
+microglial.cell	Immune	0.0	Disorder_PTSD_vs_Control
+corticothalamic.projecting.glutamatergic.cortical.neuron	L6_CT		Disorder_PTSD_vs_Control
+PAX6.GABAergic.cortical.interneuron	Pax6	0.0	Disorder_PTSD_vs_Control
+oligodendrocyte	Oligo	75.73529411764706	Disorder_PTSD_vs_Control
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	L5_ET	4.737732656514383	Disorder_PTSD_vs_Control
+oligodendrocyte.precursor.cell	OPC	85.51236749116607	Disorder_PTSD_vs_Control
+near.projecting.glutamatergic.cortical.neuron	L5.6_NP	73.91304347826087	Disorder_PTSD_vs_Control
+chandelier.pvalb.GABAergic.cortical.interneuron	Chandelier	0.0	Disorder_PTSD_vs_Control
+endothelial.cell	Endo		Disorder_PTSD_vs_Control
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L2.3_IT	60.788381742738586	Disorder_PTSD_vs_Control
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L6_IT_Car3	0.0	Disorder_PTSD_vs_Control
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L6_IT	52.8110599078341	Disorder_PTSD_vs_Control
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L5_IT	38.8259526261586	Disorder_PTSD_vs_Control
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L4_IT	11.363636363636363	Disorder_PTSD_vs_Control
+vip.GABAergic.cortical.interneuron	Vip	87.05882352941177	Disorder_PTSD_vs_Control
+L6b.glutamatergic.cortical.neuron	L6b	71.42857142857143	Disorder_PTSD_vs_Control
+pvalb.GABAergic.cortical.interneuron	Pvalb	75.60975609756098	Disorder_PTSD_vs_Control
+astrocyte	Astro	73.01587301587301	Disorder_PTSD_vs_Control

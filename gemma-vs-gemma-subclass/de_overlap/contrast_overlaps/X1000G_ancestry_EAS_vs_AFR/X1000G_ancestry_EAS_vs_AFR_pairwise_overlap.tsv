@@ -1,0 +1,487 @@
+ct_sc_pipeline	ct_author	percent_overlap
+vascular.leptomeningeal.cell	Micro	1.694915254237288
+vascular.leptomeningeal.cell	Sst	0.0
+vascular.leptomeningeal.cell	Pax6	0.0
+vascular.leptomeningeal.cell	VLMC	0.0
+vascular.leptomeningeal.cell	Vip	0.0
+vascular.leptomeningeal.cell	L5_ET	0.0
+vascular.leptomeningeal.cell	L2.3_IT	1.1111111111111112
+vascular.leptomeningeal.cell	Endo	0.0
+vascular.leptomeningeal.cell	Astro	0.0
+vascular.leptomeningeal.cell	Chandelier	0.0
+vascular.leptomeningeal.cell	OPC	0.0
+vascular.leptomeningeal.cell	Lamp5_Lhx6	0.0
+vascular.leptomeningeal.cell	Immune	0.0
+vascular.leptomeningeal.cell	PC	14.673913043478262
+vascular.leptomeningeal.cell	Oligo	0.0
+vascular.leptomeningeal.cell	L6_CT	0.0
+vascular.leptomeningeal.cell	Sncg	0.0
+vascular.leptomeningeal.cell	L6_IT_Car3	0.0
+vascular.leptomeningeal.cell	L5.6_NP	0.0
+vascular.leptomeningeal.cell	SMC	11.30952380952381
+vascular.leptomeningeal.cell	Sst_Chodl	0.0
+vascular.leptomeningeal.cell	Pvalb	0.0
+vascular.leptomeningeal.cell	L6_IT	0.5988023952095808
+vascular.leptomeningeal.cell	L5_IT	0.5882352941176471
+vascular.leptomeningeal.cell	Lamp5	0.0
+vascular.leptomeningeal.cell	L6b	0.0
+vascular.leptomeningeal.cell	L4_IT	0.0
+sst.GABAergic.cortical.interneuron	Micro	0.0
+sst.GABAergic.cortical.interneuron	Sst	0.0
+sst.GABAergic.cortical.interneuron	Pax6	0.0
+sst.GABAergic.cortical.interneuron	VLMC	0.0
+sst.GABAergic.cortical.interneuron	Vip	0.0
+sst.GABAergic.cortical.interneuron	L5_ET	0.0
+sst.GABAergic.cortical.interneuron	L2.3_IT	0.0
+sst.GABAergic.cortical.interneuron	Endo	0.0
+sst.GABAergic.cortical.interneuron	Astro	0.0
+sst.GABAergic.cortical.interneuron	Chandelier	0.0
+sst.GABAergic.cortical.interneuron	OPC	0.0
+sst.GABAergic.cortical.interneuron	Lamp5_Lhx6	0.0
+sst.GABAergic.cortical.interneuron	Immune	0.0
+sst.GABAergic.cortical.interneuron	PC	0.11210762331838565
+sst.GABAergic.cortical.interneuron	Oligo	0.0
+sst.GABAergic.cortical.interneuron	L6_CT	0.0
+sst.GABAergic.cortical.interneuron	Sncg	0.0
+sst.GABAergic.cortical.interneuron	L6_IT_Car3	0.0
+sst.GABAergic.cortical.interneuron	L5.6_NP	0.0
+sst.GABAergic.cortical.interneuron	SMC	0.0
+sst.GABAergic.cortical.interneuron	Sst_Chodl	0.0
+sst.GABAergic.cortical.interneuron	Pvalb	0.0
+sst.GABAergic.cortical.interneuron	L6_IT	0.0
+sst.GABAergic.cortical.interneuron	L5_IT	0.0
+sst.GABAergic.cortical.interneuron	Lamp5	0.0
+sst.GABAergic.cortical.interneuron	L6b	0.0
+sst.GABAergic.cortical.interneuron	L4_IT	0.0
+lamp5.GABAergic.cortical.interneuron	Micro	0.0
+lamp5.GABAergic.cortical.interneuron	Sst	0.0
+lamp5.GABAergic.cortical.interneuron	Pax6	0.0
+lamp5.GABAergic.cortical.interneuron	VLMC	0.0
+lamp5.GABAergic.cortical.interneuron	Vip	0.0
+lamp5.GABAergic.cortical.interneuron	L5_ET	0.0
+lamp5.GABAergic.cortical.interneuron	L2.3_IT	4.3478260869565215
+lamp5.GABAergic.cortical.interneuron	Endo	0.0
+lamp5.GABAergic.cortical.interneuron	Astro	0.0
+lamp5.GABAergic.cortical.interneuron	Chandelier	0.0
+lamp5.GABAergic.cortical.interneuron	OPC	0.0
+lamp5.GABAergic.cortical.interneuron	Lamp5_Lhx6	28.571428571428573
+lamp5.GABAergic.cortical.interneuron	Immune	0.0
+lamp5.GABAergic.cortical.interneuron	PC	0.22346368715083798
+lamp5.GABAergic.cortical.interneuron	Oligo	0.0
+lamp5.GABAergic.cortical.interneuron	L6_CT	0.0
+lamp5.GABAergic.cortical.interneuron	Sncg	0.0
+lamp5.GABAergic.cortical.interneuron	L6_IT_Car3	0.0
+lamp5.GABAergic.cortical.interneuron	L5.6_NP	0.0
+lamp5.GABAergic.cortical.interneuron	SMC	0.0
+lamp5.GABAergic.cortical.interneuron	Sst_Chodl	0.0
+lamp5.GABAergic.cortical.interneuron	Pvalb	18.181818181818183
+lamp5.GABAergic.cortical.interneuron	L6_IT	0.0
+lamp5.GABAergic.cortical.interneuron	L5_IT	0.0
+lamp5.GABAergic.cortical.interneuron	Lamp5	20.0
+lamp5.GABAergic.cortical.interneuron	L6b	0.0
+lamp5.GABAergic.cortical.interneuron	L4_IT	0.0
+sncg.GABAergic.cortical.interneuron	Micro	0.0
+sncg.GABAergic.cortical.interneuron	Sst	
+sncg.GABAergic.cortical.interneuron	Pax6	
+sncg.GABAergic.cortical.interneuron	VLMC	
+sncg.GABAergic.cortical.interneuron	Vip	0.0
+sncg.GABAergic.cortical.interneuron	L5_ET	0.0
+sncg.GABAergic.cortical.interneuron	L2.3_IT	0.0
+sncg.GABAergic.cortical.interneuron	Endo	
+sncg.GABAergic.cortical.interneuron	Astro	
+sncg.GABAergic.cortical.interneuron	Chandelier	
+sncg.GABAergic.cortical.interneuron	OPC	
+sncg.GABAergic.cortical.interneuron	Lamp5_Lhx6	0.0
+sncg.GABAergic.cortical.interneuron	Immune	
+sncg.GABAergic.cortical.interneuron	PC	0.0
+sncg.GABAergic.cortical.interneuron	Oligo	0.0
+sncg.GABAergic.cortical.interneuron	L6_CT	0.0
+sncg.GABAergic.cortical.interneuron	Sncg	
+sncg.GABAergic.cortical.interneuron	L6_IT_Car3	
+sncg.GABAergic.cortical.interneuron	L5.6_NP	
+sncg.GABAergic.cortical.interneuron	SMC	0.0
+sncg.GABAergic.cortical.interneuron	Sst_Chodl	
+sncg.GABAergic.cortical.interneuron	Pvalb	0.0
+sncg.GABAergic.cortical.interneuron	L6_IT	0.0
+sncg.GABAergic.cortical.interneuron	L5_IT	0.0
+sncg.GABAergic.cortical.interneuron	Lamp5	0.0
+sncg.GABAergic.cortical.interneuron	L6b	
+sncg.GABAergic.cortical.interneuron	L4_IT	0.0
+microglial.cell	Micro	0.0
+microglial.cell	Sst	
+microglial.cell	Pax6	
+microglial.cell	VLMC	
+microglial.cell	Vip	0.0
+microglial.cell	L5_ET	0.0
+microglial.cell	L2.3_IT	0.0
+microglial.cell	Endo	
+microglial.cell	Astro	
+microglial.cell	Chandelier	
+microglial.cell	OPC	
+microglial.cell	Lamp5_Lhx6	0.0
+microglial.cell	Immune	
+microglial.cell	PC	0.0
+microglial.cell	Oligo	0.0
+microglial.cell	L6_CT	0.0
+microglial.cell	Sncg	
+microglial.cell	L6_IT_Car3	
+microglial.cell	L5.6_NP	
+microglial.cell	SMC	0.0
+microglial.cell	Sst_Chodl	
+microglial.cell	Pvalb	0.0
+microglial.cell	L6_IT	0.0
+microglial.cell	L5_IT	0.0
+microglial.cell	Lamp5	0.0
+microglial.cell	L6b	
+microglial.cell	L4_IT	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Micro	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Sst	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Pax6	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	VLMC	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Vip	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	L5_ET	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	L2.3_IT	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Endo	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Astro	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Chandelier	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	OPC	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Lamp5_Lhx6	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Immune	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	PC	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Oligo	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	L6_CT	100.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Sncg	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	L6_IT_Car3	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	L5.6_NP	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	SMC	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Sst_Chodl	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Pvalb	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	L6_IT	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	L5_IT	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	Lamp5	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	L6b	0.0
+corticothalamic.projecting.glutamatergic.cortical.neuron	L4_IT	0.0
+PAX6.GABAergic.cortical.interneuron	Micro	0.0
+PAX6.GABAergic.cortical.interneuron	Sst	
+PAX6.GABAergic.cortical.interneuron	Pax6	
+PAX6.GABAergic.cortical.interneuron	VLMC	
+PAX6.GABAergic.cortical.interneuron	Vip	0.0
+PAX6.GABAergic.cortical.interneuron	L5_ET	0.0
+PAX6.GABAergic.cortical.interneuron	L2.3_IT	0.0
+PAX6.GABAergic.cortical.interneuron	Endo	
+PAX6.GABAergic.cortical.interneuron	Astro	
+PAX6.GABAergic.cortical.interneuron	Chandelier	
+PAX6.GABAergic.cortical.interneuron	OPC	
+PAX6.GABAergic.cortical.interneuron	Lamp5_Lhx6	0.0
+PAX6.GABAergic.cortical.interneuron	Immune	
+PAX6.GABAergic.cortical.interneuron	PC	0.0
+PAX6.GABAergic.cortical.interneuron	Oligo	0.0
+PAX6.GABAergic.cortical.interneuron	L6_CT	0.0
+PAX6.GABAergic.cortical.interneuron	Sncg	
+PAX6.GABAergic.cortical.interneuron	L6_IT_Car3	
+PAX6.GABAergic.cortical.interneuron	L5.6_NP	
+PAX6.GABAergic.cortical.interneuron	SMC	0.0
+PAX6.GABAergic.cortical.interneuron	Sst_Chodl	
+PAX6.GABAergic.cortical.interneuron	Pvalb	0.0
+PAX6.GABAergic.cortical.interneuron	L6_IT	0.0
+PAX6.GABAergic.cortical.interneuron	L5_IT	0.0
+PAX6.GABAergic.cortical.interneuron	Lamp5	0.0
+PAX6.GABAergic.cortical.interneuron	L6b	
+PAX6.GABAergic.cortical.interneuron	L4_IT	0.0
+oligodendrocyte	Micro	0.0
+oligodendrocyte	Sst	0.0
+oligodendrocyte	Pax6	0.0
+oligodendrocyte	VLMC	0.0
+oligodendrocyte	Vip	0.0
+oligodendrocyte	L5_ET	0.0
+oligodendrocyte	L2.3_IT	0.0
+oligodendrocyte	Endo	0.0
+oligodendrocyte	Astro	0.0
+oligodendrocyte	Chandelier	0.0
+oligodendrocyte	OPC	0.0
+oligodendrocyte	Lamp5_Lhx6	0.0
+oligodendrocyte	Immune	0.0
+oligodendrocyte	PC	0.22346368715083798
+oligodendrocyte	Oligo	42.857142857142854
+oligodendrocyte	L6_CT	0.0
+oligodendrocyte	Sncg	0.0
+oligodendrocyte	L6_IT_Car3	0.0
+oligodendrocyte	L5.6_NP	0.0
+oligodendrocyte	SMC	0.0
+oligodendrocyte	Sst_Chodl	0.0
+oligodendrocyte	Pvalb	0.0
+oligodendrocyte	L6_IT	0.0
+oligodendrocyte	L5_IT	0.0
+oligodendrocyte	Lamp5	0.0
+oligodendrocyte	L6b	0.0
+oligodendrocyte	L4_IT	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Micro	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Sst	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Pax6	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	VLMC	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Vip	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	L5_ET	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	L2.3_IT	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Endo	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Astro	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Chandelier	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	OPC	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Lamp5_Lhx6	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Immune	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	PC	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Oligo	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	L6_CT	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Sncg	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	L6_IT_Car3	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	L5.6_NP	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	SMC	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Sst_Chodl	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Pvalb	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	L6_IT	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	L5_IT	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	Lamp5	0.0
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	L6b	
+L5.extratelencephalic.projecting.glutamatergic.cortical.neuron	L4_IT	0.0
+oligodendrocyte.precursor.cell	Micro	0.0
+oligodendrocyte.precursor.cell	Sst	
+oligodendrocyte.precursor.cell	Pax6	
+oligodendrocyte.precursor.cell	VLMC	
+oligodendrocyte.precursor.cell	Vip	0.0
+oligodendrocyte.precursor.cell	L5_ET	0.0
+oligodendrocyte.precursor.cell	L2.3_IT	0.0
+oligodendrocyte.precursor.cell	Endo	
+oligodendrocyte.precursor.cell	Astro	
+oligodendrocyte.precursor.cell	Chandelier	
+oligodendrocyte.precursor.cell	OPC	
+oligodendrocyte.precursor.cell	Lamp5_Lhx6	0.0
+oligodendrocyte.precursor.cell	Immune	
+oligodendrocyte.precursor.cell	PC	0.0
+oligodendrocyte.precursor.cell	Oligo	0.0
+oligodendrocyte.precursor.cell	L6_CT	0.0
+oligodendrocyte.precursor.cell	Sncg	
+oligodendrocyte.precursor.cell	L6_IT_Car3	
+oligodendrocyte.precursor.cell	L5.6_NP	
+oligodendrocyte.precursor.cell	SMC	0.0
+oligodendrocyte.precursor.cell	Sst_Chodl	
+oligodendrocyte.precursor.cell	Pvalb	0.0
+oligodendrocyte.precursor.cell	L6_IT	0.0
+oligodendrocyte.precursor.cell	L5_IT	0.0
+oligodendrocyte.precursor.cell	Lamp5	0.0
+oligodendrocyte.precursor.cell	L6b	
+oligodendrocyte.precursor.cell	L4_IT	0.0
+near.projecting.glutamatergic.cortical.neuron	Micro	0.0
+near.projecting.glutamatergic.cortical.neuron	Sst	
+near.projecting.glutamatergic.cortical.neuron	Pax6	
+near.projecting.glutamatergic.cortical.neuron	VLMC	
+near.projecting.glutamatergic.cortical.neuron	Vip	0.0
+near.projecting.glutamatergic.cortical.neuron	L5_ET	0.0
+near.projecting.glutamatergic.cortical.neuron	L2.3_IT	0.0
+near.projecting.glutamatergic.cortical.neuron	Endo	
+near.projecting.glutamatergic.cortical.neuron	Astro	
+near.projecting.glutamatergic.cortical.neuron	Chandelier	
+near.projecting.glutamatergic.cortical.neuron	OPC	
+near.projecting.glutamatergic.cortical.neuron	Lamp5_Lhx6	0.0
+near.projecting.glutamatergic.cortical.neuron	Immune	
+near.projecting.glutamatergic.cortical.neuron	PC	0.0
+near.projecting.glutamatergic.cortical.neuron	Oligo	0.0
+near.projecting.glutamatergic.cortical.neuron	L6_CT	0.0
+near.projecting.glutamatergic.cortical.neuron	Sncg	
+near.projecting.glutamatergic.cortical.neuron	L6_IT_Car3	
+near.projecting.glutamatergic.cortical.neuron	L5.6_NP	
+near.projecting.glutamatergic.cortical.neuron	SMC	0.0
+near.projecting.glutamatergic.cortical.neuron	Sst_Chodl	
+near.projecting.glutamatergic.cortical.neuron	Pvalb	0.0
+near.projecting.glutamatergic.cortical.neuron	L6_IT	0.0
+near.projecting.glutamatergic.cortical.neuron	L5_IT	0.0
+near.projecting.glutamatergic.cortical.neuron	Lamp5	0.0
+near.projecting.glutamatergic.cortical.neuron	L6b	
+near.projecting.glutamatergic.cortical.neuron	L4_IT	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	Micro	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	Sst	
+chandelier.pvalb.GABAergic.cortical.interneuron	Pax6	
+chandelier.pvalb.GABAergic.cortical.interneuron	VLMC	
+chandelier.pvalb.GABAergic.cortical.interneuron	Vip	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	L5_ET	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	L2.3_IT	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	Endo	
+chandelier.pvalb.GABAergic.cortical.interneuron	Astro	
+chandelier.pvalb.GABAergic.cortical.interneuron	Chandelier	
+chandelier.pvalb.GABAergic.cortical.interneuron	OPC	
+chandelier.pvalb.GABAergic.cortical.interneuron	Lamp5_Lhx6	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	Immune	
+chandelier.pvalb.GABAergic.cortical.interneuron	PC	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	Oligo	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	L6_CT	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	Sncg	
+chandelier.pvalb.GABAergic.cortical.interneuron	L6_IT_Car3	
+chandelier.pvalb.GABAergic.cortical.interneuron	L5.6_NP	
+chandelier.pvalb.GABAergic.cortical.interneuron	SMC	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	Sst_Chodl	
+chandelier.pvalb.GABAergic.cortical.interneuron	Pvalb	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	L6_IT	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	L5_IT	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	Lamp5	0.0
+chandelier.pvalb.GABAergic.cortical.interneuron	L6b	
+chandelier.pvalb.GABAergic.cortical.interneuron	L4_IT	0.0
+endothelial.cell	Micro	0.0
+endothelial.cell	Sst	0.0
+endothelial.cell	Pax6	0.0
+endothelial.cell	VLMC	0.0
+endothelial.cell	Vip	0.0
+endothelial.cell	L5_ET	0.0
+endothelial.cell	L2.3_IT	0.0
+endothelial.cell	Endo	0.0
+endothelial.cell	Astro	0.0
+endothelial.cell	Chandelier	0.0
+endothelial.cell	OPC	0.0
+endothelial.cell	Lamp5_Lhx6	0.0
+endothelial.cell	Immune	0.0
+endothelial.cell	PC	0.7847533632286996
+endothelial.cell	Oligo	0.0
+endothelial.cell	L6_CT	0.0
+endothelial.cell	Sncg	0.0
+endothelial.cell	L6_IT_Car3	0.0
+endothelial.cell	L5.6_NP	0.0
+endothelial.cell	SMC	3.3333333333333335
+endothelial.cell	Sst_Chodl	0.0
+endothelial.cell	Pvalb	0.0
+endothelial.cell	L6_IT	0.0
+endothelial.cell	L5_IT	0.0
+endothelial.cell	Lamp5	0.0
+endothelial.cell	L6b	0.0
+endothelial.cell	L4_IT	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Micro	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Sst	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Pax6	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	VLMC	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Vip	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L5_ET	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L2.3_IT	48.275862068965516
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Endo	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Astro	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Chandelier	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	OPC	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Lamp5_Lhx6	4.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Immune	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	PC	0.21929824561403508
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Oligo	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L6_CT	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Sncg	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L6_IT_Car3	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L5.6_NP	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	SMC	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Sst_Chodl	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Pvalb	10.714285714285714
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L6_IT	3.5714285714285716
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L5_IT	18.51851851851852
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	Lamp5	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L6b	0.0
+L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	L4_IT	4.166666666666667
+vip.GABAergic.cortical.interneuron	Micro	0.0
+vip.GABAergic.cortical.interneuron	Sst	
+vip.GABAergic.cortical.interneuron	Pax6	
+vip.GABAergic.cortical.interneuron	VLMC	
+vip.GABAergic.cortical.interneuron	Vip	0.0
+vip.GABAergic.cortical.interneuron	L5_ET	0.0
+vip.GABAergic.cortical.interneuron	L2.3_IT	0.0
+vip.GABAergic.cortical.interneuron	Endo	
+vip.GABAergic.cortical.interneuron	Astro	
+vip.GABAergic.cortical.interneuron	Chandelier	
+vip.GABAergic.cortical.interneuron	OPC	
+vip.GABAergic.cortical.interneuron	Lamp5_Lhx6	0.0
+vip.GABAergic.cortical.interneuron	Immune	
+vip.GABAergic.cortical.interneuron	PC	0.0
+vip.GABAergic.cortical.interneuron	Oligo	0.0
+vip.GABAergic.cortical.interneuron	L6_CT	0.0
+vip.GABAergic.cortical.interneuron	Sncg	
+vip.GABAergic.cortical.interneuron	L6_IT_Car3	
+vip.GABAergic.cortical.interneuron	L5.6_NP	
+vip.GABAergic.cortical.interneuron	SMC	0.0
+vip.GABAergic.cortical.interneuron	Sst_Chodl	
+vip.GABAergic.cortical.interneuron	Pvalb	0.0
+vip.GABAergic.cortical.interneuron	L6_IT	0.0
+vip.GABAergic.cortical.interneuron	L5_IT	0.0
+vip.GABAergic.cortical.interneuron	Lamp5	0.0
+vip.GABAergic.cortical.interneuron	L6b	
+vip.GABAergic.cortical.interneuron	L4_IT	0.0
+L6b.glutamatergic.cortical.neuron	Micro	0.0
+L6b.glutamatergic.cortical.neuron	Sst	
+L6b.glutamatergic.cortical.neuron	Pax6	
+L6b.glutamatergic.cortical.neuron	VLMC	
+L6b.glutamatergic.cortical.neuron	Vip	0.0
+L6b.glutamatergic.cortical.neuron	L5_ET	0.0
+L6b.glutamatergic.cortical.neuron	L2.3_IT	0.0
+L6b.glutamatergic.cortical.neuron	Endo	
+L6b.glutamatergic.cortical.neuron	Astro	
+L6b.glutamatergic.cortical.neuron	Chandelier	
+L6b.glutamatergic.cortical.neuron	OPC	
+L6b.glutamatergic.cortical.neuron	Lamp5_Lhx6	0.0
+L6b.glutamatergic.cortical.neuron	Immune	
+L6b.glutamatergic.cortical.neuron	PC	0.0
+L6b.glutamatergic.cortical.neuron	Oligo	0.0
+L6b.glutamatergic.cortical.neuron	L6_CT	0.0
+L6b.glutamatergic.cortical.neuron	Sncg	
+L6b.glutamatergic.cortical.neuron	L6_IT_Car3	
+L6b.glutamatergic.cortical.neuron	L5.6_NP	
+L6b.glutamatergic.cortical.neuron	SMC	0.0
+L6b.glutamatergic.cortical.neuron	Sst_Chodl	
+L6b.glutamatergic.cortical.neuron	Pvalb	0.0
+L6b.glutamatergic.cortical.neuron	L6_IT	0.0
+L6b.glutamatergic.cortical.neuron	L5_IT	0.0
+L6b.glutamatergic.cortical.neuron	Lamp5	0.0
+L6b.glutamatergic.cortical.neuron	L6b	
+L6b.glutamatergic.cortical.neuron	L4_IT	0.0
+pvalb.GABAergic.cortical.interneuron	Micro	0.0
+pvalb.GABAergic.cortical.interneuron	Sst	0.0
+pvalb.GABAergic.cortical.interneuron	Pax6	0.0
+pvalb.GABAergic.cortical.interneuron	VLMC	0.0
+pvalb.GABAergic.cortical.interneuron	Vip	0.0
+pvalb.GABAergic.cortical.interneuron	L5_ET	0.0
+pvalb.GABAergic.cortical.interneuron	L2.3_IT	10.714285714285714
+pvalb.GABAergic.cortical.interneuron	Endo	0.0
+pvalb.GABAergic.cortical.interneuron	Astro	0.0
+pvalb.GABAergic.cortical.interneuron	Chandelier	0.0
+pvalb.GABAergic.cortical.interneuron	OPC	0.0
+pvalb.GABAergic.cortical.interneuron	Lamp5_Lhx6	14.285714285714286
+pvalb.GABAergic.cortical.interneuron	Immune	0.0
+pvalb.GABAergic.cortical.interneuron	PC	0.4444444444444444
+pvalb.GABAergic.cortical.interneuron	Oligo	0.0
+pvalb.GABAergic.cortical.interneuron	L6_CT	0.0
+pvalb.GABAergic.cortical.interneuron	Sncg	0.0
+pvalb.GABAergic.cortical.interneuron	L6_IT_Car3	0.0
+pvalb.GABAergic.cortical.interneuron	L5.6_NP	0.0
+pvalb.GABAergic.cortical.interneuron	SMC	0.0
+pvalb.GABAergic.cortical.interneuron	Sst_Chodl	0.0
+pvalb.GABAergic.cortical.interneuron	Pvalb	53.84615384615385
+pvalb.GABAergic.cortical.interneuron	L6_IT	0.0
+pvalb.GABAergic.cortical.interneuron	L5_IT	11.11111111111111
+pvalb.GABAergic.cortical.interneuron	Lamp5	0.0
+pvalb.GABAergic.cortical.interneuron	L6b	0.0
+pvalb.GABAergic.cortical.interneuron	L4_IT	0.0
+astrocyte	Micro	0.0
+astrocyte	Sst	
+astrocyte	Pax6	
+astrocyte	VLMC	
+astrocyte	Vip	0.0
+astrocyte	L5_ET	0.0
+astrocyte	L2.3_IT	0.0
+astrocyte	Endo	
+astrocyte	Astro	
+astrocyte	Chandelier	
+astrocyte	OPC	
+astrocyte	Lamp5_Lhx6	0.0
+astrocyte	Immune	
+astrocyte	PC	0.0
+astrocyte	Oligo	0.0
+astrocyte	L6_CT	0.0
+astrocyte	Sncg	
+astrocyte	L6_IT_Car3	
+astrocyte	L5.6_NP	
+astrocyte	SMC	0.0
+astrocyte	Sst_Chodl	
+astrocyte	Pvalb	0.0
+astrocyte	L6_IT	0.0
+astrocyte	L5_IT	0.0
+astrocyte	Lamp5	0.0
+astrocyte	L6b	
+astrocyte	L4_IT	0.0
