@@ -4,7 +4,7 @@ process DEOverlap {
   input:
   tuple val(contrast), path(pavlab_files), path(author_files)
   output:
-  path("**pairwise_overlap.tsv")
+  path("**pairwise_jaccard.tsv")
   script:
   """
   python $projectDir/bin/DE_overlap.py \

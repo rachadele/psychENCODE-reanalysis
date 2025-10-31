@@ -78,12 +78,12 @@ def main():
     overlap_list.append({
         "ct_sc_pipeline": ct_sc_pipeline,
         "ct_author": ct_author,
-        "percent_overlap": percent_overlap
+        "jaccard_index": percent_overlap
     })
 
   # Create DataFrame from overlap results
   all_overlaps = pd.DataFrame(overlap_list)
-  all_overlaps.to_csv(f"{contrast}_pairwise_overlap.tsv", sep="\t", index=False)
+  all_overlaps.to_csv(f"{contrast}_pairwise_jaccard.tsv", sep="\t", index=False)
 
 
 if __name__ == "__main__":
