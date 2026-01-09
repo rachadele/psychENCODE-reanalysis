@@ -1,0 +1,32 @@
+{
+	"gemma_to_gemma_map": {
+		"Astro": "astrocyte",
+		"Chandelier": "chandelier.pvalb.GABAergic.cortical.interneuron",
+		"Endo": "endothelial.cell",
+		"Immune": "microglial.cell",
+		"L2.3_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+		"L4_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+		"L5.6_NP": "near.projecting.glutamatergic.cortical.neuron",
+		"L5_ET": "L5.extratelencephalic.projecting.glutamatergic.cortical.neuron",
+		"L5_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+		"L6_CT": "corticothalamic.projecting.glutamatergic.cortical.neuron",
+		"L6_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+		"L6_IT_Car3": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+		"L6b": "L6b.glutamatergic.cortical.neuron",
+		"Lamp5": "lamp5.GABAergic.cortical.interneuron",
+		"Lamp5_Lhx6": "lamp5.GABAergic.cortical.interneuron",
+		"Micro": "microglial.cell",
+		"OPC": "oligodendrocyte.precursor.cell",
+		"Oligo": "oligodendrocyte",
+		"PC": "pericyte",
+		"Pax6": "PAX6.GABAergic.cortical.interneuron",
+		"Pvalb": "pvalb.GABAergic.cortical.interneuron",
+		"SMC": "smooth.muscle.cell",
+		"Sncg": "sncg.GABAergic.cortical.interneuron",
+		"Sst": "sst.GABAergic.cortical.interneuron",
+		"Sst_Chodl": "sst.GABAergic.cortical.interneuron",
+		"VLMC": "vascular.leptomeningeal.cell",
+		"Vip": "vip.GABAergic.cortical.interneuron"
+	},
+	"level": "subclass"
+}

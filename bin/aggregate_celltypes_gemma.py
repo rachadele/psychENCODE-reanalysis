@@ -6,8 +6,8 @@ from functools import reduce
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description="aggreate pseudobulk matrices by cell type from Gemma data")
-  parser.add_argument("--pseudobulk_matrices", type=str, nargs="+", default = ["/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/aggregated/51182_DevBrain_606866_10x_MEX_expmat.unfilt.aggregated.tsv.gz",
-                                                                               "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/aggregated/51181_MultiomeBrain_606582_10x_MEX_expmat.unfilt.aggregated.tsv.gz"])
+  parser.add_argument("--pseudobulk_matrices", type=str, nargs="+", default = ["/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/experiment_pseudobulks/gemma/Velmeshev-2019.1/Velmeshev-2019.1_aggregated_gemma.tsv.gz",
+                                                                               "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/experiment_pseudobulks/gemma/MultiomeBrain/MultiomeBrain_aggregated_gemma.tsv.gz"])
   parser.add_argument("--metadata_files", type=str, default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata",
                       help="Path to the metadata files from Gemma")
   if __name__ == "__main__":
@@ -22,7 +22,8 @@ def main():
   pseudobulks = {}
   for file in matrix_files:
       df = pd.read_csv(file, sep="\t", comment="#", dtype=str, compression="gzip")
-      key = os.path.basename(file).replace("_expmat.unfilt.aggregated.tsv.gz", "")
+      #key = os.path.basename(file).replace("_expmat.unfilt.aggregated.tsv.gz", "")
+      key = os.path.basename(file).replace("_aggregated_gemma.tsv.gz", "")
       pseudobulks[key] = df
 
   metadata_files = glob.glob(os.path.join(args.metadata_files, "*_sample_meta.tsv"))
@@ -32,7 +33,7 @@ def main():
       metadata[key] = pd.read_csv(file, sep="\t", dtype=str)
 
   matched_names = {}
-  for gemma_key in pseudobulks:
+  for gemma_key in pseudobulks.keys():
       matched = [meta_key for meta_key in metadata if meta_key in gemma_key]
       matched_names[gemma_key] = matched[0] if len(matched) == 1 else None
 
@@ -45,22 +46,32 @@ def main():
       #mat.columns.values[0:2] = ["ncbi_id", "gene_description"]
       mat["feature_name"] = mat["Sequence"].str.split(" ").str[0]
       mat.index = mat["feature_name"]
-      new_mat = mat.drop(columns=["Probe", "Sequence", "feature_name"])
-
+      new_mat = mat.drop(columns=["Probe", "Sequence"])
       cols = new_mat.columns
       mapping = pd.DataFrame({"original": cols})
+      # account for two extra .
       mapping["after_delim"] = mapping["original"].str.extract(r"___(.+)")
-      mapping[["sample", "cell_type"]] = mapping["after_delim"].str.extract(r"([^\.]+)\.(.+)")
-
+      # split by 3 dots
+      mapping["sample"] = mapping["after_delim"].str.split(r"\.\.\.").str[0]
+      mapping["cell_type"] = mapping["after_delim"].str.split(r"\.\.\.").str[1]
+     #mapping[["sample", "cell_type"]] = mapping["after_delim"].str.extract(r"([^\.]+)\.(.+)")
+      # Extract sample and cell type directly from before the triple underscores
+     # mapping[["sample", "cell_type"]] = mapping["original"].str.extract(
+      #  r'^X?([^\.]+)\.\.Split\.\.\.\.([^_]+)___')
       for cell_type in mapping["cell_type"].dropna().unique():
           sample_ids = mapping.loc[mapping["cell_type"] == cell_type, "original"]
           mat_subset = new_mat[sample_ids]
           mat_subset.columns = mapping.loc[mapping["cell_type"] == cell_type, "sample"].values
           # Set cell type pseudobulks to dictionary for this cell type and fill with subset for this experiment
-          cell_type_pseudobulks.setdefault(cell_type, {})[meta_key] = mat_subset
-
+          if not cell_type in cell_type_pseudobulks:
+            cell_type_pseudobulks[cell_type] = {}
+          cell_type_pseudobulks[cell_type][meta_key] = mat_subset
+          
   for cell_type, dataset_mats in cell_type_pseudobulks.items():
     print(f"Processing cell type: {cell_type} with {len(dataset_mats)} datasets")
+    # print indexes
+    for dataset, mat in dataset_mats.items():
+        print(mat.index.values[:5])
     combined = reduce(lambda left, right: pd.merge(left, right, left_index=True, right_index=True, how="outer"),
                       dataset_mats.values())
     outdir = cell_type.strip().replace("/", "_")
