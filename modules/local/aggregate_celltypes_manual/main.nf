@@ -2,7 +2,7 @@ process AGGREGATE_CELLTYPES_MANUAL {
     tag "aggregate_celltypes_manual"
     label 'process_medium'
 
-    publishDir "${params.outdir}/${params.level}/ct_pseudobulks/manual", mode: 'copy'
+    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/ct_pseudobulks/manual", mode: 'copy'
 
     input:
     path h5ad_files

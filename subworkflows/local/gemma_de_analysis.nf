@@ -5,9 +5,9 @@
  * and runs DESeq2 differential expression analysis.
  */
 
-include { GET_GEMMA_PSEUDOBULKS } from '../../modules/local/get_gemma_pseudobulks/main'
-include { AGGREGATE_CELLTYPES_GEMMA } from '../../modules/local/aggregate_celltypes_gemma/main'
-include { DESEQ2_ANALYSIS_GEMMA } from '../../modules/local/deseq2_analysis_gemma/main'
+include { GET_GEMMA_PSEUDOBULKS } from "${projectDir}/modules/local/get_gemma_pseudobulks/main"
+include { AGGREGATE_CELLTYPES_GEMMA } from "${projectDir}/modules/local/aggregate_celltypes_gemma/main"
+include { DESEQ2_ANALYSIS_GEMMA } from "${projectDir}/modules/local/deseq2_analysis_gemma/main"
 
 workflow GEMMA_DE_ANALYSIS {
     take:

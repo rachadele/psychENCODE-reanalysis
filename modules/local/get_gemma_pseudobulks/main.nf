@@ -2,7 +2,7 @@ process GET_GEMMA_PSEUDOBULKS {
     tag "${experiment}"
     label 'process_low'
 
-    publishDir "${params.outdir}/${params.level}/experiment_pseudobulks/gemma/${experiment}", mode: 'copy'
+    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/experiment_pseudobulks/gemma/${experiment}", mode: 'copy'
 
     input:
     val experiment

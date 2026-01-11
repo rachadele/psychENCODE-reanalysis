@@ -5,9 +5,9 @@
  * and runs DESeq2 differential expression analysis.
  */
 
-include { AGGREGATE_DATA_MANUAL } from '../../modules/local/aggregate_data_manual/main'
-include { AGGREGATE_CELLTYPES_MANUAL } from '../../modules/local/aggregate_celltypes_manual/main'
-include { DESEQ2_ANALYSIS_MANUAL } from '../../modules/local/deseq2_analysis_manual/main'
+include { AGGREGATE_DATA_MANUAL } from "${projectDir}/modules/local/aggregate_data_manual/main"
+include { AGGREGATE_CELLTYPES_MANUAL } from "${projectDir}/modules/local/aggregate_celltypes_manual/main"
+include { DESEQ2_ANALYSIS_MANUAL } from "${projectDir}/modules/local/deseq2_analysis_manual/main"
 
 workflow MANUAL_DE_ANALYSIS {
     take:

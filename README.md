@@ -1,51 +1,127 @@
 # psychENCODE-reanalysis
 
-This repository orchestrates large-scale differential expression (DE) analysis of single-cell and bulk RNA-seq data, enabling comparison and aggregation of DE results across studies, cell types, and analysis methods (e.g., GEMMA vs. author-submitted).
+Differential expression (DE) analysis pipeline for single-cell RNA-seq data, comparing GEMMA-derived and author-submitted cell type annotations. Reorganized to follow nf-core best practices.
 
 ## Project Structure
-- **Nextflow Pipelines**: Top-level workflows (`author-de-vs-gemma-pseudobulk-de.nf`, `gemma-vs-gemma-pseudobulk-de.nf`, `get-gemma-de-results.nf`) coordinate data wrangling, aggregation, and DE analysis. Pipelines import modular processes from `modules/`.
-- **Modules**: Each `.nf` in `modules/` is a reusable Nextflow process (e.g., aggregation, DESeq2, wrangling). These are included in top-level workflows.
-- **R/Python Scripts**: Located in `bin/`, these scripts perform core data processing (e.g., `DESeq2_analysis.R`, `aggregate_celltypes_gemma.py`). Many are invoked by Nextflow processes.
-- **Configuration**: `nextflow.config` and JSON parameter files (e.g., `params.class.json`) control pipeline behavior, input locations, and cell type mappings.
-- **Results**: Output is organized by analysis type and parameters in results folders (e.g., `results_author_submitted_false_from_gemma_true/`).
+
+```
+psychENCODE-reanalysis/
+├── main.nf                          # Single entry point
+├── nextflow.config                  # Main configuration
+├── nextflow_schema.json             # Parameter validation schema
+│
+├── workflows/
+│   └── psychencode_reanalysis.nf    # Main workflow orchestration
+│
+├── subworkflows/local/
+│   ├── gemma_de_analysis.nf         # Stage 1: GEMMA DE analysis
+│   ├── manual_de_analysis.nf        # Stage 1 alt: Manual H5AD analysis
+│   └── gemma_comparison.nf          # Stage 2: Compare DE results
+│
+├── modules/local/
+│   ├── get_gemma_pseudobulks/main.nf
+│   ├── aggregate_celltypes_gemma/main.nf
+│   ├── aggregate_data_manual/main.nf
+│   ├── aggregate_celltypes_manual/main.nf
+│   ├── deseq2_analysis_gemma/main.nf
+│   ├── deseq2_analysis_manual/main.nf
+│   ├── aggregate_pairwise/main.nf
+│   ├── de_overlap/main.nf
+│   ├── average_de_overlaps/main.nf
+│   └── average_de_correlations/main.nf
+│
+├── conf/
+│   ├── base.config                  # Process resources & executor
+│   └── modules.config               # Conda environments per process
+│
+├── bin/                             # R/Python scripts
+│
+└── deprecated/                      # Old workflow files (for reference)
+```
 
 ## Usage
 
-### Running Pipelines
-Use `runall.sh` for typical batch runs, or invoke Nextflow directly. Example:
+### Run Full Pipeline (Class level)
 ```bash
-nextflow gemma-vs-gemma-pseudobulk-de.nf -params-file params.class.json -resume --outdir ./gemma-vs-gemma-class
+nextflow run main.nf -params-file params.class.json -profile conda --outdir ./results-class
 ```
 
-### Parameterization
-- Adjust `params.class.json` or `params.subclass.json` to change cell type mappings or analysis level.
+### Run Full Pipeline (Subclass level)
+```bash
+nextflow run main.nf -params-file params.subclass.json -profile conda --outdir ./results-subclass
+```
 
-### Module Development
-- Add new processes as `.nf` files in `modules/` and include them in top-level workflows.
+### Run Only DE Analysis (Stage 1)
+```bash
+nextflow run main.nf -params-file params.class.json -profile conda --skip_comparison
+```
 
-### R/Python Integration
-- Scripts in `bin/` are called by Nextflow; ensure CLI arguments match those in the Nextflow process definitions.
+### Run Only Comparison (Stage 2) with Pre-existing Results
+```bash
+nextflow run main.nf -params-file params.class.json -profile conda --skip_de_analysis \
+    --pavlab_deseq_results "./results/author_submitted_false/class/DESeq2/gemma/**tsv" \
+    --author_label_deseq_results "./results/author_submitted_true/class/DESeq2/gemma/**tsv"
+```
+
+## Stage Control Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `--run_de_analysis` | `true` | Run Stage 1 (DE analysis) |
+| `--run_comparison` | `true` | Run Stage 2 (comparison) |
+| `--skip_de_analysis` | `false` | Skip Stage 1 |
+| `--skip_comparison` | `false` | Skip Stage 2 |
+
+## Pipeline Stages
+
+### Stage 1: Differential Expression Analysis
+- **GEMMA_DE_ANALYSIS**: Fetches GEMMA data → aggregates by cell type → DESeq2
+- **MANUAL_DE_ANALYSIS**: H5AD files → aggregates → DESeq2
+
+### Stage 2: Comparison
+- **GEMMA_COMPARISON**: Pairwise correlations and Jaccard overlaps between annotation schemes
+
+## Configuration
+
+- `conf/base.config`: Process resources (cpus, memory, time)
+- `conf/modules.config`: Conda environment assignments
+- `params.class.json` / `params.subclass.json`: Cell type mappings (use with `-params-file`)
+
+## Output Structure
+
+Results are organized by parameters:
+```
+results/
+└── author_submitted_{true|false}/
+    └── {class|subclass}/
+        ├── experiment_pseudobulks/
+        ├── aggregated_pseudobulks/
+        ├── DESeq2/
+        └── average_corr/
+```
 
 ## Conventions
-- **Cell Type Naming**: Consistent mapping between GEMMA and project-specific cell type names is maintained in JSON param files.
-- **Reproducibility**: Random seeds are set in R scripts (e.g., `set.seed(42)`).
-- **Resource Management**: Memory and CPU settings are controlled in `nextflow.config` and process directives.
-- **Results Structure**: Output directories encode parameter choices (e.g., `results_author_submitted_false_from_gemma_true`).
 
-## Integration
-- **External Data**: Input data (e.g., H5AD, metadata) is referenced in config/params files and must be present at specified paths.
-- **Conda Environments**: Nextflow and R scripts expect conda to be enabled (`conda.enabled = true` in config). Some R scripts specify conda envs via `reticulate`.
+- **Cell Type Naming**: Mapping between GEMMA and project-specific names in JSON param files
+- **Reproducibility**: Random seeds set in R scripts (`set.seed(42)`)
+- **Process Names**: SCREAMING_SNAKE_CASE (nf-core standard)
 
-## Examples
-- To add a new aggregation step, create a module in `modules/`, then include it in a top-level workflow.
-- To run DE analysis for a new cell type, update the relevant param file and rerun the pipeline.
+## Requirements
 
-## References
-- Top-level workflows: `author-de-vs-gemma-pseudobulk-de.nf`, `gemma-vs-gemma-pseudobulk-de.nf`, `get-gemma-de-results.nf`
-- Modules: `modules/`
-- Scripts: `bin/`
-- Config: `nextflow.config`, `params.class.json`, `params.subclass.json`
-- Example run: `runall.sh`
+- Nextflow >= 23.04.0
+- Conda environments:
+  - `scanpyenv` (Python processes)
+  - `r4.3` (DESeq2 processes)
+
+## Verification
+
+```bash
+# Check pipeline syntax
+nextflow run main.nf -preview
+
+# View help
+nextflow run main.nf --help
+```
 
 ---
-For questions about unclear conventions or missing documentation, please check recent pipeline usage in `runall.sh` or contact the maintainers.
+For questions, check `deprecated/` for old workflow patterns or contact the maintainers.

@@ -5,10 +5,10 @@
  * Calculates pairwise correlations and Jaccard overlap metrics.
  */
 
-include { AGGREGATE_PAIRWISE } from '../../modules/local/aggregate_pairwise/main'
-include { DE_OVERLAP } from '../../modules/local/de_overlap/main'
-include { AVERAGE_DE_OVERLAPS } from '../../modules/local/average_de_overlaps/main'
-include { AVERAGE_DE_CORRELATIONS } from '../../modules/local/average_de_correlations/main'
+include { AGGREGATE_PAIRWISE } from "${projectDir}/modules/local/aggregate_pairwise/main"
+include { DE_OVERLAP } from "${projectDir}/modules/local/de_overlap/main"
+include { AVERAGE_DE_OVERLAPS } from "${projectDir}/modules/local/average_de_overlaps/main"
+include { AVERAGE_DE_CORRELATIONS } from "${projectDir}/modules/local/average_de_correlations/main"
 
 workflow GEMMA_COMPARISON {
     take:

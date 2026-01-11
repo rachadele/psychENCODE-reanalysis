@@ -9,9 +9,9 @@
  */
 
 // Include subworkflows
-include { GEMMA_DE_ANALYSIS } from '../subworkflows/local/gemma_de_analysis'
-include { MANUAL_DE_ANALYSIS } from '../subworkflows/local/manual_de_analysis'
-include { GEMMA_COMPARISON } from '../subworkflows/local/gemma_comparison'
+include { GEMMA_DE_ANALYSIS } from "${projectDir}/subworkflows/local/gemma_de_analysis"
+include { MANUAL_DE_ANALYSIS } from "${projectDir}/subworkflows/local/manual_de_analysis"
+include { GEMMA_COMPARISON } from "${projectDir}/subworkflows/local/gemma_comparison"
 
 workflow PSYCHENCODE_REANALYSIS {
 
@@ -56,8 +56,9 @@ workflow PSYCHENCODE_REANALYSIS {
     //=========================================================================
     if (run_comparison) {
         // Load pavlab results (from Stage 1 or pre-existing)
-        if (run_de && params.from_gemma) {
+        if (run_de && params.author_submitted == false && params.from_gemma) {
             // Use results from Stage 1 - flatten the tuple to get just files
+            // this only works if stage 1 was run with pavlab annotations
             pavlab_results = de_results.map { cell_type, files -> files }.flatten()
         } else if (params.pavlab_deseq_results) {
             // Use pre-existing results from params

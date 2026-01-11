@@ -8,7 +8,7 @@
  * Usage:
  *   nextflow run main.nf -profile conda --level class
  *   nextflow run main.nf -profile conda --skip_comparison
- *   nextflow run main.nf -profile conda --skip_de_analysis --pavlab_deseq_results "./results/DESeq2/"
+ *   nextflow run main.nf -profile conda --skip_de_analysis --pavlab_deseq_results "./results/author_submitted_false/class/DESeq2/gemma/**tsv" --author_label_deseq_results "./results/author_submitted_true/class/DESeq2/gemma/**tsv"
  */
 
 nextflow.enable.dsl = 2
@@ -30,7 +30,7 @@ log.info """
 """
 
 // Include the main workflow
-include { PSYCHENCODE_REANALYSIS } from './workflows/psychencode_reanalysis'
+include { PSYCHENCODE_REANALYSIS } from "${projectDir}/workflows/psychencode_reanalysis"
 
 // Entry point
 workflow {

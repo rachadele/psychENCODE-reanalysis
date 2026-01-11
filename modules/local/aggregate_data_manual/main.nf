@@ -2,7 +2,7 @@ process AGGREGATE_DATA_MANUAL {
     tag "${experiment}"
     label 'process_medium'
 
-    publishDir "${params.outdir}/${params.level}/experiment_pseudobulks/manual/${experiment}", mode: 'copy'
+    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/experiment_pseudobulks/manual/${experiment}", mode: 'copy'
 
     input:
     tuple val(experiment), path(annotation_file), path(h5ad_file)
