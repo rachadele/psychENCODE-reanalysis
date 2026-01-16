@@ -2,10 +2,10 @@ process AVERAGE_DE_OVERLAPS {
     tag "average_overlaps"
     label 'process_low'
 
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/de_overlap/average_overlaps/filtered_per_contrast", mode: 'copy', pattern: "filtered**.tsv"
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/de_overlap/average_overlaps/per_celltype", mode: 'copy', pattern: "per_celltype_average*.tsv"
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/de_overlap/average_overlaps/overall_average", mode: 'copy', pattern: "average_jaccard.tsv"
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/de_overlap/average_overlaps/figs", mode: 'copy', pattern: "**png"
+    publishDir "${params.outdir}/comparison/${params.level}/de_overlap/average_overlaps/filtered_per_contrast", mode: 'copy', pattern: "filtered**.tsv"
+    publishDir "${params.outdir}/comparison/${params.level}/de_overlap/average_overlaps/per_celltype", mode: 'copy', pattern: "per_celltype_average*.tsv"
+    publishDir "${params.outdir}/comparison/${params.level}/de_overlap/average_overlaps/overall_average", mode: 'copy', pattern: "average_jaccard.tsv"
+    publishDir "${params.outdir}/comparison/${params.level}/de_overlap/average_overlaps/figs", mode: 'copy', pattern: "**png"
 
     input:
     path de_overlap_files

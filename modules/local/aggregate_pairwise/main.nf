@@ -2,8 +2,8 @@ process AGGREGATE_PAIRWISE {
     tag "${contrast}"
     label 'process_medium'
 
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/all_corr/${contrast}/figs/", mode: 'copy', pattern: "**png"
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/all_corr/${contrast}/files/", mode: 'copy', pattern: "**tsv"
+    publishDir "${params.outdir}/comparison/${params.level}/all_corr/${contrast}/figs/", mode: 'copy', pattern: "**png"
+    publishDir "${params.outdir}/comparison/${params.level}/all_corr/${contrast}/files/", mode: 'copy', pattern: "**tsv"
 
     input:
     tuple val(contrast), path(pavlab_files), path(author_files)

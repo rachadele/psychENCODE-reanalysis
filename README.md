@@ -89,15 +89,20 @@ nextflow run main.nf -params-file params.class.json -profile conda --skip_de_ana
 
 ## Output Structure
 
-Results are organized by parameters:
+Results are organized by stage and parameters:
 ```
 results/
-└── author_submitted_{true|false}/
+├── author_submitted_{true|false}/
+│   └── {class|subclass}/
+│       ├── experiment_pseudobulks/    # Stage 1: Raw pseudobulks
+│       ├── aggregated_pseudobulks/    # Stage 1: Aggregated by cell type
+│       └── DESeq2/                    # Stage 1: DE results
+│
+└── comparison/
     └── {class|subclass}/
-        ├── experiment_pseudobulks/
-        ├── aggregated_pseudobulks/
-        ├── DESeq2/
-        └── average_corr/
+        ├── all_corr/                  # Stage 2: Pairwise correlations
+        ├── de_overlap/                # Stage 2: Jaccard overlaps
+        └── average_corr/              # Stage 2: Averaged correlations
 ```
 
 ## Conventions

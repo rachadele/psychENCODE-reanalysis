@@ -2,7 +2,7 @@ process DE_OVERLAP {
     tag "${contrast}"
     label 'process_low'
 
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/de_overlap/contrast_overlaps/${contrast}", mode: 'copy'
+    publishDir "${params.outdir}/comparison/${params.level}/de_overlap/contrast_overlaps/${contrast}", mode: 'copy'
 
     input:
     tuple val(contrast), path(pavlab_files), path(author_files)

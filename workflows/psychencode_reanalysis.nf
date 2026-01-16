@@ -68,6 +68,11 @@ workflow PSYCHENCODE_REANALYSIS {
         }
 
         // Load author-label results
+        if (run_de && params.author_submitted == true && params.from_gemma) {
+            // Use results from Stage 1 - flatten the tuple to get just files
+            // this only works if stage 1 was run with author-submitted annotations
+            author_results = de_results.map { cell_type, files -> files }.flatten()
+        } else
         if (params.author_label_deseq_results) {
             author_results = Channel.fromPath(params.author_label_deseq_results)
         } else {

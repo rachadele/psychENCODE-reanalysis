@@ -2,10 +2,10 @@ process AVERAGE_DE_CORRELATIONS {
     tag "average_correlations"
     label 'process_low'
 
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/average_corr/filtered_per_contrast", mode: 'copy', pattern: "filtered**.tsv"
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/average_corr/per_celltype", mode: 'copy', pattern: "**per_celltype_**.tsv"
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/average_corr/overall_average", mode: 'copy', pattern: "**average_corr*.tsv"
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/average_corr/figs", mode: 'copy', pattern: "**png"
+    publishDir "${params.outdir}/comparison/${params.level}/average_corr/filtered_per_contrast", mode: 'copy', pattern: "filtered**.tsv"
+    publishDir "${params.outdir}/comparison/${params.level}/average_corr/per_celltype", mode: 'copy', pattern: "**per_celltype_**.tsv"
+    publishDir "${params.outdir}/comparison/${params.level}/average_corr/overall_average", mode: 'copy', pattern: "**average_corr*.tsv"
+    publishDir "${params.outdir}/comparison/${params.level}/average_corr/figs", mode: 'copy', pattern: "**png"
 
     input:
     path corr_tables
