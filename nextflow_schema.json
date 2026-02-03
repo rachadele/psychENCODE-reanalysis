@@ -1,0 +1,111 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://github.com/rachadele/psychENCODE-reanalysis/blob/main/nextflow_schema.json",
+    "title": "psychENCODE Reanalysis Pipeline Parameters",
+    "description": "Differential expression analysis of single-cell RNA-seq data",
+    "type": "object",
+    "definitions": {
+        "input_output_options": {
+            "title": "Input/output options",
+            "type": "object",
+            "fa_icon": "fas fa-terminal",
+            "properties": {
+                "outdir": {
+                    "type": "string",
+                    "default": "./results",
+                    "description": "Output directory for results",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "study_names": {
+                    "type": "string",
+                    "description": "Path to file containing GEMMA study names",
+                    "fa_icon": "fas fa-file-alt"
+                },
+                "h5ad_files": {
+                    "type": "string",
+                    "description": "Directory containing H5AD files for manual analysis",
+                    "fa_icon": "fas fa-folder"
+                },
+                "gemma_meta_dir": {
+                    "type": "string",
+                    "description": "Directory containing GEMMA metadata files",
+                    "fa_icon": "fas fa-folder"
+                }
+            }
+        },
+        "stage_control": {
+            "title": "Stage control options",
+            "type": "object",
+            "fa_icon": "fas fa-tasks",
+            "description": "Control which pipeline stages to run",
+            "properties": {
+                "run_de_analysis": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Run differential expression analysis stage"
+                },
+                "run_comparison": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Run comparison stage"
+                },
+                "skip_de_analysis": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Skip DE analysis (use pre-existing results)"
+                },
+                "skip_comparison": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Skip comparison stage"
+                },
+                "pavlab_deseq_results": {
+                    "type": "string",
+                    "description": "Path to pre-existing pavlab DESeq2 results (glob pattern)"
+                },
+                "author_label_deseq_results": {
+                    "type": "string",
+                    "description": "Path to author-label DESeq2 results (glob pattern)"
+                }
+            }
+        },
+        "analysis_options": {
+            "title": "Analysis options",
+            "type": "object",
+            "fa_icon": "fas fa-cog",
+            "properties": {
+                "from_gemma": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Use GEMMA for data aggregation (false = manual H5AD)"
+                },
+                "author_submitted": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Use author-submitted cell type annotations"
+                },
+                "level": {
+                    "type": "string",
+                    "default": "class",
+                    "enum": ["class", "subclass"],
+                    "description": "Cell type annotation level"
+                },
+                "filter_genes": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Filter genes before DE analysis"
+                },
+                "cell_type_column": {
+                    "type": "string",
+                    "default": "cell_type",
+                    "description": "Column name for cell type in manual aggregation"
+                }
+            }
+        }
+    },
+    "allOf": [
+        { "$ref": "#/definitions/input_output_options" },
+        { "$ref": "#/definitions/stage_control" },
+        { "$ref": "#/definitions/analysis_options" }
+    ]
+}

@@ -13,44 +13,52 @@ def cell_types_match(row, gemma_to_gemma_map):
      
 
 def plot_boxplot(df, gemma_to_gemma_map, x="percent_overlap", outpath=None):
-    plt.figure(figsize=(18, 18))
+    plt.figure(figsize=(20, 20))
+    # Create a copy with cleaned cell type names (replace "." with " ")
+    df_plot = df.copy()
+    df_plot['ct_sc_pipeline_clean'] = df_plot['ct_sc_pipeline'].str.replace('.', ' ', regex=False)
     celltype_order = list(OrderedDict.fromkeys(gemma_to_gemma_map.values()))
     celltype_order = [ct for ct in celltype_order if ct in df['ct_sc_pipeline'].unique()]
-    ax = sns.boxplot(y='ct_sc_pipeline', x=x, data=df, hue='ct_sc_pipeline', dodge=False, showmeans=False, order=celltype_order)
-    means = df.groupby('ct_sc_pipeline')[x].mean()
-    for i, celltype in enumerate(celltype_order):
+    celltype_order_clean = [ct.replace('.', ' ') for ct in celltype_order]
+    ax = sns.boxplot(y='ct_sc_pipeline_clean', x=x, data=df_plot, hue='ct_sc_pipeline_clean', dodge=False, showmeans=False, order=celltype_order_clean)
+    means = df_plot.groupby('ct_sc_pipeline_clean')[x].mean()
+    for i, celltype in enumerate(celltype_order_clean):
         if celltype in means:
-            ax.scatter(means[celltype], i, color='black', s=60, zorder=10, label='Mean' if i == 0 else "")
-    plt.yticks(fontsize=20)
-    plt.xticks(fontsize=20)
-    plt.xlabel(x, fontsize=20)
-    plt.ylabel('Cell Type', fontsize=20)
-    plt.title(f'{x} Across All Contrasts', fontsize=20)
+            ax.scatter(means[celltype], i, color='black', s=100, zorder=10, label='Mean' if i == 0 else "")
+    plt.yticks(fontsize=28)
+    plt.xticks(fontsize=28)
+    plt.xlabel(x.replace('_', ' ').title(), fontsize=32)
+    plt.ylabel('Cell Type', fontsize=32)
+    plt.title(f'{x.replace("_", " ").title()} Across All Contrasts', fontsize=32)
     handles, labels = ax.get_legend_handles_labels()
     if 'Mean' in labels:
-        plt.legend([handles[labels.index('Mean')]], ['Mean'], loc='lower right', fontsize=20)
+        plt.legend([handles[labels.index('Mean')]], ['Mean'], loc='lower right', fontsize=28)
     else:
         plt.legend([],[], frameon=False)
     plt.tight_layout()
     if outpath is None:
         outpath = f'boxplot_{x}.png'
-    plt.savefig(outpath)
+    plt.savefig(outpath, dpi=150)
     plt.close()
 
 def plot_stripplot(df, gemma_to_gemma_map, x="percent_overlap", output_path=None):
-    plt.figure(figsize=(25, 18))
+    plt.figure(figsize=(36, 28))
+    # Create a copy with cleaned cell type names (replace "." with " ")
+    df_plot = df.copy()
+    df_plot['ct_sc_pipeline_clean'] = df_plot['ct_sc_pipeline'].str.replace('.', ' ', regex=False)
     celltype_order = list(OrderedDict.fromkeys(df['ct_sc_pipeline'].unique()))
-    ax = sns.stripplot(y='ct_sc_pipeline', x=x, data=df, order=celltype_order, hue='contrast', dodge=False, jitter=True, size=7)
-    plt.yticks(fontsize=20)
-    plt.xticks(fontsize=20)
-    plt.xlabel(x, fontsize=20)
-    plt.ylabel('Cell Type', fontsize=20)
-    plt.title(f'{x} Across Contrasts (Strip Plot)', fontsize=20)
-    plt.legend(title='Contrast', bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=20, title_fontsize=20)
+    celltype_order_clean = [ct.replace('.', ' ') for ct in celltype_order]
+    ax = sns.stripplot(y='ct_sc_pipeline_clean', x=x, data=df_plot, order=celltype_order_clean, hue='contrast', dodge=False, jitter=True, size=18)
+    plt.yticks(fontsize=28)
+    plt.xticks(fontsize=28)
+    plt.xlabel(x.replace('_', ' ').title(), fontsize=32)
+    plt.ylabel('Cell Type', fontsize=32)
+    plt.title(f'{x.replace("_", " ").title()} Across Contrasts', fontsize=32)
+    plt.legend(title='Contrast', bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=24, title_fontsize=28)
     plt.tight_layout()
     if output_path is None:
         output_path = f'stripplot_{x}.png'
-    plt.savefig(output_path)
+    plt.savefig(output_path, dpi=150)
     plt.close()
 
 # Compute average overlap per cell type across all contrasts
