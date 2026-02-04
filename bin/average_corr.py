@@ -120,7 +120,8 @@ def main():
 	plot_boxplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="spearman_pvalue")
 	plot_stripplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="spearman_log2FoldChange")
 	plot_stripplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="spearman_pvalue")
-	plot_correlation_heatmap(combined_df, gemma_to_gemma_map)
+	plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_log2FoldChange")
+	plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_pvalue")
 
 	average_logFC, sd_logFC = compute_overall_averages(combined_df, metric="spearman_log2FoldChange")
 	average_pval, sd_pval = compute_overall_averages(combined_df, metric="spearman_pvalue")

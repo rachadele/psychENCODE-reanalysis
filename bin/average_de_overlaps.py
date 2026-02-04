@@ -116,6 +116,7 @@ def main():
 	combined_df = pd.concat(matched_ct_dfs, ignore_index=True)
 	plot_boxplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="jaccard_index")
 	plot_stripplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="jaccard_index")
+	plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="jaccard_index")
 	average_overlap, sd_overlap = compute_overall_averages(combined_df, metric="jaccard_index")
 	# write overall average to file
 	pd.DataFrame({

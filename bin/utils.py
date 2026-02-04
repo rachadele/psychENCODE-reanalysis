@@ -79,8 +79,39 @@ def compute_overall_averages(combined_df, metric):
 	return average_overlap, sd_overlap
 
 
-def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, output_path=None):
-    """Plot a heatmap of Spearman log2FC correlations (ct_author x contrast)."""
+def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_log2FoldChange", output_path=None):
+    """Plot a heatmap of a metric (ct_author x contrast).
+
+    Parameters
+    ----------
+    metric : str
+        Column name in combined_df to plot, e.g.
+        "spearman_log2FoldChange", "spearman_pvalue", or "jaccard_index".
+    """
+
+    # --- metric-specific display settings ---
+    metric_settings = {
+        "spearman_log2FoldChange": {
+            "cbar_label": "Spearman rho (log2FC)",
+            "title": "Spearman log2FC Correlation: Author Cell Types x Contrasts",
+            "vmin": 0, "vmax": 1, "fmt": ".2f",
+        },
+        "spearman_pvalue": {
+            "cbar_label": "Spearman rho (p-value)",
+            "title": "Spearman P-value Correlation: Author Cell Types x Contrasts",
+            "vmin": 0, "vmax": 1, "fmt": ".2f",
+        },
+        "jaccard_index": {
+            "cbar_label": "Jaccard Index (%)",
+            "title": "Jaccard Index: Author Cell Types x Contrasts",
+            "vmin": 0, "vmax": 100, "fmt": ".1f",
+        },
+    }
+    settings = metric_settings.get(metric, {
+        "cbar_label": metric.replace("_", " ").title(),
+        "title": f"{metric.replace('_', ' ').title()}: Author Cell Types x Contrasts",
+        "vmin": 0, "vmax": 1, "fmt": ".2f",
+    })
 
     # --- contrast display names ---
     contrast_display = {
@@ -93,19 +124,24 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, output_path=None):
         "Age_death": "Age",
         "Biological_Sex_male_vs_female": "Sex",
     }
+    # Also handle contrast names that include the file suffix (jaccard files)
+    contrast_display_extra = {
+        k + "_pairwise_jaccard.tsv": v for k, v in contrast_display.items()
+    }
+    contrast_display_all = {**contrast_display, **contrast_display_extra}
 
     # Keep only rows where ct_author is in the mapping
     df = combined_df[combined_df["ct_author"].isin(gemma_to_gemma_map.keys())].copy()
 
     # Clean contrast names
-    df["contrast_clean"] = df["contrast"].map(contrast_display)
+    df["contrast_clean"] = df["contrast"].map(contrast_display_all)
     df = df.dropna(subset=["contrast_clean"])
 
     # Pivot to wide: rows = ct_author, columns = contrast_clean
     pivot = df.pivot_table(
         index="ct_author",
         columns="contrast_clean",
-        values="spearman_log2FoldChange",
+        values=metric,
         aggfunc="mean",
     )
 
@@ -122,7 +158,7 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, output_path=None):
     n_classes = len(classes_present)
     class_palette = dict(zip(classes_present, sns.color_palette("tab20", n_colors=n_classes)))
 
-    # Sort rows: group by pipeline class, then by mean correlation within group (descending)
+    # Sort rows: group by pipeline class, then by mean value within group (descending)
     row_mean = pivot.mean(axis=1)
     sort_key = pivot.index.map(
         lambda ct: (classes_present.index(author_to_class.get(ct, classes_present[0])), -row_mean.get(ct, 0))
@@ -140,14 +176,14 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, output_path=None):
         col_cluster=False,
         row_colors=row_colors,
         cmap="RdYlBu_r",
-        vmin=0,
-        vmax=1,
+        vmin=settings["vmin"],
+        vmax=settings["vmax"],
         figsize=(max(10, len(col_order) * 1.6), max(10, len(pivot) * 0.55)),
         linewidths=0.5,
         linecolor="white",
-        cbar_kws={"label": "Spearman rho (log2FC)", "shrink": 0.5},
+        cbar_kws={"label": settings["cbar_label"], "shrink": 0.5},
         annot=True,
-        fmt=".2f",
+        fmt=settings["fmt"],
         annot_kws={"size": 9},
     )
 
@@ -175,14 +211,10 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, output_path=None):
         frameon=True,
     )
 
-    g.fig.suptitle(
-        "Spearman log2FC Correlation: Author Cell Types x Contrasts",
-        fontsize=16,
-        y=1.02,
-    )
+    g.fig.suptitle(settings["title"], fontsize=16, y=1.02)
     g.fig.tight_layout(rect=[0, 0, 1, 1])
 
     if output_path is None:
-        output_path = "heatmap_spearman_log2FoldChange.png"
+        output_path = f"heatmap_{metric}.png"
     g.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close()
