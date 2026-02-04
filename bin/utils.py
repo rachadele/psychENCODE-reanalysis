@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import seaborn as sns
+import numpy as np
 from collections import OrderedDict
 
 def reverse_lookup(mapping, value):
@@ -75,3 +77,112 @@ def compute_overall_averages(combined_df, metric):
 	sd_overlap = combined_df[metric].std()
 	# write overall average to file
 	return average_overlap, sd_overlap
+
+
+def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, output_path=None):
+    """Plot a heatmap of Spearman log2FC correlations (ct_author x contrast)."""
+
+    # --- contrast display names ---
+    contrast_display = {
+        "Disorder_Schizophrenia_vs_Control": "SCZ",
+        "Disorder_Bipolar.Disorder_vs_Control": "BD",
+        "Disorder_ASD_vs_Control": "ASD",
+        "Disorder_MDD_vs_Control": "MDD",
+        "Disorder_PTSD_vs_Control": "PTSD",
+        "Disorder_Williams.Syndrome_vs_Control": "WS",
+        "Age_death": "Age",
+        "Biological_Sex_male_vs_female": "Sex",
+    }
+
+    # Keep only rows where ct_author is in the mapping
+    df = combined_df[combined_df["ct_author"].isin(gemma_to_gemma_map.keys())].copy()
+
+    # Clean contrast names
+    df["contrast_clean"] = df["contrast"].map(contrast_display)
+    df = df.dropna(subset=["contrast_clean"])
+
+    # Pivot to wide: rows = ct_author, columns = contrast_clean
+    pivot = df.pivot_table(
+        index="ct_author",
+        columns="contrast_clean",
+        values="spearman_log2FoldChange",
+        aggfunc="mean",
+    )
+
+    # Reorder columns in a logical order
+    col_order = [c for c in ["SCZ", "BD", "ASD", "MDD", "PTSD", "WS", "Age", "Sex"] if c in pivot.columns]
+    pivot = pivot[col_order]
+
+    # --- assign pipeline class to each author label ---
+    author_to_class = {k: v for k, v in gemma_to_gemma_map.items() if k in pivot.index}
+    classes_present = list(OrderedDict.fromkeys(gemma_to_gemma_map.values()))
+    classes_present = [c for c in classes_present if c in author_to_class.values()]
+
+    # colour palette for pipeline classes
+    n_classes = len(classes_present)
+    class_palette = dict(zip(classes_present, sns.color_palette("tab20", n_colors=n_classes)))
+
+    # Sort rows: group by pipeline class, then by mean correlation within group (descending)
+    row_mean = pivot.mean(axis=1)
+    sort_key = pivot.index.map(
+        lambda ct: (classes_present.index(author_to_class.get(ct, classes_present[0])), -row_mean.get(ct, 0))
+    )
+    pivot = pivot.iloc[sort_key.argsort()]
+
+    # Row colour sidebar
+    row_colors = pivot.index.map(lambda ct: class_palette[author_to_class[ct]])
+    row_colors = list(row_colors)
+
+    # --- clustermap ---
+    g = sns.clustermap(
+        pivot,
+        row_cluster=False,
+        col_cluster=False,
+        row_colors=row_colors,
+        cmap="RdYlBu_r",
+        vmin=0,
+        vmax=1,
+        figsize=(max(10, len(col_order) * 1.6), max(10, len(pivot) * 0.55)),
+        linewidths=0.5,
+        linecolor="white",
+        cbar_kws={"label": "Spearman rho (log2FC)", "shrink": 0.5},
+        annot=True,
+        fmt=".2f",
+        annot_kws={"size": 9},
+    )
+
+    # Axis labels
+    g.ax_heatmap.set_ylabel("Author Cell Type", fontsize=14)
+    g.ax_heatmap.set_xlabel("Contrast", fontsize=14)
+    g.ax_heatmap.tick_params(axis="y", labelsize=11)
+    g.ax_heatmap.tick_params(axis="x", labelsize=12)
+
+    # --- legend for pipeline classes ---
+    legend_handles = [
+        mpatches.Patch(
+            facecolor=class_palette[cls],
+            label=cls.replace(".", " "),
+        )
+        for cls in classes_present
+    ]
+    g.ax_heatmap.legend(
+        handles=legend_handles,
+        title="Pipeline Cell Type Class",
+        bbox_to_anchor=(1.35, 1.0),
+        loc="upper left",
+        fontsize=8,
+        title_fontsize=9,
+        frameon=True,
+    )
+
+    g.fig.suptitle(
+        "Spearman log2FC Correlation: Author Cell Types x Contrasts",
+        fontsize=16,
+        y=1.02,
+    )
+    g.fig.tight_layout(rect=[0, 0, 1, 1])
+
+    if output_path is None:
+        output_path = "heatmap_spearman_log2FoldChange.png"
+    g.savefig(output_path, dpi=150, bbox_inches="tight")
+    plt.close()
