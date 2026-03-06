@@ -2,13 +2,13 @@ process DESEQ2_ANALYSIS_GEMMA {
     tag "${pavlab_cell_type}"
     label 'process_medium'
 
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/DESeq2/gemma/${pavlab_cell_type}", mode: 'copy'
+    publishDir { "${params.outdir}/author_submitted_${author_submitted}/${params.level}/DESeq2/gemma/${pavlab_cell_type}" }, mode: 'copy'
 
     input:
-    tuple val(pavlab_cell_type), path(pseudobulk_matrix)
+    tuple val(author_submitted), val(pavlab_cell_type), path(pseudobulk_matrix)
 
     output:
-    tuple val(pavlab_cell_type), path("**results.tsv"), emit: all_contrasts_gemma
+    tuple val(author_submitted), val(pavlab_cell_type), path("**results.tsv"), emit: all_contrasts_gemma
     path "**png", optional: true
 
     script:

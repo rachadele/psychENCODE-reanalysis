@@ -2,10 +2,11 @@ process AGGREGATE_CELLTYPES_GEMMA {
     tag "AGGREGATE_CELLTYPES_GEMMA"
     label 'process_medium'
 
-    publishDir "${params.outdir}/author_submitted_${params.author_submitted}/${params.level}/ct_pseudobulks/gemma", mode: 'copy'
+    publishDir { "${params.outdir}/author_submitted_${author_submitted}/${params.level}/ct_pseudobulks/gemma" }, mode: 'copy'
 
     input:
     path pseudobulk_matrices
+    val author_submitted
 
     output:
     path "**pseudobulk_matrix.tsv.gz", emit: aggregated_celltypes
