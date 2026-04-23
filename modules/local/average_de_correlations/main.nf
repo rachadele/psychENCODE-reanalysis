@@ -7,7 +7,7 @@ process AVERAGE_DE_CORRELATIONS {
     publishDir "${params.outdir}/comparison/${params.level}/average_corr/overall_average", mode: 'copy', pattern: "**average_corr*.tsv"
     publishDir "${params.outdir}/comparison/${params.level}/average_corr/combined", mode: 'copy', pattern: "combined_filtered_corr.tsv"
     publishDir "${params.outdir}/comparison/${params.level}/average_corr/figs", mode: 'copy', pattern: "**png"
-    publishDir "${params.outdir}/comparison/${params.level}/average_corr/figs", mode: 'copy', pattern: "heatmap_**.tsv"
+    publishDir "${params.outdir}/comparison/${params.level}/average_corr/heatmap_data", mode: 'copy', pattern: "heatmap_**.tsv"
 
     input:
     path corr_tables

@@ -7,7 +7,7 @@ process AVERAGE_DE_OVERLAPS {
     publishDir "${params.outdir}/comparison/${params.level}/de_overlap/average_overlaps/overall_average", mode: 'copy', pattern: "average_jaccard.tsv"
     publishDir "${params.outdir}/comparison/${params.level}/de_overlap/average_overlaps/combined", mode: 'copy', pattern: "combined_filtered_overlaps.tsv"
     publishDir "${params.outdir}/comparison/${params.level}/de_overlap/average_overlaps/figs", mode: 'copy', pattern: "**png"
-    publishDir "${params.outdir}/comparison/${params.level}/de_overlap/average_overlaps/figs", mode: 'copy', pattern: "heatmap_**.tsv"
+    publishDir "${params.outdir}/comparison/${params.level}/de_overlap/average_overlaps/heatmap_data", mode: 'copy', pattern: "heatmap_**.tsv"
 
     input:
     path de_overlap_files
