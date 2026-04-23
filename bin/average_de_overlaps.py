@@ -1,4 +1,5 @@
 import os
+import json
 import argparse
 import glob
 import pandas as pd
@@ -16,70 +17,12 @@ import seaborn as sns
 import re
 from utils import *
 
-gemma_to_gemma_map_class = {
-		"Astro": "astrocyte",
-		"Chandelier": "chandelier.pvalb.GABAergic.cortical.interneuron",
-		"Endo": "vascular",
-		"Immune": "microglial.cell",
-		"L2.3_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L4_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L5.6_NP": "deep.layer.non.IT",
-		"L5_ET": "deep.layer.non.IT",
-		"L5_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L6_CT": "deep.layer.non.IT",
-		"L6_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L6_IT_Car3": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L6b": "deep.layer.non.IT",
-		"Lamp5": "lamp5.GABAergic.cortical.interneuron",
-		"Lamp5_Lhx6": "lamp5.GABAergic.cortical.interneuron",
-		"Micro": "microglial.cell",
-		"OPC": "oligodendrocyte.precursor.cell",
-		"Oligo": "oligodendrocyte",
-		"PC": "vascular",
-		"Pax6": "PAX6.GABAergic.cortical.interneuron",
-		"Pvalb": "pvalb.GABAergic.cortical.interneuron",
-		"SMC": "vascular",
-		"Sncg": "sncg.GABAergic.cortical.interneuron",
-		"Sst": "sst.GABAergic.cortical.interneuron",
-		"Sst_Chodl": "sst.GABAergic.cortical.interneuron",
-		"VLMC": "vascular",
-		"Vip": "vip.GABAergic.cortical.interneuron"
-	}
-
-gemma_to_gemma_map_subclass = {
-		"Astro": "astrocyte",
-		"Chandelier": "chandelier.pvalb.GABAergic.cortical.interneuron",
-		"Endo": "endothelial.cell",
-		"Immune": "microglial.cell",
-		"L2.3_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L4_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L5.6_NP": "near.projecting.glutamatergic.cortical.neuron",
-		"L5_ET": "L5.extratelencephalic.projecting.glutamatergic.cortical.neuron",
-		"L5_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L6_CT": "corticothalamic.projecting.glutamatergic.cortical.neuron",
-		"L6_IT": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L6_IT_Car3": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
-		"L6b": "L6b.glutamatergic.cortical.neuron",
-		"Lamp5": "lamp5.GABAergic.cortical.interneuron",
-		"Lamp5_Lhx6": "lamp5.GABAergic.cortical.interneuron",
-		"Micro": "microglial.cell",
-		"OPC": "oligodendrocyte.precursor.cell",
-		"Oligo": "oligodendrocyte",
-		"PC": "pericyte",
-		"Pax6": "PAX6.GABAergic.cortical.interneuron",
-		"Pvalb": "pvalb.GABAergic.cortical.interneuron",
-		"SMC": "smooth.muscle.cell",
-		"Sncg": "sncg.GABAergic.cortical.interneuron",
-		"Sst": "sst.GABAergic.cortical.interneuron",
-		"Sst_Chodl": "sst.GABAergic.cortical.interneuron",
-		"VLMC": "vascular.leptomeningeal.cell",
-		"Vip": "vip.GABAergic.cortical.interneuron"
-	}
-
 def parse_arguments():
   parser = argparse.ArgumentParser(description="aggreate pseudobulk matrices by cell type from Gemma data")
   parser.add_argument("--de_overlap_paths", type=str, nargs="+", default=[""])
   parser.add_argument("--annotation_level", type=str, default="class", help="Cell type annotation level: class or subclass")
+  parser.add_argument("--f1_path", type=str, default=None, help="Path to label_metrics_stats_per_label.tsv for F1 score annotation")
+  parser.add_argument("--params", type=str, required=True, help="Path to params JSON file containing gemma_to_gemma_map")
 #  parser.add_argument("--logFC_threshold", type=float, default=0.0, help="Log fold change threshold for significance")
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
@@ -91,11 +34,10 @@ def main():
 	args = parse_arguments()
 	de_overlap_paths = args.de_overlap_paths
 	annotation_level = args.annotation_level
- # dynamically select gemma_to_gemma_map based on annotation level
-	if annotation_level == "class":
-		gemma_to_gemma_map = gemma_to_gemma_map_class
-	else:
-		gemma_to_gemma_map = gemma_to_gemma_map_subclass
+	f1_path = args.f1_path
+	with open(args.params) as f:
+		params = json.load(f)
+	gemma_to_gemma_map = params["gemma_to_gemma_map"]
 
 	contrasts_to_remove = ["Intercept","PMI","ancestry"]
 
@@ -114,9 +56,10 @@ def main():
 		matched_ct_dfs.append(filtered_df)
 	# Combine all filtered DataFrames
 	combined_df = pd.concat(matched_ct_dfs, ignore_index=True)
+	combined_df.to_csv("combined_filtered_overlaps.tsv", index=False, sep="\t")
 	plot_boxplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="jaccard_index")
 	plot_stripplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="jaccard_index")
-	plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="jaccard_index")
+	plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="jaccard_index", f1_path=f1_path, annotation_level=annotation_level)
 	average_overlap, sd_overlap = compute_overall_averages(combined_df, metric="jaccard_index")
 	# write overall average to file
 	pd.DataFrame({

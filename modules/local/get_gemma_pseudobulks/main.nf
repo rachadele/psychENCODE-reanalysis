@@ -12,7 +12,7 @@ process GET_GEMMA_PSEUDOBULKS {
     path("**.tsv.gz"), emit: aggregated_data
 
     script:
-    def cta_option = author_submitted ? "author-submitted" : "${params.cta_name}"
+    def cta_option = author_submitted ? "author-submitted" : "sc-pipeline-${params.cta_version}-${params.level}"
     """
     gemma-cli-staging getSingleCellDataMatrix -e ${experiment} --aggregate-by-assay \
         --aggregate-by-cell-type-assignment ${cta_option} \

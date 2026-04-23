@@ -28,5 +28,6 @@
 		"VLMC": "vascular.leptomeningeal.cell",
 		"Vip": "vip.GABAergic.cortical.interneuron"
 	},
-	"level": "subclass"
+	"level": "subclass",
+	"params_file": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/params.subclass.json"
 }

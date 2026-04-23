@@ -29,6 +29,7 @@
 		"Vip": "vip.GABAergic.cortical.interneuron"
 	},
 	"level": "class",
+	"params_file": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/params.class.json",
 	"pavlab_deseq_results": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/class/DESeq2/gemma",
 	"author_deseq_results": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/class/DESeq2/manual"
 }
