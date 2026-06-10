@@ -3,7 +3,8 @@ import matplotlib.patches as mpatches
 import seaborn as sns
 import numpy as np
 import pandas as pd
-from collections import OrderedDict
+import re
+from collections import OrderedDict, Counter
 
 def reverse_lookup(mapping, value):
     """Return all keys that map to the given value."""
@@ -206,11 +207,14 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
     f1_label_to_class = f1_label_to_class_map.get(annotation_level, f1_label_to_class_map["class"])
 
     ct_to_f1 = {}
+    gemma_class_to_bench_labels = {}  # GEMMA class -> benchmark labels found in F1 file
     if f1_path is not None:
         f1_df = pd.read_csv(f1_path, sep="\t")
-        f1_df = f1_df[(f1_df["key"] == annotation_level) & (f1_df["metric"] == "f1_score")]
+        if "key" in f1_df.columns and annotation_level in f1_df["key"].values:
+            f1_df = f1_df[f1_df["key"] == annotation_level]
+        f1_score_col = "mean_f1_score" if "mean_f1_score" in f1_df.columns else "mean"
         class_to_f1 = {
-            f1_label_to_class[row["label"]]: row["mean"]
+            f1_label_to_class[row["label"]]: row[f1_score_col]
             for _, row in f1_df.iterrows()
             if row["label"] in f1_label_to_class
         }
@@ -218,19 +222,42 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
             ct: class_to_f1.get(gemma_to_gemma_map.get(ct, ""), np.nan)
             for ct in pivot.columns
         }
+        for _, row in f1_df.iterrows():
+            if row["label"] in f1_label_to_class:
+                cls = f1_label_to_class[row["label"]]
+                gemma_class_to_bench_labels.setdefault(cls, set()).add(row["label"])
 
-    # Sort columns: by F1 score descending (if available), else by pipeline class + mean
-    if ct_to_f1:
-        pivot = pivot[sorted(pivot.columns, key=lambda ct: ct_to_f1.get(ct, -1), reverse=True)]
-    else:
-        col_mean = pivot.mean(axis=0)
-        sort_key = pivot.columns.map(
-            lambda ct: (classes_present.index(author_to_class.get(ct, classes_present[0])), -col_mean.get(ct, 0))
+    def _norm(s):
+        return re.sub(r'[^a-z0-9]', '', s.lower())
+
+    def has_direct_f1_match(author_ct, gemma_class):
+        """True if a benchmark label for this GEMMA class starts with the author CT name."""
+        auth_norm = _norm(author_ct)
+        return any(
+            _norm(b).startswith(auth_norm)
+            for b in gemma_class_to_bench_labels.get(gemma_class, set())
         )
-        pivot = pivot.iloc[:, sort_key.argsort()]
+
+    # Sort columns: groups sorted by class F1 descending, within group by F1 descending
+    class_f1 = {}
+    for ct, cls in author_to_class.items():
+        f1 = ct_to_f1.get(ct, np.nan)
+        if not np.isnan(f1):
+            class_f1[cls] = f1
+    col_mean = pivot.mean(axis=0)
+    pivot = pivot[sorted(pivot.columns, key=lambda ct: (
+        -class_f1.get(author_to_class.get(ct, ""), -1),
+        -ct_to_f1.get(ct, -1) if ct_to_f1 else -col_mean.get(ct, 0)
+    ))]
 
     # --- Column colour sidebars ---
     class_colors = [class_palette[author_to_class[ct]] for ct in pivot.columns]
+
+    # Flag author CTs that have no direct benchmark label match for their GEMMA class
+    shared_class_cols = [
+        i for i, ct in enumerate(pivot.columns)
+        if ct_to_f1 and not has_direct_f1_match(ct, author_to_class.get(ct, ""))
+    ]
 
     if ct_to_f1:
         f1_cmap = plt.cm.YlOrRd
@@ -240,7 +267,9 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
             f1_cmap(f1_norm(v)) if not np.isnan(v) else (0.85, 0.85, 0.85, 1.0)
             for v in f1_vals
         ]
-        col_colors = [f1_colors, class_colors]
+        # Top row: white background, asterisks drawn on shared-class columns
+        shared_colors = [(1.0, 1.0, 1.0, 1.0)] * len(pivot.columns)
+        col_colors = [shared_colors, f1_colors, class_colors]
     else:
         col_colors = class_colors
 
@@ -266,6 +295,25 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
     g.ax_heatmap.tick_params(axis="x", labelsize=44, rotation=90)
     g.ax_heatmap.tick_params(axis="y", labelsize=46, rotation=0)
 
+    # Label the col_colors rows, add gap, and annotate shared-class columns with *
+    if hasattr(g, "ax_col_colors"):
+        if ct_to_f1:
+            g.ax_col_colors.set_yticks([0.5, 1.5, 2.5])
+            g.ax_col_colors.set_yticklabels(["Shared GEMMA class", "F1 Score", "Cell Type Class"],
+                                             fontsize=32, rotation=0, va="center")
+            for col_i in shared_class_cols:
+                g.ax_col_colors.text(col_i + 0.5, 0.5, "*", ha="center", va="center",
+                                     fontsize=36, fontweight="bold", color="black")
+        else:
+            g.ax_col_colors.set_yticks([0.5])
+            g.ax_col_colors.set_yticklabels(["Cell Type Class"], fontsize=32, rotation=0, va="center")
+        g.ax_col_colors.yaxis.set_tick_params(labelleft=True, left=True, length=0)
+        g.fig.canvas.draw()
+        cc_pos = g.ax_col_colors.get_position()
+        hm_pos = g.ax_heatmap.get_position()
+        gap = hm_pos.height * 0.03
+        g.ax_col_colors.set_position([cc_pos.x0, hm_pos.y1 + gap, cc_pos.width, cc_pos.height])
+
     if output_path is None:
         output_path = f"heatmap_{metric}.png"
     g.savefig(output_path, dpi=150, bbox_inches="tight")
@@ -278,7 +326,7 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
     legend_fig = plt.figure(figsize=(26, 14))
 
     # Spearman / Jaccard colorbar (tall, thin, left side)
-    cbar_ax = legend_fig.add_axes([0.05, 0.15, 0.035, 0.72])
+    cbar_ax = legend_fig.add_axes([0.05, 0.28, 0.035, 0.68])
     sm_main = plt.cm.ScalarMappable(
         cmap=plt.cm.RdYlBu_r,
         norm=plt.Normalize(vmin=settings["vmin"], vmax=settings["vmax"]),
@@ -288,14 +336,21 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
     cbar_ax.tick_params(labelsize=40)
     cbar_ax.set_ylabel(settings["cbar_label"], fontsize=48, labelpad=22)
 
-    # F1 score colorbar
+    # F1 score colorbar + shared-class note
     if ct_to_f1:
-        f1_ax = legend_fig.add_axes([0.19, 0.15, 0.035, 0.72])
+        f1_ax = legend_fig.add_axes([0.19, 0.28, 0.035, 0.68])
         sm_f1 = plt.cm.ScalarMappable(cmap=plt.cm.YlOrRd, norm=plt.Normalize(vmin=0.7, vmax=1.0))
         sm_f1.set_array([])
         legend_fig.colorbar(sm_f1, cax=f1_ax)
         f1_ax.tick_params(labelsize=40)
         f1_ax.set_ylabel("F1 Score", fontsize=48, labelpad=22)
+
+        # Asterisk note below both colorbars, left-aligned to stay clear of the class legend
+        legend_fig.text(
+            0.05, 0.10,
+            "* = multiple author cell types\n    share one GEMMA class;\n    F1 score is for the class",
+            fontsize=36, va="top", ha="left", linespacing=1.4,
+        )
 
     # Pipeline Cell Type Class legend (right side)
     legend_handles = [

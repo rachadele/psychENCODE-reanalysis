@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd /space/grp/rschwartz/rschwartz/psychENCODE-reanalysis
 
-F1_PATH="/space/grp/rschwartz/rschwartz/evaluation_summary.nf/2024-07-01/homo_sapiens_main_branch/100/dataset_id/SCT/gap_false/grant_summary/outliers_removed/whole_cortex/cutoff_0.0/label_metrics_stats_per_label.tsv"
+F1_PATH="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/source_data/label_metrics_stats_per_label.tsv"
 
 echo "Running comparison-only: class level"
 nextflow run main.nf \
