@@ -9,7 +9,8 @@ process AGGREGATE_PAIRWISE {
     tuple val(contrast), path(pavlab_files), path(author_files)
 
     output:
-    path "**pairwise_corr*.png", optional: true
+    path "**pairwise_corr*.png", optional: true, emit: pairwise_heatmaps
+    path "**scatter.png", optional: true, emit: scatter_plots
     path "**pairwise_corr*.tsv", emit: pairwise_corrs
 
     script:
@@ -17,6 +18,7 @@ process AGGREGATE_PAIRWISE {
     python ${projectDir}/bin/aggregate_pairwise.py \
         --contrast ${contrast} \
         --pavlab_paths ${pavlab_files} \
-        --author_paths ${author_files}
+        --author_paths ${author_files} \
+        --params ${params.params_file}
     """
 }
