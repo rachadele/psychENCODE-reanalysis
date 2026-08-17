@@ -50,7 +50,7 @@ workflow PSYCHENCODE_REANALYSIS {
         } else {
             // Manual pathway: use H5AD files with custom annotations
             h5ad_files_channel = Channel
-                .fromPath("${params.h5ad_files}/*.h5ad")
+                .fromPath("${params.h5ad_files}/*/*.h5ad")
                 .map { h5ad_file ->
                     def name = h5ad_file.getBaseName()
                     def annotation_file = params.celltype_annotation_files[name]
