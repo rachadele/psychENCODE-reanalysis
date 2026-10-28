@@ -27,8 +27,9 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
+from fig_de_agreement import plot_figure
 from utils import (author_display, contrast_pivot, load_benchmark_f1, load_label_map,
-                   own_label_types, plot_correlation_heatmap)
+                   own_label_types)
 
 
 def rname(s):
@@ -122,6 +123,7 @@ def main():
     p.add_argument("--level", default="subclass")
     p.add_argument("--metric", default="spearman_log2FoldChange")
     p.add_argument("--outdir", required=True)
+    p.add_argument("--qa_dir", default=None, help="write layout-alignment JSON and a QA-only PDF here")
     a = p.parse_args()
     os.makedirs(a.outdir, exist_ok=True)
 
@@ -149,39 +151,48 @@ def main():
     tab.to_csv(os.path.join(a.outdir, "celltype_summary.tsv"), sep="\t", index=False)
 
     y = tab["mean_rho"]
-    own_mask = tab["benchmark_own_label"]
     logs = tab["log10_author_median_cells"]
+    # author types whose pipeline label pools several author types
+    n_per_label = tab["pipeline_label"].map(tab["pipeline_label"].value_counts())
+    tab["pooled_pipeline_label"] = n_per_label > 1
+    subsets = {
+        "all": pd.Series(True, index=tab.index),
+        # 7 types: name differs from their pooled pipeline label (IT subtypes, SST Chodl, LAMP5 LHX6)
+        "excluding types named differently from their pooled label": tab["benchmark_own_label"],
+        # 9 types: every type in a pooled label (adds SST and LAMP5)
+        "excluding all types in pooled labels": ~tab["pooled_pipeline_label"],
+    }
     tests = []
-    def add(name, subset, fn, *cols):
-        r, pv, n = fn(*[c[subset] for c in cols])
-        tests.append({"test": name, "subset": "own benchmark label" if subset is own_mask else "all",
-                      "spearman_rho": r, "p": pv, "n": n})
-    allm = pd.Series(True, index=tab.index)
-    add("rho ~ benchmark F1", own_mask, spearman, tab["benchmark_f1"], y)
-    add("rho ~ benchmark F1", allm, spearman, tab["benchmark_f1"], y)
-    add("rho ~ CMC F1", allm, spearman, tab["cmc_f1"], y)
-    add("rho ~ log10 median author cells per donor", allm, spearman, logs, y)
-    add("rho ~ log10 median pipeline-label cells per donor", allm, spearman, tab["log10_pipeline_median_cells"], y)
-    add("benchmark F1 ~ log10 median author cells", own_mask, spearman, tab["benchmark_f1"], logs)
-    add("CMC F1 ~ log10 median author cells", allm, spearman, tab["cmc_f1"], logs)
-    add("benchmark F1 ~ CMC F1", own_mask, spearman, tab["benchmark_f1"], tab["cmc_f1"])
-    add("rho ~ benchmark F1 | log10 support (partial)", own_mask, partial_spearman, tab["benchmark_f1"], y, logs)
-    add("rho ~ benchmark F1 | log10 support (partial)", allm, partial_spearman, tab["benchmark_f1"], y, logs)
-    add("rho ~ CMC F1 | log10 support (partial)", allm, partial_spearman, tab["cmc_f1"], y, logs)
+    def add(name, sub, fn, *cols):
+        m = subsets[sub]
+        r, pv, n = fn(*[c[m] for c in cols])
+        excl = ";".join(tab.loc[~m, "display_name"])
+        tests.append({"test": name, "subset": sub, "spearman_rho": r, "p": pv, "n": n, "excluded": excl})
+    bf, cf, lp = tab["benchmark_f1"], tab["cmc_f1"], tab["log10_pipeline_median_cells"]
+    for sub in subsets:
+        add("rho ~ CMC F1", sub, spearman, cf, y)
+        add("rho ~ benchmark F1", sub, spearman, bf, y)
+        add("rho ~ log10 median author cells per donor", sub, spearman, logs, y)
+        add("rho ~ CMC F1 | log10 support (partial)", sub, partial_spearman, cf, y, logs)
+        add("rho ~ benchmark F1 | log10 support (partial)", sub, partial_spearman, bf, y, logs)
+        add("CMC F1 ~ log10 median author cells", sub, spearman, cf, logs)
+        add("benchmark F1 ~ CMC F1", sub, spearman, bf, cf)
+    add("rho ~ log10 median pipeline-label cells per donor", "all", spearman, lp, y)
+    tab.to_csv(os.path.join(a.outdir, "celltype_summary.tsv"), sep="\t", index=False)
     pd.DataFrame(tests).to_csv(os.path.join(a.outdir, "correlations.tsv"), sep="\t", index=False)
 
-    cmc = dict(zip(tab["ct_author"], tab["cmc_f1"]))
-    logd = dict(zip(tab["ct_author"], logs))
-    lo = min(0.4, np.floor(np.nanmin(tab["cmc_f1"]) * 10) / 10)
-    plot_correlation_heatmap(
-        combined, label_map, metric=a.metric, f1_path=a.benchmark_f1, annotation_level=a.level,
-        output_path=os.path.join(a.outdir, f"fig_de_agreement_{a.level}.png"),
-        extra_bars=[(f"{a.study} F1", cmc)], f1_range=(lo, 1.0),
-        scatter_panels=[
-            dict(x=cmc, xlabel=f"Annotation F1 ({a.study}, pipeline vs author labels)", label="outliers",
-                 xlim=(lo - 0.03, 1.03)),
-            dict(x=logd, xlabel=f"log10(median {a.study} cells per donor + 1), author label", label="outliers"),
-        ])
+    from utils import PIPELINE_TO_BENCH
+    tt = pd.DataFrame(tests).query("subset == 'all'").set_index("test")
+    fmt_p = lambda v: f"p = {v:.2g}" if v >= 0.001 else "p < 0.001"
+    r_s, r_f, r_pf = (tt.loc[k] for k in ("rho ~ log10 median author cells per donor", "rho ~ CMC F1",
+                                           "rho ~ CMC F1 | log10 support (partial)"))
+    stats_lines = [f"Spearman ρ, n = {int(r_s.n)}",
+                   f"cells/donor: {r_s.spearman_rho:.2f} ({fmt_p(r_s.p)})",
+                   f"{a.study} F1: {r_f.spearman_rho:.2f} ({fmt_p(r_f.p)})",
+                   f"F1 | cells: {r_pf.spearman_rho:.2f} ({fmt_p(r_pf.p)})"]
+    plot_figure(pivot, tab, label_map, PIPELINE_TO_BENCH[a.level],
+                os.path.join(a.outdir, f"fig_de_agreement_{a.level}.png"), stats_lines,
+                study=a.study, qa_dir=a.qa_dir)
 
     prov = {"created": datetime.datetime.now().astimezone().isoformat(), "study": a.study, "level": a.level,
             "cells": cell_info, "inputs": {}}
@@ -196,7 +207,7 @@ def main():
         prov["benchmark_f1_provenance"] = json.load(open(bj))
     prov["data_version"] = {"pipeline_labels": "sc-annotation-pipeline 2.1.2", "de": "results_v2.1.2_limma"}
     json.dump(prov, open(os.path.join(a.outdir, "manifest.json"), "w"), indent=2)
-    print(pd.DataFrame(tests).round(3).to_string(index=False))
+    print(pd.DataFrame(tests).drop(columns="excluded").round(3).to_string(index=False))
 
 
 if __name__ == "__main__":
