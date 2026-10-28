@@ -159,7 +159,110 @@ def author_display(ct):
     return re.sub(r"(\d)\.(\d)", r"\1/\2", ct).replace("_", " ")
 
 
-def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_log2FoldChange", f1_path=None, annotation_level="class", output_path=None):
+
+def _norm(s):
+    return re.sub(r"[^a-z0-9]", "", str(s).lower())
+
+
+def _repel_labels(ax, xs, ys, texts, fontsize=9):
+    """Label points without overlaps (no adjustText dependency): for each point, try
+    offsets at growing radii in 16 directions and keep the first whose box stays inside
+    the axes and clears earlier labels and all points. Leader lines for far labels."""
+    fig = ax.figure
+    fig.canvas.draw()
+    r = fig.canvas.get_renderer()
+    pt2px = fig.dpi / 72.0
+    pts = ax.transData.transform(np.column_stack([xs, ys]))
+    axbb = ax.get_window_extent(r)
+    placed = []
+    # densest points first so they get the closest slots
+    d = np.array([np.sum(np.hypot(*(pts - q).T) < 40) for q in pts])
+    angles = np.deg2rad([45, 0, 90, 315, 135, 180, 270, 225, 22, 67, 112, 157, 202, 247, 292, 337])
+    for k in np.argsort(-d):
+        (px, py), t = pts[k], texts[k]
+        if not t:
+            continue  # unlabelled point: still avoided by other labels
+        probe = ax.text(0, 0, t, fontsize=fontsize)
+        bb = probe.get_window_extent(r)
+        probe.remove()
+        w, h = bb.width, bb.height
+        best = None
+        for rad in (5, 10, 16, 24, 34, 46, 60, 76):
+            for a in angles:
+                ox, oy = rad * np.cos(a) * pt2px, rad * np.sin(a) * pt2px
+                x0 = px + ox - (w if np.cos(a) < -0.2 else 0 if np.cos(a) > 0.2 else w / 2)
+                y0 = py + oy - (h if np.sin(a) < -0.2 else 0 if np.sin(a) > 0.2 else h / 2)
+                box = (x0 - 1, y0 - 1, x0 + w + 1, y0 + h + 1)
+                if box[0] < axbb.x0 or box[2] > axbb.x1 or box[1] < axbb.y0 or box[3] > axbb.y1:
+                    continue
+                if any(not (box[2] < b[0] or box[0] > b[2] or box[3] < b[1] or box[1] > b[3]) for b in placed):
+                    continue
+                if any(box[0] - 4 < qx < box[2] + 4 and box[1] - 4 < qy < box[3] + 4 for qx, qy in pts):
+                    continue
+                # the label must sit closer to its own point than to any other point
+                dist = [np.hypot(max(box[0] - qx, 0, qx - box[2]), max(box[1] - qy, 0, qy - box[3]))
+                        for qx, qy in pts]
+                if rad <= 10 and min(dd for m, dd in enumerate(dist) if m != k) <= dist[k] + 2:
+                    continue
+                best = (box, rad)
+                break
+            if best:
+                break
+        if best is None:
+            best = ((px + 4, py + 4, px + 4 + w, py + 4 + h), 5)
+        box, rad = best
+        tx, ty = ax.transData.inverted().transform((box[0] + 1, box[1] + 1))
+        ax.annotate(t, (xs[k], ys[k]), xytext=(tx, ty), textcoords="data", fontsize=fontsize,
+                    ha="left", va="bottom",
+                    arrowprops=dict(arrowstyle="-", lw=0.4, color="0.55", shrinkA=0, shrinkB=3)
+                    if rad > 10 else None)
+        placed.append(box)
+
+CONTRAST_DISPLAY = {
+    "Disorder_Schizophrenia_vs_Control": "SCZ",
+    "Disorder_Bipolar.Disorder_vs_Control": "BD",
+    "Disorder_ASD_vs_Control": "ASD",
+    "Disorder_MDD_vs_Control": "MDD",
+    "Disorder_PTSD_vs_Control": "PTSD",
+    "Disorder_Williams.Syndrome_vs_Control": "WS",
+    "Age_death": "Age",
+    "Biological_Sex_male_vs_female": "Sex",
+}
+
+
+def contrast_pivot(combined_df, gemma_to_gemma_map, metric):
+    """contrast (rows, display names) x author cell type table of a metric."""
+    disp = dict(CONTRAST_DISPLAY)
+    disp.update({k + "_pairwise_jaccard.tsv": v for k, v in CONTRAST_DISPLAY.items()})
+    df = combined_df[combined_df["ct_author"].isin(gemma_to_gemma_map.keys())].copy()
+    df["contrast_clean"] = df["contrast"].map(disp)
+    df = df.dropna(subset=["contrast_clean"])
+    pivot = df.pivot_table(index="contrast_clean", columns="ct_author", values=metric, aggfunc="mean")
+    row_order = [c for c in ["SCZ", "BD", "ASD", "MDD", "PTSD", "WS", "Age", "Sex"] if c in pivot.index]
+    return pivot.loc[row_order]
+
+
+def load_benchmark_f1(f1_path, annotation_level, author_to_label):
+    """author cell type -> benchmark F1 of its pipeline label at annotation_level."""
+    to_bench = PIPELINE_TO_BENCH.get(annotation_level, PIPELINE_TO_BENCH["class"])
+    f1_df = pd.read_csv(f1_path, sep="\t")
+    if "key" in f1_df.columns:
+        f1_df = f1_df[f1_df["key"] == annotation_level]
+    if "metric" in f1_df.columns:
+        f1_df = f1_df[f1_df["metric"] == "f1_score"]
+    f1_col = "mean_f1_score" if "mean_f1_score" in f1_df.columns else "mean"
+    bench_f1 = dict(zip(f1_df["label"], f1_df[f1_col]))
+    return {ct: bench_f1.get(to_bench.get(cls, ""), np.nan) for ct, cls in author_to_label.items()}
+
+
+def own_label_types(author_to_label, annotation_level):
+    """Author types whose own name is a benchmark label (others share a merged label)."""
+    to_bench = PIPELINE_TO_BENCH.get(annotation_level, PIPELINE_TO_BENCH["class"])
+    return {ct for ct, cls in author_to_label.items() if _norm(author_display(ct)) == _norm(to_bench.get(cls, ""))}
+
+
+def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_log2FoldChange", f1_path=None, annotation_level="class", output_path=None,
+                             extra_bars=None, scatter_panels=None, f1_range=None):
     """Heatmap of a metric (contrast x author cell type) with annotation bars for the
     benchmark F1 of each author type's pipeline label and for the pipeline label itself,
     and with colour bars and the pipeline-label legend in the same figure.
@@ -168,6 +271,10 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
         "spearman_pvalue" or "jaccard_index".
     f1_path : TSV with key, label and mean_f1_score (or mean) columns, e.g. from
         extract_benchmark_f1.py. F1 is looked up for the pipeline label at annotation_level.
+    extra_bars : list of (label, {author ct: F1}) drawn under the benchmark F1 bar, same scale.
+    scatter_panels : list of dicts (x: {author ct: value}, xlabel, label: "all" or
+        "outliers", note, xlim) plotted against the column mean of the metric, side by side
+        under the heatmap. Default: one panel of benchmark F1 for types with their own label.
     """
     metric_settings = {
         "spearman_log2FoldChange": {"cbar_label": "Spearman ρ (log2 fold change)", "vmin": -1, "vmax": 1},
@@ -177,40 +284,16 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
     }
     settings = metric_settings.get(metric, {"cbar_label": metric.replace("_", " "), "vmin": 0, "vmax": 1})
 
-    contrast_display = {
-        "Disorder_Schizophrenia_vs_Control": "SCZ",
-        "Disorder_Bipolar.Disorder_vs_Control": "BD",
-        "Disorder_ASD_vs_Control": "ASD",
-        "Disorder_MDD_vs_Control": "MDD",
-        "Disorder_PTSD_vs_Control": "PTSD",
-        "Disorder_Williams.Syndrome_vs_Control": "WS",
-        "Age_death": "Age",
-        "Biological_Sex_male_vs_female": "Sex",
-    }
-    contrast_display.update({k + "_pairwise_jaccard.tsv": v for k, v in list(contrast_display.items())})
-
-    df = combined_df[combined_df["ct_author"].isin(gemma_to_gemma_map.keys())].copy()
-    df["contrast_clean"] = df["contrast"].map(contrast_display)
-    df = df.dropna(subset=["contrast_clean"])
-    pivot = df.pivot_table(index="contrast_clean", columns="ct_author", values=metric, aggfunc="mean")
-    row_order = [c for c in ["SCZ", "BD", "ASD", "MDD", "PTSD", "WS", "Age", "Sex"] if c in pivot.index]
-    pivot = pivot.loc[row_order]
+    pivot = contrast_pivot(combined_df, gemma_to_gemma_map, metric)
+    row_order = list(pivot.index)
 
     author_to_class = {ct: gemma_to_gemma_map[ct] for ct in pivot.columns}
     to_bench = PIPELINE_TO_BENCH.get(annotation_level, PIPELINE_TO_BENCH["class"])
     class_display = lambda cls: to_bench.get(cls, cls.replace(".", " "))
 
     # --- benchmark F1 of each author type's pipeline label ---
-    ct_to_f1 = {}
-    if f1_path is not None:
-        f1_df = pd.read_csv(f1_path, sep="\t")
-        if "key" in f1_df.columns:
-            f1_df = f1_df[f1_df["key"] == annotation_level]
-        if "metric" in f1_df.columns:
-            f1_df = f1_df[f1_df["metric"] == "f1_score"]
-        f1_col = "mean_f1_score" if "mean_f1_score" in f1_df.columns else "mean"
-        bench_f1 = dict(zip(f1_df["label"], f1_df[f1_col]))
-        ct_to_f1 = {ct: bench_f1.get(to_bench.get(cls, ""), np.nan) for ct, cls in author_to_class.items()}
+    ct_to_f1 = load_benchmark_f1(f1_path, annotation_level, author_to_class) if f1_path is not None else {}
+    extra_bars = extra_bars or []
 
     # --- column order: pipeline labels by F1 (or mean metric), then author types by mean metric ---
     col_mean = pivot.mean(axis=0)
@@ -230,11 +313,20 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
     cell = 0.42
     left, right_pad, bottom, top = 1.9, 0.25, 1.55, 0.15
     bar_h, bar_gap = 0.30, 0.06
-    n_bars = 2 if ct_to_f1 else 1
+    n_bars = (2 if ct_to_f1 else 1) + len(extra_bars)
     cbar_block = 2.3 if ct_to_f1 else 1.25
     legend_w = 2.1
     hm_w, hm_h = ncol * cell, nrow * cell
     bars_h = n_bars * bar_h + n_bars * bar_gap
+    if scatter_panels is None and ct_to_f1 and metric.startswith("spearman"):
+        own = own_label_types(author_to_class, annotation_level)
+        scatter_panels = [dict(x={ct: f for ct, f in ct_to_f1.items() if ct in own and not np.isnan(f)},
+                               xlabel=f"Annotation F1 (benchmark, {annotation_level})", label="all",
+                               note="types without their own benchmark label omitted", xlim=(0.4, 1.04))]
+    scatter_panels = [sp for sp in (scatter_panels or []) if sum(not np.isnan(v) for v in sp["x"].values()) >= 3]
+    show_b = bool(scatter_panels)
+    b_block = 4.9 if show_b else 0.0
+    bottom += b_block
     fig_w = left + hm_w + 0.35 + cbar_block + legend_w + right_pad
     fig_h = bottom + hm_h + bars_h + top
     fig = plt.figure(figsize=(fig_w, fig_h))
@@ -273,12 +365,17 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
     y = bottom + hm_h + bar_gap
     add_bar(y, [mcolors.to_rgba(class_palette[author_to_class[ct]]) for ct in cols], "Pipeline label")
     f1_cmap = plt.cm.YlOrRd
-    f1_lo, f1_hi = F1_RANGE.get(annotation_level, (0.4, 1.0))
+    f1_lo, f1_hi = f1_range or F1_RANGE.get(annotation_level, (0.4, 1.0))
     f1_norm = plt.Normalize(vmin=f1_lo, vmax=f1_hi, clip=True)
+    # bottom-up: pipeline label, extra F1 bars (reversed, so the first sits just under the
+    # benchmark bar), benchmark F1 on top
+    f1_color = lambda v: f1_cmap(f1_norm(v)) if not np.isnan(v) else (0.85, 0.85, 0.85, 1.0)
+    for lab, vals in reversed(extra_bars):
+        y += bar_h + bar_gap
+        add_bar(y, [f1_color(vals.get(ct, np.nan)) for ct in cols], lab)
     if ct_to_f1:
         y += bar_h + bar_gap
-        add_bar(y, [f1_cmap(f1_norm(ct_to_f1[ct])) if not np.isnan(ct_to_f1[ct]) else (0.85, 0.85, 0.85, 1.0)
-                    for ct in cols], "Annotation F1")
+        add_bar(y, [f1_color(ct_to_f1[ct]) for ct in cols], "Benchmark F1" if extra_bars else "Annotation F1")
 
     # --- colour bars ---
     cb_h = hm_h + bars_h
@@ -293,7 +390,7 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
         sm = plt.cm.ScalarMappable(cmap=f1_cmap, norm=f1_norm)
         sm.set_array([])
         fb = fig.colorbar(sm, cax=fax)
-        fb.set_label(f"Annotation F1 (benchmark, {annotation_level})", fontsize=12)
+        fb.set_label("Annotation F1" if extra_bars else f"Annotation F1 (benchmark, {annotation_level})", fontsize=12)
         fb.ax.tick_params(labelsize=10)
 
     # --- pipeline label legend ---
@@ -302,6 +399,52 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
     handles = [mpatches.Patch(facecolor=class_palette[c], label=class_display(c)) for c in classes_present]
     lax.legend(handles=handles, title="Pipeline label", loc="upper left", fontsize=10, title_fontsize=11,
                frameon=False, borderaxespad=0, handlelength=1.2)
+
+    if show_b:
+        from scipy.stats import spearmanr
+        n_p = len(scatter_panels)
+        gap = 0.9
+        pw = min((hm_w - gap * (n_p - 1)) / n_p, 10.5)
+        rows_out = []
+        letters = "BCDEFG"
+        for pi, sp in enumerate(scatter_panels):
+            b_cts = [ct for ct in cols if not np.isnan(sp["x"].get(ct, np.nan))]
+            bx = np.array([sp["x"][ct] for ct in b_cts])
+            by = np.array([col_mean[ct] for ct in b_cts])
+            rho_b, p_b = spearmanr(bx, by)
+            x0 = left + pi * (pw + gap)
+            bax = fig.add_axes([fx(x0), fy(0.75), fx(pw), fy(b_block - 1.25)])
+            bax.scatter(bx, by, s=46, c=[class_palette[author_to_class[ct]] for ct in b_cts],
+                        edgecolors="0.25", linewidths=0.5, zorder=3)
+            if sp.get("label", "all") == "outliers":
+                lab_idx = [k for k in range(len(b_cts)) if by[k] < 0.85 or bx[k] <= np.quantile(bx, 0.2)]
+            else:
+                lab_idx = list(range(len(b_cts)))
+            _repel_labels(bax, bx, by, [author_display(ct) if k in lab_idx else "" for k, ct in enumerate(b_cts)], fontsize=9)
+            bax.set_xlabel(sp["xlabel"], fontsize=12)
+            if pi == 0:
+                bax.set_ylabel(f"Mean {settings['cbar_label']}", fontsize=12)
+            bax.tick_params(labelsize=10)
+            if sp.get("xlim"):
+                bax.set_xlim(*sp["xlim"])
+            else:
+                pad = (bx.max() - bx.min()) * 0.06
+                bax.set_xlim(bx.min() - pad, bx.max() + pad)
+            bax.set_ylim(np.floor(by.min() * 10) / 10 - 0.05, 1.06)
+            bax.set_yticks(np.arange(np.ceil(by.min() * 10) / 10 - 0.1, 1.01, 0.1))
+            bax.grid(alpha=0.25, lw=0.5)
+            for side in ("top", "right"):
+                bax.spines[side].set_visible(False)
+            p_txt = f"p = {p_b:.2g}" if p_b >= 0.001 else "p < 0.001"
+            note = f"\n({sp['note']})" if sp.get("note") else ""
+            bax.text(0.02, 0.97, f"Spearman ρ = {rho_b:.2f}, {p_txt}, n = {len(b_cts)}{note}",
+                     transform=bax.transAxes, ha="left", va="top", fontsize=10)
+            fig.text(fx(0.15 if pi == 0 else x0 - 0.75), fy(b_block - 0.05), letters[pi], fontsize=18, fontweight="bold", va="top")
+            rows_out += [{"panel": letters[pi], "xlabel": sp["xlabel"], "ct_author": ct, "display_name": author_display(ct),
+                          "x": xv, f"mean_{metric}": yv} for ct, xv, yv in zip(b_cts, bx, by)]
+        pd.DataFrame(rows_out).to_csv(
+            (output_path or f"heatmap_{metric}.png").replace(".png", "_scatter.tsv"), sep="\t", index=False)
+        fig.text(fx(0.15), fy(fig_h - 0.12), "A", fontsize=18, fontweight="bold", va="top")
 
     if output_path is None:
         output_path = f"heatmap_{metric}.png"
@@ -315,4 +458,5 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
         "pipeline_label": [author_to_class[ct] for ct in cols],
         "benchmark_label": [to_bench.get(author_to_class[ct], "") for ct in cols],
         "annotation_f1": [ct_to_f1.get(ct, np.nan) for ct in cols],
+        **{lab: [vals.get(ct, np.nan) for ct in cols] for lab, vals in extra_bars},
     }).to_csv(output_path.replace(".png", "_columns.tsv"), sep="\t", index=False)
