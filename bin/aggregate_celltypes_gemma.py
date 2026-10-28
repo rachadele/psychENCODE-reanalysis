@@ -10,6 +10,10 @@ def parse_arguments():
                                                                                "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_author_submitted_false_from_gemma_true/experiment_pseudobulks/gemma/MultiomeBrain/MultiomeBrain_aggregated_gemma.tsv.gz"])
   parser.add_argument("--metadata_files", type=str, default="/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/gemma/metadata",
                       help="Path to the metadata files from Gemma")
+  parser.add_argument("--input_suffix", type=str, default="_aggregated_gemma.tsv.gz",
+                      help="per-study file suffix stripped to get the study key")
+  parser.add_argument("--output_suffix", type=str, default="_pseudobulk_matrix.tsv.gz",
+                      help="suffix of the per-cell-type output file")
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
     return known_args
@@ -23,7 +27,7 @@ def main():
   for file in matrix_files:
       df = pd.read_csv(file, sep="\t", comment="#", dtype=str, compression="gzip")
       #key = os.path.basename(file).replace("_expmat.unfilt.aggregated.tsv.gz", "")
-      key = os.path.basename(file).replace("_aggregated_gemma.tsv.gz", "")
+      key = os.path.basename(file).replace(args.input_suffix, "")
       pseudobulks[key] = df
 
   metadata_files = glob.glob(os.path.join(args.metadata_files, "*_sample_meta.tsv"))
@@ -76,7 +80,7 @@ def main():
                       dataset_mats.values())
     outdir = cell_type.strip().replace("/", "_")
     os.makedirs(outdir, exist_ok=True)
-    output_path = cell_type.strip().replace("/", "_") + "_pseudobulk_matrix.tsv.gz"
+    output_path = cell_type.strip().replace("/", "_") + args.output_suffix
     combined.to_csv(os.path.join(outdir,output_path), sep="\t", index=True, na_rep=0, compression="gzip")
     
     # make some kind of summary plot for this pseudobulk matrix
