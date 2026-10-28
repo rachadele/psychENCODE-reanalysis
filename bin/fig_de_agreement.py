@@ -1,13 +1,13 @@
 """Manuscript figure: DE agreement vs annotation F1 and cell support (sc-manuscript Figure 4).
 
-Two panels at final size (183 mm, double column). A: heatmap of DE agreement (Spearman rho
-of log2 fold changes, author vs pipeline labels) per contrast and author type, with bars for
-benchmark F1, CMC F1 and cell class, and brackets over author types pooled into one pipeline
-label. B: mean rho across contrasts against log10 median CMC cells per donor, coloured by CMC
-F1 on the same scale as the F1 bars in A, with a LOWESS smooth; open markers are pooled types.
-Text sizes follow the lab rule: >= 10 pt text, >= 12 pt axis titles, >= 14 pt panel letters.
-The deliverable is the PNG. With qa_dir, a layout-alignment JSON and a temporary PDF for the
-text-size and collision audits are written there (QA only, not a figure export).
+At final size (183 mm, double column). A: heatmap of DE agreement (Spearman rho of log2 fold
+changes, author vs pipeline labels) per contrast and author type, with bars for benchmark F1,
+CMC F1 and cell class, and brackets over author types pooled into one pipeline label.
+B, C: mean rho across contrasts against CMC F1 and against log10 median CMC cells per donor,
+points coloured by cell class (open: pooled label), OLS line with 95% confidence band, and
+Spearman rho, p and n above each panel. Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
+The only output is the PNG; check_layout() verifies text sizes, page bounds, text overlaps
+and panel alignment on the rendered figure and blocks export on failure (report to qa_dir).
 """
 import os
 
@@ -16,7 +16,6 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
 import numpy as np
-from statsmodels.nonparametric.smoothers_lowess import lowess
 
 from utils import _repel_labels, author_display
 
@@ -60,9 +59,51 @@ def cell_class(ct):
     return CLASS_OF.get(ct, "Excitatory" if ct.startswith("L") else "Glia")
 
 
-def plot_figure(pivot, tab, label_map, bench_label, out_png, stats_lines, study="CMC", qa_dir=None):
-    """pivot: contrast x author type (log2FC rho); tab: celltype_summary rows;
-    stats_lines: correlation text for panel B (computed by the caller)."""
+def check_layout(fig, ax_a, panels, W):
+    """Rendered checks, no vector export: text sizes (>= 10 pt, axis titles >= 12 pt), text
+    inside the page, no overlapping text boxes, A spanning B to C, B and C the same size."""
+    fig.canvas.draw()
+    r = fig.canvas.get_renderer()
+    fb = fig.bbox
+    fails, texts = [], []
+    # axis titles of data axes (colour-bar labels count as ordinary text, >= 10 pt)
+    data_axes = [ax_a, *panels]
+    titles = {id(a.xaxis.label) for a in data_axes} | {id(a.yaxis.label) for a in data_axes}
+    skip = set()
+    for a in fig.axes:
+        for axis, (lo, hi) in ((a.xaxis, a.get_xlim()), (a.yaxis, a.get_ylim())):
+            lo, hi = min(lo, hi), max(lo, hi)
+            for tk in axis.get_major_ticks() + axis.get_minor_ticks():
+                if not a.axison or not (lo - 1e-9 <= tk.get_loc() <= hi + 1e-9):
+                    skip.update({id(tk.label1), id(tk.label2)})
+    for t in fig.findobj(mpl.text.Text):
+        if id(t) in skip or not t.get_visible() or not t.get_text().strip():
+            continue
+        size = t.get_fontsize()
+        floor = AX if id(t) in titles else TXT
+        if size < floor - 1e-6:
+            fails.append(f"text {t.get_text()!r} is {size} pt (< {floor})")
+        bb = t.get_window_extent(r)
+        if bb.x0 < fb.x0 - 1 or bb.x1 > fb.x1 + 1 or bb.y0 < fb.y0 - 1 or bb.y1 > fb.y1 + 1:
+            fails.append(f"text {t.get_text()!r} extends beyond the page")
+        texts.append((t.get_text(), bb))
+    for i in range(len(texts)):
+        for j in range(i + 1, len(texts)):
+            a_, b_ = texts[i][1], texts[j][1]
+            ov = max(0, min(a_.x1, b_.x1) - max(a_.x0, b_.x0)) * max(0, min(a_.y1, b_.y1) - max(a_.y0, b_.y0))
+            if ov > 0.05 * min(a_.width * a_.height, b_.width * b_.height):
+                fails.append(f"text {texts[i][0]!r} overlaps {texts[j][0]!r}")
+    tol = 1.5 / 72 / W
+    pa, pb, pc = (q.get_position() for q in (ax_a, *panels))
+    if abs(pa.x0 - pb.x0) > tol or abs(pa.x1 - pc.x1) > tol:
+        fails.append("panel A does not span B to C")
+    if abs(pb.width - pc.width) > tol or abs(pb.height - pc.height) > tol or abs(pb.y0 - pc.y0) > tol:
+        fails.append("panels B and C differ in size or baseline")
+    return {"n_text": len(texts), "failures": fails}
+
+
+def plot_figure(pivot, tab, label_map, bench_label, out_png, study="CMC", qa_dir=None):
+    """pivot: contrast x author type (log2FC rho); tab: celltype_summary rows."""
     t = tab.set_index("ct_author")
     lab_f1 = t.groupby("pipeline_label")["benchmark_f1"].first()
     cols = sorted(pivot.columns, key=lambda c: (-np.nan_to_num(lab_f1[label_map[c]], nan=-1),
@@ -77,8 +118,9 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, stats_lines, study=
     hm_w = W - left - right
     cell_h, bar_h, gap = 0.21, 0.17, 0.04
     hm_h = nrow * cell_h
-    y_b, b_h = 0.62, 3.85                     # panel B
-    y_hm = y_b + b_h + 0.35 + 1.55            # gap + A tick labels and axis title
+    y_b, b_h = 0.62, 2.9                      # panels B and C
+    y_key, key_h = y_b + b_h + 0.45, 0.85     # key row: class legend and colour bars
+    y_hm = y_key + key_h + 0.05 + 1.45        # A tick labels and axis title
     y_br = y_hm + hm_h + gap
     br_h = 0.30
     bars_y0 = y_br + br_h + gap
@@ -134,45 +176,19 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, stats_lines, study=
             bax.text((i + j + 1) / 2, 0.32, bench_label.get(label_map[cols[i]], ""), ha="center", va="bottom")
         i = j + 1
 
-    # ---------- B: mean rho vs support, coloured by CMC F1 ----------
-    key_w = 2.2
-    b_w = W - left - right - key_w - 0.4
-    bx_ = fig.add_axes([fx(left), fy(y_b), fx(b_w), fy(b_h)])
-    x = t.loc[cols, "log10_author_median_cells"].values.astype(float)
-    y = t.loc[cols, "mean_rho"].values.astype(float)
-    f = t.loc[cols, "cmc_f1"].values.astype(float)
-    fit = lowess(y, x, frac=0.8, it=1, return_sorted=True)
-    bx_.plot(fit[:, 0], fit[:, 1], color="0.35", lw=1.2, zorder=2)
-    for xi, yi, fi, c in zip(x, y, f, cols):
-        if c in pooled:
-            bx_.scatter(xi, yi, s=34, facecolors="white", edgecolors=[f1c(fi)], linewidths=1.6, zorder=3)
-        else:
-            bx_.scatter(xi, yi, s=34, facecolors=[f1c(fi)], edgecolors="0.15", linewidths=0.6, zorder=3)
-    bx_.set_ylim(np.floor(np.nanmin(y) * 10) / 10 - 0.05, 1.05)
-    pad = (np.nanmax(x) - np.nanmin(x)) * 0.05
-    bx_.set_xlim(np.nanmin(x) - pad, np.nanmax(x) + pad)
-    xs = np.linspace(fit[0, 0], fit[-1, 0], 300)
-    _repel_labels(bx_, x, y, [author_display(c) if yi < 0.8 else "" for yi, c in zip(y, cols)],
-                  fontsize=TXT, avoid_xy=np.column_stack([xs, np.interp(xs, fit[:, 0], fit[:, 1])]))
-    bx_.set_xlabel(f"log₁₀(median {study} cells per donor + 1)")
-    bx_.set_ylabel("Mean Spearman ρ")
-
-    # key column beside B: class legend, marker legend, two colour bars
-    kx = left + b_w + 0.35
+    # ---------- key row: class legend, marker legend, colour bars ----------
     handles = [mpatches.Patch(facecolor=CLASS_COLORS[k], label=k) for k in CLASS_COLORS]
     handles += [mlines.Line2D([], [], ls="", marker="o", mfc="0.55", mec="0.15", ms=6, label="Own label"),
                 mlines.Line2D([], [], ls="", marker="o", mfc="white", mec="0.35", mew=1.6, ms=6, label="Pooled label")]
-    sax = fig.add_axes([fx(kx), fy(y_b + b_h - 0.75), fx(key_w), fy(0.75)])
-    sax.axis("off")
-    sax.text(0, 1, "\n".join(stats_lines), ha="left", va="top", linespacing=1.3)
-    lax = fig.add_axes([fx(kx), fy(y_b + 1.55), fx(key_w), fy(b_h - 0.85 - 1.55)])
+    lax = fig.add_axes([fx(left - 0.9), fy(y_key), fx(4.6), fy(key_h)])
     lax.axis("off")
-    lax.legend(handles=handles, loc="upper left", borderaxespad=0, handlelength=1.0, handleheight=0.9,
-               labelspacing=0.3, handletextpad=0.5, title="Cell class (A)", title_fontsize=TXT,
-               alignment="left")
-    for k, (sm, lab) in enumerate([(mesh, "Spearman ρ (A)"),
-                                   (mpl.cm.ScalarMappable(f1_norm, f1_cmap), "Annotation F1 (A, B)")]):
-        cax = fig.add_axes([fx(kx), fy(y_b + 1.05 - k * 0.72), fx(key_w - 0.15), fy(0.10)])
+    lax.legend(handles=handles, loc="center left", ncol=4, borderaxespad=0, handlelength=1.0,
+               handleheight=0.9, columnspacing=0.9, labelspacing=0.4, handletextpad=0.4)
+    cb_w = 0.95
+    for k, (sm, lab) in enumerate([(mesh, "Spearman ρ"),
+                                   (mpl.cm.ScalarMappable(f1_norm, f1_cmap), "Annotation F1")]):
+        cx0 = W - right - 2 * cb_w - 0.55 + k * (cb_w + 0.3)
+        cax = fig.add_axes([fx(cx0), fy(y_key + 0.3), fx(cb_w), fy(0.10)])
         cb = fig.colorbar(sm, cax=cax, orientation="horizontal")
         cb.set_label(lab, fontsize=TXT, labelpad=5)
         cax.xaxis.set_label_position("top")
@@ -180,28 +196,71 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, stats_lines, study=
         cb.set_ticks([-1, 0, 1] if k == 0 else [f1_lo, 1.0])
         cb.outline.set_linewidth(0.6)
 
-    fig.text(fx(0.03), fy(H - 0.03), "A", fontsize=LET, fontweight="bold", va="top")
-    fig.text(fx(0.03), fy(y_b + b_h + 0.30), "B", fontsize=LET, fontweight="bold", va="top")
+    # ---------- B, C: mean rho vs CMC F1 and vs cells per donor, OLS line with 95% band ----------
+    from scipy import stats as sst
+    gutter = 0.45
+    pw = (hm_w - gutter) / 2
+    y = t.loc[cols, "mean_rho"].values.astype(float)
+    panels = [("cmc_f1", f"Annotation F1 ({study})"),
+              ("log10_author_median_cells", f"Median {study} cells per donor + 1")]
+    sax = []
+    for k, (col, xl) in enumerate(panels):
+        a = fig.add_axes([fx(left + k * (pw + gutter)), fy(y_b), fx(pw), fy(b_h)])
+        x = t.loc[cols, col].values.astype(float)
+        # OLS line and 95% confidence band for the mean, on the plotted axes
+        n = len(x)
+        slope, icpt = np.polyfit(x, y, 1)
+        xs = np.linspace(np.nanmin(x), np.nanmax(x), 200)
+        resid = y - (icpt + slope * x)
+        s_err = np.sqrt(np.sum(resid ** 2) / (n - 2))
+        se = s_err * np.sqrt(1 / n + (xs - x.mean()) ** 2 / np.sum((x - x.mean()) ** 2))
+        tq = sst.t.ppf(0.975, n - 2)
+        yfit = icpt + slope * xs
+        logx = col.startswith("log10")
+        tr = (lambda v: 10 ** v) if logx else (lambda v: v)   # C is drawn on a log axis
+        xs_p = tr(xs)
+        for xi, yi, c in zip(tr(x), y, cols):
+            colr = CLASS_COLORS[cell_class(c)]
+            if c in pooled:
+                a.scatter(xi, yi, s=34, facecolors="white", edgecolors=colr, linewidths=1.6, zorder=3)
+            else:
+                a.scatter(xi, yi, s=34, facecolors=colr, edgecolors="0.15", linewidths=0.6, zorder=3)
+        a.fill_between(xs_p, yfit - tq * se, yfit + tq * se, color="0.85", lw=0, zorder=1)
+        a.plot(xs_p, yfit, color="0.3", lw=1.2, zorder=2)
+        a.set_ylim(np.floor(np.nanmin(y) * 10) / 10 - 0.05, 1.05)
+        pad = (np.nanmax(x) - np.nanmin(x)) * 0.06
+        if logx:
+            a.set_xscale("log")
+            a.set_xlim(10 ** (np.nanmin(x) - pad), 10 ** (np.nanmax(x) + pad))
+            ticks = [v for v in (1, 10, 100, 1000, 10000) if v <= 10 ** np.nanmax(x)]
+            a.set_xticks(ticks); a.set_xticklabels([f"{v:g}" for v in ticks])
+            a.xaxis.set_minor_formatter(mpl.ticker.NullFormatter())
+        else:
+            a.set_xlim(np.nanmin(x) - pad, np.nanmax(x) + pad)
+        lab = [author_display(c) if (yi < 0.8 or xi <= np.quantile(x, 0.1)) else ""
+               for xi, yi, c in zip(x, y, cols)]
+        _repel_labels(a, tr(x), y, lab, fontsize=TXT, avoid_xy=np.column_stack([xs_p, yfit]))
+        a.set_xlabel(xl)
+        if k == 0:
+            a.set_ylabel("Mean Spearman ρ")
+        else:
+            a.set_yticklabels([])
+        rho, pval = sst.spearmanr(x, y)
+        ptxt = f"p = {pval:.2g}" if pval >= 0.001 else "p < 0.001"
+        a.set_title(f"Spearman ρ = {rho:.2f}, {ptxt}, n = {n}", loc="left", fontsize=TXT, pad=4)
+        sax.append(a)
 
+    fig.text(fx(0.03), fy(H - 0.03), "A", fontsize=LET, fontweight="bold", va="top")
+    for k in range(2):
+        fig.text(fx(0.03 if k == 0 else left + pw + gutter - 0.3), fy(y_b + b_h + 0.42), "BC"[k],
+                 fontsize=LET, fontweight="bold", va="top")
+
+    qa = check_layout(fig, ax, sax, W)
     if qa_dir:
-        import sys
-        sys.path.insert(0, os.path.expanduser("~/.claude/skills/nature-figure/scripts"))
-        from audit_panel_alignment import require_matplotlib_panel_alignment
+        import json
         os.makedirs(qa_dir, exist_ok=True)
-        # B is narrower than A by design (shared key column); left edges must match
-        # A is a full-width hero panel and B is narrower (shared key column); the gate has no
-        # comparable group for that layout and reports NOT AUDITABLE, which is recorded, not
-        # treated as a pass. Any real misalignment it finds (FIX BEFORE DELIVERY) still raises.
-        from audit_panel_alignment import PanelAlignmentError
-        try:
-            require_matplotlib_panel_alignment(
-                fig, json_out=os.path.join(qa_dir, "alignment.json"), tolerance_pt=1.5,
-                gutter_tolerance_pt=1.5, strict=True, axes=[ax, bx_], panel_ids=["A", "B"])
-        except PanelAlignmentError as e:
-            if "NOT AUDITABLE" not in str(e):
-                raise
-        fig.canvas.draw()
-        assert abs(ax.get_position().x0 - bx_.get_position().x0) < 1.5 / 72 / W, "A and B left edges differ"
-        fig.savefig(os.path.join(qa_dir, "figure_qa.pdf"))
+        json.dump(qa, open(os.path.join(qa_dir, "layout_qa.json"), "w"), indent=2)
+    if qa["failures"]:
+        raise RuntimeError("Figure QA failed: " + "; ".join(qa["failures"]))
     fig.savefig(out_png, dpi=600, facecolor="white")
     plt.close(fig)
