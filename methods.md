@@ -64,6 +64,12 @@ Pseudobulk count matrices were analyzed per cell type using DESeq2 (R 4.3 enviro
 - **Ancestry** (vs. AFR): EUR, AMR, EAS, SAS, UNKNOWN
 - **Intercept**
 
+### Differential Expression with limma-voom (optional)
+
+With `de_method = limma_voom`, we fitted the same design with limma (3.58) following Gemma's LinearModelAnalyzer. Library sizes were the summed counts of unmasked cells over all genes. We removed genes expressed in fewer than three cells over all samples, genes with zero count variance, and genes with log2 CPM variance below 0.01, where log2 CPM = log2((count + 0.5) / (library size + 1) x 10^6). We computed voom weights from the design, fitted `lmFit` with those weights, and moderated the t statistics with `eBayes` (no trend, not robust). P-values were BH-adjusted per coefficient. Gemma also drops samples with fewer than 100 cells; we kept the DESeq2 sample filters instead (`limma_min_cells_per_sample = 0`).
+
+For `results_v2.1.2_limma/`, we built QC-masked pseudobulks locally for both arms. Author labels came from the h5ad cell ids and reproduced the Gemma author-label pseudobulks exactly (`results_v2.1.2_limma/checks/`). `bin/compare_label_arms.py` computed Spearman correlations of log2FC, the statistic (moderated t, or the DESeq2 Wald statistic) and p-value between arms.
+
 ## Stage 2: Comparison of DE Results
 
 ### Cell Type Mapping

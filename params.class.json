@@ -28,6 +28,7 @@
 		"VLMC": "vascular",
 		"Vip": "vip.GABAergic.cortical.interneuron"
 	},
+	"label_map": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/assets/author_to_pipeline_map.class.json",
 	"level": "class",
 	"params_file": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/params.class.json",
 	"pavlab_deseq_results": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results/class/DESeq2/gemma",

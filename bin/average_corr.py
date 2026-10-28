@@ -24,6 +24,7 @@ def parse_arguments():
   parser.add_argument("--annotation_level", type=str, default="class", help="Cell type annotation level: class or subclass")
   parser.add_argument("--f1_path", type=str, default=None, help="Path to label_metrics_stats_per_label.tsv for F1 score annotation")
   parser.add_argument("--params", type=str, required=True, help="Path to params JSON file containing gemma_to_gemma_map")
+  parser.add_argument("--label_map", type=str, default=None, help="JSON author->pipeline label map; overrides gemma_to_gemma_map in --params")
 #  parser.add_argument("--logFC_threshold", type=float, default=0.0, help="Log fold change threshold for significance")
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
@@ -36,9 +37,7 @@ def main():
 	corr_tables = args.corr_tables
 	annotation_level = args.annotation_level
 	f1_path = args.f1_path
-	with open(args.params) as f:
-		params = json.load(f)
-	gemma_to_gemma_map = params["gemma_to_gemma_map"]
+	gemma_to_gemma_map = load_label_map(args.params, args.label_map)
 
 	contrasts_to_remove = ["Intercept","PMI","ancestry"]
 
@@ -65,6 +64,11 @@ def main():
 	plot_stripplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="spearman_pvalue")
 	plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_log2FoldChange", f1_path=f1_path, annotation_level=annotation_level)
 	plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_pvalue", f1_path=f1_path, annotation_level=annotation_level)
+	if "spearman_stat" in combined_df.columns and combined_df["spearman_stat"].notna().any():
+		plot_boxplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="spearman_stat")
+		plot_stripplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="spearman_stat")
+		plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_stat", f1_path=f1_path, annotation_level=annotation_level)
+		pd.DataFrame(compute_average_per_celltype(combined_df, metric="spearman_stat")).to_csv("per_celltype_average_spearman_stat.tsv", index=False, sep="\t")
 
 	average_logFC, sd_logFC = compute_overall_averages(combined_df, metric="spearman_log2FoldChange")
 	average_pval, sd_pval = compute_overall_averages(combined_df, metric="spearman_pvalue")
@@ -73,7 +77,9 @@ def main():
 		'average_logFC_corr': [average_logFC],
 		'sd_logFC_corr': [sd_logFC],
 		'average_pval_corr': [average_pval],
-		'sd_pval_corr': [sd_pval]
+		'sd_pval_corr': [sd_pval],
+		**({'average_stat_corr': [combined_df["spearman_stat"].mean()], 'sd_stat_corr': [combined_df["spearman_stat"].std()]}
+		   if "spearman_stat" in combined_df.columns else {})
 	}).to_csv("average_corr_pvalue_log2FC.tsv", index=False, sep="\t")
 
 	# write per-cell-type averages to file
