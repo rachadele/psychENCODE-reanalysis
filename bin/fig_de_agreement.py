@@ -41,22 +41,34 @@ mpl.rcParams.update({
 })
 
 MM = 1 / 25.4
-CLASS_OF = {
-    "OPC": "Glia", "Astro": "Glia", "Oligo": "Glia",
-    "Micro": "Immune", "Immune": "Immune",
-    "Endo": "Vascular", "PC": "Vascular", "SMC": "Vascular", "VLMC": "Vascular",
-    "Chandelier": "Inhibitory", "Vip": "Inhibitory", "Pvalb": "Inhibitory", "Sst": "Inhibitory",
-    "Sst_Chodl": "Inhibitory", "Lamp5": "Inhibitory", "Lamp5_Lhx6": "Inhibitory",
-    "Sncg": "Inhibitory", "Pax6": "Inhibitory",
+# Cell class = class level of the human hierarchy (annotation-benchmark/meta/census_map_human.tsv),
+# read from the author -> pipeline class map; one colour per class, in hierarchy order
+# (excitatory, inhibitory CGE then MGE, glia, immune, vascular). Paul Tol muted + Okabe-Ito hues,
+# chosen to stay distinct under common colour-vision deficiencies.
+CLASS_COLORS = {
+    "L2/3-6 IT": "#0072B2", "Deep layer non-IT": "#332288",
+    "LAMP5": "#E69F00", "VIP": "#DDCC77", "SNCG": "#999933", "PAX6": "#F0E442",
+    "PVALB": "#CC6677", "SST": "#882255", "Chandelier": "#AA4499",
+    "OPC": "#88CCEE", "Oligodendrocyte": "#44AA99", "Astrocyte": "#117733",
+    "Microglia": "#D55E00", "Immune": "#000000", "Vascular": "#8C510A",
 }
-CLASS_COLORS = {  # Okabe-Ito subset (colour-blind safe), one hue per cell class
-    "Excitatory": "#0072B2", "Inhibitory": "#E69F00", "Glia": "#009E73",
-    "Immune": "#CC79A7", "Vascular": "#7F7F7F",
-}
+_CLASS_MAP = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets",
+                          "author_to_pipeline_map.class.json")
+
+
+def _class_of():
+    import json
+    from utils import PIPELINE_TO_BENCH
+    disp = {k: ("Deep layer non-IT" if v == "deep layer non-IT" else v)
+            for k, v in PIPELINE_TO_BENCH["class"].items()}
+    return {a: disp[lab] for a, lab in json.load(open(_CLASS_MAP)).items()}
+
+
+CLASS_OF = _class_of()
 
 
 def cell_class(ct):
-    return CLASS_OF.get(ct, "Excitatory" if ct.startswith("L") else "Glia")
+    return CLASS_OF[ct]
 
 
 def check_layout(fig, ax_a, panels, W):
@@ -119,8 +131,9 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, study="CMC", qa_dir
     cell_h, bar_h, gap = 0.21, 0.17, 0.04
     hm_h = nrow * cell_h
     y_b, b_h = 0.62, 2.9                      # panels B and C
-    y_key, key_h = y_b + b_h + 0.45, 0.85     # key row: class legend and colour bars
-    y_hm = y_key + key_h + 0.05 + 1.45        # A tick labels and axis title
+    y_key, key_h = y_b + b_h + 0.45, 0.62     # key row: marker legend and colour bars
+    y_cls, cls_h = y_key + key_h + 0.05, 0.72  # class legend row
+    y_hm = y_cls + cls_h + 0.05 + 1.45        # A tick labels and axis title
     y_br = y_hm + hm_h + gap
     br_h = 0.30
     bars_y0 = y_br + br_h + gap
@@ -177,18 +190,24 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, study="CMC", qa_dir
         i = j + 1
 
     # ---------- key row: class legend, marker legend, colour bars ----------
-    handles = [mpatches.Patch(facecolor=CLASS_COLORS[k], label=k) for k in CLASS_COLORS]
-    handles += [mlines.Line2D([], [], ls="", marker="o", mfc="0.55", mec="0.15", ms=6, label="Own label"),
-                mlines.Line2D([], [], ls="", marker="o", mfc="white", mec="0.35", mew=1.6, ms=6, label="Pooled label")]
-    lax = fig.add_axes([fx(left - 0.9), fy(y_key), fx(4.6), fy(key_h)])
+    present = [k for k in CLASS_COLORS if any(cell_class(c) == k for c in cols)]
+    cax_ = fig.add_axes([fx(left - 0.9), fy(y_cls), fx(W - left + 0.9 - right), fy(cls_h)])
+    cax_.axis("off")
+    cax_.legend(handles=[mpatches.Patch(facecolor=CLASS_COLORS[k], label=k) for k in present],
+                title="Cell class", title_fontsize=TXT, alignment="left",
+                loc="center left", ncol=5, borderaxespad=0, handlelength=1.0, handleheight=0.9,
+                columnspacing=0.9, labelspacing=0.3, handletextpad=0.4)
+    handles = [mlines.Line2D([], [], ls="", marker="o", mfc="0.55", mec="0.15", ms=6, label="Own label"),
+               mlines.Line2D([], [], ls="", marker="o", mfc="white", mec="0.35", mew=1.6, ms=6, label="Pooled label")]
+    lax = fig.add_axes([fx(left - 0.9), fy(y_key), fx(4.0), fy(key_h)])
     lax.axis("off")
-    lax.legend(handles=handles, loc="center left", ncol=4, borderaxespad=0, handlelength=1.0,
+    lax.legend(handles=handles, loc="center left", ncol=2, borderaxespad=0, handlelength=1.0,
                handleheight=0.9, columnspacing=0.9, labelspacing=0.4, handletextpad=0.4)
     cb_w = 0.95
     for k, (sm, lab) in enumerate([(mesh, "Spearman ρ"),
                                    (mpl.cm.ScalarMappable(f1_norm, f1_cmap), "Annotation F1")]):
         cx0 = W - right - 2 * cb_w - 0.55 + k * (cb_w + 0.3)
-        cax = fig.add_axes([fx(cx0), fy(y_key + 0.3), fx(cb_w), fy(0.10)])
+        cax = fig.add_axes([fx(cx0), fy(y_key + 0.2), fx(cb_w), fy(0.10)])
         cb = fig.colorbar(sm, cax=cax, orientation="horizontal")
         cb.set_label(lab, fontsize=TXT, labelpad=5)
         cax.xaxis.set_label_position("top")
