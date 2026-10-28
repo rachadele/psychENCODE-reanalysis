@@ -130,3 +130,9 @@ nextflow run main.nf --help
 
 ---
 For questions, check `deprecated/` for old workflow patterns or contact the maintainers.
+
+## Author-to-pipeline label map
+
+`assets/author_to_pipeline_map.class.json` and `.subclass.json` map the 27 author cell types (8 cohorts and `source_data/DEGs`) to sc-annotation-pipeline v2.1.2 labels. `--label_map` selects the file (set in `params.class.json` / `params.subclass.json`); with `--label_map null` the inline `gemma_to_gemma_map` is used, which holds the v2.0.0 labels needed to reproduce `results/`.
+
+Merges at both levels: L2.3_IT, L4_IT, L5_IT, L6_IT, L6_IT_Car3 to the L2/3-6 IT neuron; Lamp5, Lamp5_Lhx6 to lamp5; Sst, Sst_Chodl to sst. Class level only: L5.6_NP, L5_ET, L6_CT, L6b to deep layer non-IT; Endo, PC, SMC, VLMC to brain vascular cell. Immune maps to `immune` (class) and `macrophage` (subclass, the most frequent non-microglial immune subclass in all eight cohorts); Micro maps to microglial cell. Pipeline subclasses B cell, T cell, myeloid cell and erythroid lineage cell have no author counterpart.
