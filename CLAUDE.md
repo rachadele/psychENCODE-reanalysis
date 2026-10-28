@@ -75,6 +75,8 @@ params.subclass.json            # Cell type mappings + parameters for subclass-l
 | `skip_de_analysis` | flag | Skip Stage 1, use existing results |
 | `skip_comparison` | flag | Skip Stage 2 |
 | `filter_genes` | bool | Pre-filter genes before DE |
+| `de_method` | `"deseq2"` / `"limma_voom"` | DE method; limma_voom follows Gemma's LinearModelAnalyzer (GEMMA branch only) |
+| `pavlab_ct_pseudobulks` / `author_ct_pseudobulks` | dir | Start an arm from local cell-type pseudobulks instead of the Gemma download |
 
 ### DESeq2 Design Formula
 
