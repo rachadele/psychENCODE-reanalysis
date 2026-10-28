@@ -96,12 +96,17 @@ def main():
                 merged[col] = merged[col].astype(float)
             corr_logfc = merged["log2FoldChange_author"].corr(merged["log2FoldChange_gemma"], method="spearman")
             corr_pvalue = merged["pvalue_author"].corr(merged["pvalue_gemma"], method="spearman")
-            corr_list.append({
+            row = {
                 "ct_sc_pipeline": ct_gemma,
                 "ct_author": ct_author,
                 "spearman_log2FoldChange": corr_logfc,
                 "spearman_pvalue": corr_pvalue,
-            })
+            }
+            # test statistic (DESeq2 Wald / limma moderated t), when both tables carry it
+            if "stat_author" in merged.columns and "stat_gemma" in merged.columns:
+                row["spearman_stat"] = merged["stat_author"].astype(float).corr(
+                    merged["stat_gemma"].astype(float), method="spearman")
+            corr_list.append(row)
 
     all_corrs = pd.DataFrame(corr_list)
     all_corrs.to_csv(f"{args.contrast}_pairwise_corr.tsv", sep="\t", index=False)
@@ -152,7 +157,7 @@ def main():
     ordered_logfc = all_corrs_logfc.reindex(index=desired_row_order, columns=desired_col_order)
     ordered_logfc = ordered_logfc.dropna(axis=1, how="all").dropna(axis=0, how="all")
     plt.figure(figsize=(30, 15))
-    sns.heatmap(ordered_logfc, cmap="Reds", center=0.5, vmin=0, vmax=1, annot=False, linewidths=0)
+    sns.heatmap(ordered_logfc, cmap="RdBu_r", center=0, vmin=-1, vmax=1, annot=False, linewidths=0)
     plt.title(f"Spearman Correlation of log2FoldChange: {args.contrast}", fontsize=20)
     plt.xlabel("Author Cell Types", fontsize=20)
     plt.ylabel("Pavlab Cell Types", fontsize=20)
@@ -165,7 +170,7 @@ def main():
     ordered_pvalue = all_corrs_pvalue.reindex(index=desired_row_order, columns=desired_col_order)
     ordered_pvalue = ordered_pvalue.dropna(axis=1, how="all").dropna(axis=0, how="all")
     plt.figure(figsize=(30, 15))
-    sns.heatmap(ordered_pvalue, cmap="Blues", center=0.5, vmin=0, vmax=1, annot=False, linewidths=0)
+    sns.heatmap(ordered_pvalue, cmap="RdBu_r", center=0, vmin=-1, vmax=1, annot=False, linewidths=0)
     plt.title(f"Spearman Correlation of pvalue: {args.contrast}", fontsize=20)
     plt.xlabel("Author Cell Types", fontsize=20)
     plt.ylabel("Pavlab Cell Types", fontsize=20)

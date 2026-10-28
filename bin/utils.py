@@ -107,12 +107,17 @@ def plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_l
         "spearman_log2FoldChange": {
             "cbar_label": "Spearman rho (log2FC)",
             "title": "Spearman log2FC Correlation: Author Cell Types x Contrasts",
-            "vmin": 0, "vmax": 1, "fmt": ".2f",
+            "vmin": -1, "vmax": 1, "fmt": ".2f",
+        },
+        "spearman_stat": {
+            "cbar_label": "Spearman rho (test statistic)",
+            "title": "Spearman Test Statistic Correlation: Author Cell Types x Contrasts",
+            "vmin": -1, "vmax": 1, "fmt": ".2f",
         },
         "spearman_pvalue": {
             "cbar_label": "Spearman rho (p-value)",
             "title": "Spearman P-value Correlation: Author Cell Types x Contrasts",
-            "vmin": 0, "vmax": 1, "fmt": ".2f",
+            "vmin": -1, "vmax": 1, "fmt": ".2f",
         },
         "jaccard_index": {
             "cbar_label": "Jaccard Index (%)",

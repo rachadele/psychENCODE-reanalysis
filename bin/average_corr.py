@@ -64,6 +64,11 @@ def main():
 	plot_stripplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="spearman_pvalue")
 	plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_log2FoldChange", f1_path=f1_path, annotation_level=annotation_level)
 	plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_pvalue", f1_path=f1_path, annotation_level=annotation_level)
+	if "spearman_stat" in combined_df.columns and combined_df["spearman_stat"].notna().any():
+		plot_boxplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="spearman_stat")
+		plot_stripplot(combined_df, gemma_to_gemma_map=gemma_to_gemma_map, x="spearman_stat")
+		plot_correlation_heatmap(combined_df, gemma_to_gemma_map, metric="spearman_stat", f1_path=f1_path, annotation_level=annotation_level)
+		pd.DataFrame(compute_average_per_celltype(combined_df, metric="spearman_stat")).to_csv("per_celltype_average_spearman_stat.tsv", index=False, sep="\t")
 
 	average_logFC, sd_logFC = compute_overall_averages(combined_df, metric="spearman_log2FoldChange")
 	average_pval, sd_pval = compute_overall_averages(combined_df, metric="spearman_pvalue")
@@ -72,7 +77,9 @@ def main():
 		'average_logFC_corr': [average_logFC],
 		'sd_logFC_corr': [sd_logFC],
 		'average_pval_corr': [average_pval],
-		'sd_pval_corr': [sd_pval]
+		'sd_pval_corr': [sd_pval],
+		**({'average_stat_corr': [combined_df["spearman_stat"].mean()], 'sd_stat_corr': [combined_df["spearman_stat"].std()]}
+		   if "spearman_stat" in combined_df.columns else {})
 	}).to_csv("average_corr_pvalue_log2FC.tsv", index=False, sep="\t")
 
 	# write per-cell-type averages to file
