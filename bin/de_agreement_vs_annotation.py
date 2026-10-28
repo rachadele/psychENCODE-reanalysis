@@ -182,16 +182,8 @@ def main():
     pd.DataFrame(tests).to_csv(os.path.join(a.outdir, "correlations.tsv"), sep="\t", index=False)
 
     from utils import PIPELINE_TO_BENCH
-    tt = pd.DataFrame(tests).query("subset == 'all'").set_index("test")
-    fmt_p = lambda v: f"p = {v:.2g}" if v >= 0.001 else "p < 0.001"
-    r_s, r_f, r_pf = (tt.loc[k] for k in ("rho ~ log10 median author cells per donor", "rho ~ CMC F1",
-                                           "rho ~ CMC F1 | log10 support (partial)"))
-    stats_lines = [f"Spearman ρ, n = {int(r_s.n)}",
-                   f"cells/donor: {r_s.spearman_rho:.2f} ({fmt_p(r_s.p)})",
-                   f"{a.study} F1: {r_f.spearman_rho:.2f} ({fmt_p(r_f.p)})",
-                   f"F1 | cells: {r_pf.spearman_rho:.2f} ({fmt_p(r_pf.p)})"]
     plot_figure(pivot, tab, label_map, PIPELINE_TO_BENCH[a.level],
-                os.path.join(a.outdir, f"fig_de_agreement_{a.level}.png"), stats_lines,
+                os.path.join(a.outdir, f"fig_de_agreement_{a.level}.png"),
                 study=a.study, qa_dir=a.qa_dir)
 
     prov = {"created": datetime.datetime.now().astimezone().isoformat(), "study": a.study, "level": a.level,
