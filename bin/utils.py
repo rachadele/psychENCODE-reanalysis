@@ -164,7 +164,7 @@ def _norm(s):
     return re.sub(r"[^a-z0-9]", "", str(s).lower())
 
 
-def _repel_labels(ax, xs, ys, texts, fontsize=9):
+def _repel_labels(ax, xs, ys, texts, fontsize=9, avoid_xy=None):
     """Label points without overlaps (no adjustText dependency): for each point, try
     offsets at growing radii in 16 directions and keep the first whose box stays inside
     the axes and clears earlier labels and all points. Leader lines for far labels."""
@@ -173,6 +173,8 @@ def _repel_labels(ax, xs, ys, texts, fontsize=9):
     r = fig.canvas.get_renderer()
     pt2px = fig.dpi / 72.0
     pts = ax.transData.transform(np.column_stack([xs, ys]))
+    # extra geometry labels must clear (e.g. points sampled along a fitted line)
+    avoid = ax.transData.transform(np.asarray(avoid_xy)) if avoid_xy is not None else np.empty((0, 2))
     axbb = ax.get_window_extent(r)
     placed = []
     # densest points first so they get the closest slots
@@ -187,22 +189,32 @@ def _repel_labels(ax, xs, ys, texts, fontsize=9):
         probe.remove()
         w, h = bb.width, bb.height
         best = None
-        for rad in (5, 10, 16, 24, 34, 46, 60, 76):
+        # pass 0: label must be nearest its own point; pass 1: relaxed (leader line identifies it)
+        for strict, rad in [(True, r_) for r_ in (3, 6, 10, 16, 24, 34, 46, 60, 76)] + \
+                           [(False, r_) for r_ in (10, 16, 24, 34, 46, 60, 76, 96, 120)]:
             for a in angles:
                 ox, oy = rad * np.cos(a) * pt2px, rad * np.sin(a) * pt2px
                 x0 = px + ox - (w if np.cos(a) < -0.2 else 0 if np.cos(a) > 0.2 else w / 2)
                 y0 = py + oy - (h if np.sin(a) < -0.2 else 0 if np.sin(a) > 0.2 else h / 2)
-                box = (x0 - 1, y0 - 1, x0 + w + 1, y0 + h + 1)
+                pad = 1.5 * pt2px
+                box = (x0 - pad, y0 - pad, x0 + w + pad, y0 + h + pad)
                 if box[0] < axbb.x0 or box[2] > axbb.x1 or box[1] < axbb.y0 or box[3] > axbb.y1:
                     continue
                 if any(not (box[2] < b[0] or box[0] > b[2] or box[3] < b[1] or box[1] > b[3]) for b in placed):
                     continue
-                if any(box[0] - 4 < qx < box[2] + 4 and box[1] - 4 < qy < box[3] + 4 for qx, qy in pts):
+                clr = 4.5 * pt2px  # marker radius plus a margin
+                if any(box[0] - clr < qx < box[2] + clr and box[1] - clr < qy < box[3] + clr for qx, qy in pts):
+                    continue
+                lc = 1.5 * pt2px
+                if any(box[0] - lc < qx < box[2] + lc and box[1] - lc < qy < box[3] + lc for qx, qy in avoid):
                     continue
                 # the label must sit closer to its own point than to any other point
                 dist = [np.hypot(max(box[0] - qx, 0, qx - box[2]), max(box[1] - qy, 0, qy - box[3]))
                         for qx, qy in pts]
-                if rad <= 10 and min(dd for m, dd in enumerate(dist) if m != k) <= dist[k] + 2:
+                # ignore points nearly on top of this one (they cannot be told apart anyway)
+                rivals = [dd for m, dd in enumerate(dist)
+                          if m != k and np.hypot(*(pts[m] - pts[k])) > 6 * pt2px]
+                if strict and rivals and min(rivals) <= dist[k] + 3 * pt2px:
                     continue
                 best = (box, rad)
                 break
@@ -211,11 +223,11 @@ def _repel_labels(ax, xs, ys, texts, fontsize=9):
         if best is None:
             best = ((px + 4, py + 4, px + 4 + w, py + 4 + h), 5)
         box, rad = best
-        tx, ty = ax.transData.inverted().transform((box[0] + 1, box[1] + 1))
+        tx, ty = ax.transData.inverted().transform((box[0] + 1.5 * pt2px, box[1] + 1.5 * pt2px))
         ax.annotate(t, (xs[k], ys[k]), xytext=(tx, ty), textcoords="data", fontsize=fontsize,
                     ha="left", va="bottom",
-                    arrowprops=dict(arrowstyle="-", lw=0.4, color="0.55", shrinkA=0, shrinkB=3)
-                    if rad > 10 else None)
+                    arrowprops=dict(arrowstyle="-", lw=0.6, color="0.45", shrinkA=1, shrinkB=4)
+                    if (rad > 6 or not strict) else None)
         placed.append(box)
 
 CONTRAST_DISPLAY = {
