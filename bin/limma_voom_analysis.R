@@ -72,10 +72,12 @@ if (!is.null(args$cell_counts)) {
   cc <- cc[!is.na(cc$ct) & cc$ct == cell_type, ]
   if (anyDuplicated(cc$sample)) stop("duplicate sample names across studies for ", cell_type)
   rownames(cc) <- cc$sample
+  # columns with no cells of this type (all-zero) have no cell_counts row: library size 0
   missing <- setdiff(colnames(counts), cc$sample)
-  if (length(missing) > 0) stop("no cell counts for samples: ", paste(missing, collapse = ", "))
-  lib_all <- setNames(cc[colnames(counts), "lib_size"], colnames(counts))
-  n_cells <- setNames(cc[colnames(counts), "n_kept"], colnames(counts))
+  if (any(lib_all[missing] > 0)) stop("no cell counts for nonzero samples: ",
+                                      paste(missing[lib_all[missing] > 0], collapse = ", "))
+  lib_all <- setNames(ifelse(colnames(counts) %in% cc$sample, cc[colnames(counts), "lib_size"], 0), colnames(counts))
+  n_cells <- setNames(ifelse(colnames(counts) %in% cc$sample, cc[colnames(counts), "n_kept"], 0), colnames(counts))
   rel <- max(abs(lib_all - colSums(counts)) / pmax(lib_all, 1))
   message("max relative difference, adapter library size vs matrix column sum: ", signif(rel, 3))
 }

@@ -36,8 +36,8 @@ workflow PSYCHENCODE_REANALYSIS {
                 .fromPath(params.study_names)
                 .flatMap { file -> file.readLines().collect { it.trim() } }
 
-            GEMMA_DE_ANALYSIS_PAVLAB(study_names, false)
-            GEMMA_DE_ANALYSIS_AUTHOR(study_names, true)
+            GEMMA_DE_ANALYSIS_PAVLAB(study_names, false, params.pavlab_ct_pseudobulks ?: "")
+            GEMMA_DE_ANALYSIS_AUTHOR(study_names, true, params.author_ct_pseudobulks ?: "")
 
             de_results = GEMMA_DE_ANALYSIS_PAVLAB.out.deseq_results
                 .mix(GEMMA_DE_ANALYSIS_AUTHOR.out.deseq_results)

@@ -15,6 +15,7 @@ workflow GEMMA_DE_ANALYSIS {
     take:
     study_names      // Channel: study name strings
     author_submitted // val: true or false
+    ct_dir           // val: local cell-type pseudobulk directory for this arm, or "" (see below)
 
     main:
     author_submitted_ch = Channel.value(author_submitted)
@@ -23,7 +24,6 @@ workflow GEMMA_DE_ANALYSIS {
     // replace Steps 1-2 when params.pavlab_ct_pseudobulks or params.author_ct_pseudobulks is set: a
     // directory of <ct>/<ct>_pseudobulk_matrix.tsv.gz. An arm without its own directory is then skipped.
     def local_input = params.pavlab_ct_pseudobulks || params.author_ct_pseudobulks
-    def ct_dir = author_submitted ? params.author_ct_pseudobulks : params.pavlab_ct_pseudobulks
 
     if (local_input) {
         ct_matrices = ct_dir ? Channel.fromPath("${ct_dir}/*/*_pseudobulk_matrix.tsv.gz", checkIfExists: true) : Channel.empty()
