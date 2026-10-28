@@ -95,6 +95,35 @@
                     "default": false,
                     "description": "Filter genes before DE analysis"
                 },
+                "de_method": {
+                    "type": "string",
+                    "default": "deseq2",
+                    "enum": ["deseq2", "limma_voom"],
+                    "description": "DE method: DESeq2, or limma-voom as in Gemma's LinearModelAnalyzer (GEMMA pathway only)"
+                },
+                "limma_min_cells_per_sample": {
+                    "type": "integer",
+                    "default": 0,
+                    "description": "limma_voom: drop samples with fewer cells (Gemma default 100; needs cell_counts.tsv in the local pseudobulk directory)"
+                },
+                "limma_min_cells_per_gene": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "limma_voom: drop genes expressed in fewer cells over all samples (Gemma default; needs <ct>_gene_ncells.tsv.gz)"
+                },
+                "limma_min_variance": {
+                    "type": "number",
+                    "default": 0.01,
+                    "description": "limma_voom: drop genes with log2 CPM variance below this (Gemma default)"
+                },
+                "pavlab_ct_pseudobulks": {
+                    "type": "string",
+                    "description": "Directory of local pipeline-label cell-type pseudobulks (<ct>/<ct>_pseudobulk_matrix.tsv.gz); replaces the Gemma download"
+                },
+                "author_ct_pseudobulks": {
+                    "type": "string",
+                    "description": "Directory of local author-label cell-type pseudobulks; replaces the Gemma download"
+                },
                 "cell_type_column": {
                     "type": "string",
                     "default": "cell_type",
