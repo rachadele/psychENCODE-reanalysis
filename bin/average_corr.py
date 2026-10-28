@@ -24,6 +24,7 @@ def parse_arguments():
   parser.add_argument("--annotation_level", type=str, default="class", help="Cell type annotation level: class or subclass")
   parser.add_argument("--f1_path", type=str, default=None, help="Path to label_metrics_stats_per_label.tsv for F1 score annotation")
   parser.add_argument("--params", type=str, required=True, help="Path to params JSON file containing gemma_to_gemma_map")
+  parser.add_argument("--label_map", type=str, default=None, help="JSON author->pipeline label map; overrides gemma_to_gemma_map in --params")
 #  parser.add_argument("--logFC_threshold", type=float, default=0.0, help="Log fold change threshold for significance")
   if __name__ == "__main__":
     known_args, _ = parser.parse_known_args()
@@ -36,9 +37,7 @@ def main():
 	corr_tables = args.corr_tables
 	annotation_level = args.annotation_level
 	f1_path = args.f1_path
-	with open(args.params) as f:
-		params = json.load(f)
-	gemma_to_gemma_map = params["gemma_to_gemma_map"]
+	gemma_to_gemma_map = load_label_map(args.params, args.label_map)
 
 	contrasts_to_remove = ["Intercept","PMI","ancestry"]
 

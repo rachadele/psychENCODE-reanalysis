@@ -26,7 +26,7 @@ process AVERAGE_DE_CORRELATIONS {
     python ${projectDir}/bin/average_corr.py \
         --corr_tables ${corr_tables} \
         --annotation_level ${params.level} \
-        --params ${params.params_file} \
+        --params ${params.params_file} ${(params.label_map && params.label_map != "null") ? "--label_map ${params.label_map}" : ""} \
         ${f1_arg}
     """
 }

@@ -99,6 +99,11 @@
                     "type": "string",
                     "default": "cell_type",
                     "description": "Column name for cell type in manual aggregation"
+                },
+                "label_map": {
+                    "type": "string",
+                    "description": "JSON file mapping author cell type labels to pipeline labels (assets/author_to_pipeline_map.<level>.json). If null, the inline gemma_to_gemma_map is used.",
+                    "fa_icon": "fas fa-exchange-alt"
                 }
             }
         }

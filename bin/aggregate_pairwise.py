@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import rankdata, spearmanr
 from scipy.cluster.hierarchy import linkage, leaves_list
+from utils import load_label_map
 
 
 def parse_arguments():
@@ -17,6 +18,7 @@ def parse_arguments():
     parser.add_argument("--pavlab_paths", type=str, nargs="+", required=True)
     parser.add_argument("--author_paths", type=str, nargs="+", required=True)
     parser.add_argument("--params", type=str, required=True, help="Path to params JSON with gemma_to_gemma_map")
+    parser.add_argument("--label_map", type=str, default=None, help="JSON author->pipeline label map; overrides gemma_to_gemma_map in --params")
     if __name__ == "__main__":
         known_args, _ = parser.parse_known_args()
         return known_args
@@ -68,9 +70,7 @@ def scatter_plot(merged_df, contrast, author_ct, gemma_ct, corr_logfc):
 def main():
     args = parse_arguments()
 
-    with open(args.params) as f:
-        params = json.load(f)
-    gemma_to_gemma_map = params["gemma_to_gemma_map"]
+    gemma_to_gemma_map = load_label_map(args.params, args.label_map)
 
     pavlab_de_results = {}
     for path in args.pavlab_paths:

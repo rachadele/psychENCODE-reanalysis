@@ -6,6 +6,17 @@ import pandas as pd
 import re
 from collections import OrderedDict, Counter
 
+def load_label_map(params_path, label_map_path=None):
+    """Author -> pipeline label map: the --label_map JSON if given, else the inline
+    gemma_to_gemma_map of the params JSON (backward compatible)."""
+    import json
+    if label_map_path and label_map_path not in ("null", "None"):
+        with open(label_map_path) as f:
+            return json.load(f)
+    with open(params_path) as f:
+        return json.load(f)["gemma_to_gemma_map"]
+
+
 def reverse_lookup(mapping, value):
     """Return all keys that map to the given value."""
     return [k for k, v in mapping.items() if v == value]

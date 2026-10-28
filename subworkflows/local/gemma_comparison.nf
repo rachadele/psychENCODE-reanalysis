@@ -16,6 +16,9 @@ workflow GEMMA_COMPARISON {
     author_results    // Channel: path to author-label DESeq2 results
 
     main:
+    // Author -> pipeline label map: params.label_map JSON file, else the inline gemma_to_gemma_map
+    def label_map = (params.label_map && params.label_map != "null") ? new groovy.json.JsonSlurper().parse(file(params.label_map)) : params.gemma_to_gemma_map
+
     // Step 1: Group pavlab results by contrast
     pavlab_by_contrast = pavlab_results
         .map { file ->
@@ -31,7 +34,7 @@ workflow GEMMA_COMPARISON {
         .map { file ->
             def parts = file.toString().split("/")
             def cell_type = parts[-3]
-            def pavlab_cell_type = params.gemma_to_gemma_map[cell_type] ?: cell_type
+            def pavlab_cell_type = label_map[cell_type] ?: cell_type
             def contrast = parts[-2]
             tuple(contrast, file)
         }

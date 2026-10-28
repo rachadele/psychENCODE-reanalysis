@@ -26,7 +26,7 @@ process AVERAGE_DE_OVERLAPS {
     python ${projectDir}/bin/average_de_overlaps.py \
         --de_overlap_paths ${de_overlap_files} \
         --annotation_level ${params.level} \
-        --params ${params.params_file} \
+        --params ${params.params_file} ${(params.label_map && params.label_map != "null") ? "--label_map ${params.label_map}" : ""} \
         ${f1_arg}
     """
 }

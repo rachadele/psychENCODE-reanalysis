@@ -19,6 +19,6 @@ process AGGREGATE_PAIRWISE {
         --contrast ${contrast} \
         --pavlab_paths ${pavlab_files} \
         --author_paths ${author_files} \
-        --params ${params.params_file}
+        --params ${params.params_file} ${(params.label_map && params.label_map != "null") ? "--label_map ${params.label_map}" : ""}
     """
 }
