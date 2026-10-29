@@ -42,16 +42,25 @@ mpl.rcParams.update({
 
 MM = 1 / 25.4
 # Cell class = class level of the human hierarchy (annotation-benchmark/meta/census_map_human.tsv),
-# read from the author -> pipeline class map; one colour per class, in hierarchy order
-# (excitatory, inhibitory CGE then MGE, glia, immune, vascular). Paul Tol muted + Okabe-Ito hues,
-# chosen to stay distinct under common colour-vision deficiencies.
-CLASS_COLORS = {
-    "L2/3-6 IT": "#0072B2", "Deep layer non-IT": "#332288",
-    "LAMP5": "#E69F00", "VIP": "#DDCC77", "SNCG": "#999933", "PAX6": "#F0E442",
-    "PVALB": "#CC6677", "SST": "#882255", "Chandelier": "#AA4499",
-    "OPC": "#88CCEE", "Oligodendrocyte": "#44AA99", "Astrocyte": "#117733",
-    "Microglia": "#D55E00", "Immune": "#000000", "Vascular": "#8C510A",
-}
+# read from the author -> pipeline class map, in hierarchy order (excitatory, inhibitory CGE then
+# MGE, glia, immune, vascular). Colours come from the shared sc-manuscript palette (one TSV for every
+# figure; MANUSCRIPT_PALETTE overrides the path): shades of one hue group per family, checked for
+# colour-vision deficiencies (benchmark-post-hoc/palette_cvd_check.py).
+PALETTE_TSV = os.environ.get("MANUSCRIPT_PALETTE",
+                             "/space/grp/rschwartz/rschwartz/benchmark-post-hoc/manuscript_palette.tsv")
+CLASS_ORDER = ["L2/3-6 IT", "Deep layer non-IT", "LAMP5", "VIP", "SNCG", "PAX6", "PVALB", "SST",
+               "Chandelier", "OPC", "Oligodendrocyte", "Astrocyte", "Microglia", "Immune", "Vascular"]
+
+
+def _class_colors():
+    import csv
+    pal = {r["label"].lower(): r["hex"] for r in csv.DictReader(open(PALETTE_TSV), delimiter="\t")
+           if r["level"] == "class"}
+    return {k: pal[k.lower()] for k in CLASS_ORDER}
+
+
+CLASS_COLORS = _class_colors()
+EDGE = "0.35"  # outline so the lightest class shades separate from white
 _CLASS_MAP = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets",
                           "author_to_pipeline_map.class.json")
 
@@ -162,17 +171,19 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, study="CMC", qa_dir
     f1_cmap, f1_norm = plt.cm.YlOrRd, mpl.colors.Normalize(f1_lo, 1.0)
     f1c = lambda v: f1_cmap(f1_norm(v)) if not np.isnan(v) else (0.85, 0.85, 0.85, 1)
 
-    def bar(y0, colors, label):
+    def bar(y0, colors, label, outline=False):
         b = fig.add_axes([fx(left), fy(y0), fx(hm_w), fy(bar_h)])
         b.imshow(np.array([colors]), aspect="auto", extent=(0, ncol, 0, 1), interpolation="nearest")
         for i in range(1, ncol):
-            b.axvline(i, color="white", lw=0.5)
+            b.axvline(i, color=EDGE if outline else "white", lw=0.5)
+        if outline:
+            b.add_patch(mpatches.Rectangle((0, 0), ncol, 1, fill=False, edgecolor=EDGE, lw=0.5, clip_on=False))
         b.set_xticks([]); b.set_yticks([0.5]); b.set_yticklabels([label])
         b.tick_params(length=0, pad=3)
         for s in b.spines.values():
             s.set_visible(False)
 
-    bar(bars_y0, [mpl.colors.to_rgba(CLASS_COLORS[cell_class(c)]) for c in cols], "Cell class")
+    bar(bars_y0, [mpl.colors.to_rgba(CLASS_COLORS[cell_class(c)]) for c in cols], "Cell class", outline=True)
     bar(bars_y0 + (bar_h + gap), [f1c(t.loc[c, "cmc_f1"]) for c in cols], f"{study} F1")
     bar(bars_y0 + 2 * (bar_h + gap), [f1c(t.loc[c, "benchmark_f1"]) for c in cols], "Benchmark F1")
 
@@ -193,7 +204,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, study="CMC", qa_dir
     present = [k for k in CLASS_COLORS if any(cell_class(c) == k for c in cols)]
     cax_ = fig.add_axes([fx(left - 0.9), fy(y_cls), fx(W - left + 0.9 - right), fy(cls_h)])
     cax_.axis("off")
-    cax_.legend(handles=[mpatches.Patch(facecolor=CLASS_COLORS[k], label=k) for k in present],
+    cax_.legend(handles=[mpatches.Patch(facecolor=CLASS_COLORS[k], edgecolor=EDGE, lw=0.5, label=k) for k in present],
                 title="Cell class", title_fontsize=TXT, alignment="left",
                 loc="center left", ncol=5, borderaxespad=0, handlelength=1.0, handleheight=0.9,
                 columnspacing=0.9, labelspacing=0.3, handletextpad=0.4)
