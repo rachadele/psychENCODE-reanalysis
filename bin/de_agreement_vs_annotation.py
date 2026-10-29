@@ -192,6 +192,8 @@ def main():
         f = getattr(a, k)
         prov["inputs"][k] = {"path": os.path.abspath(f), "sha256": sha256(f),
                              "mtime": datetime.datetime.fromtimestamp(os.path.getmtime(f)).astimezone().isoformat()}
+    from fig_de_agreement import PALETTE_TSV
+    prov["inputs"]["palette"] = {"path": PALETTE_TSV, "sha256": sha256(PALETTE_TSV)}
     prov["inputs"]["h5ad"] = {"path": os.path.abspath(a.h5ad),
                               "mtime": datetime.datetime.fromtimestamp(os.path.getmtime(a.h5ad)).astimezone().isoformat()}
     bj = os.path.splitext(a.benchmark_f1)[0] + ".json"
