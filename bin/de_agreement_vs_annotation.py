@@ -179,12 +179,13 @@ def main():
         add("benchmark F1 ~ CMC F1", sub, spearman, bf, cf)
     add("rho ~ log10 median pipeline-label cells per donor", "all", spearman, lp, y)
     tab.to_csv(os.path.join(a.outdir, "celltype_summary.tsv"), sep="\t", index=False)
-    pd.DataFrame(tests).to_csv(os.path.join(a.outdir, "correlations.tsv"), sep="\t", index=False)
+    tests = pd.DataFrame(tests)
+    tests.to_csv(os.path.join(a.outdir, "correlations.tsv"), sep="\t", index=False)
 
     from utils import PIPELINE_TO_BENCH
     plot_figure(pivot, tab, label_map, PIPELINE_TO_BENCH[a.level],
                 os.path.join(a.outdir, f"fig_de_agreement_{a.level}.png"),
-                study=a.study, qa_dir=a.qa_dir)
+                tests, study=a.study, qa_dir=a.qa_dir)
 
     prov = {"created": datetime.datetime.now().astimezone().isoformat(), "study": a.study, "level": a.level,
             "cells": cell_info, "inputs": {}}
@@ -201,7 +202,7 @@ def main():
         prov["benchmark_f1_provenance"] = json.load(open(bj))
     prov["data_version"] = {"pipeline_labels": "sc-annotation-pipeline 2.1.2", "de": "results_v2.1.2_limma"}
     json.dump(prov, open(os.path.join(a.outdir, "manifest.json"), "w"), indent=2)
-    print(pd.DataFrame(tests).drop(columns="excluded").round(3).to_string(index=False))
+    print(tests.drop(columns="excluded").round(3).to_string(index=False))
 
 
 if __name__ == "__main__":

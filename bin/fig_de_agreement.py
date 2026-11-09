@@ -3,9 +3,11 @@
 At final size (183 mm, double column). A: heatmap of DE agreement (Spearman rho of log2 fold
 changes, author vs pipeline labels) per contrast and author type, with bars for benchmark F1,
 CMC F1 and cell class, and brackets over author types pooled into one pipeline label.
-B, C: mean rho across contrasts against CMC F1 and against log10 median CMC cells per donor,
-points coloured by cell class (open: pooled label), OLS line with 95% confidence band, and
-Spearman rho, p and n above each panel. Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
+B: added-variable plot for the partial Spearman correlation of mean rho with CMC F1 given
+cells per donor (rank residuals of each after regression on rank log10 median cells per donor),
+with plain -> partial rho for all types and for the 20 types named as their pipeline label above.
+C: mean rho against log10 median CMC cells per donor, Spearman rho, p and n above. Points
+coloured by cell class (open: pooled label), OLS line with 95% confidence band. Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
 The only output is the PNG; check_layout() verifies text sizes, page bounds, text overlaps
 and panel alignment on the rendered figure and blocks export on failure (report to qa_dir).
 """
@@ -123,8 +125,9 @@ def check_layout(fig, ax_a, panels, W):
     return {"n_text": len(texts), "failures": fails}
 
 
-def plot_figure(pivot, tab, label_map, bench_label, out_png, study="CMC", qa_dir=None):
-    """pivot: contrast x author type (log2FC rho); tab: celltype_summary rows."""
+def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, study="CMC", qa_dir=None):
+    """pivot: contrast x author type (log2FC rho); tab: celltype_summary rows;
+    corr: correlations.tsv rows (plain and partial Spearman annotated on B)."""
     t = tab.set_index("ct_author")
     lab_f1 = t.groupby("pipeline_label")["benchmark_f1"].first()
     cols = sorted(pivot.columns, key=lambda c: (-np.nan_to_num(lab_f1[label_map[c]], nan=-1),
@@ -140,7 +143,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, study="CMC", qa_dir
     cell_h, bar_h, gap = 0.21, 0.17, 0.04
     hm_h = nrow * cell_h
     y_b, b_h = 0.62, 2.9                      # panels B and C
-    y_key, key_h = y_b + b_h + 0.45, 0.62     # key row: marker legend and colour bars
+    y_key, key_h = y_b + b_h + 0.65, 0.62  # B has a two-line title     # key row: marker legend and colour bars
     y_cls, cls_h = y_key + key_h + 0.05, 0.72  # class legend row
     y_hm = y_cls + cls_h + 0.05 + 1.45        # A tick labels and axis title
     y_br = y_hm + hm_h + gap
@@ -226,63 +229,95 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, study="CMC", qa_dir
         cb.set_ticks([-1, 0, 1] if k == 0 else [f1_lo, 1.0])
         cb.outline.set_linewidth(0.6)
 
-    # ---------- B, C: mean rho vs CMC F1 and vs cells per donor, OLS line with 95% band ----------
+    # ---------- B: added-variable plot (partial Spearman); C: mean rho vs cells per donor ----------
     from scipy import stats as sst
-    gutter = 0.45
+    gutter = 0.95                              # room for C's own y axis
     pw = (hm_w - gutter) / 2
     y = t.loc[cols, "mean_rho"].values.astype(float)
-    panels = [("cmc_f1", f"Annotation F1 ({study})"),
-              ("log10_author_median_cells", f"Median {study} cells per donor + 1")]
-    sax = []
-    for k, (col, xl) in enumerate(panels):
-        a = fig.add_axes([fx(left + k * (pw + gutter)), fy(y_b), fx(pw), fy(b_h)])
-        x = t.loc[cols, col].values.astype(float)
-        # OLS line and 95% confidence band for the mean, on the plotted axes
+    xf = t.loc[cols, "cmc_f1"].values.astype(float)
+    xz = t.loc[cols, "log10_author_median_cells"].values.astype(float)
+
+    def ols_band(a, x, yv, tr=lambda v: v):
+        """OLS line and 95% confidence band for the mean, drawn on the plotted axes."""
         n = len(x)
-        slope, icpt = np.polyfit(x, y, 1)
+        slope, icpt = np.polyfit(x, yv, 1)
         xs = np.linspace(np.nanmin(x), np.nanmax(x), 200)
-        resid = y - (icpt + slope * x)
+        resid = yv - (icpt + slope * x)
         s_err = np.sqrt(np.sum(resid ** 2) / (n - 2))
         se = s_err * np.sqrt(1 / n + (xs - x.mean()) ** 2 / np.sum((x - x.mean()) ** 2))
         tq = sst.t.ppf(0.975, n - 2)
         yfit = icpt + slope * xs
-        logx = col.startswith("log10")
-        tr = (lambda v: 10 ** v) if logx else (lambda v: v)   # C is drawn on a log axis
-        xs_p = tr(xs)
-        for xi, yi, c in zip(tr(x), y, cols):
+        a.fill_between(tr(xs), yfit - tq * se, yfit + tq * se, color="0.85", lw=0, zorder=1)
+        a.plot(tr(xs), yfit, color="0.3", lw=1.2, zorder=2)
+        return np.column_stack([tr(xs), yfit])
+
+    def points(a, xv, yv):
+        for xi, yi, c in zip(xv, yv, cols):
             colr = CLASS_COLORS[cell_class(c)]
             if c in pooled:
                 a.scatter(xi, yi, s=34, facecolors="white", edgecolors=colr, linewidths=1.6, zorder=3)
             else:
                 a.scatter(xi, yi, s=34, facecolors=colr, edgecolors="0.15", linewidths=0.6, zorder=3)
-        a.fill_between(xs_p, yfit - tq * se, yfit + tq * se, color="0.85", lw=0, zorder=1)
-        a.plot(xs_p, yfit, color="0.3", lw=1.2, zorder=2)
-        a.set_ylim(np.floor(np.nanmin(y) * 10) / 10 - 0.05, 1.05)
-        pad = (np.nanmax(x) - np.nanmin(x)) * 0.06
-        if logx:
-            a.set_xscale("log")
-            a.set_xlim(10 ** (np.nanmin(x) - pad), 10 ** (np.nanmax(x) + pad))
-            ticks = [v for v in (1, 10, 100, 1000, 10000) if v <= 10 ** np.nanmax(x)]
-            a.set_xticks(ticks); a.set_xticklabels([f"{v:g}" for v in ticks])
-            a.xaxis.set_minor_formatter(mpl.ticker.NullFormatter())
-        else:
-            a.set_xlim(np.nanmin(x) - pad, np.nanmax(x) + pad)
-        lab = [author_display(c) if (yi < 0.8 or xi <= np.quantile(x, 0.1)) else ""
-               for xi, yi, c in zip(x, y, cols)]
-        _repel_labels(a, tr(x), y, lab, fontsize=TXT, avoid_xy=np.column_stack([xs_p, yfit]))
-        a.set_xlabel(xl)
-        if k == 0:
-            a.set_ylabel("Mean Spearman ρ")
-        else:
-            a.set_yticklabels([])
-        rho, pval = sst.spearmanr(x, y)
-        ptxt = f"p = {pval:.2g}" if pval >= 0.001 else "p < 0.001"
-        a.set_title(f"Spearman ρ = {rho:.2f}, {ptxt}, n = {n}", loc="left", fontsize=TXT, pad=4)
-        sax.append(a)
+
+    # same labelled types in B and C: low agreement or lowest-decile F1
+    lab = [author_display(c) if (yi < 0.8 or xi <= np.quantile(xf, 0.1)) else ""
+           for xi, yi, c in zip(xf, y, cols)]
+    sax = []
+
+    # B: rank residuals of agreement and of CMC F1, each regressed on rank cells per donor.
+    # Their Pearson r is the partial Spearman rho of de_agreement_vs_annotation.partial_spearman.
+    rz = sst.rankdata(xz)
+    res = lambda v: sst.rankdata(v) - np.polyval(np.polyfit(rz, sst.rankdata(v), 1), rz)
+    bx, by = res(xf), res(y)
+    a = fig.add_axes([fx(left), fy(y_b), fx(pw), fy(b_h)])
+    line = ols_band(a, bx, by)
+    points(a, bx, by)
+    for v in (bx, by):
+        pad = (v.max() - v.min()) * 0.06
+        (a.set_xlim if v is bx else a.set_ylim)(v.min() - pad, v.max() + pad)
+    a.axhline(0, color="0.75", lw=0.6, zorder=0); a.axvline(0, color="0.75", lw=0.6, zorder=0)
+    # B labels only the types with the lowest adjusted agreement, to keep the cloud readable
+    lab_b = [s_ if yi < -7 else "" for s_, yi in zip(
+        [author_display(c) for c in cols], by)]
+    _repel_labels(a, bx, by, lab_b, fontsize=TXT, avoid_xy=line)
+    a.set_xlabel(f"{study} F1 rank, adjusted")
+    a.set_ylabel("Mean ρ rank, adjusted")
+    tl = []
+    mn = lambda v: f"{v:.2f}".replace("-", "\u2212")
+    for sub, name in [("all", "All {n} types"),
+                      ("excluding types named differently from their pooled label", "Without {k} pooled")]:
+        r_ = corr[(corr["subset"] == sub)]
+        pl = r_[r_["test"] == "rho ~ CMC F1"].iloc[0]
+        pa_ = r_[r_["test"] == "rho ~ CMC F1 | log10 support (partial)"].iloc[0]
+        k_ = len(cols) - int(pl["n"])
+        tl.append(f"{name.format(n=int(pl['n']), k=k_)}: ρ {mn(pl['spearman_rho'])} → "
+                  f"partial {mn(pa_['spearman_rho'])}")
+    a.set_title("\n".join(tl), loc="left", fontsize=TXT, pad=4)
+    sax.append(a)
+
+    # C: mean rho against median cells per donor (log axis)
+    a = fig.add_axes([fx(left + pw + gutter), fy(y_b), fx(pw), fy(b_h)])
+    tr = lambda v: 10 ** v
+    line = ols_band(a, xz, y, tr)
+    points(a, tr(xz), y)
+    a.set_ylim(np.floor(np.nanmin(y) * 10) / 10 - 0.05, 1.05)
+    pad = (np.nanmax(xz) - np.nanmin(xz)) * 0.06
+    a.set_xscale("log")
+    a.set_xlim(10 ** (np.nanmin(xz) - pad), 10 ** (np.nanmax(xz) + pad))
+    ticks = [v for v in (1, 10, 100, 1000, 10000) if v <= 10 ** np.nanmax(xz)]
+    a.set_xticks(ticks); a.set_xticklabels([f"{v:g}" for v in ticks])
+    a.xaxis.set_minor_formatter(mpl.ticker.NullFormatter())
+    _repel_labels(a, tr(xz), y, lab, fontsize=TXT, avoid_xy=line)
+    a.set_xlabel(f"Median {study} cells per donor + 1")
+    a.set_ylabel("Mean Spearman ρ")
+    rho, pval = sst.spearmanr(xz, y)
+    ptxt = f"p = {pval:.2g}" if pval >= 0.001 else "p < 0.001"
+    a.set_title(f"ρ = {rho:.2f}, {ptxt}, n = {len(y)}", loc="left", fontsize=TXT, pad=4)
+    sax.append(a)
 
     fig.text(fx(0.03), fy(H - 0.03), "A", fontsize=LET, fontweight="bold", va="top")
     for k in range(2):
-        fig.text(fx(0.03 if k == 0 else left + pw + gutter - 0.3), fy(y_b + b_h + 0.42), "BC"[k],
+        fig.text(fx(0.03 if k == 0 else left + pw + gutter - 0.85), fy(y_b + b_h + 0.62), "BC"[k],
                  fontsize=LET, fontweight="bold", va="top")
 
     qa = check_layout(fig, ax, sax, W)
