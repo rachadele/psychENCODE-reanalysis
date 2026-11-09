@@ -1,0 +1,193 @@
+{
+ "created": "2026-11-09T16:25:47-07:00",
+ "data_version": "grid_labels_full_2026-11-09: two nf-annotation-grid scVI configs (cutoff 0, 100 ref cells per type) on all cells of CMC, MultiomeBrain, SZBDMulti-Seq; QC-masked local pseudobulks; limma-voom subclass DE",
+ "grid_code": {
+  "repo": "/space/grp/rschwartz/rschwartz/aim2-reannotation/nf-annotation-grid",
+  "commit": "9c0b61b943bafaa5ded828aac4266b08d643432a",
+  "uncommitted": [
+   "M modules/local/predict_seurat/main.nf",
+   " M modules/local/query_process_seurat/main.nf",
+   " M modules/local/ref_process_seurat/main.nf",
+   "?? bin/predict_seurat.R",
+   "?? bin/ref_preprocessing.R",
+   "?? bin/seurat_functions.R",
+   "?? bin/seurat_preprocessing.R"
+  ],
+  "scripts_used_sha256": {
+   "/space/grp/rschwartz/rschwartz/aim2-reannotation/nf-annotation-grid/bin/annotate_query.py": "2f0d7d0a7fec7b69455b560ee82725d737cebcb6af57be494d86b484e24da348",
+   "/space/grp/rschwartz/rschwartz/aim2-reannotation/nf-annotation-grid/bin/predict_scvi.py": "d536cd84e27056c5a2fd0da0aee3dcf06f53d1a49ffba20db81757cfce3f7dfc",
+   "/space/grp/rschwartz/rschwartz/aim2-reannotation/nf-annotation-grid/bin/classify_query.py": "c9b9a56fecba120b1088c8d2d63dd4e6959ddada9170a8dd6035e1a1c0b1385d",
+   "/space/grp/rschwartz/rschwartz/aim2-reannotation/nf-annotation-grid/bin/utils.py": "adb3bdef0479fd6914001c58e52dd29015744ab318e69579303242ca7d0b1bf1"
+  }
+ },
+ "reanalysis_repo": {
+  "branch": "label-map-param",
+  "commit": "73efa33241dd974b6ed3495056179dee9892a168"
+ },
+ "scvi_model": {
+  "sha256": "dbdef0eee5f0181c10cc3566c8564bc588d07152f9fb3de5fda78f4932745547",
+  "mtime": "2024-07-09T11:22:28"
+ },
+ "references": {
+  "/cosmos/data/aim2-annotation-grid-cache/refs/homo_sapiens/2024-07-01/brain/dataset_id/sub_100/refs/Human_Multiple_Cortical_Areas_SMART-seq.h5ad": {
+   "sha256": "4f3f2e3d529c2a745640c68da075797a0a44cfb34d3792a1e64de69b22007fb7",
+   "mtime": "2026-09-29T17:44:45"
+  },
+  "/cosmos/data/aim2-annotation-grid-cache/refs/homo_sapiens/2024-07-01/brain/dataset_id/sub_100/refs/aggregated.h5ad": {
+   "sha256": "dcb6891abf5ad09dc0645b22778aa3a1dc7f5c3048fb828a76a4f02e018ebb0a",
+   "mtime": "2026-09-29T17:44:49"
+  }
+ },
+ "source_h5ad_sha256": {
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychencode.txt_author_false_process_samples_false/h5ad/CMC/CMC.h5ad": "4ea0dfaea971fba335a26fc6b3867aad2b0fae222a24232201f480a54b1fb2f9",
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychencode.txt_author_false_process_samples_false/h5ad/MultiomeBrain/MultiomeBrain.h5ad": "555ce574d2208a46d0f18446d24c8aa31cf59d3a85c337ba5148b3aaffdaeec9",
+  "/space/grp/rschwartz/rschwartz/get_gemma_data.nf/psychencode.txt_author_false_process_samples_false/h5ad/SZBDMulti-Seq/SZBDMulti-Seq.h5ad": "c57bfa49ef966a79d98e22563a838646bca426c77b333b555ff770f848b003e5"
+ },
+ "grid_probs": {
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/CMC/predict_Human_Multiple_Cortical_Areas_SMART-seq/probs/CMC_Human_Multiple_Cortical_Areas_SMART-seq.knn.prob.df.tsv.gz": {
+   "sha256": "6834aa49b9ce14b5bf76f386ce6420c494d7ed7df3f226ee0cebc22c3e498a69",
+   "mtime": "2026-11-09T14:51:41"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/CMC/predict_Human_Multiple_Cortical_Areas_SMART-seq/probs/CMC_Human_Multiple_Cortical_Areas_SMART-seq.rf.prob.df.tsv.gz": {
+   "sha256": "9f703897f25b4cd1b490f11e651536c5e863372f4a52167c6aa952b2c0a2d342",
+   "mtime": "2026-11-09T14:51:28"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/CMC/predict_aggregated/probs/CMC_aggregated.knn.prob.df.tsv.gz": {
+   "sha256": "e773f6753c0e53ee723d0052e1257b446542c2e78c462bfada2339b03a4a02dc",
+   "mtime": "2026-11-09T14:53:29"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/CMC/predict_aggregated/probs/CMC_aggregated.rf.prob.df.tsv.gz": {
+   "sha256": "a76e7dee0a38c176039b50e1ebeed51bb1f7a05266f31b96e1ef4eac7a4685ab",
+   "mtime": "2026-11-09T14:53:07"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/MultiomeBrain/predict_Human_Multiple_Cortical_Areas_SMART-seq/probs/MultiomeBrain_Human_Multiple_Cortical_Areas_SMART-seq.knn.prob.df.tsv.gz": {
+   "sha256": "4d85f0bae546317531f31e1c42b62ccec3d4c8b55b452f46bd411b0244a5881f",
+   "mtime": "2026-11-09T14:47:22"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/MultiomeBrain/predict_Human_Multiple_Cortical_Areas_SMART-seq/probs/MultiomeBrain_Human_Multiple_Cortical_Areas_SMART-seq.rf.prob.df.tsv.gz": {
+   "sha256": "dbb8c5ae701dabf61a073c983287f5b5988fff8bfb1e94ba39e44557867f5878",
+   "mtime": "2026-11-09T14:47:19"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/MultiomeBrain/predict_aggregated/probs/MultiomeBrain_aggregated.knn.prob.df.tsv.gz": {
+   "sha256": "b8371bafb92ddde59d1ebb09cde2f220b1ff2c4cc4f72bd0bfbe6dfed4b75ab9",
+   "mtime": "2026-11-09T14:48:51"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/MultiomeBrain/predict_aggregated/probs/MultiomeBrain_aggregated.rf.prob.df.tsv.gz": {
+   "sha256": "4c609aee9b2bc5b1993d2dab0e707351646c33ea6d81201e08790dfefc47762b",
+   "mtime": "2026-11-09T14:48:48"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/SZBDMulti-Seq/predict_Human_Multiple_Cortical_Areas_SMART-seq/probs/SZBDMulti-Seq_Human_Multiple_Cortical_Areas_SMART-seq.knn.prob.df.tsv.gz": {
+   "sha256": "be284a78ad27c22a3f8b6d3e62947039b83c7c8f9c9efc3c7e2c158cedd9b59c",
+   "mtime": "2026-11-09T14:58:37"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/SZBDMulti-Seq/predict_Human_Multiple_Cortical_Areas_SMART-seq/probs/SZBDMulti-Seq_Human_Multiple_Cortical_Areas_SMART-seq.rf.prob.df.tsv.gz": {
+   "sha256": "46e88d3421446df6689aca0cda09dec5bfed987c4337b5e3968cb6f0ff85166c",
+   "mtime": "2026-11-09T14:58:20"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/SZBDMulti-Seq/predict_aggregated/probs/SZBDMulti-Seq_aggregated.knn.prob.df.tsv.gz": {
+   "sha256": "850499fc137464d8a72ae87828437249013379926e0384802b9af6c245c9ceac",
+   "mtime": "2026-11-09T15:00:50"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/work/SZBDMulti-Seq/predict_aggregated/probs/SZBDMulti-Seq_aggregated.rf.prob.df.tsv.gz": {
+   "sha256": "39404d46557964d3838b505017a66a9b08a730975969f657fbb66eb6f209f669",
+   "mtime": "2026-11-09T15:00:34"
+  }
+ },
+ "grid_cta": {
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/cta/scvi_knn__Human_Multiple_Cortical_Areas_SMART-seq__cutoff0__gapfalse/CMC_subclass_cell_type.tsv": {
+   "sha256": "9134488aac769daa66090afa0566472b898efc8a1574e39e64cedc2c1bd5ee2b",
+   "mtime": "2026-11-09T14:54:37"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/cta/scvi_knn__Human_Multiple_Cortical_Areas_SMART-seq__cutoff0__gapfalse/MultiomeBrain_subclass_cell_type.tsv": {
+   "sha256": "f23e199b38cb9e7c7a13100af26d47721fd31da62fbb8cbf84055dd2ccc1ee89",
+   "mtime": "2026-11-09T14:49:32"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/cta/scvi_knn__Human_Multiple_Cortical_Areas_SMART-seq__cutoff0__gapfalse/SZBDMulti-Seq_subclass_cell_type.tsv": {
+   "sha256": "93ac38ca30e1b8cf69f8d8fb728946c1faf2319df8c635e30ec3fe61cb6dad6a",
+   "mtime": "2026-11-09T15:02:45"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/cta/scvi_rf__aggregated__cutoff0__gapfalse/CMC_subclass_cell_type.tsv": {
+   "sha256": "ac5f26305ea5952fc6ea4aee60db281b1778278eef67ed13fdb7640a43c7acda",
+   "mtime": "2026-11-09T14:55:52"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/cta/scvi_rf__aggregated__cutoff0__gapfalse/MultiomeBrain_subclass_cell_type.tsv": {
+   "sha256": "a136619971ba661bde002e40643f6b5406b2746dabf5d611b8f73ff2fd4e07e1",
+   "mtime": "2026-11-09T14:50:10"
+  },
+  "/cosmos/data/aim2-annotation-grid-results/full_cells_2026-11-09/cta/scvi_rf__aggregated__cutoff0__gapfalse/SZBDMulti-Seq_subclass_cell_type.tsv": {
+   "sha256": "1e8267cffc2e44c61267cf23c5532771f8e93635be7d4c1488a328b03cd83bc0",
+   "mtime": "2026-11-09T15:04:55"
+  }
+ },
+ "cell_counts": {
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/pseudobulks/author_3cohort/ct_pseudobulks/cell_counts.tsv": {
+   "sha256": "b6a19890a3b385381a3e7bcc18c0b7b221bd7e6e9abe1e0eadfce5e60318c0f3",
+   "mtime": "2026-11-09T16:16:33"
+  },
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/pseudobulks/grid_knn_smartseq/ct_pseudobulks/cell_counts.tsv": {
+   "sha256": "e62ec98e0ae1dca86cd1322e26c63fa9a3dfe92193f8e1c91904d684146ff94d",
+   "mtime": "2026-11-09T15:23:16"
+  },
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/pseudobulks/grid_rf_aggregated/ct_pseudobulks/cell_counts.tsv": {
+   "sha256": "53629e63529594a66e8e06e7d0485370462e3d6a97b44d43e593f306fc683e5c",
+   "mtime": "2026-11-09T15:46:12"
+  },
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/pseudobulks/v212_3cohort/ct_pseudobulks/cell_counts.tsv": {
+   "sha256": "cc2d15e9e63bf733ace0a93a2389532bd25b4ad16718f3141af6517b64b8252c",
+   "mtime": "2026-11-09T15:59:35"
+  }
+ },
+ "de_results_per_arm": {
+  "author_3cohort": 266,
+  "grid_knn_smartseq": 169,
+  "grid_rf_aggregated": 243,
+  "v212_3cohort": 239
+ },
+ "comparison": {
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/comparison/label_arms_grid_knn_smartseq.tsv": {
+   "sha256": "28de94e4a6dfbf0f467d688cae244a81baec8030b52171997b275a42a278e125",
+   "mtime": "2026-11-09T16:25:19"
+  },
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/comparison/label_arms_grid_rf_aggregated.tsv": {
+   "sha256": "3ed8c27784cbfa0753bb152bb780e82871f0afdcb47f38f1d7f9094acfaad8a7",
+   "mtime": "2026-11-09T16:24:47"
+  },
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/comparison/label_arms_v212_3cohort.tsv": {
+   "sha256": "71e2f55816e9e771f348b305d4bd4cc2182626259e431f4b88be4376a81ee171",
+   "mtime": "2026-11-09T16:24:09"
+  }
+ },
+ "agreement_outputs": {
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/de_agreement/arm_summary.tsv": {
+   "sha256": "e7e6acc47f85638f3cb765b6ed63e6bdb6c3c740b0fd239fd0f0402648e50593",
+   "mtime": "2026-11-09T16:25:21"
+  },
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/de_agreement/manifest.json": {
+   "sha256": "bd97a274ac7f9585a9777e7ef83ee39ad606879de0e026ddebe093256435bee3",
+   "mtime": "2026-11-09T16:25:21"
+  },
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/de_agreement/pairs.tsv": {
+   "sha256": "45aee70d3de3015ddf2adf390964f32a9bc5c40246bec3a5074b692b796877be",
+   "mtime": "2026-11-09T16:25:21"
+  },
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/de_agreement/per_cohort_f1.tsv": {
+   "sha256": "4814b01c0057aa0f380e0ab87cfe4afd9ecc82cf6943117cbde9ddb331473668",
+   "mtime": "2026-11-09T16:25:21"
+  },
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/de_agreement/rho_vs_f1.tsv": {
+   "sha256": "2a843c198d87c4eda2ac717772c8e43634250d7dde0945225249485f90236d64",
+   "mtime": "2026-11-09T16:25:21"
+  }
+ },
+ "scripts": [
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/scripts/grid_de.sh",
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/scripts/grid_full_cells.sh",
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/scripts/run_agreement.sh",
+  "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/grid_labels_full_2026-11-09/scripts/write_manifest.py"
+ ],
+ "tmux_sessions": [
+  "grid_full_cells",
+  "grid_de",
+  "grid_agreement"
+ ]
+}
