@@ -2,13 +2,13 @@
 
 At final size (183 mm, double column). A: heatmap of DE agreement (Spearman rho of log2 fold
 changes, author vs pipeline labels) per contrast and author type, with bars for benchmark F1,
-CMC F1 and cell class, and brackets over author types pooled into one pipeline label.
+cohort F1 (PsychENCODE donors) and cell class, and brackets over author types pooled into one pipeline label.
 B: Spearman rho of mean agreement with log10 median cells per donor (27 types) and with F1
-(27 types; 20 types named as their own pipeline label), plain (filled) and partial controlling for
-the other variable (open; each row label names the variable controlled for), 95% CIs by Fisher z, p values on the right
-(fig4b_rho_ci.tsv). F1 (per sample, averaged per cohort) and cells per donor come from the cohorts
-that contribute each contrast's cases, then are averaged over contrasts per cell type, as agreement is.
-The CMC F1 bar in A is still the CMC value with cells pooled across samples. C: density of per-pair rho for matched author/pipeline cell types (above) and
+(27 types; the one-to-one types, by default the 18 whose pipeline label pools no other type), plain
+(filled) and partial controlling for the other variable (open; each row label names the variable
+controlled for), 95% CIs by Fisher z, p values on the right (fig4b_rho_ci.tsv). F1 (plain mean of
+per-sample F1) and cells per donor (median, zeros excluded) come from every donor in the DE of the
+type (celltype_f1_cells.tsv); the cohort F1 bar in A is the same F1. C: density of per-pair rho for matched author/pipeline cell types (above) and
 mismatched types in the same contrast (below), observed means as ticks, means adjusted for cells per
 donor and contrast as diamonds with 95% CI, permutation null of the matched mean in red
 (benchmark-post-hoc/de_permutation_null). plot_scatter() draws the per-cell-type scatters behind B
@@ -264,7 +264,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     ax.set_ylabel("Contrast")
     ax.set_xlabel("Author cell type", labelpad=4)
 
-    f1_lo = min(0.3, np.floor(np.nanmin(t[["benchmark_f1", "cmc_f1"]].values) * 10) / 10)
+    f1_lo = min(0.3, np.floor(np.nanmin(t[["benchmark_f1", "f1"]].values) * 10) / 10)
     f1_cmap, f1_norm = plt.cm.YlOrRd, mpl.colors.Normalize(f1_lo, 1.0)
     f1c = lambda v: f1_cmap(f1_norm(v)) if not np.isnan(v) else (0.85, 0.85, 0.85, 1)
 
@@ -281,7 +281,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
             s.set_visible(False)
 
     bar(bars_y0, [mpl.colors.to_rgba(CLASS_COLORS[cell_class(c)]) for c in cols], "Cell class", outline=True)
-    bar(bars_y0 + (bar_h + gap), [f1c(t.loc[c, "cmc_f1"]) for c in cols], f"{study} F1")
+    bar(bars_y0 + (bar_h + gap), [f1c(t.loc[c, "f1"]) for c in cols], "Cohort F1")
     bar(bars_y0 + 2 * (bar_h + gap), [f1c(t.loc[c, "benchmark_f1"]) for c in cols], "Benchmark F1")
 
     # brackets over author types pooled into one pipeline label
@@ -376,16 +376,16 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     plt.close(fig)
 
 
-def plot_scatter(tab, cols, corr, out_png, study="CMC"):
+def plot_scatter(tab, cols, corr, out_png):
     """Supplementary (not in the manuscript figure set): per-cell-type scatters behind Figure 4B.
     Left: mean rho against median cells per donor (log axis). Middle, right: added-variable plots
-    for the partial Spearman of mean rho with CMC F1 given cells per donor, for all types and for
-    the types named as their own pipeline label (rank residuals computed within the subset).
-    Points coloured by cell class, open markers for the types pooled under another type's name."""
+    for the partial Spearman of mean rho with F1 given cells per donor, for all types and for
+    the one-to-one types (rank residuals computed within the subset). F1 and cells per donor are the
+    tab columns f1 and log10_cells (celltype_f1_cells.tsv); corr is the per-cell-type rows of
+    correlations_per_cohort.tsv. Points coloured by cell class, open markers for types that are not
+    one-to-one (their pipeline label pools other author types)."""
     t = tab.set_index("ct_author")
-    # open markers: the seven types pooled under another type's name (IT subtypes, SST Chodl,
-    # LAMP5 LHX6), i.e. not benchmark_own_label; SST and LAMP5 keep their own name and stay filled
-    pooled = {c for c in cols if not bool(t.loc[c, "benchmark_own_label"])}
+    pooled = {c for c in cols if not bool(t.loc[c, "one_to_one"])}
     W, right = 183 * MM, 0.08
     y_b, b_h = 0.62, 2.6
     y_leg, leg_h = y_b + b_h + 0.5, 0.95
@@ -397,7 +397,7 @@ def plot_scatter(tab, cols, corr, out_png, study="CMC"):
     lg.axis("off")
     lg.legend(handles=[mpatches.Patch(facecolor=CLASS_COLORS[k], edgecolor=EDGE, lw=0.5, label=k) for k in present]
               + [mlines.Line2D([], [], ls="", marker="o", mfc="white", mec="0.35", mew=1.6, ms=6,
-                               label="Pooled under another name")],
+                               label="Pipeline label pools types")],
               loc="center left", ncol=4, borderaxespad=0, handlelength=1.0, handleheight=0.9,
               columnspacing=0.9, labelspacing=0.3, handletextpad=0.4)
     # ---------- B: mean rho vs cells per donor; C, D: added-variable plots (partial Spearman) ----------
@@ -406,8 +406,8 @@ def plot_scatter(tab, cols, corr, out_png, study="CMC"):
     pw = (W - right - lft - g_bc - g_cd) / 3
     xs0 = [lft, lft + pw + g_bc, lft + 2 * pw + g_bc + g_cd]
     y = t.loc[cols, "mean_rho"].values.astype(float)
-    xf = t.loc[cols, "cmc_f1"].values.astype(float)
-    xz = t.loc[cols, "log10_author_median_cells"].values.astype(float)
+    xf = t.loc[cols, "f1"].values.astype(float)
+    xz = t.loc[cols, "log10_cells"].values.astype(float)
     disp = np.array([author_display(c) for c in cols])
     mn = lambda v: f"{v:.2f}".replace("-", "\u2212")
 
@@ -456,7 +456,7 @@ def plot_scatter(tab, cols, corr, out_png, study="CMC"):
     a.set_title(f"ρ = {rho:.2f}, {ptxt}", loc="left", fontsize=TXT, pad=4)
     sax.append(a)
 
-    # C, D: rank residuals of agreement and of CMC F1, each regressed on rank cells per donor,
+    # C, D: rank residuals of agreement and of F1, each regressed on rank cells per donor,
     # computed within the subset. Their Pearson r is the partial Spearman rho in correlations.tsv.
     def resid(v, z):
         rz, rv = sst.rankdata(z), sst.rankdata(v)
@@ -464,10 +464,10 @@ def plot_scatter(tab, cols, corr, out_png, study="CMC"):
 
     own = np.array([c not in pooled for c in cols])
     for k, (sub, m, n_lab) in enumerate([("all", np.ones(len(cols), bool), 2),
-                                         ("excluding types named differently from their pooled label", own, 2)]):
+                                         ("one-to-one types", own, 2)]):
         r_ = corr[corr["subset"] == sub]
-        pl = r_[r_["test"] == "rho ~ CMC F1"].iloc[0]
-        pa_ = r_[r_["test"] == "rho ~ CMC F1 | log10 support (partial)"].iloc[0]
+        pl = r_[r_["test"] == "agreement ~ F1"].iloc[0]
+        pa_ = r_[r_["test"] == "agreement ~ F1 | log10 cells per donor"].iloc[0]
         bx, by = resid(xf[m], xz[m]), resid(y[m], xz[m])
         assert int(pa_["n"]) == m.sum() and abs(np.corrcoef(bx, by)[0, 1] - pa_["spearman_rho"]) < 1e-9
         a = fig.add_axes([fx(xs0[k + 1]), fy(y_b), fx(pw), fy(b_h)])
@@ -482,7 +482,7 @@ def plot_scatter(tab, cols, corr, out_png, study="CMC"):
                       fontsize=TXT, avoid_xy=line)
         a.set_title(f"{int(m.sum())} types: ρ {mn(pl['spearman_rho'])} → {mn(pa_['spearman_rho'])}",
                     loc="left", fontsize=TXT, pad=4)
-        a.set_xlabel(f"{study} F1 rank, adj.")
+        a.set_xlabel("F1 rank, adj.")
         if k == 0:
             a.set_ylabel("Mean ρ rank, adj.")
         sax.append(a)
