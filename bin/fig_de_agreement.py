@@ -1,8 +1,8 @@
 """Manuscript figure: DE agreement vs annotation F1 and cell support (sc-manuscript Figure 4).
 
 At final size (183 mm, double column). A: heatmap of DE agreement (Spearman rho of log2 fold
-changes, author vs pipeline labels) per contrast and author type, with bars for benchmark F1,
-cohort F1 (PsychENCODE donors) and cell class, and brackets over author types pooled into one pipeline label.
+changes, author vs pipeline labels) per contrast and author type, with bars for cohort F1
+(PsychENCODE donors) and cell class, and brackets over author types pooled into one pipeline label.
 B: Spearman rho of mean agreement with log10 median cells per donor (27 types) and with F1
 (27 types; the one-to-one types, by default the 18 whose pipeline label pools no other type), plain
 (filled) and partial controlling for the other variable (open; each row label names the variable
@@ -222,9 +222,12 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     rho_ci: plain and partial Spearman rho with CIs, one row per test (panel B; fig4b_rho_ci.tsv);
     null_dir: benchmark-post-hoc/de_permutation_null (panel C)."""
     t = tab.set_index("ct_author")
-    lab_f1 = t.groupby("pipeline_label")["benchmark_f1"].first()
+    # order: mean cohort F1 of the author types sharing a pipeline label (descending, so pooled
+    # types stay adjacent under their bracket), then pipeline label, then cohort F1 (descending).
+    # Same rule as figure4_order() in psychENCODE-author-de-comparison compare_de_results.py (S7).
+    lab_f1 = t.groupby("pipeline_label")["f1"].mean()
     cols = sorted(pivot.columns, key=lambda c: (-np.nan_to_num(lab_f1[label_map[c]], nan=-1),
-                                                label_map[c], -t.loc[c, "mean_rho"]))
+                                                label_map[c], -t.loc[c, "f1"]))
     pv = pivot[cols]
     ncol, nrow = len(cols), len(pv.index)
 
@@ -243,7 +246,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     y_br = y_hm + hm_h + gap
     br_h = 0.30
     bars_y0 = y_br + br_h + gap
-    H = bars_y0 + 3 * (bar_h + gap) + top
+    H = bars_y0 + 2 * (bar_h + gap) + top
     fig = plt.figure(figsize=(W, H))
     fx, fy = (lambda v: v / W), (lambda v: v / H)
 
@@ -264,7 +267,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     ax.set_ylabel("Contrast")
     ax.set_xlabel("Author cell type", labelpad=4)
 
-    f1_lo = min(0.3, np.floor(np.nanmin(t[["benchmark_f1", "f1"]].values) * 10) / 10)
+    f1_lo = min(0.3, np.floor(np.nanmin(t[["f1"]].values) * 10) / 10)
     f1_cmap, f1_norm = plt.cm.YlOrRd, mpl.colors.Normalize(f1_lo, 1.0)
     f1c = lambda v: f1_cmap(f1_norm(v)) if not np.isnan(v) else (0.85, 0.85, 0.85, 1)
 
@@ -282,7 +285,6 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
 
     bar(bars_y0, [mpl.colors.to_rgba(CLASS_COLORS[cell_class(c)]) for c in cols], "Cell class", outline=True)
     bar(bars_y0 + (bar_h + gap), [f1c(t.loc[c, "f1"]) for c in cols], "Cohort F1")
-    bar(bars_y0 + 2 * (bar_h + gap), [f1c(t.loc[c, "benchmark_f1"]) for c in cols], "Benchmark F1")
 
     # brackets over author types pooled into one pipeline label
     bax = fig.add_axes([fx(left), fy(y_br), fx(hm_w), fy(br_h)])
