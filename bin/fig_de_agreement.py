@@ -123,14 +123,13 @@ def load_null(null_dir, test, arms):
 def null_density_rows(ax, rows, labels, half=0.42):
     """rows from load_null; labels: y tick label per row (top to bottom). Per row: density of
     matched rho above the baseline and mismatched rho below, observed means as black ticks (value at
-    the tip), means adjusted for cells per donor as hollow diamonds with 95% CI bars (value beside:
-    right of the matched CI, left of the mismatched CI), permutation null of the matched mean as a
+    the tip), means adjusted for cells per donor as hollow diamonds with 95% CI bars (no value label),
+    permutation null of the matched mean as a
     red bar. Sets the x limits to the densities; returns them."""
     from scipy.stats import gaussian_kde
     lo = min(min(r[1].min(), r[2].min()) for r in rows)
     hi = max(max(r[1].max(), r[2].max()) for r in rows)
     xs = np.linspace(lo - 0.05, min(hi + 0.05, 1.0), 400)  # tails past the data, never past rho = 1
-    box = dict(boxstyle="square,pad=0.08", fc="white", ec="none", alpha=0.85)
     for i, (_, m, mm, s) in enumerate(rows):
         y0 = -i
         for grp, v, sign, c in (("matched", m, 1, MATCH_C), ("mismatched", mm, -1, MISMATCH_C)):
@@ -145,9 +144,6 @@ def null_density_rows(ax, rows, labels, half=0.42):
             ya = y0 + sign * half * 0.62
             ax.plot([a_lo, a_hi], [ya, ya], color="black", lw=1.2, zorder=6, solid_capstyle="butt")
             ax.plot([a], [ya], marker="D", ms=6, mfc="white", mec="black", mew=1.2, ls="", zorder=7)
-            gap = 0.012 * (xs[-1] - xs[0])
-            ax.text(a_hi + gap if sign > 0 else a_lo - gap, ya, f"{a:.2f}", ha="left" if sign > 0 else "right",
-                    va="center", fontsize=TXT, zorder=8, bbox=box)
         nm, ns = s["null_mean"], s["null_sd"]
         ax.add_patch(mpatches.Rectangle((nm - max(ns, 0.006), y0 - half * 0.32), 2 * max(ns, 0.006), half * 0.64,
                                         color=NULL_C, lw=0, zorder=5))
