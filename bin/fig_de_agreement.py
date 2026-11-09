@@ -10,7 +10,8 @@ types (C) and, with residuals computed within the subset, for the 20 types left 
 the seven pooled under another type's name (D); plain -> partial rho above each. Points coloured
 by cell class (open: those seven pooled types), OLS line with 95% confidence band. E: density of
 per-pair rho for matched author/pipeline cell types (above) and mismatched types in the same contrast
-(below), means marked, permutation null of the matched mean in red (benchmark-post-hoc/de_permutation_null). Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
+(below), means marked, permutation null of the matched mean in red, and matched - mismatched unadjusted and
+adjusted for cells per donor (benchmark-post-hoc/de_permutation_null). Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
 The only output is the PNG; check_layout() verifies text sizes, page bounds, text overlaps
 and panel alignment on the rendered figure and blocks export on failure (report to qa_dir).
 """
@@ -93,11 +94,13 @@ MATCH_C, MISMATCH_C, NULL_C = "0.45", "0.78", "#C0392B"
 
 
 def load_null(null_dir, test, arms):
-    """[(arm, matched rho, mismatched rho, summary row)] from pairs.tsv and null_summary.tsv,
-    checking that the per-pair means equal the summary."""
+    """[(arm, matched rho, mismatched rho, summary row)] from pairs.tsv, null_summary.tsv and
+    matched_effect_adjusted.tsv, checking that the per-pair means equal the summary."""
     import pandas as pd
     pairs = pd.read_csv(os.path.join(null_dir, "pairs.tsv"), sep="\t")
     summ = pd.read_csv(os.path.join(null_dir, "null_summary.tsv"), sep="\t")
+    # matched - mismatched, unadjusted and adjusted for cells per donor (matched_effect_adjusted.py)
+    eff = pd.read_csv(os.path.join(null_dir, "matched_effect_adjusted.tsv"), sep="\t")
     out = []
     for arm in arms:
         p = pairs[(pairs["test"] == test) & (pairs["arm"] == arm)]
@@ -105,12 +108,19 @@ def load_null(null_dir, test, arms):
         m, mm = p.loc[p["matched"], "rho"].values, p.loc[~p["matched"], "rho"].values
         assert len(m) == s["n_pairs"] and len(mm) == s["n_mismatched_pairs"]
         assert abs(m.mean() - s["observed_mean"]) < 1e-5 and abs(mm.mean() - s["mismatched_pair_mean"]) < 1e-5
+        e = eff[(eff["test"] == test) & (eff["arm"] == arm)].set_index("model")
+        s = s.copy()
+        for k in ("unadjusted", "adjusted"):
+            s[f"{k}_coef"], s[f"{k}_lo"], s[f"{k}_hi"] = e.loc[k, ["coef", "ci_low", "ci_high"]]
+        assert abs(s["unadjusted_coef"] - (m.mean() - mm.mean())) < 1e-5
         out.append((arm, m, mm, s))
     return out
 
 
-def null_density_rows(ax, rows, labels, half=0.42):
-    """rows from load_null; labels: y tick label per row (top to bottom). Returns the x range of the densities."""
+def null_density_rows(ax, rows, labels, ax_w_in, half=0.42, col_in=1.95):
+    """rows from load_null; labels: y tick label per row (top to bottom); ax_w_in: axes width in
+    inches. Sets the x limits, leaving a col_in-inch column on the right for matched - mismatched
+    (unadjusted, and adjusted for cells per donor with 95% CI). Returns the x range of the densities."""
     from scipy.stats import gaussian_kde
     lo = min(min(r[1].min(), r[2].min()) for r in rows)
     hi = max(max(r[1].max(), r[2].max()) for r in rows)
@@ -128,13 +138,25 @@ def null_density_rows(ax, rows, labels, half=0.42):
         nm, ns = s["null_mean"], s["null_sd"]
         ax.add_patch(mpatches.Rectangle((nm - max(ns, 0.006), y0 - half * 0.55), 2 * max(ns, 0.006), half * 1.1,
                                         color=NULL_C, lw=0, zorder=5))
-        ax.axhline(y0, color="0.5", lw=0.6, zorder=1)
+        ax.plot([xs[0], xs[-1]], [y0, y0], color="0.5", lw=0.6, zorder=1)
     ax.set_yticks([-i for i in range(len(rows))])
     ax.set_yticklabels(labels)
     ax.tick_params(axis="y", length=0)
     ax.spines["left"].set_visible(False)
     ax.set_ylim(-(len(rows) - 1) - half * 1.6, half * 1.6)
-    return xs[0], xs[-1]
+    x0, x1 = xs[0], xs[-1]
+    span = (x1 - x0) / (1 - col_in / ax_w_in)
+    ax.set_xlim(x0, x0 + span)
+    ax.spines["bottom"].set_bounds(x0, x1)
+    ax.set_xticks([v for v in ax.get_xticks() if x0 - 1e-9 <= v <= x1 + 1e-9])
+    ax.xaxis.label.set_x((x1 - x0) / 2 / span)   # centre the axis title under the densities
+    tx = x1 + 0.1 / ax_w_in * span
+    ax.text(tx, half * 1.55, "Matched − mismatched", ha="left", va="top", fontsize=TXT)
+    for i, (_, _, _, s) in enumerate(rows):
+        ax.text(tx, -i + 0.02, f"{s['unadjusted_coef']:.2f} unadjusted\n"
+                f"{s['adjusted_coef']:.2f} [{s['adjusted_lo']:.2f}, {s['adjusted_hi']:.2f}] adj.",
+                ha="left", va="center", fontsize=TXT, linespacing=1.25)
+    return x0, x1
 
 
 def null_legend_handles():
@@ -207,7 +229,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, null_dir, stu
     hm_w = W - left - right
     cell_h, bar_h, gap = 0.21, 0.17, 0.04
     hm_h = nrow * cell_h
-    y_e, e_h = 0.62, 1.25                     # panel E: matched vs mismatched pairs
+    y_e, e_h = 0.62, 1.45                     # panel E: matched vs mismatched pairs
     y_b, b_h = y_e + e_h + 1.05, 2.6          # panels B, C and D
     y_key, key_h = y_b + b_h + 0.5, 0.62     # key row: marker legend and colour bars
     y_cls, cls_h = y_key + key_h + 0.05, 0.72  # class legend row
@@ -388,12 +410,11 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, null_dir, stu
                  fontsize=LET, fontweight="bold", va="top")
 
     # ---------- E: per-pair rho, matched vs mismatched cell types, with the permutation null ----------
-    ea = fig.add_axes([fx(left), fy(y_e), fx(hm_w - 0.15), fy(e_h)])  # room for the 1.0 tick label
+    ea = fig.add_axes([fx(left), fy(y_e), fx(hm_w), fy(e_h)])
     rows = load_null(null_dir, "labels", ["subclass"])
-    lo, hi = null_density_rows(ea, rows, ["Author vs\npipeline"])
-    ea.set_xlim(lo, 1.0)
-    ea.set_xticks(np.arange(np.ceil(lo * 2) / 2, 1.01, 0.5))
-    ea.set_xlabel("Spearman ρ per cell type and contrast pair")
+    ea.set_xticks(np.arange(-1, 1.01, 0.5))
+    ea.set_xlabel("Spearman ρ per cell type and contrast pair")   # before null_density_rows centres it
+    lo, hi = null_density_rows(ea, rows, ["Author vs\npipeline"], hm_w)
     s0 = rows[0][3]
     pe = f"p = {s0['empirical_p']:.2g}" if s0["empirical_p"] >= 0.001 else "p < 0.001"
     h = null_legend_handles()

@@ -195,7 +195,7 @@ def main():
         f = getattr(a, k)
         prov["inputs"][k] = {"path": os.path.abspath(f), "sha256": sha256(f),
                              "mtime": datetime.datetime.fromtimestamp(os.path.getmtime(f)).astimezone().isoformat()}
-    for f in ("pairs.tsv", "null_summary.tsv", "manifest.json"):
+    for f in ("pairs.tsv", "null_summary.tsv", "matched_effect_adjusted.tsv", "manifest.json"):
         f = os.path.join(a.null_dir, f)
         prov["inputs"][f"null_{os.path.basename(f)}"] = {"path": os.path.abspath(f), "sha256": sha256(f)}
     from fig_de_agreement import PALETTE_TSV
