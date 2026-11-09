@@ -1,0 +1,23 @@
+{
+ "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron": "L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
+ "L5.extratelencephalic.projecting.glutamatergic.cortical.neuron": "L5.extratelencephalic.projecting.glutamatergic.cortical.neuron",
+ "L6b.glutamatergic.cortical.neuron": "L6b.glutamatergic.cortical.neuron",
+ "PAX6.GABAergic.cortical.interneuron": "PAX6.GABAergic.cortical.interneuron",
+ "VIP.GABAergic.interneuron": "VIP.GABAergic.interneuron",
+ "astrocyte": "astrocyte",
+ "chandelier.pvalb.GABAergic.cortical.interneuron": "chandelier.pvalb.GABAergic.cortical.interneuron",
+ "corticothalamic.projecting.glutamatergic.cortical.neuron": "corticothalamic.projecting.glutamatergic.cortical.neuron",
+ "endothelial.cell": "endothelial.cell",
+ "lamp5.GABAergic.cortical.interneuron": "lamp5.GABAergic.cortical.interneuron",
+ "macrophage": "macrophage",
+ "microglial.cell": "microglial.cell",
+ "near.projecting.glutamatergic.cortical.neuron": "near.projecting.glutamatergic.cortical.neuron",
+ "oligodendrocyte": "oligodendrocyte",
+ "oligodendrocyte.precursor.cell": "oligodendrocyte.precursor.cell",
+ "pericyte": "pericyte",
+ "pvalb.GABAergic.cortical.interneuron": "pvalb.GABAergic.cortical.interneuron",
+ "smooth.muscle.cell": "smooth.muscle.cell",
+ "sncg.GABAergic.cortical.interneuron": "sncg.GABAergic.cortical.interneuron",
+ "sst.GABAergic.cortical.interneuron": "sst.GABAergic.cortical.interneuron",
+ "vascular.leptomeningeal.cell": "vascular.leptomeningeal.cell"
+}

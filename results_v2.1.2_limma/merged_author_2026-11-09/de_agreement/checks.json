@@ -1,0 +1,8 @@
+{
+ "unpooled_types": 18,
+ "de_identical": 18,
+ "rho_max_abs_diff": 0.0,
+ "f1_max_abs_diff": 4.999999998478444e-07,
+ "cells_equal": 18,
+ "donors_equal": 18
+}

@@ -2,6 +2,21 @@
 
 Figure 4 of sc-manuscript. Producer: `bin/de_agreement_vs_annotation.py`; outputs in `results_v2.1.2_limma/de_agreement_vs_annotation/`.
 
+## 2026-11-09: merged-author arm run, pending Rachel's decision
+
+We reran the author-label DE with author types mapped to pipeline subclass labels before pseudobulking (`assets/author_to_pipeline_map.subclass.json`), so the five IT types, LAMP5 with LAMP5 LHX6, and SST with SST Chodl each formed one group. All 21 groups matched one pipeline label and none were excluded. QC masks, limma-voom model, donors and contrasts were unchanged. The 18 unpooled types reproduced the current DE exactly. F1 and cells per donor followed the de_donors rule above. Outputs, README and manifest: `results_v2.1.2_limma/merged_author_2026-11-09/`. Figure 4 and the manuscript were not changed.
+
+| | Current, 27 types | Current, strict 18 | Merged, 21 types |
+|---|---|---|---|
+| Mean ± SD ρ, log2FC | 0.83 ± 0.21 | 0.86 ± 0.20 | 0.88 ± 0.19 |
+| Mean ± SD ρ, t | 0.84 ± 0.19 | 0.86 ± 0.18 | 0.88 ± 0.17 |
+| ρ, agreement vs F1 | 0.33 (p = 0.097) | 0.90 (p = 2.9e-7) | 0.91 (p = 1.7e-8) |
+| ρ, agreement vs cells per donor | 0.58 (p = 0.0014) | 0.81 (p = 4.5e-5) | 0.84 (p = 1.8e-6) |
+| Partial ρ, F1 given cells | −0.17 (p = 0.42) | 0.70 (p = 0.0016) | 0.67 (p = 0.0011) |
+| Partial ρ, cells given F1 | 0.53 (p = 0.0050) | 0.25 (p = 0.34) | 0.33 (p = 0.15) |
+
+Source: `merged_author_2026-11-09/de_agreement/agreement_summary.tsv` and `correlations_merged_vs_current.tsv` (agreement = mean ρ of log2FC over eight contrasts).
+
 ## 2026-11-09, decided by Rachel. Status: provisional, pending a check of Emani et al.'s code
 
 1. F1 and cells per donor came from every donor in the DE: all eight cohorts and the same donors for every contrast, because limma fitted one model per cell type across all cohorts without a cohort term. A donor was in a type's model when it had metadata and at least one unmasked cell of the type. F1 was the plain mean of per-sample F1 over those donors (cells never pooled, no mean of cohort means). Cells per donor was the median over the same donors, zeros excluded. Option `--support_rule de_donors` (default).

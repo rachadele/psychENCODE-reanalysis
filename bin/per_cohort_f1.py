@@ -12,6 +12,9 @@ Within each sample:
   F1(t)        = 2PR / (P + R); 0 when recall is 0; NaN when the sample has no t cells.
 The per-cohort value is the unweighted mean over samples with at least one t cell (each
 sample counts once; cells are never pooled across samples).
+--merge_author: each author label is first replaced by the pipeline label it maps to, and the map
+becomes the identity on pipeline labels, so author types that share a pipeline label are scored as
+one merged type (recall over all their cells; precision unchanged).
 Writes <outdir>/<study>_per_sample_f1.tsv and <outdir>/<study>_per_cohort_f1.tsv.
 """
 import argparse
@@ -83,12 +86,19 @@ def main():
     p.add_argument("--label_map", required=True)
     p.add_argument("--study", required=True)
     p.add_argument("--outdir", required=True)
+    p.add_argument("--merge_author", action="store_true",
+                   help="score author labels mapped to pipeline labels (merged types) with the identity map")
     a = p.parse_args()
     os.makedirs(a.outdir, exist_ok=True)
     label_map = json.load(open(a.label_map))
     label_map = label_map.get("gemma_to_gemma_map", label_map)
     df, info = load_cells(a.h5ad, a.cta, a.mask)
     unmapped = sorted(set(df["author"]) - set(label_map))
+    if a.merge_author:
+        if unmapped:
+            raise SystemExit(f"author labels not in map: {unmapped}")
+        df["author"] = df["author"].map(label_map)
+        label_map = {v: v for v in sorted(set(label_map.values()))}
     ps = per_sample_f1(df, label_map)
     ps.insert(0, "study", a.study)
     ps.to_csv(os.path.join(a.outdir, f"{a.study}_per_sample_f1.tsv"), sep="\t", index=False, float_format="%.6g")

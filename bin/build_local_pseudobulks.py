@@ -14,6 +14,10 @@ What it does:
     size, as in gemma-cli aggregateSingleCellData without --include-masked-cells-in-library-size;
   * --author_labels_from_cell_id takes the cell type from the cell_id instead of --cta: the
     PsychENCODE h5ads name cells <author label>[.<n>]_<sample_name>;
+  * --label_map JSON maps each label (after the R-friendly renaming below) to a new label
+    before summing, so cells of types that share a target label form one column (e.g. author
+    types mapped to pipeline subclass labels, assets/author_to_pipeline_map.subclass.json); a
+    label missing from the map is an error;
   * writes one column per sample x cell type, named `<sample>...<ct>___<sample>...<ct>`
     with R-friendly names (non [A-Za-z0-9_.] characters -> '.'), as Gemma does;
   * rows: Probe = NCBI gene id and Sequence = "SYMBOL [NCBI ID=..] ..." taken by position
@@ -49,6 +53,8 @@ def main():
     p.add_argument("--mex_features", required=True, help="features.tsv.gz of one MEX sample")
     p.add_argument("--gemma_rows", default=None, help="earlier Gemma pseudobulk tsv.gz (Probe/Sequence)")
     p.add_argument("--mask", default=None, help="pipeline <study>_mask.tsv; exclude cells with value true")
+    p.add_argument("--label_map", default=None,
+                   help="JSON label -> new label applied before summing (cells of labels sharing a target are pooled)")
     p.add_argument("--study_name", required=True)
     p.add_argument("--chunk", type=int, default=50000)
     a = p.parse_args()
@@ -88,6 +94,14 @@ def main():
 
     obs["sample"] = obs["sample_name"].astype(str).map(rname)
     obs["ct"] = obs["cell_type"].map(lambda x: rname(x) if isinstance(x, str) else np.nan)
+    if a.label_map:
+        import json
+        lm = json.load(open(a.label_map))
+        lm = lm.get("gemma_to_gemma_map", lm)
+        missing = sorted(set(obs["ct"].dropna()) - set(lm))
+        if missing:
+            raise SystemExit(f"labels not in --label_map: {missing}")
+        obs["ct"] = obs["ct"].map(lambda x: rname(lm[x]) if isinstance(x, str) else np.nan)
 
     counts = (obs.groupby(["sample", "ct"], dropna=False)
                  .agg(n_cells=("row_id", "size"), n_masked=("masked", "sum")).reset_index())
@@ -135,7 +149,7 @@ def main():
                 for pr, s in zip(probe, sym_h5ad)]
 
     cols = [f"{s}...{c}___{s}...{c}" for s, c in groups]
-    cta_desc = a.cta or "author labels from cell_id"
+    cta_desc = (a.cta or "author labels from cell_id") + (f", mapped by {a.label_map}" if a.label_map else "")
     for mat, suffix, what in [(out, "aggregated_gemma", "SUM over cells"),
                               (nnz, "nnz_gemma", "cells with nonzero count")]:
         if mat is None:
