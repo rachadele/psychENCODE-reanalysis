@@ -5,7 +5,7 @@ changes, author vs pipeline labels) per contrast and author type, with bars for 
 CMC F1 and cell class, and brackets over author types pooled into one pipeline label.
 B: Spearman rho of mean agreement with log10 median cells per donor (27 types) and with F1
 (27 types; 20 types named as their own pipeline label), plain (filled) and partial controlling for
-the other variable (open), 95% CIs by Fisher z, p values on the right
+the other variable (open; each row label names the variable controlled for), 95% CIs by Fisher z, p values on the right
 (fig4b_rho_ci.tsv). F1 (per sample, averaged per cohort) and cells per donor come from the cohorts
 that contribute each contrast's cases, then are averaged over contrasts per cell type, as agreement is.
 The CMC F1 bar in A is still the CMC value with cells pooled across samples. C: density of per-pair rho for matched author/pipeline cell types (above) and
@@ -236,7 +236,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     hm_h = nrow * cell_h
     y_e, e_h = 0.62, 1.45                     # panel C: matched vs mismatched pairs
     y_b, b_h = y_e + e_h + 1.3, 1.45          # panel B: plain and partial rho
-    b_left, p_col = 1.75, 1.3                 # B row labels on the left, p values on the right
+    b_left, p_col = 2.2, 1.3                 # B row labels on the left, p values on the right
     y_key, key_h = y_b + b_h + 0.45, 0.62    # key row: colour bars
     y_cls, cls_h = y_key + key_h + 0.05, 0.72  # class legend row
     y_hm = y_cls + cls_h + 0.05 + 1.45        # A tick labels and axis title
@@ -336,7 +336,9 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     ba.set_xticks([-1, -0.5, 0, 0.5, 1])
     ba.set_ylim(-0.6, n_r - 0.4)
     ba.set_yticks(range(n_r))
-    ba.set_yticklabels([r.label.replace(", ", "\n") for r in rows_b][::-1])
+    # each row names the variable its open (partial) point controls for
+    ctrl = lambda v: "cells per donor" if "cells" in str(v) else str(v)
+    ba.set_yticklabels([f"{r.label}\nopen: given {ctrl(r.controlled_for)}" for r in rows_b][::-1])
     ba.tick_params(axis="y", length=0)
     ba.spines["left"].set_visible(False)
     ba.set_xlabel("Spearman ρ with mean agreement")
@@ -344,8 +346,8 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
             ha="left", va="bottom", fontsize=TXT)
     ba.legend(handles=[mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="0.2", mec="0.2", label="Plain"),
                        mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="white", mec="0.2", mew=1.4,
-                                     label="Partial, controlling for the other variable"),
-                       mlines.Line2D([], [], color="0.2", lw=1.2, label="95% CI (Fisher z)")],
+                                     label="Partial (open), given the variable named on the row"),
+                       mlines.Line2D([], [], color="0.2", lw=1.2, label="95% CI")],
               loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=3, borderaxespad=0.2, handlelength=1.4,
               columnspacing=0.9, handletextpad=0.4)
     fig.text(fx(0.03), fy(H - 0.03), "A", fontsize=LET, fontweight="bold", va="top")
