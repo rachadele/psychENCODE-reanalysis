@@ -3,10 +3,12 @@
 At final size (183 mm, double column). A: heatmap of DE agreement (Spearman rho of log2 fold
 changes, author vs pipeline labels) per contrast and author type, with bars for benchmark F1,
 CMC F1 and cell class, and brackets over author types pooled into one pipeline label.
-B: Spearman rho of mean agreement with log10 median cells per donor (27 types) and with CMC F1
+B: Spearman rho of mean agreement with log10 median cells per donor (27 types) and with F1
 (27 types; 20 types named as their own pipeline label), plain (filled) and partial controlling for
 the other variable (open), arrow from plain to partial, 95% CIs by Fisher z, p values on the right
-(fig4b_rho_ci.tsv). C: density of per-pair rho for matched author/pipeline cell types (above) and
+(fig4b_rho_ci.tsv). F1 (per sample, averaged per cohort) and cells per donor come from the cohorts
+that contribute each contrast's cases, then are averaged over contrasts per cell type, as agreement is.
+The CMC F1 bar in A is still the CMC value with cells pooled across samples. C: density of per-pair rho for matched author/pipeline cell types (above) and
 mismatched types in the same contrast (below), observed means as ticks, means adjusted for cells per
 donor and contrast as diamonds with 95% CI, permutation null of the matched mean in red
 (benchmark-post-hoc/de_permutation_null). plot_scatter() draws the per-cell-type scatters behind B
