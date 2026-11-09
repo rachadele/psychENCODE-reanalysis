@@ -2,7 +2,7 @@
 
 At final size (183 mm, double column). A: heatmap of DE agreement (Spearman rho of log2 fold
 changes, author vs pipeline labels) per contrast and author type, with bars for cohort F1
-(PsychENCODE donors) and cell class, and brackets over author types pooled into one pipeline label.
+(PsychENCODE donors) of the subclass and class labels and cell class, and brackets over author types pooled into one pipeline label.
 B: Spearman rho of mean agreement with log10 median cells per donor (27 types) and with F1
 (27 types; the one-to-one types, by default the 18 whose pipeline label pools no other type), plain
 (filled) and partial controlling for the other variable (open; each row label names the variable
@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
 import numpy as np
+import pandas as pd
 
 from utils import _repel_labels, author_display
 
@@ -217,11 +218,20 @@ def fmt_p(p):
     return "<0.001" if p < 0.001 else f"{p:.2g}"
 
 
-def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, study="CMC", qa_dir=None):
+def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, study="CMC", qa_dir=None,
+                class_f1_tsv=None):
     """pivot: contrast x author type (log2FC rho); tab: celltype_summary rows;
+    class_f1_tsv: class-level cohort F1 per author type (class_f1_de_donors.py output); default: env
+    FIG4_CLASS_F1_TSV, else celltype_f1_cells_class.tsv beside out_png;
     rho_ci: plain and partial Spearman rho with CIs, one row per test (panel B; fig4b_rho_ci.tsv);
     null_dir: benchmark-post-hoc/de_permutation_null (panel C)."""
     t = tab.set_index("ct_author")
+    class_f1_tsv = class_f1_tsv or os.environ.get("FIG4_CLASS_F1_TSV") or \
+        os.path.join(os.path.dirname(os.path.abspath(out_png)), "celltype_f1_cells_class.tsv")
+    cf = pd.read_csv(class_f1_tsv, sep="\t")
+    cf = cf[cf["scheme"] == "author"].set_index("celltype")["f1"]
+    t["class_f1"] = cf.reindex(t.index)
+    assert t["class_f1"].notna().all(), "author types missing from " + class_f1_tsv
     # order: mean cohort F1 of the author types sharing a pipeline label (descending, so pooled
     # types stay adjacent under their bracket), then pipeline label, then cohort F1 (descending).
     # Same rule as figure4_order() in psychENCODE-author-de-comparison compare_de_results.py (S7).
@@ -246,7 +256,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     y_br = y_hm + hm_h + gap
     br_h = 0.30
     bars_y0 = y_br + br_h + gap
-    H = bars_y0 + 2 * (bar_h + gap) + top
+    H = bars_y0 + 3 * (bar_h + gap) + top
     fig = plt.figure(figsize=(W, H))
     fx, fy = (lambda v: v / W), (lambda v: v / H)
 
@@ -267,7 +277,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     ax.set_ylabel("Contrast")
     ax.set_xlabel("Author cell type", labelpad=4)
 
-    f1_lo = min(0.3, np.floor(np.nanmin(t[["f1"]].values) * 10) / 10)
+    f1_lo = min(0.3, np.floor(np.nanmin(t[["f1", "class_f1"]].values) * 10) / 10)
     f1_cmap, f1_norm = plt.cm.YlOrRd, mpl.colors.Normalize(f1_lo, 1.0)
     f1c = lambda v: f1_cmap(f1_norm(v)) if not np.isnan(v) else (0.85, 0.85, 0.85, 1)
 
@@ -284,7 +294,8 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
             s.set_visible(False)
 
     bar(bars_y0, [mpl.colors.to_rgba(CLASS_COLORS[cell_class(c)]) for c in cols], "Cell class", outline=True)
-    bar(bars_y0 + (bar_h + gap), [f1c(t.loc[c, "f1"]) for c in cols], "Cohort F1")
+    bar(bars_y0 + (bar_h + gap), [f1c(t.loc[c, "f1"]) for c in cols], "Subclass F1")
+    bar(bars_y0 + 2 * (bar_h + gap), [f1c(t.loc[c, "class_f1"]) for c in cols], "Class F1")
 
     # brackets over author types pooled into one pipeline label
     bax = fig.add_axes([fx(left), fy(y_br), fx(hm_w), fy(br_h)])
