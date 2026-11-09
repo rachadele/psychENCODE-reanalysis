@@ -5,7 +5,7 @@ changes, author vs pipeline labels) per contrast and author type, with bars for 
 CMC F1 and cell class, and brackets over author types pooled into one pipeline label.
 B: Spearman rho of mean agreement with log10 median cells per donor (27 types) and with F1
 (27 types; 20 types named as their own pipeline label), plain (filled) and partial controlling for
-the other variable (open), arrow from plain to partial, 95% CIs by Fisher z, p values on the right
+the other variable (open), 95% CIs by Fisher z, p values on the right
 (fig4b_rho_ci.tsv). F1 (per sample, averaged per cohort) and cells per donor come from the cohorts
 that contribute each contrast's cases, then are averaged over contrasts per cell type, as agreement is.
 The CMC F1 bar in A is still the CMC value with cells pooled across samples. C: density of per-pair rho for matched author/pipeline cell types (above) and
@@ -328,9 +328,6 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
             rho, lo_, hi_ = getattr(r, f"{kind}_rho"), getattr(r, f"{kind}_ci_low"), getattr(r, f"{kind}_ci_high")
             ba.plot([lo_, hi_], [yy + dy] * 2, color="0.2", lw=1.2, zorder=2, solid_capstyle="butt")
             ba.plot([rho], [yy + dy], marker="o", ms=7, mfc=mfc, mec="0.2", mew=1.4, ls="", zorder=4)
-        ba.annotate("", xy=(r.partial_rho, yy - off * 0.55), xytext=(r.plain_rho, yy + off * 0.55),
-                    arrowprops=dict(arrowstyle="-|>", color=NULL_C, lw=1.3, shrinkA=4, shrinkB=5,
-                                    mutation_scale=11), zorder=3)
         ba.text(1.0 + 0.02 * 1.6, yy, f"{fmt_p(r.plain_p)} → {fmt_p(r.partial_p)}",
                 transform=mpl.transforms.blended_transform_factory(ba.transAxes, ba.transData),
                 ha="left", va="center", fontsize=TXT)
