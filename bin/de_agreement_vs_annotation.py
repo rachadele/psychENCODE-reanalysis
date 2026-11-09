@@ -184,10 +184,36 @@ def main():
     tests = pd.DataFrame(tests)
     tests.to_csv(os.path.join(a.outdir, "correlations.tsv"), sep="\t", index=False)
 
+    # Figure 4B: plain and partial Spearman rho with 95% CIs (Fisher z, SE = 1/sqrt(n - 3 - k),
+    # k = number of controlled variables). correlations.tsv stays as it was; these go to fig4b_rho_ci.tsv.
+    own_sub = subsets["excluding types named differently from their pooled label"]
+    b_rows = []
+    for label, x, z, m in [(f"Cells per donor, {len(tab)} types", logs, cf, subsets["all"]),
+                           (f"{a.study} F1, {len(tab)} types", cf, logs, subsets["all"]),
+                           (f"{a.study} F1, {int(own_sub.sum())} one-to-one types", cf, logs, own_sub)]:
+        r0, p0, n0 = spearman(x[m], y[m])
+        r1, p1, n1 = partial_spearman(x[m], y[m], z[m])
+        row = {"label": label, "n": n0, "controlled_for": "CMC F1" if x is logs else "log10 median author cells per donor"}
+        for kind, r_, p_, k in (("plain", r0, p0, 0), ("partial", r1, p1, 1)):
+            zz, se = np.arctanh(r_), 1 / np.sqrt(n0 - 3 - k)
+            row.update({f"{kind}_rho": r_, f"{kind}_p": p_, f"{kind}_ci_low": np.tanh(zz - 1.959964 * se),
+                        f"{kind}_ci_high": np.tanh(zz + 1.959964 * se)})
+        b_rows.append(row)
+    rho_ci = pd.DataFrame(b_rows)
+    # rows 2 and 3 must equal correlations.tsv
+    for i, sub in ((1, "all"), (2, "excluding types named differently from their pooled label")):
+        for kind, test in (("plain", "rho ~ CMC F1"), ("partial", "rho ~ CMC F1 | log10 support (partial)")):
+            ref = tests[(tests["subset"] == sub) & (tests["test"] == test)].iloc[0]["spearman_rho"]
+            assert abs(rho_ci.loc[i, f"{kind}_rho"] - ref) < 1e-12
+    rho_ci.to_csv(os.path.join(a.outdir, "fig4b_rho_ci.tsv"), sep="\t", index=False, float_format="%.6g")
+
     from utils import PIPELINE_TO_BENCH
+    from fig_de_agreement import plot_scatter
+    plot_scatter(tab, list(tab["ct_author"]), tests,
+                 os.path.join(a.outdir, f"fig_de_agreement_scatter_{a.level}.png"), study=a.study)
     plot_figure(pivot, tab, label_map, PIPELINE_TO_BENCH[a.level],
                 os.path.join(a.outdir, f"fig_de_agreement_{a.level}.png"),
-                tests, a.null_dir, study=a.study, qa_dir=a.qa_dir)
+                rho_ci, a.null_dir, study=a.study, qa_dir=a.qa_dir)
 
     prov = {"created": datetime.datetime.now().astimezone().isoformat(), "study": a.study, "level": a.level,
             "cells": cell_info, "inputs": {}}

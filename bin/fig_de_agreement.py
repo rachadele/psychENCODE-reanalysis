@@ -3,15 +3,14 @@
 At final size (183 mm, double column). A: heatmap of DE agreement (Spearman rho of log2 fold
 changes, author vs pipeline labels) per contrast and author type, with bars for benchmark F1,
 CMC F1 and cell class, and brackets over author types pooled into one pipeline label.
-B: mean rho against log10 median CMC cells per donor, Spearman rho and p above. C, D:
-added-variable plots for the partial Spearman correlation of mean rho with CMC F1 given cells per
-donor (rank residuals of each after regression on rank log10 median cells per donor), for all 27
-types (C) and, with residuals computed within the subset, for the 20 types left after dropping
-the seven pooled under another type's name (D); plain -> partial rho above each. Points coloured
-by cell class (open: those seven pooled types), OLS line with 95% confidence band. E: density of
-per-pair rho for matched author/pipeline cell types (above) and mismatched types in the same contrast
-(below), observed means as ticks, means adjusted for cells per donor and contrast as diamonds with 95% CI,
-permutation null of the matched mean in red (benchmark-post-hoc/de_permutation_null). Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
+B: Spearman rho of mean agreement with log10 median cells per donor (27 types) and with CMC F1
+(27 types; 20 types named as their own pipeline label), plain (filled) and partial controlling for
+the other variable (open), arrow from plain to partial, 95% CIs by Fisher z, p values on the right
+(fig4b_rho_ci.tsv). C: density of per-pair rho for matched author/pipeline cell types (above) and
+mismatched types in the same contrast (below), observed means as ticks, means adjusted for cells per
+donor and contrast as diamonds with 95% CI, permutation null of the matched mean in red
+(benchmark-post-hoc/de_permutation_null). plot_scatter() draws the per-cell-type scatters behind B
+as a separate supplementary PNG. Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
 The only output is the PNG; check_layout() verifies text sizes, page bounds, text overlaps
 and panel alignment on the rendered figure and blocks export on failure (report to qa_dir).
 """
@@ -177,7 +176,7 @@ def null_legend(ax, handles, ax_h_in):
 
 def check_layout(fig, ax_a, panels, W):
     """Rendered checks, no vector export: text sizes (>= 10 pt, axis titles >= 12 pt), text
-    inside the page, no overlapping text boxes, A right-aligned with D, B to D the same size."""
+    inside the page, no overlapping text boxes."""
     fig.canvas.draw()
     r = fig.canvas.get_renderer()
     fb = fig.bbox
@@ -209,29 +208,23 @@ def check_layout(fig, ax_a, panels, W):
             ov = max(0, min(a_.x1, b_.x1) - max(a_.x0, b_.x0)) * max(0, min(a_.y1, b_.y1) - max(a_.y0, b_.y0))
             if ov > 0.05 * min(a_.width * a_.height, b_.width * b_.height):
                 fails.append(f"text {texts[i][0]!r} overlaps {texts[j][0]!r}")
-    tol = 1.5 / 72 / W
-    pa, pos = ax_a.get_position(), [q.get_position() for q in panels]
-    if abs(pa.x1 - pos[-1].x1) > tol:
-        fails.append("panel A and the last scatter panel are not right-aligned")
-    if any(abs(q.width - pos[0].width) > tol or abs(q.height - pos[0].height) > tol
-           or abs(q.y0 - pos[0].y0) > tol for q in pos[1:]):
-        fails.append("scatter panels differ in size or baseline")
     return {"n_text": len(texts), "failures": fails}
 
 
-def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, null_dir, study="CMC", qa_dir=None):
+def fmt_p(p):
+    return "<0.001" if p < 0.001 else f"{p:.2g}"
+
+
+def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, study="CMC", qa_dir=None):
     """pivot: contrast x author type (log2FC rho); tab: celltype_summary rows;
-    corr: correlations.tsv rows (plain and partial Spearman annotated on C and D);
-    null_dir: benchmark-post-hoc/de_permutation_null (panel E)."""
+    rho_ci: plain and partial Spearman rho with CIs, one row per test (panel B; fig4b_rho_ci.tsv);
+    null_dir: benchmark-post-hoc/de_permutation_null (panel C)."""
     t = tab.set_index("ct_author")
     lab_f1 = t.groupby("pipeline_label")["benchmark_f1"].first()
     cols = sorted(pivot.columns, key=lambda c: (-np.nan_to_num(lab_f1[label_map[c]], nan=-1),
                                                 label_map[c], -t.loc[c, "mean_rho"]))
     pv = pivot[cols]
     ncol, nrow = len(cols), len(pv.index)
-    # open markers: the seven types pooled under another type's name (IT subtypes, SST Chodl,
-    # LAMP5 LHX6), i.e. not benchmark_own_label; SST and LAMP5 keep their own name and stay filled
-    pooled = {c for c in cols if not bool(t.loc[c, "benchmark_own_label"])}
 
     W = 183 * MM
     left, right = 1.12, 0.08
@@ -239,9 +232,10 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, null_dir, stu
     hm_w = W - left - right
     cell_h, bar_h, gap = 0.21, 0.17, 0.04
     hm_h = nrow * cell_h
-    y_e, e_h = 0.62, 1.45                     # panel E: matched vs mismatched pairs
-    y_b, b_h = y_e + e_h + 1.3, 2.6           # panels B, C and D
-    y_key, key_h = y_b + b_h + 0.5, 0.62     # key row: marker legend and colour bars
+    y_e, e_h = 0.62, 1.45                     # panel C: matched vs mismatched pairs
+    y_b, b_h = y_e + e_h + 1.3, 1.45          # panel B: plain and partial rho
+    b_left, p_col = 1.75, 1.3                 # B row labels on the left, p values on the right
+    y_key, key_h = y_b + b_h + 0.45, 0.62    # key row: colour bars
     y_cls, cls_h = y_key + key_h + 0.05, 0.72  # class legend row
     y_hm = y_cls + cls_h + 0.05 + 1.45        # A tick labels and axis title
     y_br = y_hm + hm_h + gap
@@ -301,7 +295,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, null_dir, stu
             bax.text((i + j + 1) / 2, 0.32, bench_label.get(label_map[cols[i]], ""), ha="center", va="bottom")
         i = j + 1
 
-    # ---------- key row: class legend, marker legend, colour bars ----------
+    # ---------- key row: class legend, colour bars ----------
     present = [k for k in CLASS_COLORS if any(cell_class(c) == k for c in cols)]
     cax_ = fig.add_axes([fx(left - 0.9), fy(y_cls), fx(W - left + 0.9 - right), fy(cls_h)])
     cax_.axis("off")
@@ -309,12 +303,6 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, null_dir, stu
                 title="Cell class", title_fontsize=TXT, alignment="left",
                 loc="center left", ncol=5, borderaxespad=0, handlelength=1.0, handleheight=0.9,
                 columnspacing=0.9, labelspacing=0.3, handletextpad=0.4)
-    handles = [mlines.Line2D([], [], ls="", marker="o", mfc="0.55", mec="0.15", ms=6, label="Own label"),
-               mlines.Line2D([], [], ls="", marker="o", mfc="white", mec="0.35", mew=1.6, ms=6, label="Pooled label")]
-    lax = fig.add_axes([fx(left - 0.9), fy(y_key), fx(4.0), fy(key_h)])
-    lax.axis("off")
-    lax.legend(handles=handles, loc="center left", ncol=2, borderaxespad=0, handlelength=1.0,
-               handleheight=0.9, columnspacing=0.9, labelspacing=0.4, handletextpad=0.4)
     cb_w = 0.95
     for k, (sm, lab) in enumerate([(mesh, "Spearman ρ"),
                                    (mpl.cm.ScalarMappable(f1_norm, f1_cmap), "Annotation F1")]):
@@ -327,6 +315,90 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, null_dir, stu
         cb.set_ticks([-1, 0, 1] if k == 0 else [f1_lo, 1.0])
         cb.outline.set_linewidth(0.6)
 
+    # ---------- B: plain and partial Spearman rho of agreement, with 95% CIs ----------
+    ba = fig.add_axes([fx(b_left), fy(y_b), fx(W - right - b_left - p_col), fy(b_h)])
+    rows_b = list(rho_ci.itertuples())
+    n_r = len(rows_b)
+    off = 0.14
+    for i, r in enumerate(rows_b):
+        yy = n_r - 1 - i
+        for kind, dy, mfc in (("plain", off, "0.2"), ("partial", -off, "white")):
+            rho, lo_, hi_ = getattr(r, f"{kind}_rho"), getattr(r, f"{kind}_ci_low"), getattr(r, f"{kind}_ci_high")
+            ba.plot([lo_, hi_], [yy + dy] * 2, color="0.2", lw=1.2, zorder=2, solid_capstyle="butt")
+            ba.plot([rho], [yy + dy], marker="o", ms=7, mfc=mfc, mec="0.2", mew=1.4, ls="", zorder=4)
+        ba.annotate("", xy=(r.partial_rho, yy - off * 0.55), xytext=(r.plain_rho, yy + off * 0.55),
+                    arrowprops=dict(arrowstyle="-|>", color=NULL_C, lw=1.3, shrinkA=4, shrinkB=5,
+                                    mutation_scale=11), zorder=3)
+        ba.text(1.0 + 0.02 * 1.6, yy, f"{fmt_p(r.plain_p)} → {fmt_p(r.partial_p)}",
+                transform=mpl.transforms.blended_transform_factory(ba.transAxes, ba.transData),
+                ha="left", va="center", fontsize=TXT)
+    ba.axvline(0, color="0.5", lw=0.8, ls="--", zorder=1)
+    ba.set_xlim(-1, 1)
+    ba.set_xticks([-1, -0.5, 0, 0.5, 1])
+    ba.set_ylim(-0.6, n_r - 0.4)
+    ba.set_yticks(range(n_r))
+    ba.set_yticklabels([r.label.replace(", ", "\n") for r in rows_b][::-1])
+    ba.tick_params(axis="y", length=0)
+    ba.spines["left"].set_visible(False)
+    ba.set_xlabel("Spearman ρ with mean agreement")
+    ba.text(1.0 + 0.02 * 1.6, n_r - 0.4, "p", transform=mpl.transforms.blended_transform_factory(ba.transAxes, ba.transData),
+            ha="left", va="bottom", fontsize=TXT)
+    ba.legend(handles=[mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="0.2", mec="0.2", label="Plain"),
+                       mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="white", mec="0.2", mew=1.4,
+                                     label="Partial, controlling for the other variable"),
+                       mlines.Line2D([], [], color="0.2", lw=1.2, label="95% CI (Fisher z)")],
+              loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=3, borderaxespad=0.2, handlelength=1.4,
+              columnspacing=0.9, handletextpad=0.4)
+    fig.text(fx(0.03), fy(H - 0.03), "A", fontsize=LET, fontweight="bold", va="top")
+    fig.text(fx(0.03), fy(y_b + b_h + 0.62), "B", fontsize=LET, fontweight="bold", va="top")
+
+    # ---------- C: per-pair rho, matched vs mismatched cell types, with the permutation null ----------
+    ea = fig.add_axes([fx(left), fy(y_e), fx(hm_w - 0.15), fy(e_h)])  # room for the 1.0 tick label
+    rows = load_null(null_dir, "labels", ["subclass"])
+    ea.set_xticks(np.arange(-1, 1.01, 0.5))
+    ea.set_xlabel("Spearman ρ per cell type and contrast pair")
+    lo, hi = null_density_rows(ea, rows, ["Author vs\npipeline"])
+    s0 = rows[0][3]
+    pe = f"p = {s0['empirical_p']:.2g}" if s0["empirical_p"] >= 0.001 else "p < 0.001"
+    h = null_legend_handles(f"Null of matched mean ({s0['null_mean']:.2f} ± {s0['null_sd']:.2f}, {pe})")
+    null_legend(ea, h, e_h)
+    fig.text(fx(0.03), fy(y_e + e_h + 0.65), "C", fontsize=LET, fontweight="bold", va="top")
+
+    qa = check_layout(fig, ax, [ba, ea], W)
+    if qa_dir:
+        import json
+        os.makedirs(qa_dir, exist_ok=True)
+        json.dump(qa, open(os.path.join(qa_dir, "layout_qa.json"), "w"), indent=2)
+    if qa["failures"]:
+        raise RuntimeError("Figure QA failed: " + "; ".join(qa["failures"]))
+    fig.savefig(out_png, dpi=600, facecolor="white")
+    plt.close(fig)
+
+
+def plot_scatter(tab, cols, corr, out_png, study="CMC"):
+    """Supplementary (not in the manuscript figure set): per-cell-type scatters behind Figure 4B.
+    Left: mean rho against median cells per donor (log axis). Middle, right: added-variable plots
+    for the partial Spearman of mean rho with CMC F1 given cells per donor, for all types and for
+    the types named as their own pipeline label (rank residuals computed within the subset).
+    Points coloured by cell class, open markers for the types pooled under another type's name."""
+    t = tab.set_index("ct_author")
+    # open markers: the seven types pooled under another type's name (IT subtypes, SST Chodl,
+    # LAMP5 LHX6), i.e. not benchmark_own_label; SST and LAMP5 keep their own name and stay filled
+    pooled = {c for c in cols if not bool(t.loc[c, "benchmark_own_label"])}
+    W, right = 183 * MM, 0.08
+    y_b, b_h = 0.62, 2.6
+    y_leg, leg_h = y_b + b_h + 0.5, 0.95
+    H = y_leg + leg_h + 0.05
+    fig = plt.figure(figsize=(W, H))
+    fx, fy = (lambda v: v / W), (lambda v: v / H)
+    present = [k for k in CLASS_COLORS if any(cell_class(c) == k for c in cols)]
+    lg = fig.add_axes([fx(0.05), fy(y_leg), fx(W - 0.1), fy(leg_h)])
+    lg.axis("off")
+    lg.legend(handles=[mpatches.Patch(facecolor=CLASS_COLORS[k], edgecolor=EDGE, lw=0.5, label=k) for k in present]
+              + [mlines.Line2D([], [], ls="", marker="o", mfc="white", mec="0.35", mew=1.6, ms=6,
+                               label="Pooled under another name")],
+              loc="center left", ncol=4, borderaxespad=0, handlelength=1.0, handleheight=0.9,
+              columnspacing=0.9, labelspacing=0.3, handletextpad=0.4)
     # ---------- B: mean rho vs cells per donor; C, D: added-variable plots (partial Spearman) ----------
     from scipy import stats as sst
     lft, g_bc, g_cd = 0.72, 0.85, 0.42         # B and C carry y-axis titles, D only ticks
@@ -414,29 +486,11 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, null_dir, stu
             a.set_ylabel("Mean ρ rank, adj.")
         sax.append(a)
 
-    fig.text(fx(0.03), fy(H - 0.03), "A", fontsize=LET, fontweight="bold", va="top")
     for k, x0 in enumerate(xs0):
-        fig.text(fx(0.03 if k == 0 else x0 - (0.78 if k == 1 else 0.4)), fy(y_b + b_h + 0.42), "BCD"[k],
+        fig.text(fx(0.03 if k == 0 else x0 - (0.78 if k == 1 else 0.4)), fy(y_b + b_h + 0.42), "ABC"[k],
                  fontsize=LET, fontweight="bold", va="top")
-
-    # ---------- E: per-pair rho, matched vs mismatched cell types, with the permutation null ----------
-    ea = fig.add_axes([fx(left), fy(y_e), fx(hm_w - 0.15), fy(e_h)])  # room for the 1.0 tick label
-    rows = load_null(null_dir, "labels", ["subclass"])
-    ea.set_xticks(np.arange(-1, 1.01, 0.5))
-    ea.set_xlabel("Spearman ρ per cell type and contrast pair")
-    lo, hi = null_density_rows(ea, rows, ["Author vs\npipeline"])
-    s0 = rows[0][3]
-    pe = f"p = {s0['empirical_p']:.2g}" if s0["empirical_p"] >= 0.001 else "p < 0.001"
-    h = null_legend_handles(f"Null of matched mean ({s0['null_mean']:.2f} ± {s0['null_sd']:.2f}, {pe})")
-    null_legend(ea, h, e_h)
-    fig.text(fx(0.03), fy(y_e + e_h + 0.65), "E", fontsize=LET, fontweight="bold", va="top")
-
-    qa = check_layout(fig, ax, sax, W)
-    if qa_dir:
-        import json
-        os.makedirs(qa_dir, exist_ok=True)
-        json.dump(qa, open(os.path.join(qa_dir, "layout_qa.json"), "w"), indent=2)
+    qa = check_layout(fig, sax[0], sax, W)
     if qa["failures"]:
-        raise RuntimeError("Figure QA failed: " + "; ".join(qa["failures"]))
-    fig.savefig(out_png, dpi=600, facecolor="white")
+        raise RuntimeError("Scatter figure QA failed: " + "; ".join(qa["failures"]))
+    fig.savefig(out_png, dpi=300, facecolor="white")
     plt.close(fig)
