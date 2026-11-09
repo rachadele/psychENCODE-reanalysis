@@ -8,7 +8,9 @@ added-variable plots for the partial Spearman correlation of mean rho with CMC F
 donor (rank residuals of each after regression on rank log10 median cells per donor), for all 27
 types (C) and, with residuals computed within the subset, for the 20 types left after dropping
 the seven pooled under another type's name (D); plain -> partial rho above each. Points coloured
-by cell class (open: those seven pooled types), OLS line with 95% confidence band. Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
+by cell class (open: those seven pooled types), OLS line with 95% confidence band. E: density of
+per-pair rho for matched author/pipeline cell types (above) and mismatched types in the same contrast
+(below), means marked, permutation null of the matched mean in red (benchmark-post-hoc/de_permutation_null). Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
 The only output is the PNG; check_layout() verifies text sizes, page bounds, text overlaps
 and panel alignment on the rendered figure and blocks export on failure (report to qa_dir).
 """
@@ -83,6 +85,64 @@ def cell_class(ct):
     return CLASS_OF[ct]
 
 
+# Matched vs mismatched cell type pairs (benchmark-post-hoc/de_permutation_null). One row per arm:
+# density of per-pair rho for matched pairs above the baseline, for mismatched pairs (other cell
+# types, same contrast) below it, a tick at each per-pair mean and a red bar at the permutation
+# null of the matched mean (mean +/- SD). The same drawing is in the other repo's figure module.
+MATCH_C, MISMATCH_C, NULL_C = "0.45", "0.78", "#C0392B"
+
+
+def load_null(null_dir, test, arms):
+    """[(arm, matched rho, mismatched rho, summary row)] from pairs.tsv and null_summary.tsv,
+    checking that the per-pair means equal the summary."""
+    import pandas as pd
+    pairs = pd.read_csv(os.path.join(null_dir, "pairs.tsv"), sep="\t")
+    summ = pd.read_csv(os.path.join(null_dir, "null_summary.tsv"), sep="\t")
+    out = []
+    for arm in arms:
+        p = pairs[(pairs["test"] == test) & (pairs["arm"] == arm)]
+        s = summ[(summ["test"] == test) & (summ["arm"] == arm) & (summ["null"] == "mismatched_celltype")].iloc[0]
+        m, mm = p.loc[p["matched"], "rho"].values, p.loc[~p["matched"], "rho"].values
+        assert len(m) == s["n_pairs"] and len(mm) == s["n_mismatched_pairs"]
+        assert abs(m.mean() - s["observed_mean"]) < 1e-5 and abs(mm.mean() - s["mismatched_pair_mean"]) < 1e-5
+        out.append((arm, m, mm, s))
+    return out
+
+
+def null_density_rows(ax, rows, labels, half=0.42):
+    """rows from load_null; labels: y tick label per row (top to bottom). Returns the x range of the densities."""
+    from scipy.stats import gaussian_kde
+    lo = min(min(r[1].min(), r[2].min()) for r in rows)
+    hi = max(max(r[1].max(), r[2].max()) for r in rows)
+    xs = np.linspace(lo - 0.05, min(hi + 0.05, 1.0), 400)  # tails past the data, never past rho = 1
+    for i, (_, m, mm, s) in enumerate(rows):
+        y0 = -i
+        for v, sign, c in ((m, 1, MATCH_C), (mm, -1, MISMATCH_C)):
+            d = gaussian_kde(v)(xs)
+            d = d / d.max() * half
+            ax.fill_between(xs, y0, y0 + sign * d, color=c, lw=0, zorder=2)
+            mu = v.mean()
+            ax.plot([mu, mu], [y0, y0 + sign * half * 1.05], color="black", lw=1.2, zorder=3)
+            ax.text(mu, y0 + sign * half * 1.08, f"{mu:.2f}", ha="center",
+                    va="bottom" if sign > 0 else "top", fontsize=TXT, zorder=4)
+        nm, ns = s["null_mean"], s["null_sd"]
+        ax.add_patch(mpatches.Rectangle((nm - max(ns, 0.006), y0 - half * 0.55), 2 * max(ns, 0.006), half * 1.1,
+                                        color=NULL_C, lw=0, zorder=5))
+        ax.axhline(y0, color="0.5", lw=0.6, zorder=1)
+    ax.set_yticks([-i for i in range(len(rows))])
+    ax.set_yticklabels(labels)
+    ax.tick_params(axis="y", length=0)
+    ax.spines["left"].set_visible(False)
+    ax.set_ylim(-(len(rows) - 1) - half * 1.6, half * 1.6)
+    return xs[0], xs[-1]
+
+
+def null_legend_handles():
+    return [mpatches.Patch(color=MATCH_C, label="Matched"),
+            mpatches.Patch(color=MISMATCH_C, label="Mismatched"),
+            mpatches.Patch(color=NULL_C, label="Null of matched mean")]
+
+
 def check_layout(fig, ax_a, panels, W):
     """Rendered checks, no vector export: text sizes (>= 10 pt, axis titles >= 12 pt), text
     inside the page, no overlapping text boxes, A right-aligned with D, B to D the same size."""
@@ -127,9 +187,10 @@ def check_layout(fig, ax_a, panels, W):
     return {"n_text": len(texts), "failures": fails}
 
 
-def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, study="CMC", qa_dir=None):
+def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, null_dir, study="CMC", qa_dir=None):
     """pivot: contrast x author type (log2FC rho); tab: celltype_summary rows;
-    corr: correlations.tsv rows (plain and partial Spearman annotated on C and D)."""
+    corr: correlations.tsv rows (plain and partial Spearman annotated on C and D);
+    null_dir: benchmark-post-hoc/de_permutation_null (panel E)."""
     t = tab.set_index("ct_author")
     lab_f1 = t.groupby("pipeline_label")["benchmark_f1"].first()
     cols = sorted(pivot.columns, key=lambda c: (-np.nan_to_num(lab_f1[label_map[c]], nan=-1),
@@ -146,7 +207,8 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, study="CMC", 
     hm_w = W - left - right
     cell_h, bar_h, gap = 0.21, 0.17, 0.04
     hm_h = nrow * cell_h
-    y_b, b_h = 0.62, 2.6                      # panels B, C and D
+    y_e, e_h = 0.62, 1.25                     # panel E: matched vs mismatched pairs
+    y_b, b_h = y_e + e_h + 1.05, 2.6          # panels B, C and D
     y_key, key_h = y_b + b_h + 0.5, 0.62     # key row: marker legend and colour bars
     y_cls, cls_h = y_key + key_h + 0.05, 0.72  # class legend row
     y_hm = y_cls + cls_h + 0.05 + 1.45        # A tick labels and axis title
@@ -324,6 +386,21 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, study="CMC", 
     for k, x0 in enumerate(xs0):
         fig.text(fx(0.03 if k == 0 else x0 - (0.78 if k == 1 else 0.4)), fy(y_b + b_h + 0.42), "BCD"[k],
                  fontsize=LET, fontweight="bold", va="top")
+
+    # ---------- E: per-pair rho, matched vs mismatched cell types, with the permutation null ----------
+    ea = fig.add_axes([fx(left), fy(y_e), fx(hm_w - 0.15), fy(e_h)])  # room for the 1.0 tick label
+    rows = load_null(null_dir, "labels", ["subclass"])
+    lo, hi = null_density_rows(ea, rows, ["Author vs\npipeline"])
+    ea.set_xlim(lo, 1.0)
+    ea.set_xticks(np.arange(np.ceil(lo * 2) / 2, 1.01, 0.5))
+    ea.set_xlabel("Spearman ρ per cell type and contrast pair")
+    s0 = rows[0][3]
+    pe = f"p = {s0['empirical_p']:.2g}" if s0["empirical_p"] >= 0.001 else "p < 0.001"
+    h = null_legend_handles()
+    h[2].set_label(f"Null of matched mean ({s0['null_mean']:.2f} ± {s0['null_sd']:.2f}, {pe})")
+    ea.legend(handles=h, loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=3, borderaxespad=0.2,
+              handlelength=1.0, handleheight=0.9, columnspacing=0.9, handletextpad=0.4)
+    fig.text(fx(0.03), fy(y_e + e_h + 0.4), "E", fontsize=LET, fontweight="bold", va="top")
 
     qa = check_layout(fig, ax, sax, W)
     if qa_dir:

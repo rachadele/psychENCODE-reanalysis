@@ -123,6 +123,8 @@ def main():
     p.add_argument("--level", default="subclass")
     p.add_argument("--metric", default="spearman_log2FoldChange")
     p.add_argument("--outdir", required=True)
+    p.add_argument("--null_dir", required=True,
+                   help="benchmark-post-hoc/de_permutation_null (pairs.tsv, null_summary.tsv) for panel E")
     p.add_argument("--qa_dir", default=None, help="write layout-alignment JSON and a QA-only PDF here")
     a = p.parse_args()
     os.makedirs(a.outdir, exist_ok=True)
@@ -185,7 +187,7 @@ def main():
     from utils import PIPELINE_TO_BENCH
     plot_figure(pivot, tab, label_map, PIPELINE_TO_BENCH[a.level],
                 os.path.join(a.outdir, f"fig_de_agreement_{a.level}.png"),
-                tests, study=a.study, qa_dir=a.qa_dir)
+                tests, a.null_dir, study=a.study, qa_dir=a.qa_dir)
 
     prov = {"created": datetime.datetime.now().astimezone().isoformat(), "study": a.study, "level": a.level,
             "cells": cell_info, "inputs": {}}
@@ -193,6 +195,9 @@ def main():
         f = getattr(a, k)
         prov["inputs"][k] = {"path": os.path.abspath(f), "sha256": sha256(f),
                              "mtime": datetime.datetime.fromtimestamp(os.path.getmtime(f)).astimezone().isoformat()}
+    for f in ("pairs.tsv", "null_summary.tsv", "manifest.json"):
+        f = os.path.join(a.null_dir, f)
+        prov["inputs"][f"null_{os.path.basename(f)}"] = {"path": os.path.abspath(f), "sha256": sha256(f)}
     from fig_de_agreement import PALETTE_TSV
     prov["inputs"]["palette"] = {"path": PALETTE_TSV, "sha256": sha256(PALETTE_TSV)}
     prov["inputs"]["h5ad"] = {"path": os.path.abspath(a.h5ad),
