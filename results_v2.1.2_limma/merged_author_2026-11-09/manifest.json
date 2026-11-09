@@ -1,10 +1,10 @@
 {
- "created": "2026-11-09T16:26:02-07:00",
+ "created": "2026-11-09T16:26:39-07:00",
  "data_version": "merged_author_2026-11-09: author labels mapped to pipeline subclass labels before pseudobulking; pipeline labels sc-annotation-pipeline 2.1.2; pipeline-subclass DE from results_v2.1.2_limma",
  "status": "pending Rachel's decision (docs/DE_AGREEMENT_DECISIONS.md, 2026-11-09)",
  "repo": {
   "branch": "label-map-param",
-  "commit": "73efa33241dd974b6ed3495056179dee9892a168"
+  "commit": "0a7379191d821473b17bae98416b53678a22f8f3"
  },
  "tmux_session": "merged_author_de",
  "nextflow_work": "/space/scratch/rschwartz_psyrerun_work/merged_author_2026-11-09",
