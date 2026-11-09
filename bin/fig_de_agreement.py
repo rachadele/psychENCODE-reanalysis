@@ -3,11 +3,12 @@
 At final size (183 mm, double column). A: heatmap of DE agreement (Spearman rho of log2 fold
 changes, author vs pipeline labels) per contrast and author type, with bars for benchmark F1,
 CMC F1 and cell class, and brackets over author types pooled into one pipeline label.
-B: added-variable plot for the partial Spearman correlation of mean rho with CMC F1 given
-cells per donor (rank residuals of each after regression on rank log10 median cells per donor),
-with plain -> partial rho for all types and for the 20 types named as their pipeline label above.
-C: mean rho against log10 median CMC cells per donor, Spearman rho, p and n above. Points
-coloured by cell class (open: pooled label), OLS line with 95% confidence band. Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
+B: mean rho against log10 median CMC cells per donor, Spearman rho and p above. C, D:
+added-variable plots for the partial Spearman correlation of mean rho with CMC F1 given cells per
+donor (rank residuals of each after regression on rank log10 median cells per donor), for all 27
+types (C) and, with residuals computed within the subset, for the 20 types left after dropping
+the seven pooled under another type's name (D); plain -> partial rho above each. Points coloured
+by cell class (open: those seven pooled types), OLS line with 95% confidence band. Text: >= 10 pt, axis titles >= 12 pt, letters 14 pt.
 The only output is the PNG; check_layout() verifies text sizes, page bounds, text overlaps
 and panel alignment on the rendered figure and blocks export on failure (report to qa_dir).
 """
@@ -84,7 +85,7 @@ def cell_class(ct):
 
 def check_layout(fig, ax_a, panels, W):
     """Rendered checks, no vector export: text sizes (>= 10 pt, axis titles >= 12 pt), text
-    inside the page, no overlapping text boxes, A spanning B to C, B and C the same size."""
+    inside the page, no overlapping text boxes, A right-aligned with D, B to D the same size."""
     fig.canvas.draw()
     r = fig.canvas.get_renderer()
     fb = fig.bbox
@@ -117,24 +118,27 @@ def check_layout(fig, ax_a, panels, W):
             if ov > 0.05 * min(a_.width * a_.height, b_.width * b_.height):
                 fails.append(f"text {texts[i][0]!r} overlaps {texts[j][0]!r}")
     tol = 1.5 / 72 / W
-    pa, pb, pc = (q.get_position() for q in (ax_a, *panels))
-    if abs(pa.x0 - pb.x0) > tol or abs(pa.x1 - pc.x1) > tol:
-        fails.append("panel A does not span B to C")
-    if abs(pb.width - pc.width) > tol or abs(pb.height - pc.height) > tol or abs(pb.y0 - pc.y0) > tol:
-        fails.append("panels B and C differ in size or baseline")
+    pa, pos = ax_a.get_position(), [q.get_position() for q in panels]
+    if abs(pa.x1 - pos[-1].x1) > tol:
+        fails.append("panel A and the last scatter panel are not right-aligned")
+    if any(abs(q.width - pos[0].width) > tol or abs(q.height - pos[0].height) > tol
+           or abs(q.y0 - pos[0].y0) > tol for q in pos[1:]):
+        fails.append("scatter panels differ in size or baseline")
     return {"n_text": len(texts), "failures": fails}
 
 
 def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, study="CMC", qa_dir=None):
     """pivot: contrast x author type (log2FC rho); tab: celltype_summary rows;
-    corr: correlations.tsv rows (plain and partial Spearman annotated on B)."""
+    corr: correlations.tsv rows (plain and partial Spearman annotated on C and D)."""
     t = tab.set_index("ct_author")
     lab_f1 = t.groupby("pipeline_label")["benchmark_f1"].first()
     cols = sorted(pivot.columns, key=lambda c: (-np.nan_to_num(lab_f1[label_map[c]], nan=-1),
                                                 label_map[c], -t.loc[c, "mean_rho"]))
     pv = pivot[cols]
     ncol, nrow = len(cols), len(pv.index)
-    pooled = {c for c in cols if sum(label_map[o] == label_map[c] for o in cols) > 1}
+    # open markers: the seven types pooled under another type's name (IT subtypes, SST Chodl,
+    # LAMP5 LHX6), i.e. not benchmark_own_label; SST and LAMP5 keep their own name and stay filled
+    pooled = {c for c in cols if not bool(t.loc[c, "benchmark_own_label"])}
 
     W = 183 * MM
     left, right = 1.12, 0.08
@@ -142,8 +146,8 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, study="CMC", 
     hm_w = W - left - right
     cell_h, bar_h, gap = 0.21, 0.17, 0.04
     hm_h = nrow * cell_h
-    y_b, b_h = 0.62, 2.9                      # panels B and C
-    y_key, key_h = y_b + b_h + 0.65, 0.62  # B has a two-line title     # key row: marker legend and colour bars
+    y_b, b_h = 0.62, 2.6                      # panels B, C and D
+    y_key, key_h = y_b + b_h + 0.5, 0.62     # key row: marker legend and colour bars
     y_cls, cls_h = y_key + key_h + 0.05, 0.72  # class legend row
     y_hm = y_cls + cls_h + 0.05 + 1.45        # A tick labels and axis title
     y_br = y_hm + hm_h + gap
@@ -229,13 +233,16 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, study="CMC", 
         cb.set_ticks([-1, 0, 1] if k == 0 else [f1_lo, 1.0])
         cb.outline.set_linewidth(0.6)
 
-    # ---------- B: added-variable plot (partial Spearman); C: mean rho vs cells per donor ----------
+    # ---------- B: mean rho vs cells per donor; C, D: added-variable plots (partial Spearman) ----------
     from scipy import stats as sst
-    gutter = 0.95                              # room for C's own y axis
-    pw = (hm_w - gutter) / 2
+    lft, g_bc, g_cd = 0.72, 0.85, 0.42         # B and C carry y-axis titles, D only ticks
+    pw = (W - right - lft - g_bc - g_cd) / 3
+    xs0 = [lft, lft + pw + g_bc, lft + 2 * pw + g_bc + g_cd]
     y = t.loc[cols, "mean_rho"].values.astype(float)
     xf = t.loc[cols, "cmc_f1"].values.astype(float)
     xz = t.loc[cols, "log10_author_median_cells"].values.astype(float)
+    disp = np.array([author_display(c) for c in cols])
+    mn = lambda v: f"{v:.2f}".replace("-", "\u2212")
 
     def ols_band(a, x, yv, tr=lambda v: v):
         """OLS line and 95% confidence band for the mean, drawn on the plotted axes."""
@@ -251,52 +258,18 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, study="CMC", 
         a.plot(tr(xs), yfit, color="0.3", lw=1.2, zorder=2)
         return np.column_stack([tr(xs), yfit])
 
-    def points(a, xv, yv):
-        for xi, yi, c in zip(xv, yv, cols):
+    def points(a, xv, yv, cs=cols):
+        for xi, yi, c in zip(xv, yv, cs):
             colr = CLASS_COLORS[cell_class(c)]
             if c in pooled:
                 a.scatter(xi, yi, s=34, facecolors="white", edgecolors=colr, linewidths=1.6, zorder=3)
             else:
                 a.scatter(xi, yi, s=34, facecolors=colr, edgecolors="0.15", linewidths=0.6, zorder=3)
 
-    # same labelled types in B and C: low agreement or lowest-decile F1
-    lab = [author_display(c) if (yi < 0.8 or xi <= np.quantile(xf, 0.1)) else ""
-           for xi, yi, c in zip(xf, y, cols)]
     sax = []
 
-    # B: rank residuals of agreement and of CMC F1, each regressed on rank cells per donor.
-    # Their Pearson r is the partial Spearman rho of de_agreement_vs_annotation.partial_spearman.
-    rz = sst.rankdata(xz)
-    res = lambda v: sst.rankdata(v) - np.polyval(np.polyfit(rz, sst.rankdata(v), 1), rz)
-    bx, by = res(xf), res(y)
-    a = fig.add_axes([fx(left), fy(y_b), fx(pw), fy(b_h)])
-    line = ols_band(a, bx, by)
-    points(a, bx, by)
-    for v in (bx, by):
-        pad = (v.max() - v.min()) * 0.06
-        (a.set_xlim if v is bx else a.set_ylim)(v.min() - pad, v.max() + pad)
-    a.axhline(0, color="0.75", lw=0.6, zorder=0); a.axvline(0, color="0.75", lw=0.6, zorder=0)
-    # B labels only the types with the lowest adjusted agreement, to keep the cloud readable
-    lab_b = [s_ if yi < -7 else "" for s_, yi in zip(
-        [author_display(c) for c in cols], by)]
-    _repel_labels(a, bx, by, lab_b, fontsize=TXT, avoid_xy=line)
-    a.set_xlabel(f"{study} F1 rank, adjusted")
-    a.set_ylabel("Mean ρ rank, adjusted")
-    tl = []
-    mn = lambda v: f"{v:.2f}".replace("-", "\u2212")
-    for sub, name in [("all", "All {n} types"),
-                      ("excluding types named differently from their pooled label", "Without {k} pooled")]:
-        r_ = corr[(corr["subset"] == sub)]
-        pl = r_[r_["test"] == "rho ~ CMC F1"].iloc[0]
-        pa_ = r_[r_["test"] == "rho ~ CMC F1 | log10 support (partial)"].iloc[0]
-        k_ = len(cols) - int(pl["n"])
-        tl.append(f"{name.format(n=int(pl['n']), k=k_)}: ρ {mn(pl['spearman_rho'])} → "
-                  f"partial {mn(pa_['spearman_rho'])}")
-    a.set_title("\n".join(tl), loc="left", fontsize=TXT, pad=4)
-    sax.append(a)
-
-    # C: mean rho against median cells per donor (log axis)
-    a = fig.add_axes([fx(left + pw + gutter), fy(y_b), fx(pw), fy(b_h)])
+    # B: mean rho against median cells per donor (log axis)
+    a = fig.add_axes([fx(xs0[0]), fy(y_b), fx(pw), fy(b_h)])
     tr = lambda v: 10 ** v
     line = ols_band(a, xz, y, tr)
     points(a, tr(xz), y)
@@ -307,17 +280,49 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, corr, study="CMC", 
     ticks = [v for v in (1, 10, 100, 1000, 10000) if v <= 10 ** np.nanmax(xz)]
     a.set_xticks(ticks); a.set_xticklabels([f"{v:g}" for v in ticks])
     a.xaxis.set_minor_formatter(mpl.ticker.NullFormatter())
+    lab = [d if yi < 0.65 else "" for d, yi in zip(disp, y)]
     _repel_labels(a, tr(xz), y, lab, fontsize=TXT, avoid_xy=line)
-    a.set_xlabel(f"Median {study} cells per donor + 1")
+    a.set_xlabel("Median cells per donor + 1")
     a.set_ylabel("Mean Spearman ρ")
     rho, pval = sst.spearmanr(xz, y)
     ptxt = f"p = {pval:.2g}" if pval >= 0.001 else "p < 0.001"
-    a.set_title(f"ρ = {rho:.2f}, {ptxt}, n = {len(y)}", loc="left", fontsize=TXT, pad=4)
+    a.set_title(f"ρ = {rho:.2f}, {ptxt}", loc="left", fontsize=TXT, pad=4)
     sax.append(a)
 
+    # C, D: rank residuals of agreement and of CMC F1, each regressed on rank cells per donor,
+    # computed within the subset. Their Pearson r is the partial Spearman rho in correlations.tsv.
+    def resid(v, z):
+        rz, rv = sst.rankdata(z), sst.rankdata(v)
+        return rv - np.polyval(np.polyfit(rz, rv, 1), rz)
+
+    own = np.array([c not in pooled for c in cols])
+    for k, (sub, m, n_lab) in enumerate([("all", np.ones(len(cols), bool), 2),
+                                         ("excluding types named differently from their pooled label", own, 2)]):
+        r_ = corr[corr["subset"] == sub]
+        pl = r_[r_["test"] == "rho ~ CMC F1"].iloc[0]
+        pa_ = r_[r_["test"] == "rho ~ CMC F1 | log10 support (partial)"].iloc[0]
+        bx, by = resid(xf[m], xz[m]), resid(y[m], xz[m])
+        assert int(pa_["n"]) == m.sum() and abs(np.corrcoef(bx, by)[0, 1] - pa_["spearman_rho"]) < 1e-9
+        a = fig.add_axes([fx(xs0[k + 1]), fy(y_b), fx(pw), fy(b_h)])
+        line = ols_band(a, bx, by)
+        points(a, bx, by, [c for c, mi in zip(cols, m) if mi])
+        for v, setl in ((bx, a.set_xlim), (by, a.set_ylim)):
+            pad = (v.max() - v.min()) * 0.06
+            setl(v.min() - pad, v.max() + pad)
+        a.axhline(0, color="0.75", lw=0.6, zorder=0); a.axvline(0, color="0.75", lw=0.6, zorder=0)
+        low = set(np.argsort(by)[:n_lab])          # label the lowest adjusted agreement
+        _repel_labels(a, bx, by, [d if i in low else "" for i, d in enumerate(disp[m])],
+                      fontsize=TXT, avoid_xy=line)
+        a.set_title(f"{int(m.sum())} types: ρ {mn(pl['spearman_rho'])} → {mn(pa_['spearman_rho'])}",
+                    loc="left", fontsize=TXT, pad=4)
+        a.set_xlabel(f"{study} F1 rank, adj.")
+        if k == 0:
+            a.set_ylabel("Mean ρ rank, adj.")
+        sax.append(a)
+
     fig.text(fx(0.03), fy(H - 0.03), "A", fontsize=LET, fontweight="bold", va="top")
-    for k in range(2):
-        fig.text(fx(0.03 if k == 0 else left + pw + gutter - 0.85), fy(y_b + b_h + 0.62), "BC"[k],
+    for k, x0 in enumerate(xs0):
+        fig.text(fx(0.03 if k == 0 else x0 - (0.78 if k == 1 else 0.4)), fy(y_b + b_h + 0.42), "BCD"[k],
                  fontsize=LET, fontweight="bold", va="top")
 
     qa = check_layout(fig, ax, sax, W)
