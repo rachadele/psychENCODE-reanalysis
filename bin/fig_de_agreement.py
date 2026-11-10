@@ -214,7 +214,7 @@ def check_layout(fig, ax_a, panels, W):
     return {"n_text": len(texts), "failures": fails}
 
 
-def _panel_b_groups(ba, groups):
+def _panel_b_groups(ba, groups, compact=False):
     """Panel B as grouped rows: a bold heading per variable, then one row per type set, plain (filled)
     and partial (open, controlling for the other variable) rho with 95% CI, p plain -> partial on the right."""
     rows, ys, heads, y = [], [], [], 0
@@ -235,18 +235,23 @@ def _panel_b_groups(ba, groups):
         ba.text(-0.02, yy, head, transform=tr, ha="right", va="bottom", fontsize=TXT, fontweight="bold")
     ba.text(1.032, max(ys) + 0.45, "p", transform=tr, ha="left", va="bottom", fontsize=TXT)
     ba.axvline(0, color="0.5", lw=0.8, ls="--", zorder=1)
-    ba.set_xlim(-1, 1); ba.set_xticks([-1, -0.5, 0, 0.5, 1])
+    ba.set_xlim(-1, 1); ba.set_xticks([-1, 0, 1] if compact else [-1, -0.5, 0, 0.5, 1])
     ba.set_ylim(-0.55, y - 0.2)
     ba.set_yticks(ys); ba.set_yticklabels([n for n, _ in rows])
     ba.tick_params(axis="y", length=0)
     ba.spines["left"].set_visible(False)
-    ba.set_xlabel("Spearman ρ with mean agreement")
-    ba.legend(handles=[mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="0.2", mec="0.2", label="Plain"),
-                       mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="white", mec="0.2", mew=1.4,
-                                     label="Partial, controlling for the other variable"),
-                       mlines.Line2D([], [], color="0.2", lw=1.2, label="95% CI")],
-              loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=3, borderaxespad=0.2, handlelength=1.4,
-              columnspacing=0.9, handletextpad=0.4)
+    ba.set_xlabel("ρ with mean agreement" if compact else "Spearman ρ with mean agreement")
+    hs = [mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="0.2", mec="0.2", label="Plain"),
+          mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="white", mec="0.2", mew=1.4,
+                        label="Partial, other variable controlled" if compact else
+                        "Partial, controlling for the other variable"),
+          mlines.Line2D([], [], color="0.2", lw=1.2, label="95% CI")]
+    if compact:  # narrow panel: two rows, left-aligned with the row headings
+        ba.legend(handles=[hs[0], hs[1], hs[2]], loc="lower left", bbox_to_anchor=(-0.8, 1.0), ncol=2,
+                  borderaxespad=0.2, handlelength=1.4, columnspacing=0.9, handletextpad=0.4, labelspacing=0.3)
+    else:
+        ba.legend(handles=hs, loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=3, borderaxespad=0.2,
+                  handlelength=1.4, columnspacing=0.9, handletextpad=0.4)
 
 
 def fmt_p(p):
@@ -353,10 +358,16 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     y_d, d_h = 0.78, 1.9                      # panels D, E: subtypes vs pooled types (optional)
     y_e, e_h = (y_d + d_h + 1.55 if pooling_dir else 0.62), 1.45  # panel C: matched vs mismatched pairs
     y_b, b_h = y_e + e_h + 1.3, 1.45          # panel B: plain and partial rho
+    b_left, p_col = 2.2, 1.3                 # B row labels on the left, p values on the right
+    side = bool(b_groups)                    # grouped B sits beside C on one row (left B, right C)
     if b_groups:
         b_h = 0.7 + 0.5 * sum(len(rows) for _, rows in b_groups)  # grouped rows need more height
-    b_left, p_col = 2.2, 1.3                 # B row labels on the left, p values on the right
-    y_key, key_h = y_b + b_h + 0.45, 0.62    # key row: colour bars
+        y_b = y_e                            # same row as C
+        b_left, p_col = 1.35, 1.15
+        b_w = 1.5                            # B data width; p values to its right
+        c_x0 = b_left + b_w + p_col + 0.3     # C starts right of B's p values
+        e_h = 1.5                            # C axes at the bottom of the row, legend above
+    y_key, key_h = y_b + b_h + (0.75 if side else 0.45), 0.62    # key row: colour bars
     y_cls, cls_h = y_key + key_h + 0.05, 0.72  # class legend row
     y_hm = y_cls + cls_h + 0.05 + 1.45        # A tick labels and axis title
     y_br = y_hm + hm_h + gap
@@ -438,9 +449,9 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
         cb.outline.set_linewidth(0.6)
 
     # ---------- B: plain and partial Spearman rho of agreement, with 95% CIs ----------
-    ba = fig.add_axes([fx(b_left), fy(y_b), fx(W - right - b_left - p_col), fy(b_h)])
+    ba = fig.add_axes([fx(b_left), fy(y_b), fx(b_w if side else W - right - b_left - p_col), fy(b_h)])
     if b_groups:
-        _panel_b_groups(ba, b_groups)
+        _panel_b_groups(ba, b_groups, compact=side)
     else:
         rows_b = list(rho_ci.itertuples())
         n_r = len(rows_b)
@@ -474,19 +485,29 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
                   loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=3, borderaxespad=0.2, handlelength=1.4,
                   columnspacing=0.9, handletextpad=0.4)
     fig.text(fx(0.03), fy(H - 0.03), "A", fontsize=LET, fontweight="bold", va="top")
-    fig.text(fx(0.03), fy(y_b + b_h + 0.62), "B", fontsize=LET, fontweight="bold", va="top")
+    fig.text(fx(0.03), fy(y_b + b_h + (0.85 if side else 0.62)), "B", fontsize=LET, fontweight="bold", va="top")
 
     # ---------- C: per-pair rho, matched vs mismatched cell types, with the permutation null ----------
-    ea = fig.add_axes([fx(left), fy(y_e), fx(hm_w - 0.15), fy(e_h)])  # room for the 1.0 tick label
+    if side:  # one row (author vs pipeline), no row label; legend stacked above the axes
+        ea = fig.add_axes([fx(c_x0), fy(y_e), fx(W - right - 0.12 - c_x0), fy(e_h)])
+    else:
+        ea = fig.add_axes([fx(left), fy(y_e), fx(hm_w - 0.15), fy(e_h)])  # room for the 1.0 tick label
     rows = load_null(null_dir, "labels", ["subclass"])
     ea.set_xticks(np.arange(-1, 1.01, 0.5))
-    ea.set_xlabel("Spearman ρ per cell type and contrast pair")
-    lo, hi = null_density_rows(ea, rows, ["Author vs\npipeline"])
+    ea.set_xlabel("Spearman ρ per pair" if side else "Spearman ρ per cell type and contrast pair")
+    lo, hi = null_density_rows(ea, rows, [""] if side else ["Author vs\npipeline"])
     s0 = rows[0][3]
     pe = f"p = {s0['empirical_p']:.2g}" if s0["empirical_p"] >= 0.001 else "p < 0.001"
-    h = null_legend_handles(f"Null of matched mean ({s0['null_mean']:.2f} ± {s0['null_sd']:.2f}, {pe})")
-    null_legend(ea, h, e_h)
-    fig.text(fx(0.03), fy(y_e + e_h + 0.65), "C", fontsize=LET, fontweight="bold", va="top")
+    if side:
+        h = null_legend_handles(f"Null ({s0['null_mean']:.2f} ± {s0['null_sd']:.2f}, {pe})")
+        ea.legend(handles=h, ncol=1, loc="lower left", bbox_to_anchor=(0.0, 1.02),
+                  borderaxespad=0, handlelength=1.0, handleheight=0.9, columnspacing=0.8, handletextpad=0.4,
+                  labelspacing=0.35)
+        fig.text(fx(c_x0 - 0.3), fy(y_b + b_h + 0.85), "C", fontsize=LET, fontweight="bold", va="top")
+    else:
+        h = null_legend_handles(f"Null of matched mean ({s0['null_mean']:.2f} ± {s0['null_sd']:.2f}, {pe})")
+        null_legend(ea, h, e_h)
+        fig.text(fx(0.03), fy(y_e + e_h + 0.65), "C", fontsize=LET, fontweight="bold", va="top")
 
     extra = []
     if pooling_dir:
