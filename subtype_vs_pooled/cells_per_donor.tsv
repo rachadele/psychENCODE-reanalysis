@@ -1,0 +1,16 @@
+group	scheme	celltype	median_cells_per_donor	n_de_donors
+IT	author	L2.3_IT	1082.5	306
+IT	author	L4_IT	268.0	305
+IT	author	L5_IT	401.5	304
+IT	author	L6_IT	308.5	304
+IT	author	L6_IT_Car3	35.0	286
+IT	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	2314.5	306
+IT	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	2283.5	306
+Lamp5	author	Lamp5	88.5	298
+Lamp5	author	Lamp5_Lhx6	50.0	295
+Lamp5	merged	lamp5.GABAergic.cortical.interneuron	148.0	299
+Lamp5	ours	lamp5.GABAergic.cortical.interneuron	145.0	301
+Sst	author	Sst	168.5	302
+Sst	author	Sst_Chodl	4.0	213
+Sst	merged	sst.GABAergic.cortical.interneuron	172.0	302
+Sst	ours	sst.GABAergic.cortical.interneuron	195.0	303
