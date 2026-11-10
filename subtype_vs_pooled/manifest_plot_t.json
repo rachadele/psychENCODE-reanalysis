@@ -1,15 +1,15 @@
 {
-  "created": "2026-11-10T13:10:06-07:00",
+  "created": "2026-11-10T13:11:30-07:00",
   "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (limma-voom, 27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types)",
   "upstream_manifest": {
     "path": "subtype_vs_pooled/manifest.json",
     "created": "2026-11-10T13:09:38-07:00",
     "sha256": "78160f1131c0d185b37632a7f46a1e796ee2167b2219896904b7e097ae6659cd"
   },
-  "repo_commit_at_run": "13909a844ea556f0dd2f5d4ca3f62ce8c771669a",
+  "repo_commit_at_run": "b7f52a1e06842ca630add7803153b620636a2144",
   "script": {
     "subtype_vs_pooled/plot_subtype_vs_pooled_t.py": {
-      "sha256": "b890a09308e6ef570001ec854a2e9f30df4613afbafc6a0d6cdfcee99d7d2ff4"
+      "sha256": "7d6600ec86c057011bbd192716c71766df77a705559790d54ea5ce9e46097ef0"
     }
   },
   "inputs": {
@@ -32,9 +32,29 @@
   },
   "outputs": {
     "subtype_vs_pooled/subtype_vs_pooled_t.png": {
-      "sha256": "f1cb7e9d584b477baa9ad49803ce047e914b81073a305b672371d17b31b66e75",
-      "mtime": "2026-11-10T13:10:06-07:00"
+      "sha256": "407df98cbad4e4270532411b86d9ba3841b4d052ae10f1ea9138e828f5051e4a",
+      "mtime": "2026-11-10T13:11:30-07:00"
     }
+  },
+  "panel_A_order": [
+    "pooled_vs_ours",
+    "subtype_vs_pooled",
+    "subtype_vs_subtype",
+    "vs_gaba",
+    "vs_deep_non_it",
+    "vs_it",
+    "vs_glia",
+    "vs_vascular_immune"
+  ],
+  "panel_A_order_mean_rho_t": {
+    "pooled_vs_ours": 0.9866,
+    "subtype_vs_pooled": 0.7868,
+    "subtype_vs_subtype": 0.5458,
+    "vs_gaba": 0.484,
+    "vs_deep_non_it": 0.4823,
+    "vs_it": 0.4601,
+    "vs_glia": 0.2799,
+    "vs_vascular_immune": 0.2165
   },
   "group_mean_rho_t": {
     "IT|subtype_vs_subtype": 0.7026,

@@ -79,6 +79,10 @@ def main():
     sg = summ[summ.level == "group"].set_index(["group", "comparison"])["mean_rho_t"]
     for k, v in means.items():
         assert abs(v - sg[k]) < 1e-3, (k, v, sg[k])
+    # one category order for all groups: highest to lowest mean of the group means
+    # (vs IT types averages Lamp5 and Sst only, as IT has no such comparison)
+    order_mean = means.groupby(level="comparison").mean()
+    comps = sorted(COMPARISONS, key=lambda c: -order_mean[c[0]])
 
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12, "axes.spines.top": False,
                          "axes.spines.right": False, "axes.linewidth": 1.2})
@@ -86,7 +90,7 @@ def main():
 
     rng = np.random.default_rng(0)
     dodge = {"IT": -0.25, "Lamp5": 0.0, "Sst": 0.25}
-    for i, (comp, _) in enumerate(COMPARISONS):
+    for i, (comp, _) in enumerate(comps):
         for g in GROUPS:
             v = per_c[(per_c.group == g) & (per_c.comparison == comp)]["rho_t"].to_numpy()
             if len(v) == 0:  # IT has no "vs IT types" comparison
@@ -96,7 +100,7 @@ def main():
                         marker=GROUP_MARKER[g], alpha=0.55, edgecolor="0.3", linewidth=0.4, zorder=2)
             axA.plot([x - 0.1, x + 0.1], [means[(g, comp)]] * 2, color="black", lw=2.5, zorder=3)
     axA.set_xticks(range(len(COMPARISONS)))
-    axA.set_xticklabels([lab for _, lab in COMPARISONS], fontsize=11)
+    axA.set_xticklabels([lab for _, lab in comps], fontsize=11)
     axA.set_xlim(-0.5, len(COMPARISONS) - 0.5)
     axA.set_ylim(min(-0.05, per_c.rho_t.min() - 0.04), 1.03)
     axA.set_ylabel("Spearman ρ of t statistics", fontsize=13)
@@ -161,6 +165,8 @@ def main():
         "inputs": {os.path.relpath(p, os.path.dirname(HERE)) if p.startswith(os.path.dirname(HERE)) else p:
                    {"sha256": sha(p), "mtime": stamp(p)} for p in [IN_PAIR, IN_SUM, IN_CELLS, PALETTE_TSV]},
         "outputs": {"subtype_vs_pooled/subtype_vs_pooled_t.png": {"sha256": sha(OUT_PNG), "mtime": stamp(OUT_PNG)}},
+        "panel_A_order": [c for c, _ in comps],
+        "panel_A_order_mean_rho_t": {c: round(float(order_mean[c]), 4) for c, _ in comps},
         "group_mean_rho_t": {f"{g}|{c}": round(float(means[(g, c)]), 4) for g in GROUPS for c, _ in COMPARISONS
                              if (g, c) in means.index},
         "comparator_groups": up.get("comparator_groups"),
