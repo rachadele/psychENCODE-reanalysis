@@ -1,0 +1,121 @@
+group	contrast	scheme	celltype	n_genes	median_abs_t	n_fdr05	n_shared	median_se_ratio_vs_pooled
+IT	SCZ	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20961	0.8155	21		
+IT	SCZ	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20962	0.8153	22	2.096e+04	0.9968
+IT	SCZ	author	L2.3_IT	20783	0.6899	0	2.078e+04	1.075
+IT	SCZ	author	L4_IT	20245	0.7591	0	2.024e+04	1.161
+IT	SCZ	author	L5_IT	20512	0.7823	8	2.051e+04	1.113
+IT	SCZ	author	L6_IT	20417	0.7994	20	2.042e+04	1.168
+IT	SCZ	author	L6_IT_Car3	19378	0.5706	31	1.938e+04	1.549
+IT	BD	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20961	1.453	4277		
+IT	BD	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20962	1.455	4288	2.096e+04	0.9968
+IT	BD	author	L2.3_IT	20783	1.286	2803	2.078e+04	1.077
+IT	BD	author	L4_IT	20245	1.248	1012	2.024e+04	1.212
+IT	BD	author	L5_IT	20512	1.741	3664	2.051e+04	1.139
+IT	BD	author	L6_IT	20417	1.666	3468	2.042e+04	1.217
+IT	BD	author	L6_IT_Car3	19378	1.626	1434	1.938e+04	1.56
+IT	ASD	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20961	1.35	3130		
+IT	ASD	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20962	1.374	3223	2.096e+04	0.9993
+IT	ASD	author	L2.3_IT	20783	1.235	2415	2.078e+04	1.067
+IT	ASD	author	L4_IT	20245	1.391	1104	2.024e+04	1.197
+IT	ASD	author	L5_IT	20512	1.378	2925	2.051e+04	1.137
+IT	ASD	author	L6_IT	20417	1.165	2662	2.042e+04	1.177
+IT	ASD	author	L6_IT_Car3	19378	1.666	432	1.938e+04	1.648
+IT	MDD	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20961	1.101	1573		
+IT	MDD	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20962	1.106	1583	2.096e+04	0.9966
+IT	MDD	author	L2.3_IT	20783	0.929	1051	2.078e+04	1.127
+IT	MDD	author	L4_IT	20245	1.072	562	2.024e+04	1.151
+IT	MDD	author	L5_IT	20512	1.243	2056	2.051e+04	1.055
+IT	MDD	author	L6_IT	20417	1.124	288	2.042e+04	1.173
+IT	MDD	author	L6_IT_Car3	19378	1.02	118	1.938e+04	1.594
+IT	PTSD	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20961	1.199	4103		
+IT	PTSD	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20962	1.21	4185	2.096e+04	0.9961
+IT	PTSD	author	L2.3_IT	20783	1.134	4273	2.078e+04	1.062
+IT	PTSD	author	L4_IT	20245	0.7542	1327	2.024e+04	1.276
+IT	PTSD	author	L5_IT	20512	0.968	2665	2.051e+04	1.172
+IT	PTSD	author	L6_IT	20417	1.066	3081	2.042e+04	1.224
+IT	PTSD	author	L6_IT_Car3	19378	0.6955	614	1.938e+04	1.705
+IT	WS	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20961	1.309	6415		
+IT	WS	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20962	1.3	6339	2.096e+04	1.002
+IT	WS	author	L2.3_IT	20783	1.027	4483	2.078e+04	1.128
+IT	WS	author	L4_IT	20245	0.9581	2563	2.024e+04	1.425
+IT	WS	author	L5_IT	20512	1.139	5655	2.051e+04	1.175
+IT	WS	author	L6_IT	20417	1.315	6646	2.042e+04	1.022
+IT	WS	author	L6_IT_Car3	19378	0.7071	1428	1.938e+04	1.745
+IT	Age	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20961	1.857	7668		
+IT	Age	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20962	1.858	7685	2.096e+04	0.9984
+IT	Age	author	L2.3_IT	20783	1.774	6508	2.078e+04	1.078
+IT	Age	author	L4_IT	20245	1.262	5407	2.024e+04	1.191
+IT	Age	author	L5_IT	20512	1.648	6447	2.051e+04	1.134
+IT	Age	author	L6_IT	20417	1.252	5097	2.042e+04	1.18
+IT	Age	author	L6_IT_Car3	19378	1.606	4194	1.938e+04	1.58
+IT	Sex	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20961	0.6158	54		
+IT	Sex	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	20962	0.6296	52	2.096e+04	0.9977
+IT	Sex	author	L2.3_IT	20783	0.6478	52	2.078e+04	1.076
+IT	Sex	author	L4_IT	20245	0.4922	47	2.024e+04	1.172
+IT	Sex	author	L5_IT	20512	0.6829	95	2.051e+04	1.12
+IT	Sex	author	L6_IT	20417	0.5438	57	2.042e+04	1.197
+IT	Sex	author	L6_IT_Car3	19378	1.108	568	1.938e+04	1.565
+Lamp5	SCZ	merged	lamp5.GABAergic.cortical.interneuron	19762	0.5694	0		
+Lamp5	SCZ	ours	lamp5.GABAergic.cortical.interneuron	19718	0.5668	0	1.971e+04	1.026
+Lamp5	SCZ	author	Lamp5	19493	0.6133	0	1.949e+04	1.059
+Lamp5	SCZ	author	Lamp5_Lhx6	18980	0.5172	0	1.898e+04	1.183
+Lamp5	BD	merged	lamp5.GABAergic.cortical.interneuron	19762	1.05	728		
+Lamp5	BD	ours	lamp5.GABAergic.cortical.interneuron	19718	1.098	544	1.971e+04	1.035
+Lamp5	BD	author	Lamp5	19493	0.9267	459	1.949e+04	1.066
+Lamp5	BD	author	Lamp5_Lhx6	18980	1.074	15	1.898e+04	1.177
+Lamp5	ASD	merged	lamp5.GABAergic.cortical.interneuron	19762	1.491	717		
+Lamp5	ASD	ours	lamp5.GABAergic.cortical.interneuron	19718	1.452	586	1.971e+04	1.044
+Lamp5	ASD	author	Lamp5	19493	1.651	1601	1.949e+04	1.054
+Lamp5	ASD	author	Lamp5_Lhx6	18980	1.234	222	1.898e+04	1.185
+Lamp5	MDD	merged	lamp5.GABAergic.cortical.interneuron	19762	0.6242	4		
+Lamp5	MDD	ours	lamp5.GABAergic.cortical.interneuron	19718	0.6212	3	1.971e+04	1.034
+Lamp5	MDD	author	Lamp5	19493	0.5566	9	1.949e+04	1.077
+Lamp5	MDD	author	Lamp5_Lhx6	18980	0.6361	0	1.898e+04	1.221
+Lamp5	PTSD	merged	lamp5.GABAergic.cortical.interneuron	19762	0.7305	1188		
+Lamp5	PTSD	ours	lamp5.GABAergic.cortical.interneuron	19718	0.7158	1033	1.971e+04	1.036
+Lamp5	PTSD	author	Lamp5	19493	0.673	942	1.949e+04	1.067
+Lamp5	PTSD	author	Lamp5_Lhx6	18980	0.5973	386	1.898e+04	1.264
+Lamp5	WS	merged	lamp5.GABAergic.cortical.interneuron	19762	1.12	1304		
+Lamp5	WS	ours	lamp5.GABAergic.cortical.interneuron	19718	1.057	1170	1.971e+04	1.041
+Lamp5	WS	author	Lamp5	19493	1.249	902	1.949e+04	1.063
+Lamp5	WS	author	Lamp5_Lhx6	18980	0.8332	818	1.898e+04	1.166
+Lamp5	Age	merged	lamp5.GABAergic.cortical.interneuron	19762	1.606	2445		
+Lamp5	Age	ours	lamp5.GABAergic.cortical.interneuron	19718	1.545	2077	1.971e+04	1.034
+Lamp5	Age	author	Lamp5	19493	1.79	5988	1.949e+04	1.06
+Lamp5	Age	author	Lamp5_Lhx6	18980	1.111	617	1.898e+04	1.189
+Lamp5	Sex	merged	lamp5.GABAergic.cortical.interneuron	19762	0.5318	32		
+Lamp5	Sex	ours	lamp5.GABAergic.cortical.interneuron	19718	0.6943	33	1.971e+04	1.024
+Lamp5	Sex	author	Lamp5	19493	0.6636	36	1.949e+04	1.052
+Lamp5	Sex	author	Lamp5_Lhx6	18980	0.5799	26	1.898e+04	1.185
+Sst	SCZ	merged	sst.GABAergic.cortical.interneuron	19847	0.9097	0		
+Sst	SCZ	ours	sst.GABAergic.cortical.interneuron	19897	0.8362	1	1.983e+04	0.9679
+Sst	SCZ	author	Sst	19821	0.9365	0	1.982e+04	1.003
+Sst	SCZ	author	Sst_Chodl	16184	0.4006	0	1.618e+04	1.877
+Sst	BD	merged	sst.GABAergic.cortical.interneuron	19847	1.018	698		
+Sst	BD	ours	sst.GABAergic.cortical.interneuron	19897	1.065	1023	1.983e+04	0.9627
+Sst	BD	author	Sst	19821	1.01	730	1.982e+04	1.004
+Sst	BD	author	Sst_Chodl	16184	0.3991	0	1.618e+04	1.715
+Sst	ASD	merged	sst.GABAergic.cortical.interneuron	19847	1.64	1072		
+Sst	ASD	ours	sst.GABAergic.cortical.interneuron	19897	1.577	1040	1.983e+04	0.9616
+Sst	ASD	author	Sst	19821	1.66	1155	1.982e+04	1.003
+Sst	ASD	author	Sst_Chodl	16184	1.185	0	1.618e+04	1.872
+Sst	MDD	merged	sst.GABAergic.cortical.interneuron	19847	0.7671	1		
+Sst	MDD	ours	sst.GABAergic.cortical.interneuron	19897	0.8031	1	1.983e+04	0.9719
+Sst	MDD	author	Sst	19821	0.7694	1	1.982e+04	1.001
+Sst	MDD	author	Sst_Chodl	16184	0.3447	0	1.618e+04	2.28
+Sst	PTSD	merged	sst.GABAergic.cortical.interneuron	19847	0.7475	433		
+Sst	PTSD	ours	sst.GABAergic.cortical.interneuron	19897	0.837	551	1.983e+04	0.9592
+Sst	PTSD	author	Sst	19821	0.7443	427	1.982e+04	1.003
+Sst	PTSD	author	Sst_Chodl	16184	0.3939	0	1.618e+04	1.988
+Sst	WS	merged	sst.GABAergic.cortical.interneuron	19847	1.299	1318		
+Sst	WS	ours	sst.GABAergic.cortical.interneuron	19897	1.244	1700	1.983e+04	0.9603
+Sst	WS	author	Sst	19821	1.308	1281	1.982e+04	1.003
+Sst	WS	author	Sst_Chodl	16184	2.318	8686	1.618e+04	1.379
+Sst	Age	merged	sst.GABAergic.cortical.interneuron	19847	2.766	11744		
+Sst	Age	ours	sst.GABAergic.cortical.interneuron	19897	2.681	11499	1.983e+04	0.9637
+Sst	Age	author	Sst	19821	2.82	11884	1.982e+04	1.003
+Sst	Age	author	Sst_Chodl	16184	0.7791	19	1.618e+04	1.837
+Sst	Sex	merged	sst.GABAergic.cortical.interneuron	19847	0.4931	32		
+Sst	Sex	ours	sst.GABAergic.cortical.interneuron	19897	0.611	33	1.983e+04	0.9609
+Sst	Sex	author	Sst	19821	0.497	30	1.982e+04	1.003
+Sst	Sex	author	Sst_Chodl	16184	0.8601	12	1.618e+04	1.837

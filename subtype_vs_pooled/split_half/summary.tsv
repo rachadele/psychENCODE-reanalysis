@@ -1,0 +1,16 @@
+group	scheme	celltype	mean_rho_t	sd_rho_t	n_contrasts	n_splits	median_donors_per_half	median_cells_per_donor	n_de_donors
+IT	author	L2.3_IT	0.4686	0.2211	8	10	153	1082	306
+IT	author	L4_IT	0.4315	0.2009	8	10	152.5	268	305
+IT	author	L5_IT	0.4986	0.1971	8	10	152	401.5	304
+IT	author	L6_IT	0.4626	0.2173	8	10	152	308.5	304
+IT	author	L6_IT_Car3	0.3882	0.1709	8	10	143	35	286
+IT	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	0.5087	0.2282	8	10	153	2314	306
+IT	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	0.5093	0.2276	8	10	153	2284	306
+Lamp5	author	Lamp5	0.356	0.2079	8	10	149	88.5	298
+Lamp5	author	Lamp5_Lhx6	0.2724	0.1955	8	10	147.5	50	295
+Lamp5	merged	lamp5.GABAergic.cortical.interneuron	0.3591	0.218	8	10	149.5	148	299
+Lamp5	ours	lamp5.GABAergic.cortical.interneuron	0.3668	0.2066	8	10	150.5	145	301
+Sst	author	Sst	0.4151	0.2365	8	10	151	168.5	302
+Sst	author	Sst_Chodl	0.09613	0.1378	8	10	106.5	4	213
+Sst	merged	sst.GABAergic.cortical.interneuron	0.4138	0.2357	8	10	151	172	302
+Sst	ours	sst.GABAergic.cortical.interneuron	0.4209	0.2195	8	10	151.5	195	303

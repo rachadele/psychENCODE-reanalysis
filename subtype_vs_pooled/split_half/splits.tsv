@@ -1,0 +1,3071 @@
+seed	donor	cohort	disorder	sex	age	half
+1	1041	MultiomeBrain	Schizophrenia	female	37	B
+1	1185	UCLA-ASD	Control	male	4	A
+1	1317	MultiomeBrain	Bipolar Disorder	female	57	B
+1	1320	MultiomeBrain	Schizophrenia	male	53	B
+1	1390	MultiomeBrain	Control	female	43	A
+1	1414	MultiomeBrain	Bipolar Disorder	male	35	B
+1	1461	MultiomeBrain	Bipolar Disorder	male	31	A
+1	1507	MultiomeBrain	Schizophrenia	male	31	A
+1	1601	MultiomeBrain	Bipolar Disorder	male	76	A
+1	1676	MultiomeBrain	Schizophrenia	male	68	A
+1	1713	MultiomeBrain	Bipolar Disorder	male	21	B
+1	1734	MultiomeBrain	Bipolar Disorder	male	26	B
+1	1743	UCLA-ASD	Control	male	44	A
+1	2052	MultiomeBrain	Control	male	40	B
+1	2083	MultiomeBrain	Bipolar Disorder	female	38	A
+1	2275	MultiomeBrain	Bipolar Disorder	female	45	B
+1	2520	MultiomeBrain	Bipolar Disorder	male	25	A
+1	2653	MultiomeBrain	Schizophrenia	female	45	B
+1	2677	MultiomeBrain	Schizophrenia	female	44	A
+1	2686	MultiomeBrain	Bipolar Disorder	female	46	A
+1	2780	MultiomeBrain	Control	male	18	A
+1	2781	MultiomeBrain	Control	male	39	B
+1	2791	MultiomeBrain	Control	male	56	A
+1	285A	UCLA-ASD	ASD	male	8	B
+1	2GGP	UCLA-ASD	Control	male	49	A
+1	2NA6	UCLA-ASD	ASD	male	16	A
+1	2YK7	UCLA-ASD	ASD	female	17	B
+1	35BV	UCLA-ASD	ASD	male	49	A
+1	3HUF	UCLA-ASD	ASD	male	23	B
+1	4341_BA46	Velmeshev-2019.2	Control	male	13	B
+1	4787	UCLA-ASD	Control	male	19	A
+1	5023	UCLA-ASD	ASD	male	16	B
+1	5144	UCLA-ASD	ASD	female	7	B
+1	5144_PFC_Nova	Velmeshev-2019.1	ASD	male	7	B
+1	5278_PFC_Nova	Velmeshev-2019.1	ASD	female	15	B
+1	5294_BA9	Velmeshev-2019.2	ASD	male	19	A
+1	5302	UCLA-ASD	ASD	male	16	A
+1	5308	UCLA-ASD	ASD	male	4	B
+1	5387_BA9	Velmeshev-2019.2	Control	male	12	A
+1	5391	UCLA-ASD	Control	female	8	B
+1	5403_PFC_Nova	Velmeshev-2019.1	ASD	male	16	A
+1	5408	UCLA-ASD	Control	male	6	B
+1	5408_PFC_Nova	Velmeshev-2019.1	Control	male	6	A
+1	5419_PFC	Velmeshev-2019.1	ASD	female	19	A
+1	5531_BA9	Velmeshev-2019.2	ASD	male	15	A
+1	5538_PFC_Nova	Velmeshev-2019.1	Control	female	19	A
+1	5546_BA9_Nova	Velmeshev-2019.2	Control	female	34	B
+1	5565_BA9	Velmeshev-2019.2	ASD	male	12	B
+1	5576	UCLA-ASD	Control	male	2	B
+1	5577_BA9	Velmeshev-2019.2	Control	male	21	A
+1	5670	UCLA-ASD	Control	female	17	A
+1	5787_BA9_Nova	Velmeshev-2019.2	Control	male	39	A
+1	5841_BA9	Velmeshev-2019.2	ASD	male	12	B
+1	5864_BA9	Velmeshev-2019.2	ASD	male	20	B
+1	5879_PFC_Nova	Velmeshev-2019.1	Control	male	15	B
+1	5893_BA9	Velmeshev-2019.2	Control	male	19	B
+1	5893_PFC_Nova	Velmeshev-2019.1	Control	male	19	A
+1	5925	UCLA-ASD	Control	male	7	A
+1	5936_PFC_Nova	Velmeshev-2019.1	Control	female	14	B
+1	5939_BA9	Velmeshev-2019.2	ASD	male	21	A
+1	5945_PFC_Nova	Velmeshev-2019.1	ASD	male	20	A
+1	5958_BA9	Velmeshev-2019.2	Control	male	22	B
+1	5976_BA9	Velmeshev-2019.2	Control	female	4	A
+1	5978_BA9	Velmeshev-2019.2	ASD	male	11	A
+1	5981_BA9_Nova	Velmeshev-2019.2	Control	female	44	B
+1	6033_BA9	Velmeshev-2019.2	ASD	female	14	B
+1	75QW	UCLA-ASD	Control	male	60	A
+1	8XCF	UCLA-ASD	ASD	male	27	B
+1	AN00493	UCLA-ASD	ASD	male	27	B
+1	AN03345	UCLA-ASD	ASD	male	2	A
+1	AN03935	UCLA-ASD	ASD	male	19	B
+1	AN05983	UCLA-ASD	ASD	male	24	A
+1	AN07176	UCLA-ASD	Control	male	21	A
+1	AN07444	UCLA-ASD	Control	male	17	B
+1	AN08792	UCLA-ASD	ASD	male	30	B
+1	AN09714	UCLA-ASD	ASD	male	60	A
+1	AN10679	UCLA-ASD	Control	female	41	A
+1	AN12457	UCLA-ASD	ASD	female	29	A
+1	AN14762	UCLA-ASD	ASD	male	9	B
+1	AN15451	UCLA-ASD	ASD	female	16	A
+1	AN19511	UCLA-ASD	ASD	male	8	A
+1	AN19760	UCLA-ASD	Control	male	28	B
+1	BD1	SZBDMulti-Seq	Bipolar Disorder	female	73	B
+1	BD10	SZBDMulti-Seq	Bipolar Disorder	male	65	B
+1	BD11	SZBDMulti-Seq	Bipolar Disorder	female	89	B
+1	BD12	SZBDMulti-Seq	Bipolar Disorder	female	77	A
+1	BD13	SZBDMulti-Seq	Bipolar Disorder	male	77	A
+1	BD14	SZBDMulti-Seq	Bipolar Disorder	male	36	A
+1	BD15	SZBDMulti-Seq	Bipolar Disorder	male	74	A
+1	BD16	SZBDMulti-Seq	Bipolar Disorder	male	85	B
+1	BD17	SZBDMulti-Seq	Bipolar Disorder	male	51	A
+1	BD18	SZBDMulti-Seq	Bipolar Disorder	male	83	A
+1	BD19	SZBDMulti-Seq	Bipolar Disorder	female	85	A
+1	BD2	SZBDMulti-Seq	Bipolar Disorder	female	80	B
+1	BD20	SZBDMulti-Seq	Bipolar Disorder	female	51	B
+1	BD21	SZBDMulti-Seq	Bipolar Disorder	female	66	B
+1	BD22	SZBDMulti-Seq	Bipolar Disorder	female	64	A
+1	BD23	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+1	BD24	SZBDMulti-Seq	Bipolar Disorder	male	75	B
+1	BD3	SZBDMulti-Seq	Bipolar Disorder	male	24	B
+1	BD4	SZBDMulti-Seq	Bipolar Disorder	female	76	A
+1	BD5	SZBDMulti-Seq	Bipolar Disorder	male	71	A
+1	BD6	SZBDMulti-Seq	Bipolar Disorder	female	61	A
+1	BD7	SZBDMulti-Seq	Bipolar Disorder	male	73	B
+1	BD8	SZBDMulti-Seq	Bipolar Disorder	female	82	B
+1	BD9	SZBDMulti-Seq	Bipolar Disorder	male	82	B
+1	CMC_MSSM_002	CMC	Control	male	42	A
+1	CMC_MSSM_033	CMC	Control	female	81	B
+1	CMC_MSSM_035	CMC	Control	male	75	B
+1	CMC_MSSM_036	CMC	Control	female	82	A
+1	CMC_MSSM_048	CMC	Schizophrenia	male	84	B
+1	CMC_MSSM_049	CMC	Control	female	61	A
+1	CMC_MSSM_056	CMC	Control	female	67	A
+1	CMC_MSSM_058	CMC	Control	female	76	B
+1	CMC_MSSM_060	CMC	Control	male	89	A
+1	CMC_MSSM_067	CMC	Control	female	81	A
+1	CMC_MSSM_072	CMC	Control	female	66	B
+1	CMC_MSSM_077	CMC	Control	female	76	B
+1	CMC_MSSM_080	CMC	Control	male	84	A
+1	CMC_MSSM_081	CMC	Control	female	79	A
+1	CMC_MSSM_083	CMC	Control	male	69	B
+1	CMC_MSSM_085	CMC	Control	male	74	B
+1	CMC_MSSM_086	CMC	Control	male	77	A
+1	CMC_MSSM_089	CMC	Control	male	89	B
+1	CMC_MSSM_090	CMC	Control	male	70	A
+1	CMC_MSSM_094	CMC	Control	female	89	A
+1	CMC_MSSM_104	CMC	Control	male	35	A
+1	CMC_MSSM_105	CMC	Control	female	89	A
+1	CMC_MSSM_108	CMC	Control	male	89	A
+1	CMC_MSSM_113	CMC	Schizophrenia	male	75	B
+1	CMC_MSSM_115	CMC	Schizophrenia	female	50	A
+1	CMC_MSSM_116	CMC	Schizophrenia	female	74	A
+1	CMC_MSSM_117	CMC	Control	male	86	A
+1	CMC_MSSM_130	CMC	Control	male	41	B
+1	CMC_MSSM_131	CMC	Control	male	59	B
+1	CMC_MSSM_140	CMC	Control	female	85	A
+1	CMC_MSSM_148	CMC	Schizophrenia	female	70	A
+1	CMC_MSSM_173	CMC	Control	male	53	A
+1	CMC_MSSM_174	CMC	Control	male	79	A
+1	CMC_MSSM_185	CMC	Control	male	81	B
+1	CMC_MSSM_190	CMC	Control	male	84	B
+1	CMC_MSSM_192	CMC	Schizophrenia	male	86	A
+1	CMC_MSSM_208	CMC	Control	female	89	B
+1	CMC_MSSM_210	CMC	Schizophrenia	male	66	A
+1	CMC_MSSM_212	CMC	Schizophrenia	male	65	A
+1	CMC_MSSM_213	CMC	Schizophrenia	male	62	B
+1	CMC_MSSM_217	CMC	Control	female	79	A
+1	CMC_MSSM_218	CMC	Schizophrenia	male	76	B
+1	CMC_MSSM_219	CMC	Control	female	86	B
+1	CMC_MSSM_221	CMC	Control	female	81	B
+1	CMC_MSSM_223	CMC	Control	male	71	B
+1	CMC_MSSM_224	CMC	Schizophrenia	female	53	B
+1	CMC_MSSM_227	CMC	Control	male	27	A
+1	CMC_MSSM_228	CMC	Control	male	43	A
+1	CMC_MSSM_230	CMC	Control	male	38	B
+1	CMC_MSSM_232	CMC	Control	male	24	B
+1	CMC_MSSM_234	CMC	Control	male	89	B
+1	CMC_MSSM_238	CMC	Control	female	81	B
+1	CMC_MSSM_242	CMC	Control	male	71	A
+1	CMC_MSSM_247	CMC	Control	male	60	A
+1	CMC_MSSM_249	CMC	Control	male	84	B
+1	CMC_MSSM_251	CMC	Control	male	61	B
+1	CMC_MSSM_272	CMC	Control	male	48	B
+1	CMC_MSSM_278	CMC	Control	female	60	B
+1	CMC_MSSM_280	CMC	Control	female	85	B
+1	CMC_MSSM_282	CMC	Control	male	88	B
+1	CMC_MSSM_283	CMC	Control	female	89	B
+1	CMC_MSSM_288	CMC	Schizophrenia	male	69	B
+1	CMC_MSSM_294	CMC	Schizophrenia	male	46	B
+1	CMC_MSSM_295	CMC	Schizophrenia	male	63	B
+1	CMC_MSSM_298	CMC	Schizophrenia	female	65	B
+1	CMC_MSSM_299	CMC	Schizophrenia	female	58	B
+1	CMC_MSSM_300	CMC	Schizophrenia	male	72	B
+1	CMC_MSSM_305	CMC	Schizophrenia	female	86	A
+1	CMC_MSSM_308	CMC	Schizophrenia	male	60	A
+1	CMC_MSSM_309	CMC	Schizophrenia	female	84	B
+1	CMC_MSSM_312	CMC	Schizophrenia	male	68	A
+1	CMC_MSSM_313	CMC	Schizophrenia	male	67	B
+1	CMC_MSSM_315	CMC	Schizophrenia	female	89	B
+1	CMC_MSSM_316	CMC	Schizophrenia	male	40	A
+1	CMC_MSSM_321	CMC	Schizophrenia	male	48	A
+1	CMC_MSSM_323	CMC	Schizophrenia	male	89	B
+1	CMC_MSSM_326	CMC	Schizophrenia	male	82	B
+1	CMC_MSSM_327	CMC	Schizophrenia	female	81	A
+1	CMC_MSSM_338	CMC	Schizophrenia	female	56	A
+1	CMC_MSSM_340	CMC	Schizophrenia	male	76	A
+1	CMC_MSSM_341	CMC	Schizophrenia	male	65	B
+1	CMC_MSSM_347	CMC	Schizophrenia	male	82	A
+1	CMC_MSSM_349	CMC	Schizophrenia	male	79	A
+1	CMC_MSSM_352	CMC	Schizophrenia	male	64	A
+1	CMC_MSSM_355	CMC	Schizophrenia	female	81	B
+1	CMC_MSSM_358	CMC	Control	male	64	A
+1	CMC_MSSM_360	CMC	Schizophrenia	female	89	A
+1	CMC_MSSM_362	CMC	Schizophrenia	male	73	A
+1	CMC_MSSM_369	CMC	Control	male	89	A
+1	CMC_MSSM_371	CMC	Schizophrenia	male	73	A
+1	CMC_MSSM_372	CMC	Schizophrenia	male	89	A
+1	CMC_MSSM_375	CMC	Schizophrenia	male	89	B
+1	CMC_MSSM_377	CMC	Schizophrenia	male	66	B
+1	CMC_MSSM_378	CMC	Schizophrenia	female	70	B
+1	CMC_MSSM_380	CMC	Control	female	74	A
+1	CMC_MSSM_386	CMC	Schizophrenia	male	85	A
+1	CMC_MSSM_390	CMC	Schizophrenia	male	86	B
+1	CMC_MSSM_403	CMC	Schizophrenia	male	69	A
+1	CMC_MSSM_405	CMC	Schizophrenia	male	39	B
+1	CMC_MSSM_443	CMC	Schizophrenia	male	77	B
+1	CON1	SZBDMulti-Seq	Control	female	72	A
+1	CON10	SZBDMulti-Seq	Control	female	62	B
+1	CON11	SZBDMulti-Seq	Control	male	52	B
+1	CON12	SZBDMulti-Seq	Control	male	68	A
+1	CON13	SZBDMulti-Seq	Control	male	68	B
+1	CON14	SZBDMulti-Seq	Control	male	72	B
+1	CON15	SZBDMulti-Seq	Control	female	59	B
+1	CON16	SZBDMulti-Seq	Control	male	42	A
+1	CON17	SZBDMulti-Seq	Control	female	89	B
+1	CON18	SZBDMulti-Seq	Control	female	53	B
+1	CON19	SZBDMulti-Seq	Control	female	58	A
+1	CON2	SZBDMulti-Seq	Control	male	88	B
+1	CON20	SZBDMulti-Seq	Control	female	52	B
+1	CON21	SZBDMulti-Seq	Control	female	58	A
+1	CON22	SZBDMulti-Seq	Control	female	62	A
+1	CON23	SZBDMulti-Seq	Control	male	48	A
+1	CON24	SZBDMulti-Seq	Control	female	44	A
+1	CON3	SZBDMulti-Seq	Control	female	68	B
+1	CON4	SZBDMulti-Seq	Control	male	52	A
+1	CON5	SZBDMulti-Seq	Control	male	36	B
+1	CON6	SZBDMulti-Seq	Control	female	69	A
+1	CON7	SZBDMulti-Seq	Control	male	82	A
+1	CON8	SZBDMulti-Seq	Control	male	80	A
+1	CON9	SZBDMulti-Seq	Control	male	47	B
+1	E4FN	UCLA-ASD	Control	male	27	A
+1	EUFW	UCLA-ASD	Control	male	17	A
+1	FHN9	UCLA-ASD	Control	male	24	B
+1	FXMN	UCLA-ASD	ASD	male	29	A
+1	G7YU	UCLA-ASD	Control	male	27	B
+1	HQ4T	UCLA-ASD	Control	male	17	B
+1	HSB1574_DFC	DevBrain	Williams Syndrome	male	34	B
+1	HSB189_DFC	DevBrain	Control	male	36	A
+1	HSB290_DFC	DevBrain	Control	male	42	B
+1	HSB317_DFC	DevBrain	Control	male	47	A
+1	HSB340_DFC	DevBrain	Control	male	19	B
+1	HSB373_DFC	DevBrain	ASD	male	14	A
+1	HSB375_DFC	DevBrain	ASD	male	46	B
+1	HSB378_DFC	DevBrain	ASD	male	33	A
+1	HSB379_DFC	DevBrain	ASD	female	16	B
+1	HSB380_DFC	DevBrain	ASD	male	19	B
+1	HSB384_DFC	DevBrain	ASD	male	17	B
+1	HSB434_DFC	DevBrain	ASD	male	21	A
+1	HSB517_DFC	DevBrain	ASD	male	27	A
+1	HSB533_DFC	DevBrain	ASD	male	27	B
+1	HSB5437_DFC	DevBrain	Williams Syndrome	male	17	A
+1	HSB5857_DFC	DevBrain	Williams Syndrome	female	42	B
+1	HctZGA002	UCLA-ASD	Control	male	47	B
+1	JU7U	UCLA-ASD	ASD	male	25	A
+1	KMC3	UCLA-ASD	ASD	male	49	B
+1	M9H3	UCLA-ASD	ASD	female	58	B
+1	NEPX	UCLA-ASD	ASD	male	6	A
+1	PA38	UCLA-ASD	ASD	male	19	A
+1	PH2A	UCLA-ASD	Control	male	20	B
+1	PZ65	UCLA-ASD	Control	male	19	A
+1	SZ1	SZBDMulti-Seq	Schizophrenia	female	54	B
+1	SZ10	SZBDMulti-Seq	Schizophrenia	male	42	A
+1	SZ11	SZBDMulti-Seq	Schizophrenia	female	83	B
+1	SZ12	SZBDMulti-Seq	Schizophrenia	male	55	B
+1	SZ13	SZBDMulti-Seq	Schizophrenia	male	58	B
+1	SZ14	SZBDMulti-Seq	Schizophrenia	female	88	B
+1	SZ15	SZBDMulti-Seq	Schizophrenia	female	87	B
+1	SZ16	SZBDMulti-Seq	Schizophrenia	male	46	A
+1	SZ17	SZBDMulti-Seq	Schizophrenia	male	49	B
+1	SZ18	SZBDMulti-Seq	Schizophrenia	female	89	A
+1	SZ19	SZBDMulti-Seq	Schizophrenia	female	79	A
+1	SZ2	SZBDMulti-Seq	Schizophrenia	male	44	A
+1	SZ20	SZBDMulti-Seq	Schizophrenia	female	76	B
+1	SZ21	SZBDMulti-Seq	Schizophrenia	female	56	A
+1	SZ22	SZBDMulti-Seq	Schizophrenia	female	61	A
+1	SZ23	SZBDMulti-Seq	Schizophrenia	male	22	B
+1	SZ24	SZBDMulti-Seq	Schizophrenia	male	44	B
+1	SZ3	SZBDMulti-Seq	Schizophrenia	female	67	A
+1	SZ4	SZBDMulti-Seq	Schizophrenia	male	89	B
+1	SZ5	SZBDMulti-Seq	Schizophrenia	male	80	A
+1	SZ6	SZBDMulti-Seq	Schizophrenia	female	64	B
+1	SZ7	SZBDMulti-Seq	Schizophrenia	female	85	A
+1	SZ8	SZBDMulti-Seq	Schizophrenia	male	49	A
+1	SZ9	SZBDMulti-Seq	Schizophrenia	male	77	A
+1	U8DM	UCLA-ASD	Control	female	28	B
+1	UPIT13161	UCLA-ASD	ASD	male	24	B
+1	UPIT3152	UCLA-ASD	Control	male	23	A
+1	WBYA	UCLA-ASD	Control	male	22	B
+1	sc1	PTSDBrainomics	Control	male	39	A
+1	sc11	PTSDBrainomics	Control	female	49	B
+1	sc12	PTSDBrainomics	Control	female	58	A
+1	sc13	PTSDBrainomics	Control	male	60	B
+1	sc18	PTSDBrainomics	MDD	male	53	A
+1	sc2	PTSDBrainomics	Control	male	50	A
+1	sc21	PTSDBrainomics	MDD	male	47	B
+1	sc3	PTSDBrainomics	Control	male	45	A
+1	sc31	PTSDBrainomics	MDD	female	55	B
+1	sc32	PTSDBrainomics	MDD	male	54	B
+1	sc33	PTSDBrainomics	PTSD	male	40	B
+1	sc34	PTSDBrainomics	PTSD	male	47	A
+1	sc35	PTSDBrainomics	PTSD	male	53	A
+1	sc42	PTSDBrainomics	PTSD	male	26	A
+1	sc43	PTSDBrainomics	PTSD	female	50	B
+1	sc44	PTSDBrainomics	PTSD	male	29	B
+1	sc5	PTSDBrainomics	Control	male	40	B
+1	sc6	PTSDBrainomics	Control	male	43	B
+1	sc7	PTSDBrainomics	Control	male	53	B
+2	1041	MultiomeBrain	Schizophrenia	female	37	A
+2	1185	UCLA-ASD	Control	male	4	A
+2	1317	MultiomeBrain	Bipolar Disorder	female	57	B
+2	1320	MultiomeBrain	Schizophrenia	male	53	A
+2	1390	MultiomeBrain	Control	female	43	B
+2	1414	MultiomeBrain	Bipolar Disorder	male	35	A
+2	1461	MultiomeBrain	Bipolar Disorder	male	31	B
+2	1507	MultiomeBrain	Schizophrenia	male	31	B
+2	1601	MultiomeBrain	Bipolar Disorder	male	76	B
+2	1676	MultiomeBrain	Schizophrenia	male	68	B
+2	1713	MultiomeBrain	Bipolar Disorder	male	21	B
+2	1734	MultiomeBrain	Bipolar Disorder	male	26	A
+2	1743	UCLA-ASD	Control	male	44	B
+2	2052	MultiomeBrain	Control	male	40	A
+2	2083	MultiomeBrain	Bipolar Disorder	female	38	A
+2	2275	MultiomeBrain	Bipolar Disorder	female	45	B
+2	2520	MultiomeBrain	Bipolar Disorder	male	25	A
+2	2653	MultiomeBrain	Schizophrenia	female	45	B
+2	2677	MultiomeBrain	Schizophrenia	female	44	B
+2	2686	MultiomeBrain	Bipolar Disorder	female	46	A
+2	2780	MultiomeBrain	Control	male	18	A
+2	2781	MultiomeBrain	Control	male	39	B
+2	2791	MultiomeBrain	Control	male	56	B
+2	285A	UCLA-ASD	ASD	male	8	B
+2	2GGP	UCLA-ASD	Control	male	49	B
+2	2NA6	UCLA-ASD	ASD	male	16	B
+2	2YK7	UCLA-ASD	ASD	female	17	A
+2	35BV	UCLA-ASD	ASD	male	49	A
+2	3HUF	UCLA-ASD	ASD	male	23	A
+2	4341_BA46	Velmeshev-2019.2	Control	male	13	A
+2	4787	UCLA-ASD	Control	male	19	B
+2	5023	UCLA-ASD	ASD	male	16	A
+2	5144	UCLA-ASD	ASD	female	7	A
+2	5144_PFC_Nova	Velmeshev-2019.1	ASD	male	7	A
+2	5278_PFC_Nova	Velmeshev-2019.1	ASD	female	15	B
+2	5294_BA9	Velmeshev-2019.2	ASD	male	19	A
+2	5302	UCLA-ASD	ASD	male	16	B
+2	5308	UCLA-ASD	ASD	male	4	B
+2	5387_BA9	Velmeshev-2019.2	Control	male	12	B
+2	5391	UCLA-ASD	Control	female	8	B
+2	5403_PFC_Nova	Velmeshev-2019.1	ASD	male	16	B
+2	5408	UCLA-ASD	Control	male	6	A
+2	5408_PFC_Nova	Velmeshev-2019.1	Control	male	6	A
+2	5419_PFC	Velmeshev-2019.1	ASD	female	19	A
+2	5531_BA9	Velmeshev-2019.2	ASD	male	15	B
+2	5538_PFC_Nova	Velmeshev-2019.1	Control	female	19	A
+2	5546_BA9_Nova	Velmeshev-2019.2	Control	female	34	A
+2	5565_BA9	Velmeshev-2019.2	ASD	male	12	A
+2	5576	UCLA-ASD	Control	male	2	B
+2	5577_BA9	Velmeshev-2019.2	Control	male	21	B
+2	5670	UCLA-ASD	Control	female	17	A
+2	5787_BA9_Nova	Velmeshev-2019.2	Control	male	39	B
+2	5841_BA9	Velmeshev-2019.2	ASD	male	12	A
+2	5864_BA9	Velmeshev-2019.2	ASD	male	20	B
+2	5879_PFC_Nova	Velmeshev-2019.1	Control	male	15	B
+2	5893_BA9	Velmeshev-2019.2	Control	male	19	A
+2	5893_PFC_Nova	Velmeshev-2019.1	Control	male	19	B
+2	5925	UCLA-ASD	Control	male	7	B
+2	5936_PFC_Nova	Velmeshev-2019.1	Control	female	14	B
+2	5939_BA9	Velmeshev-2019.2	ASD	male	21	B
+2	5945_PFC_Nova	Velmeshev-2019.1	ASD	male	20	B
+2	5958_BA9	Velmeshev-2019.2	Control	male	22	A
+2	5976_BA9	Velmeshev-2019.2	Control	female	4	B
+2	5978_BA9	Velmeshev-2019.2	ASD	male	11	B
+2	5981_BA9_Nova	Velmeshev-2019.2	Control	female	44	B
+2	6033_BA9	Velmeshev-2019.2	ASD	female	14	A
+2	75QW	UCLA-ASD	Control	male	60	A
+2	8XCF	UCLA-ASD	ASD	male	27	A
+2	AN00493	UCLA-ASD	ASD	male	27	B
+2	AN03345	UCLA-ASD	ASD	male	2	A
+2	AN03935	UCLA-ASD	ASD	male	19	A
+2	AN05983	UCLA-ASD	ASD	male	24	A
+2	AN07176	UCLA-ASD	Control	male	21	A
+2	AN07444	UCLA-ASD	Control	male	17	B
+2	AN08792	UCLA-ASD	ASD	male	30	B
+2	AN09714	UCLA-ASD	ASD	male	60	B
+2	AN10679	UCLA-ASD	Control	female	41	A
+2	AN12457	UCLA-ASD	ASD	female	29	B
+2	AN14762	UCLA-ASD	ASD	male	9	A
+2	AN15451	UCLA-ASD	ASD	female	16	B
+2	AN19511	UCLA-ASD	ASD	male	8	B
+2	AN19760	UCLA-ASD	Control	male	28	A
+2	BD1	SZBDMulti-Seq	Bipolar Disorder	female	73	A
+2	BD10	SZBDMulti-Seq	Bipolar Disorder	male	65	B
+2	BD11	SZBDMulti-Seq	Bipolar Disorder	female	89	B
+2	BD12	SZBDMulti-Seq	Bipolar Disorder	female	77	B
+2	BD13	SZBDMulti-Seq	Bipolar Disorder	male	77	A
+2	BD14	SZBDMulti-Seq	Bipolar Disorder	male	36	A
+2	BD15	SZBDMulti-Seq	Bipolar Disorder	male	74	A
+2	BD16	SZBDMulti-Seq	Bipolar Disorder	male	85	B
+2	BD17	SZBDMulti-Seq	Bipolar Disorder	male	51	A
+2	BD18	SZBDMulti-Seq	Bipolar Disorder	male	83	A
+2	BD19	SZBDMulti-Seq	Bipolar Disorder	female	85	A
+2	BD2	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+2	BD20	SZBDMulti-Seq	Bipolar Disorder	female	51	A
+2	BD21	SZBDMulti-Seq	Bipolar Disorder	female	66	B
+2	BD22	SZBDMulti-Seq	Bipolar Disorder	female	64	A
+2	BD23	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+2	BD24	SZBDMulti-Seq	Bipolar Disorder	male	75	B
+2	BD3	SZBDMulti-Seq	Bipolar Disorder	male	24	B
+2	BD4	SZBDMulti-Seq	Bipolar Disorder	female	76	B
+2	BD5	SZBDMulti-Seq	Bipolar Disorder	male	71	A
+2	BD6	SZBDMulti-Seq	Bipolar Disorder	female	61	B
+2	BD7	SZBDMulti-Seq	Bipolar Disorder	male	73	B
+2	BD8	SZBDMulti-Seq	Bipolar Disorder	female	82	B
+2	BD9	SZBDMulti-Seq	Bipolar Disorder	male	82	B
+2	CMC_MSSM_002	CMC	Control	male	42	A
+2	CMC_MSSM_033	CMC	Control	female	81	A
+2	CMC_MSSM_035	CMC	Control	male	75	A
+2	CMC_MSSM_036	CMC	Control	female	82	B
+2	CMC_MSSM_048	CMC	Schizophrenia	male	84	A
+2	CMC_MSSM_049	CMC	Control	female	61	B
+2	CMC_MSSM_056	CMC	Control	female	67	B
+2	CMC_MSSM_058	CMC	Control	female	76	A
+2	CMC_MSSM_060	CMC	Control	male	89	B
+2	CMC_MSSM_067	CMC	Control	female	81	B
+2	CMC_MSSM_072	CMC	Control	female	66	A
+2	CMC_MSSM_077	CMC	Control	female	76	A
+2	CMC_MSSM_080	CMC	Control	male	84	B
+2	CMC_MSSM_081	CMC	Control	female	79	B
+2	CMC_MSSM_083	CMC	Control	male	69	A
+2	CMC_MSSM_085	CMC	Control	male	74	B
+2	CMC_MSSM_086	CMC	Control	male	77	B
+2	CMC_MSSM_089	CMC	Control	male	89	B
+2	CMC_MSSM_090	CMC	Control	male	70	A
+2	CMC_MSSM_094	CMC	Control	female	89	B
+2	CMC_MSSM_104	CMC	Control	male	35	A
+2	CMC_MSSM_105	CMC	Control	female	89	B
+2	CMC_MSSM_108	CMC	Control	male	89	A
+2	CMC_MSSM_113	CMC	Schizophrenia	male	75	B
+2	CMC_MSSM_115	CMC	Schizophrenia	female	50	B
+2	CMC_MSSM_116	CMC	Schizophrenia	female	74	B
+2	CMC_MSSM_117	CMC	Control	male	86	A
+2	CMC_MSSM_130	CMC	Control	male	41	B
+2	CMC_MSSM_131	CMC	Control	male	59	A
+2	CMC_MSSM_140	CMC	Control	female	85	A
+2	CMC_MSSM_148	CMC	Schizophrenia	female	70	B
+2	CMC_MSSM_173	CMC	Control	male	53	B
+2	CMC_MSSM_174	CMC	Control	male	79	B
+2	CMC_MSSM_185	CMC	Control	male	81	A
+2	CMC_MSSM_190	CMC	Control	male	84	A
+2	CMC_MSSM_192	CMC	Schizophrenia	male	86	A
+2	CMC_MSSM_208	CMC	Control	female	89	A
+2	CMC_MSSM_210	CMC	Schizophrenia	male	66	A
+2	CMC_MSSM_212	CMC	Schizophrenia	male	65	B
+2	CMC_MSSM_213	CMC	Schizophrenia	male	62	A
+2	CMC_MSSM_217	CMC	Control	female	79	B
+2	CMC_MSSM_218	CMC	Schizophrenia	male	76	B
+2	CMC_MSSM_219	CMC	Control	female	86	A
+2	CMC_MSSM_221	CMC	Control	female	81	A
+2	CMC_MSSM_223	CMC	Control	male	71	B
+2	CMC_MSSM_224	CMC	Schizophrenia	female	53	A
+2	CMC_MSSM_227	CMC	Control	male	27	B
+2	CMC_MSSM_228	CMC	Control	male	43	A
+2	CMC_MSSM_230	CMC	Control	male	38	B
+2	CMC_MSSM_232	CMC	Control	male	24	A
+2	CMC_MSSM_234	CMC	Control	male	89	A
+2	CMC_MSSM_238	CMC	Control	female	81	A
+2	CMC_MSSM_242	CMC	Control	male	71	A
+2	CMC_MSSM_247	CMC	Control	male	60	B
+2	CMC_MSSM_249	CMC	Control	male	84	B
+2	CMC_MSSM_251	CMC	Control	male	61	A
+2	CMC_MSSM_272	CMC	Control	male	48	B
+2	CMC_MSSM_278	CMC	Control	female	60	A
+2	CMC_MSSM_280	CMC	Control	female	85	B
+2	CMC_MSSM_282	CMC	Control	male	88	A
+2	CMC_MSSM_283	CMC	Control	female	89	B
+2	CMC_MSSM_288	CMC	Schizophrenia	male	69	B
+2	CMC_MSSM_294	CMC	Schizophrenia	male	46	A
+2	CMC_MSSM_295	CMC	Schizophrenia	male	63	B
+2	CMC_MSSM_298	CMC	Schizophrenia	female	65	A
+2	CMC_MSSM_299	CMC	Schizophrenia	female	58	B
+2	CMC_MSSM_300	CMC	Schizophrenia	male	72	B
+2	CMC_MSSM_305	CMC	Schizophrenia	female	86	A
+2	CMC_MSSM_308	CMC	Schizophrenia	male	60	B
+2	CMC_MSSM_309	CMC	Schizophrenia	female	84	B
+2	CMC_MSSM_312	CMC	Schizophrenia	male	68	A
+2	CMC_MSSM_313	CMC	Schizophrenia	male	67	B
+2	CMC_MSSM_315	CMC	Schizophrenia	female	89	B
+2	CMC_MSSM_316	CMC	Schizophrenia	male	40	A
+2	CMC_MSSM_321	CMC	Schizophrenia	male	48	B
+2	CMC_MSSM_323	CMC	Schizophrenia	male	89	A
+2	CMC_MSSM_326	CMC	Schizophrenia	male	82	B
+2	CMC_MSSM_327	CMC	Schizophrenia	female	81	B
+2	CMC_MSSM_338	CMC	Schizophrenia	female	56	A
+2	CMC_MSSM_340	CMC	Schizophrenia	male	76	A
+2	CMC_MSSM_341	CMC	Schizophrenia	male	65	A
+2	CMC_MSSM_347	CMC	Schizophrenia	male	82	A
+2	CMC_MSSM_349	CMC	Schizophrenia	male	79	B
+2	CMC_MSSM_352	CMC	Schizophrenia	male	64	A
+2	CMC_MSSM_355	CMC	Schizophrenia	female	81	A
+2	CMC_MSSM_358	CMC	Control	male	64	B
+2	CMC_MSSM_360	CMC	Schizophrenia	female	89	A
+2	CMC_MSSM_362	CMC	Schizophrenia	male	73	A
+2	CMC_MSSM_369	CMC	Control	male	89	B
+2	CMC_MSSM_371	CMC	Schizophrenia	male	73	A
+2	CMC_MSSM_372	CMC	Schizophrenia	male	89	B
+2	CMC_MSSM_375	CMC	Schizophrenia	male	89	B
+2	CMC_MSSM_377	CMC	Schizophrenia	male	66	B
+2	CMC_MSSM_378	CMC	Schizophrenia	female	70	A
+2	CMC_MSSM_380	CMC	Control	female	74	B
+2	CMC_MSSM_386	CMC	Schizophrenia	male	85	B
+2	CMC_MSSM_390	CMC	Schizophrenia	male	86	B
+2	CMC_MSSM_403	CMC	Schizophrenia	male	69	A
+2	CMC_MSSM_405	CMC	Schizophrenia	male	39	B
+2	CMC_MSSM_443	CMC	Schizophrenia	male	77	A
+2	CON1	SZBDMulti-Seq	Control	female	72	A
+2	CON10	SZBDMulti-Seq	Control	female	62	A
+2	CON11	SZBDMulti-Seq	Control	male	52	B
+2	CON12	SZBDMulti-Seq	Control	male	68	B
+2	CON13	SZBDMulti-Seq	Control	male	68	A
+2	CON14	SZBDMulti-Seq	Control	male	72	A
+2	CON15	SZBDMulti-Seq	Control	female	59	B
+2	CON16	SZBDMulti-Seq	Control	male	42	A
+2	CON17	SZBDMulti-Seq	Control	female	89	B
+2	CON18	SZBDMulti-Seq	Control	female	53	A
+2	CON19	SZBDMulti-Seq	Control	female	58	B
+2	CON2	SZBDMulti-Seq	Control	male	88	B
+2	CON20	SZBDMulti-Seq	Control	female	52	A
+2	CON21	SZBDMulti-Seq	Control	female	58	A
+2	CON22	SZBDMulti-Seq	Control	female	62	B
+2	CON23	SZBDMulti-Seq	Control	male	48	B
+2	CON24	SZBDMulti-Seq	Control	female	44	B
+2	CON3	SZBDMulti-Seq	Control	female	68	A
+2	CON4	SZBDMulti-Seq	Control	male	52	A
+2	CON5	SZBDMulti-Seq	Control	male	36	B
+2	CON6	SZBDMulti-Seq	Control	female	69	B
+2	CON7	SZBDMulti-Seq	Control	male	82	A
+2	CON8	SZBDMulti-Seq	Control	male	80	B
+2	CON9	SZBDMulti-Seq	Control	male	47	A
+2	E4FN	UCLA-ASD	Control	male	27	B
+2	EUFW	UCLA-ASD	Control	male	17	A
+2	FHN9	UCLA-ASD	Control	male	24	A
+2	FXMN	UCLA-ASD	ASD	male	29	A
+2	G7YU	UCLA-ASD	Control	male	27	A
+2	HQ4T	UCLA-ASD	Control	male	17	A
+2	HSB1574_DFC	DevBrain	Williams Syndrome	male	34	B
+2	HSB189_DFC	DevBrain	Control	male	36	A
+2	HSB290_DFC	DevBrain	Control	male	42	B
+2	HSB317_DFC	DevBrain	Control	male	47	A
+2	HSB340_DFC	DevBrain	Control	male	19	B
+2	HSB373_DFC	DevBrain	ASD	male	14	B
+2	HSB375_DFC	DevBrain	ASD	male	46	A
+2	HSB378_DFC	DevBrain	ASD	male	33	B
+2	HSB379_DFC	DevBrain	ASD	female	16	A
+2	HSB380_DFC	DevBrain	ASD	male	19	B
+2	HSB384_DFC	DevBrain	ASD	male	17	A
+2	HSB434_DFC	DevBrain	ASD	male	21	A
+2	HSB517_DFC	DevBrain	ASD	male	27	A
+2	HSB533_DFC	DevBrain	ASD	male	27	B
+2	HSB5437_DFC	DevBrain	Williams Syndrome	male	17	A
+2	HSB5857_DFC	DevBrain	Williams Syndrome	female	42	A
+2	HctZGA002	UCLA-ASD	Control	male	47	A
+2	JU7U	UCLA-ASD	ASD	male	25	B
+2	KMC3	UCLA-ASD	ASD	male	49	A
+2	M9H3	UCLA-ASD	ASD	female	58	B
+2	NEPX	UCLA-ASD	ASD	male	6	A
+2	PA38	UCLA-ASD	ASD	male	19	B
+2	PH2A	UCLA-ASD	Control	male	20	B
+2	PZ65	UCLA-ASD	Control	male	19	A
+2	SZ1	SZBDMulti-Seq	Schizophrenia	female	54	B
+2	SZ10	SZBDMulti-Seq	Schizophrenia	male	42	A
+2	SZ11	SZBDMulti-Seq	Schizophrenia	female	83	B
+2	SZ12	SZBDMulti-Seq	Schizophrenia	male	55	B
+2	SZ13	SZBDMulti-Seq	Schizophrenia	male	58	B
+2	SZ14	SZBDMulti-Seq	Schizophrenia	female	88	B
+2	SZ15	SZBDMulti-Seq	Schizophrenia	female	87	B
+2	SZ16	SZBDMulti-Seq	Schizophrenia	male	46	B
+2	SZ17	SZBDMulti-Seq	Schizophrenia	male	49	A
+2	SZ18	SZBDMulti-Seq	Schizophrenia	female	89	A
+2	SZ19	SZBDMulti-Seq	Schizophrenia	female	79	A
+2	SZ2	SZBDMulti-Seq	Schizophrenia	male	44	B
+2	SZ20	SZBDMulti-Seq	Schizophrenia	female	76	B
+2	SZ21	SZBDMulti-Seq	Schizophrenia	female	56	A
+2	SZ22	SZBDMulti-Seq	Schizophrenia	female	61	B
+2	SZ23	SZBDMulti-Seq	Schizophrenia	male	22	B
+2	SZ24	SZBDMulti-Seq	Schizophrenia	male	44	A
+2	SZ3	SZBDMulti-Seq	Schizophrenia	female	67	A
+2	SZ4	SZBDMulti-Seq	Schizophrenia	male	89	A
+2	SZ5	SZBDMulti-Seq	Schizophrenia	male	80	B
+2	SZ6	SZBDMulti-Seq	Schizophrenia	female	64	A
+2	SZ7	SZBDMulti-Seq	Schizophrenia	female	85	A
+2	SZ8	SZBDMulti-Seq	Schizophrenia	male	49	A
+2	SZ9	SZBDMulti-Seq	Schizophrenia	male	77	A
+2	U8DM	UCLA-ASD	Control	female	28	B
+2	UPIT13161	UCLA-ASD	ASD	male	24	B
+2	UPIT3152	UCLA-ASD	Control	male	23	B
+2	WBYA	UCLA-ASD	Control	male	22	B
+2	sc1	PTSDBrainomics	Control	male	39	B
+2	sc11	PTSDBrainomics	Control	female	49	B
+2	sc12	PTSDBrainomics	Control	female	58	A
+2	sc13	PTSDBrainomics	Control	male	60	B
+2	sc18	PTSDBrainomics	MDD	male	53	A
+2	sc2	PTSDBrainomics	Control	male	50	B
+2	sc21	PTSDBrainomics	MDD	male	47	B
+2	sc3	PTSDBrainomics	Control	male	45	A
+2	sc31	PTSDBrainomics	MDD	female	55	A
+2	sc32	PTSDBrainomics	MDD	male	54	B
+2	sc33	PTSDBrainomics	PTSD	male	40	B
+2	sc34	PTSDBrainomics	PTSD	male	47	A
+2	sc35	PTSDBrainomics	PTSD	male	53	B
+2	sc42	PTSDBrainomics	PTSD	male	26	A
+2	sc43	PTSDBrainomics	PTSD	female	50	A
+2	sc44	PTSDBrainomics	PTSD	male	29	B
+2	sc5	PTSDBrainomics	Control	male	40	A
+2	sc6	PTSDBrainomics	Control	male	43	B
+2	sc7	PTSDBrainomics	Control	male	53	A
+3	1041	MultiomeBrain	Schizophrenia	female	37	B
+3	1185	UCLA-ASD	Control	male	4	A
+3	1317	MultiomeBrain	Bipolar Disorder	female	57	A
+3	1320	MultiomeBrain	Schizophrenia	male	53	A
+3	1390	MultiomeBrain	Control	female	43	A
+3	1414	MultiomeBrain	Bipolar Disorder	male	35	B
+3	1461	MultiomeBrain	Bipolar Disorder	male	31	A
+3	1507	MultiomeBrain	Schizophrenia	male	31	B
+3	1601	MultiomeBrain	Bipolar Disorder	male	76	A
+3	1676	MultiomeBrain	Schizophrenia	male	68	B
+3	1713	MultiomeBrain	Bipolar Disorder	male	21	B
+3	1734	MultiomeBrain	Bipolar Disorder	male	26	B
+3	1743	UCLA-ASD	Control	male	44	A
+3	2052	MultiomeBrain	Control	male	40	A
+3	2083	MultiomeBrain	Bipolar Disorder	female	38	A
+3	2275	MultiomeBrain	Bipolar Disorder	female	45	B
+3	2520	MultiomeBrain	Bipolar Disorder	male	25	A
+3	2653	MultiomeBrain	Schizophrenia	female	45	B
+3	2677	MultiomeBrain	Schizophrenia	female	44	A
+3	2686	MultiomeBrain	Bipolar Disorder	female	46	B
+3	2780	MultiomeBrain	Control	male	18	B
+3	2781	MultiomeBrain	Control	male	39	A
+3	2791	MultiomeBrain	Control	male	56	B
+3	285A	UCLA-ASD	ASD	male	8	A
+3	2GGP	UCLA-ASD	Control	male	49	B
+3	2NA6	UCLA-ASD	ASD	male	16	A
+3	2YK7	UCLA-ASD	ASD	female	17	B
+3	35BV	UCLA-ASD	ASD	male	49	A
+3	3HUF	UCLA-ASD	ASD	male	23	B
+3	4341_BA46	Velmeshev-2019.2	Control	male	13	B
+3	4787	UCLA-ASD	Control	male	19	A
+3	5023	UCLA-ASD	ASD	male	16	B
+3	5144	UCLA-ASD	ASD	female	7	B
+3	5144_PFC_Nova	Velmeshev-2019.1	ASD	male	7	A
+3	5278_PFC_Nova	Velmeshev-2019.1	ASD	female	15	A
+3	5294_BA9	Velmeshev-2019.2	ASD	male	19	B
+3	5302	UCLA-ASD	ASD	male	16	A
+3	5308	UCLA-ASD	ASD	male	4	A
+3	5387_BA9	Velmeshev-2019.2	Control	male	12	A
+3	5391	UCLA-ASD	Control	female	8	A
+3	5403_PFC_Nova	Velmeshev-2019.1	ASD	male	16	B
+3	5408	UCLA-ASD	Control	male	6	A
+3	5408_PFC_Nova	Velmeshev-2019.1	Control	male	6	B
+3	5419_PFC	Velmeshev-2019.1	ASD	female	19	B
+3	5531_BA9	Velmeshev-2019.2	ASD	male	15	A
+3	5538_PFC_Nova	Velmeshev-2019.1	Control	female	19	A
+3	5546_BA9_Nova	Velmeshev-2019.2	Control	female	34	A
+3	5565_BA9	Velmeshev-2019.2	ASD	male	12	A
+3	5576	UCLA-ASD	Control	male	2	B
+3	5577_BA9	Velmeshev-2019.2	Control	male	21	A
+3	5670	UCLA-ASD	Control	female	17	B
+3	5787_BA9_Nova	Velmeshev-2019.2	Control	male	39	B
+3	5841_BA9	Velmeshev-2019.2	ASD	male	12	B
+3	5864_BA9	Velmeshev-2019.2	ASD	male	20	A
+3	5879_PFC_Nova	Velmeshev-2019.1	Control	male	15	A
+3	5893_BA9	Velmeshev-2019.2	Control	male	19	B
+3	5893_PFC_Nova	Velmeshev-2019.1	Control	male	19	A
+3	5925	UCLA-ASD	Control	male	7	B
+3	5936_PFC_Nova	Velmeshev-2019.1	Control	female	14	B
+3	5939_BA9	Velmeshev-2019.2	ASD	male	21	A
+3	5945_PFC_Nova	Velmeshev-2019.1	ASD	male	20	A
+3	5958_BA9	Velmeshev-2019.2	Control	male	22	A
+3	5976_BA9	Velmeshev-2019.2	Control	female	4	B
+3	5978_BA9	Velmeshev-2019.2	ASD	male	11	B
+3	5981_BA9_Nova	Velmeshev-2019.2	Control	female	44	B
+3	6033_BA9	Velmeshev-2019.2	ASD	female	14	A
+3	75QW	UCLA-ASD	Control	male	60	A
+3	8XCF	UCLA-ASD	ASD	male	27	B
+3	AN00493	UCLA-ASD	ASD	male	27	B
+3	AN03345	UCLA-ASD	ASD	male	2	B
+3	AN03935	UCLA-ASD	ASD	male	19	B
+3	AN05983	UCLA-ASD	ASD	male	24	B
+3	AN07176	UCLA-ASD	Control	male	21	B
+3	AN07444	UCLA-ASD	Control	male	17	A
+3	AN08792	UCLA-ASD	ASD	male	30	B
+3	AN09714	UCLA-ASD	ASD	male	60	B
+3	AN10679	UCLA-ASD	Control	female	41	B
+3	AN12457	UCLA-ASD	ASD	female	29	A
+3	AN14762	UCLA-ASD	ASD	male	9	B
+3	AN15451	UCLA-ASD	ASD	female	16	A
+3	AN19511	UCLA-ASD	ASD	male	8	A
+3	AN19760	UCLA-ASD	Control	male	28	B
+3	BD1	SZBDMulti-Seq	Bipolar Disorder	female	73	A
+3	BD10	SZBDMulti-Seq	Bipolar Disorder	male	65	B
+3	BD11	SZBDMulti-Seq	Bipolar Disorder	female	89	B
+3	BD12	SZBDMulti-Seq	Bipolar Disorder	female	77	B
+3	BD13	SZBDMulti-Seq	Bipolar Disorder	male	77	B
+3	BD14	SZBDMulti-Seq	Bipolar Disorder	male	36	A
+3	BD15	SZBDMulti-Seq	Bipolar Disorder	male	74	B
+3	BD16	SZBDMulti-Seq	Bipolar Disorder	male	85	A
+3	BD17	SZBDMulti-Seq	Bipolar Disorder	male	51	A
+3	BD18	SZBDMulti-Seq	Bipolar Disorder	male	83	B
+3	BD19	SZBDMulti-Seq	Bipolar Disorder	female	85	A
+3	BD2	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+3	BD20	SZBDMulti-Seq	Bipolar Disorder	female	51	B
+3	BD21	SZBDMulti-Seq	Bipolar Disorder	female	66	A
+3	BD22	SZBDMulti-Seq	Bipolar Disorder	female	64	B
+3	BD23	SZBDMulti-Seq	Bipolar Disorder	female	80	B
+3	BD24	SZBDMulti-Seq	Bipolar Disorder	male	75	A
+3	BD3	SZBDMulti-Seq	Bipolar Disorder	male	24	B
+3	BD4	SZBDMulti-Seq	Bipolar Disorder	female	76	B
+3	BD5	SZBDMulti-Seq	Bipolar Disorder	male	71	B
+3	BD6	SZBDMulti-Seq	Bipolar Disorder	female	61	A
+3	BD7	SZBDMulti-Seq	Bipolar Disorder	male	73	A
+3	BD8	SZBDMulti-Seq	Bipolar Disorder	female	82	A
+3	BD9	SZBDMulti-Seq	Bipolar Disorder	male	82	A
+3	CMC_MSSM_002	CMC	Control	male	42	A
+3	CMC_MSSM_033	CMC	Control	female	81	B
+3	CMC_MSSM_035	CMC	Control	male	75	A
+3	CMC_MSSM_036	CMC	Control	female	82	B
+3	CMC_MSSM_048	CMC	Schizophrenia	male	84	A
+3	CMC_MSSM_049	CMC	Control	female	61	B
+3	CMC_MSSM_056	CMC	Control	female	67	B
+3	CMC_MSSM_058	CMC	Control	female	76	A
+3	CMC_MSSM_060	CMC	Control	male	89	A
+3	CMC_MSSM_067	CMC	Control	female	81	A
+3	CMC_MSSM_072	CMC	Control	female	66	A
+3	CMC_MSSM_077	CMC	Control	female	76	B
+3	CMC_MSSM_080	CMC	Control	male	84	A
+3	CMC_MSSM_081	CMC	Control	female	79	A
+3	CMC_MSSM_083	CMC	Control	male	69	A
+3	CMC_MSSM_085	CMC	Control	male	74	B
+3	CMC_MSSM_086	CMC	Control	male	77	B
+3	CMC_MSSM_089	CMC	Control	male	89	B
+3	CMC_MSSM_090	CMC	Control	male	70	B
+3	CMC_MSSM_094	CMC	Control	female	89	A
+3	CMC_MSSM_104	CMC	Control	male	35	A
+3	CMC_MSSM_105	CMC	Control	female	89	A
+3	CMC_MSSM_108	CMC	Control	male	89	A
+3	CMC_MSSM_113	CMC	Schizophrenia	male	75	A
+3	CMC_MSSM_115	CMC	Schizophrenia	female	50	B
+3	CMC_MSSM_116	CMC	Schizophrenia	female	74	B
+3	CMC_MSSM_117	CMC	Control	male	86	B
+3	CMC_MSSM_130	CMC	Control	male	41	B
+3	CMC_MSSM_131	CMC	Control	male	59	A
+3	CMC_MSSM_140	CMC	Control	female	85	A
+3	CMC_MSSM_148	CMC	Schizophrenia	female	70	A
+3	CMC_MSSM_173	CMC	Control	male	53	B
+3	CMC_MSSM_174	CMC	Control	male	79	B
+3	CMC_MSSM_185	CMC	Control	male	81	A
+3	CMC_MSSM_190	CMC	Control	male	84	B
+3	CMC_MSSM_192	CMC	Schizophrenia	male	86	B
+3	CMC_MSSM_208	CMC	Control	female	89	B
+3	CMC_MSSM_210	CMC	Schizophrenia	male	66	A
+3	CMC_MSSM_212	CMC	Schizophrenia	male	65	B
+3	CMC_MSSM_213	CMC	Schizophrenia	male	62	B
+3	CMC_MSSM_217	CMC	Control	female	79	A
+3	CMC_MSSM_218	CMC	Schizophrenia	male	76	A
+3	CMC_MSSM_219	CMC	Control	female	86	B
+3	CMC_MSSM_221	CMC	Control	female	81	B
+3	CMC_MSSM_223	CMC	Control	male	71	A
+3	CMC_MSSM_224	CMC	Schizophrenia	female	53	A
+3	CMC_MSSM_227	CMC	Control	male	27	A
+3	CMC_MSSM_228	CMC	Control	male	43	B
+3	CMC_MSSM_230	CMC	Control	male	38	B
+3	CMC_MSSM_232	CMC	Control	male	24	B
+3	CMC_MSSM_234	CMC	Control	male	89	A
+3	CMC_MSSM_238	CMC	Control	female	81	A
+3	CMC_MSSM_242	CMC	Control	male	71	A
+3	CMC_MSSM_247	CMC	Control	male	60	A
+3	CMC_MSSM_249	CMC	Control	male	84	A
+3	CMC_MSSM_251	CMC	Control	male	61	B
+3	CMC_MSSM_272	CMC	Control	male	48	A
+3	CMC_MSSM_278	CMC	Control	female	60	A
+3	CMC_MSSM_280	CMC	Control	female	85	B
+3	CMC_MSSM_282	CMC	Control	male	88	B
+3	CMC_MSSM_283	CMC	Control	female	89	A
+3	CMC_MSSM_288	CMC	Schizophrenia	male	69	B
+3	CMC_MSSM_294	CMC	Schizophrenia	male	46	B
+3	CMC_MSSM_295	CMC	Schizophrenia	male	63	B
+3	CMC_MSSM_298	CMC	Schizophrenia	female	65	B
+3	CMC_MSSM_299	CMC	Schizophrenia	female	58	B
+3	CMC_MSSM_300	CMC	Schizophrenia	male	72	B
+3	CMC_MSSM_305	CMC	Schizophrenia	female	86	A
+3	CMC_MSSM_308	CMC	Schizophrenia	male	60	A
+3	CMC_MSSM_309	CMC	Schizophrenia	female	84	B
+3	CMC_MSSM_312	CMC	Schizophrenia	male	68	A
+3	CMC_MSSM_313	CMC	Schizophrenia	male	67	B
+3	CMC_MSSM_315	CMC	Schizophrenia	female	89	B
+3	CMC_MSSM_316	CMC	Schizophrenia	male	40	B
+3	CMC_MSSM_321	CMC	Schizophrenia	male	48	A
+3	CMC_MSSM_323	CMC	Schizophrenia	male	89	A
+3	CMC_MSSM_326	CMC	Schizophrenia	male	82	B
+3	CMC_MSSM_327	CMC	Schizophrenia	female	81	A
+3	CMC_MSSM_338	CMC	Schizophrenia	female	56	A
+3	CMC_MSSM_340	CMC	Schizophrenia	male	76	B
+3	CMC_MSSM_341	CMC	Schizophrenia	male	65	A
+3	CMC_MSSM_347	CMC	Schizophrenia	male	82	A
+3	CMC_MSSM_349	CMC	Schizophrenia	male	79	A
+3	CMC_MSSM_352	CMC	Schizophrenia	male	64	A
+3	CMC_MSSM_355	CMC	Schizophrenia	female	81	B
+3	CMC_MSSM_358	CMC	Control	male	64	B
+3	CMC_MSSM_360	CMC	Schizophrenia	female	89	A
+3	CMC_MSSM_362	CMC	Schizophrenia	male	73	A
+3	CMC_MSSM_369	CMC	Control	male	89	B
+3	CMC_MSSM_371	CMC	Schizophrenia	male	73	B
+3	CMC_MSSM_372	CMC	Schizophrenia	male	89	B
+3	CMC_MSSM_375	CMC	Schizophrenia	male	89	A
+3	CMC_MSSM_377	CMC	Schizophrenia	male	66	B
+3	CMC_MSSM_378	CMC	Schizophrenia	female	70	A
+3	CMC_MSSM_380	CMC	Control	female	74	B
+3	CMC_MSSM_386	CMC	Schizophrenia	male	85	B
+3	CMC_MSSM_390	CMC	Schizophrenia	male	86	A
+3	CMC_MSSM_403	CMC	Schizophrenia	male	69	A
+3	CMC_MSSM_405	CMC	Schizophrenia	male	39	A
+3	CMC_MSSM_443	CMC	Schizophrenia	male	77	B
+3	CON1	SZBDMulti-Seq	Control	female	72	B
+3	CON10	SZBDMulti-Seq	Control	female	62	A
+3	CON11	SZBDMulti-Seq	Control	male	52	A
+3	CON12	SZBDMulti-Seq	Control	male	68	B
+3	CON13	SZBDMulti-Seq	Control	male	68	A
+3	CON14	SZBDMulti-Seq	Control	male	72	A
+3	CON15	SZBDMulti-Seq	Control	female	59	B
+3	CON16	SZBDMulti-Seq	Control	male	42	A
+3	CON17	SZBDMulti-Seq	Control	female	89	A
+3	CON18	SZBDMulti-Seq	Control	female	53	A
+3	CON19	SZBDMulti-Seq	Control	female	58	B
+3	CON2	SZBDMulti-Seq	Control	male	88	A
+3	CON20	SZBDMulti-Seq	Control	female	52	A
+3	CON21	SZBDMulti-Seq	Control	female	58	A
+3	CON22	SZBDMulti-Seq	Control	female	62	B
+3	CON23	SZBDMulti-Seq	Control	male	48	B
+3	CON24	SZBDMulti-Seq	Control	female	44	B
+3	CON3	SZBDMulti-Seq	Control	female	68	A
+3	CON4	SZBDMulti-Seq	Control	male	52	B
+3	CON5	SZBDMulti-Seq	Control	male	36	B
+3	CON6	SZBDMulti-Seq	Control	female	69	B
+3	CON7	SZBDMulti-Seq	Control	male	82	B
+3	CON8	SZBDMulti-Seq	Control	male	80	B
+3	CON9	SZBDMulti-Seq	Control	male	47	A
+3	E4FN	UCLA-ASD	Control	male	27	A
+3	EUFW	UCLA-ASD	Control	male	17	B
+3	FHN9	UCLA-ASD	Control	male	24	B
+3	FXMN	UCLA-ASD	ASD	male	29	A
+3	G7YU	UCLA-ASD	Control	male	27	B
+3	HQ4T	UCLA-ASD	Control	male	17	B
+3	HSB1574_DFC	DevBrain	Williams Syndrome	male	34	B
+3	HSB189_DFC	DevBrain	Control	male	36	A
+3	HSB290_DFC	DevBrain	Control	male	42	A
+3	HSB317_DFC	DevBrain	Control	male	47	B
+3	HSB340_DFC	DevBrain	Control	male	19	B
+3	HSB373_DFC	DevBrain	ASD	male	14	B
+3	HSB375_DFC	DevBrain	ASD	male	46	B
+3	HSB378_DFC	DevBrain	ASD	male	33	A
+3	HSB379_DFC	DevBrain	ASD	female	16	A
+3	HSB380_DFC	DevBrain	ASD	male	19	A
+3	HSB384_DFC	DevBrain	ASD	male	17	A
+3	HSB434_DFC	DevBrain	ASD	male	21	B
+3	HSB517_DFC	DevBrain	ASD	male	27	B
+3	HSB533_DFC	DevBrain	ASD	male	27	A
+3	HSB5437_DFC	DevBrain	Williams Syndrome	male	17	A
+3	HSB5857_DFC	DevBrain	Williams Syndrome	female	42	B
+3	HctZGA002	UCLA-ASD	Control	male	47	A
+3	JU7U	UCLA-ASD	ASD	male	25	A
+3	KMC3	UCLA-ASD	ASD	male	49	A
+3	M9H3	UCLA-ASD	ASD	female	58	B
+3	NEPX	UCLA-ASD	ASD	male	6	B
+3	PA38	UCLA-ASD	ASD	male	19	A
+3	PH2A	UCLA-ASD	Control	male	20	B
+3	PZ65	UCLA-ASD	Control	male	19	A
+3	SZ1	SZBDMulti-Seq	Schizophrenia	female	54	A
+3	SZ10	SZBDMulti-Seq	Schizophrenia	male	42	B
+3	SZ11	SZBDMulti-Seq	Schizophrenia	female	83	B
+3	SZ12	SZBDMulti-Seq	Schizophrenia	male	55	A
+3	SZ13	SZBDMulti-Seq	Schizophrenia	male	58	B
+3	SZ14	SZBDMulti-Seq	Schizophrenia	female	88	A
+3	SZ15	SZBDMulti-Seq	Schizophrenia	female	87	B
+3	SZ16	SZBDMulti-Seq	Schizophrenia	male	46	B
+3	SZ17	SZBDMulti-Seq	Schizophrenia	male	49	A
+3	SZ18	SZBDMulti-Seq	Schizophrenia	female	89	B
+3	SZ19	SZBDMulti-Seq	Schizophrenia	female	79	A
+3	SZ2	SZBDMulti-Seq	Schizophrenia	male	44	A
+3	SZ20	SZBDMulti-Seq	Schizophrenia	female	76	A
+3	SZ21	SZBDMulti-Seq	Schizophrenia	female	56	B
+3	SZ22	SZBDMulti-Seq	Schizophrenia	female	61	A
+3	SZ23	SZBDMulti-Seq	Schizophrenia	male	22	A
+3	SZ24	SZBDMulti-Seq	Schizophrenia	male	44	B
+3	SZ3	SZBDMulti-Seq	Schizophrenia	female	67	B
+3	SZ4	SZBDMulti-Seq	Schizophrenia	male	89	A
+3	SZ5	SZBDMulti-Seq	Schizophrenia	male	80	B
+3	SZ6	SZBDMulti-Seq	Schizophrenia	female	64	B
+3	SZ7	SZBDMulti-Seq	Schizophrenia	female	85	A
+3	SZ8	SZBDMulti-Seq	Schizophrenia	male	49	B
+3	SZ9	SZBDMulti-Seq	Schizophrenia	male	77	A
+3	U8DM	UCLA-ASD	Control	female	28	A
+3	UPIT13161	UCLA-ASD	ASD	male	24	A
+3	UPIT3152	UCLA-ASD	Control	male	23	A
+3	WBYA	UCLA-ASD	Control	male	22	A
+3	sc1	PTSDBrainomics	Control	male	39	B
+3	sc11	PTSDBrainomics	Control	female	49	B
+3	sc12	PTSDBrainomics	Control	female	58	A
+3	sc13	PTSDBrainomics	Control	male	60	A
+3	sc18	PTSDBrainomics	MDD	male	53	B
+3	sc2	PTSDBrainomics	Control	male	50	A
+3	sc21	PTSDBrainomics	MDD	male	47	A
+3	sc3	PTSDBrainomics	Control	male	45	B
+3	sc31	PTSDBrainomics	MDD	female	55	A
+3	sc32	PTSDBrainomics	MDD	male	54	B
+3	sc33	PTSDBrainomics	PTSD	male	40	A
+3	sc34	PTSDBrainomics	PTSD	male	47	B
+3	sc35	PTSDBrainomics	PTSD	male	53	B
+3	sc42	PTSDBrainomics	PTSD	male	26	A
+3	sc43	PTSDBrainomics	PTSD	female	50	A
+3	sc44	PTSDBrainomics	PTSD	male	29	B
+3	sc5	PTSDBrainomics	Control	male	40	A
+3	sc6	PTSDBrainomics	Control	male	43	A
+3	sc7	PTSDBrainomics	Control	male	53	B
+4	1041	MultiomeBrain	Schizophrenia	female	37	B
+4	1185	UCLA-ASD	Control	male	4	B
+4	1317	MultiomeBrain	Bipolar Disorder	female	57	A
+4	1320	MultiomeBrain	Schizophrenia	male	53	B
+4	1390	MultiomeBrain	Control	female	43	B
+4	1414	MultiomeBrain	Bipolar Disorder	male	35	A
+4	1461	MultiomeBrain	Bipolar Disorder	male	31	B
+4	1507	MultiomeBrain	Schizophrenia	male	31	A
+4	1601	MultiomeBrain	Bipolar Disorder	male	76	B
+4	1676	MultiomeBrain	Schizophrenia	male	68	A
+4	1713	MultiomeBrain	Bipolar Disorder	male	21	B
+4	1734	MultiomeBrain	Bipolar Disorder	male	26	A
+4	1743	UCLA-ASD	Control	male	44	A
+4	2052	MultiomeBrain	Control	male	40	A
+4	2083	MultiomeBrain	Bipolar Disorder	female	38	A
+4	2275	MultiomeBrain	Bipolar Disorder	female	45	B
+4	2520	MultiomeBrain	Bipolar Disorder	male	25	A
+4	2653	MultiomeBrain	Schizophrenia	female	45	B
+4	2677	MultiomeBrain	Schizophrenia	female	44	A
+4	2686	MultiomeBrain	Bipolar Disorder	female	46	B
+4	2780	MultiomeBrain	Control	male	18	A
+4	2781	MultiomeBrain	Control	male	39	B
+4	2791	MultiomeBrain	Control	male	56	B
+4	285A	UCLA-ASD	ASD	male	8	A
+4	2GGP	UCLA-ASD	Control	male	49	A
+4	2NA6	UCLA-ASD	ASD	male	16	B
+4	2YK7	UCLA-ASD	ASD	female	17	B
+4	35BV	UCLA-ASD	ASD	male	49	A
+4	3HUF	UCLA-ASD	ASD	male	23	B
+4	4341_BA46	Velmeshev-2019.2	Control	male	13	A
+4	4787	UCLA-ASD	Control	male	19	A
+4	5023	UCLA-ASD	ASD	male	16	A
+4	5144	UCLA-ASD	ASD	female	7	A
+4	5144_PFC_Nova	Velmeshev-2019.1	ASD	male	7	A
+4	5278_PFC_Nova	Velmeshev-2019.1	ASD	female	15	B
+4	5294_BA9	Velmeshev-2019.2	ASD	male	19	B
+4	5302	UCLA-ASD	ASD	male	16	B
+4	5308	UCLA-ASD	ASD	male	4	B
+4	5387_BA9	Velmeshev-2019.2	Control	male	12	B
+4	5391	UCLA-ASD	Control	female	8	B
+4	5403_PFC_Nova	Velmeshev-2019.1	ASD	male	16	B
+4	5408	UCLA-ASD	Control	male	6	B
+4	5408_PFC_Nova	Velmeshev-2019.1	Control	male	6	B
+4	5419_PFC	Velmeshev-2019.1	ASD	female	19	A
+4	5531_BA9	Velmeshev-2019.2	ASD	male	15	B
+4	5538_PFC_Nova	Velmeshev-2019.1	Control	female	19	B
+4	5546_BA9_Nova	Velmeshev-2019.2	Control	female	34	B
+4	5565_BA9	Velmeshev-2019.2	ASD	male	12	A
+4	5576	UCLA-ASD	Control	male	2	A
+4	5577_BA9	Velmeshev-2019.2	Control	male	21	A
+4	5670	UCLA-ASD	Control	female	17	A
+4	5787_BA9_Nova	Velmeshev-2019.2	Control	male	39	A
+4	5841_BA9	Velmeshev-2019.2	ASD	male	12	A
+4	5864_BA9	Velmeshev-2019.2	ASD	male	20	A
+4	5879_PFC_Nova	Velmeshev-2019.1	Control	male	15	A
+4	5893_BA9	Velmeshev-2019.2	Control	male	19	B
+4	5893_PFC_Nova	Velmeshev-2019.1	Control	male	19	B
+4	5925	UCLA-ASD	Control	male	7	A
+4	5936_PFC_Nova	Velmeshev-2019.1	Control	female	14	A
+4	5939_BA9	Velmeshev-2019.2	ASD	male	21	B
+4	5945_PFC_Nova	Velmeshev-2019.1	ASD	male	20	B
+4	5958_BA9	Velmeshev-2019.2	Control	male	22	B
+4	5976_BA9	Velmeshev-2019.2	Control	female	4	A
+4	5978_BA9	Velmeshev-2019.2	ASD	male	11	B
+4	5981_BA9_Nova	Velmeshev-2019.2	Control	female	44	B
+4	6033_BA9	Velmeshev-2019.2	ASD	female	14	A
+4	75QW	UCLA-ASD	Control	male	60	B
+4	8XCF	UCLA-ASD	ASD	male	27	A
+4	AN00493	UCLA-ASD	ASD	male	27	B
+4	AN03345	UCLA-ASD	ASD	male	2	A
+4	AN03935	UCLA-ASD	ASD	male	19	A
+4	AN05983	UCLA-ASD	ASD	male	24	A
+4	AN07176	UCLA-ASD	Control	male	21	B
+4	AN07444	UCLA-ASD	Control	male	17	A
+4	AN08792	UCLA-ASD	ASD	male	30	B
+4	AN09714	UCLA-ASD	ASD	male	60	B
+4	AN10679	UCLA-ASD	Control	female	41	A
+4	AN12457	UCLA-ASD	ASD	female	29	A
+4	AN14762	UCLA-ASD	ASD	male	9	A
+4	AN15451	UCLA-ASD	ASD	female	16	B
+4	AN19511	UCLA-ASD	ASD	male	8	B
+4	AN19760	UCLA-ASD	Control	male	28	B
+4	BD1	SZBDMulti-Seq	Bipolar Disorder	female	73	B
+4	BD10	SZBDMulti-Seq	Bipolar Disorder	male	65	B
+4	BD11	SZBDMulti-Seq	Bipolar Disorder	female	89	B
+4	BD12	SZBDMulti-Seq	Bipolar Disorder	female	77	B
+4	BD13	SZBDMulti-Seq	Bipolar Disorder	male	77	B
+4	BD14	SZBDMulti-Seq	Bipolar Disorder	male	36	B
+4	BD15	SZBDMulti-Seq	Bipolar Disorder	male	74	A
+4	BD16	SZBDMulti-Seq	Bipolar Disorder	male	85	B
+4	BD17	SZBDMulti-Seq	Bipolar Disorder	male	51	A
+4	BD18	SZBDMulti-Seq	Bipolar Disorder	male	83	A
+4	BD19	SZBDMulti-Seq	Bipolar Disorder	female	85	A
+4	BD2	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+4	BD20	SZBDMulti-Seq	Bipolar Disorder	female	51	A
+4	BD21	SZBDMulti-Seq	Bipolar Disorder	female	66	A
+4	BD22	SZBDMulti-Seq	Bipolar Disorder	female	64	B
+4	BD23	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+4	BD24	SZBDMulti-Seq	Bipolar Disorder	male	75	B
+4	BD3	SZBDMulti-Seq	Bipolar Disorder	male	24	A
+4	BD4	SZBDMulti-Seq	Bipolar Disorder	female	76	A
+4	BD5	SZBDMulti-Seq	Bipolar Disorder	male	71	A
+4	BD6	SZBDMulti-Seq	Bipolar Disorder	female	61	B
+4	BD7	SZBDMulti-Seq	Bipolar Disorder	male	73	B
+4	BD8	SZBDMulti-Seq	Bipolar Disorder	female	82	B
+4	BD9	SZBDMulti-Seq	Bipolar Disorder	male	82	A
+4	CMC_MSSM_002	CMC	Control	male	42	A
+4	CMC_MSSM_033	CMC	Control	female	81	A
+4	CMC_MSSM_035	CMC	Control	male	75	B
+4	CMC_MSSM_036	CMC	Control	female	82	A
+4	CMC_MSSM_048	CMC	Schizophrenia	male	84	B
+4	CMC_MSSM_049	CMC	Control	female	61	A
+4	CMC_MSSM_056	CMC	Control	female	67	A
+4	CMC_MSSM_058	CMC	Control	female	76	A
+4	CMC_MSSM_060	CMC	Control	male	89	B
+4	CMC_MSSM_067	CMC	Control	female	81	A
+4	CMC_MSSM_072	CMC	Control	female	66	B
+4	CMC_MSSM_077	CMC	Control	female	76	A
+4	CMC_MSSM_080	CMC	Control	male	84	B
+4	CMC_MSSM_081	CMC	Control	female	79	B
+4	CMC_MSSM_083	CMC	Control	male	69	A
+4	CMC_MSSM_085	CMC	Control	male	74	A
+4	CMC_MSSM_086	CMC	Control	male	77	A
+4	CMC_MSSM_089	CMC	Control	male	89	A
+4	CMC_MSSM_090	CMC	Control	male	70	A
+4	CMC_MSSM_094	CMC	Control	female	89	A
+4	CMC_MSSM_104	CMC	Control	male	35	A
+4	CMC_MSSM_105	CMC	Control	female	89	B
+4	CMC_MSSM_108	CMC	Control	male	89	B
+4	CMC_MSSM_113	CMC	Schizophrenia	male	75	B
+4	CMC_MSSM_115	CMC	Schizophrenia	female	50	B
+4	CMC_MSSM_116	CMC	Schizophrenia	female	74	A
+4	CMC_MSSM_117	CMC	Control	male	86	B
+4	CMC_MSSM_130	CMC	Control	male	41	B
+4	CMC_MSSM_131	CMC	Control	male	59	B
+4	CMC_MSSM_140	CMC	Control	female	85	A
+4	CMC_MSSM_148	CMC	Schizophrenia	female	70	B
+4	CMC_MSSM_173	CMC	Control	male	53	A
+4	CMC_MSSM_174	CMC	Control	male	79	B
+4	CMC_MSSM_185	CMC	Control	male	81	A
+4	CMC_MSSM_190	CMC	Control	male	84	A
+4	CMC_MSSM_192	CMC	Schizophrenia	male	86	B
+4	CMC_MSSM_208	CMC	Control	female	89	A
+4	CMC_MSSM_210	CMC	Schizophrenia	male	66	A
+4	CMC_MSSM_212	CMC	Schizophrenia	male	65	A
+4	CMC_MSSM_213	CMC	Schizophrenia	male	62	B
+4	CMC_MSSM_217	CMC	Control	female	79	B
+4	CMC_MSSM_218	CMC	Schizophrenia	male	76	A
+4	CMC_MSSM_219	CMC	Control	female	86	B
+4	CMC_MSSM_221	CMC	Control	female	81	B
+4	CMC_MSSM_223	CMC	Control	male	71	B
+4	CMC_MSSM_224	CMC	Schizophrenia	female	53	A
+4	CMC_MSSM_227	CMC	Control	male	27	B
+4	CMC_MSSM_228	CMC	Control	male	43	B
+4	CMC_MSSM_230	CMC	Control	male	38	B
+4	CMC_MSSM_232	CMC	Control	male	24	A
+4	CMC_MSSM_234	CMC	Control	male	89	B
+4	CMC_MSSM_238	CMC	Control	female	81	B
+4	CMC_MSSM_242	CMC	Control	male	71	B
+4	CMC_MSSM_247	CMC	Control	male	60	B
+4	CMC_MSSM_249	CMC	Control	male	84	A
+4	CMC_MSSM_251	CMC	Control	male	61	A
+4	CMC_MSSM_272	CMC	Control	male	48	A
+4	CMC_MSSM_278	CMC	Control	female	60	B
+4	CMC_MSSM_280	CMC	Control	female	85	B
+4	CMC_MSSM_282	CMC	Control	male	88	A
+4	CMC_MSSM_283	CMC	Control	female	89	B
+4	CMC_MSSM_288	CMC	Schizophrenia	male	69	B
+4	CMC_MSSM_294	CMC	Schizophrenia	male	46	B
+4	CMC_MSSM_295	CMC	Schizophrenia	male	63	B
+4	CMC_MSSM_298	CMC	Schizophrenia	female	65	A
+4	CMC_MSSM_299	CMC	Schizophrenia	female	58	B
+4	CMC_MSSM_300	CMC	Schizophrenia	male	72	A
+4	CMC_MSSM_305	CMC	Schizophrenia	female	86	A
+4	CMC_MSSM_308	CMC	Schizophrenia	male	60	A
+4	CMC_MSSM_309	CMC	Schizophrenia	female	84	B
+4	CMC_MSSM_312	CMC	Schizophrenia	male	68	A
+4	CMC_MSSM_313	CMC	Schizophrenia	male	67	B
+4	CMC_MSSM_315	CMC	Schizophrenia	female	89	B
+4	CMC_MSSM_316	CMC	Schizophrenia	male	40	B
+4	CMC_MSSM_321	CMC	Schizophrenia	male	48	A
+4	CMC_MSSM_323	CMC	Schizophrenia	male	89	A
+4	CMC_MSSM_326	CMC	Schizophrenia	male	82	A
+4	CMC_MSSM_327	CMC	Schizophrenia	female	81	B
+4	CMC_MSSM_338	CMC	Schizophrenia	female	56	A
+4	CMC_MSSM_340	CMC	Schizophrenia	male	76	B
+4	CMC_MSSM_341	CMC	Schizophrenia	male	65	B
+4	CMC_MSSM_347	CMC	Schizophrenia	male	82	B
+4	CMC_MSSM_349	CMC	Schizophrenia	male	79	B
+4	CMC_MSSM_352	CMC	Schizophrenia	male	64	A
+4	CMC_MSSM_355	CMC	Schizophrenia	female	81	A
+4	CMC_MSSM_358	CMC	Control	male	64	B
+4	CMC_MSSM_360	CMC	Schizophrenia	female	89	A
+4	CMC_MSSM_362	CMC	Schizophrenia	male	73	B
+4	CMC_MSSM_369	CMC	Control	male	89	A
+4	CMC_MSSM_371	CMC	Schizophrenia	male	73	A
+4	CMC_MSSM_372	CMC	Schizophrenia	male	89	B
+4	CMC_MSSM_375	CMC	Schizophrenia	male	89	B
+4	CMC_MSSM_377	CMC	Schizophrenia	male	66	B
+4	CMC_MSSM_378	CMC	Schizophrenia	female	70	B
+4	CMC_MSSM_380	CMC	Control	female	74	B
+4	CMC_MSSM_386	CMC	Schizophrenia	male	85	A
+4	CMC_MSSM_390	CMC	Schizophrenia	male	86	A
+4	CMC_MSSM_403	CMC	Schizophrenia	male	69	A
+4	CMC_MSSM_405	CMC	Schizophrenia	male	39	A
+4	CMC_MSSM_443	CMC	Schizophrenia	male	77	A
+4	CON1	SZBDMulti-Seq	Control	female	72	A
+4	CON10	SZBDMulti-Seq	Control	female	62	B
+4	CON11	SZBDMulti-Seq	Control	male	52	B
+4	CON12	SZBDMulti-Seq	Control	male	68	B
+4	CON13	SZBDMulti-Seq	Control	male	68	A
+4	CON14	SZBDMulti-Seq	Control	male	72	A
+4	CON15	SZBDMulti-Seq	Control	female	59	A
+4	CON16	SZBDMulti-Seq	Control	male	42	A
+4	CON17	SZBDMulti-Seq	Control	female	89	B
+4	CON18	SZBDMulti-Seq	Control	female	53	B
+4	CON19	SZBDMulti-Seq	Control	female	58	A
+4	CON2	SZBDMulti-Seq	Control	male	88	A
+4	CON20	SZBDMulti-Seq	Control	female	52	A
+4	CON21	SZBDMulti-Seq	Control	female	58	B
+4	CON22	SZBDMulti-Seq	Control	female	62	A
+4	CON23	SZBDMulti-Seq	Control	male	48	B
+4	CON24	SZBDMulti-Seq	Control	female	44	B
+4	CON3	SZBDMulti-Seq	Control	female	68	A
+4	CON4	SZBDMulti-Seq	Control	male	52	A
+4	CON5	SZBDMulti-Seq	Control	male	36	B
+4	CON6	SZBDMulti-Seq	Control	female	69	B
+4	CON7	SZBDMulti-Seq	Control	male	82	B
+4	CON8	SZBDMulti-Seq	Control	male	80	B
+4	CON9	SZBDMulti-Seq	Control	male	47	A
+4	E4FN	UCLA-ASD	Control	male	27	B
+4	EUFW	UCLA-ASD	Control	male	17	B
+4	FHN9	UCLA-ASD	Control	male	24	B
+4	FXMN	UCLA-ASD	ASD	male	29	A
+4	G7YU	UCLA-ASD	Control	male	27	A
+4	HQ4T	UCLA-ASD	Control	male	17	B
+4	HSB1574_DFC	DevBrain	Williams Syndrome	male	34	B
+4	HSB189_DFC	DevBrain	Control	male	36	B
+4	HSB290_DFC	DevBrain	Control	male	42	A
+4	HSB317_DFC	DevBrain	Control	male	47	B
+4	HSB340_DFC	DevBrain	Control	male	19	A
+4	HSB373_DFC	DevBrain	ASD	male	14	B
+4	HSB375_DFC	DevBrain	ASD	male	46	B
+4	HSB378_DFC	DevBrain	ASD	male	33	A
+4	HSB379_DFC	DevBrain	ASD	female	16	A
+4	HSB380_DFC	DevBrain	ASD	male	19	B
+4	HSB384_DFC	DevBrain	ASD	male	17	A
+4	HSB434_DFC	DevBrain	ASD	male	21	A
+4	HSB517_DFC	DevBrain	ASD	male	27	B
+4	HSB533_DFC	DevBrain	ASD	male	27	A
+4	HSB5437_DFC	DevBrain	Williams Syndrome	male	17	A
+4	HSB5857_DFC	DevBrain	Williams Syndrome	female	42	B
+4	HctZGA002	UCLA-ASD	Control	male	47	B
+4	JU7U	UCLA-ASD	ASD	male	25	B
+4	KMC3	UCLA-ASD	ASD	male	49	A
+4	M9H3	UCLA-ASD	ASD	female	58	B
+4	NEPX	UCLA-ASD	ASD	male	6	B
+4	PA38	UCLA-ASD	ASD	male	19	A
+4	PH2A	UCLA-ASD	Control	male	20	B
+4	PZ65	UCLA-ASD	Control	male	19	A
+4	SZ1	SZBDMulti-Seq	Schizophrenia	female	54	A
+4	SZ10	SZBDMulti-Seq	Schizophrenia	male	42	A
+4	SZ11	SZBDMulti-Seq	Schizophrenia	female	83	B
+4	SZ12	SZBDMulti-Seq	Schizophrenia	male	55	B
+4	SZ13	SZBDMulti-Seq	Schizophrenia	male	58	B
+4	SZ14	SZBDMulti-Seq	Schizophrenia	female	88	B
+4	SZ15	SZBDMulti-Seq	Schizophrenia	female	87	A
+4	SZ16	SZBDMulti-Seq	Schizophrenia	male	46	A
+4	SZ17	SZBDMulti-Seq	Schizophrenia	male	49	B
+4	SZ18	SZBDMulti-Seq	Schizophrenia	female	89	A
+4	SZ19	SZBDMulti-Seq	Schizophrenia	female	79	A
+4	SZ2	SZBDMulti-Seq	Schizophrenia	male	44	B
+4	SZ20	SZBDMulti-Seq	Schizophrenia	female	76	B
+4	SZ21	SZBDMulti-Seq	Schizophrenia	female	56	B
+4	SZ22	SZBDMulti-Seq	Schizophrenia	female	61	A
+4	SZ23	SZBDMulti-Seq	Schizophrenia	male	22	B
+4	SZ24	SZBDMulti-Seq	Schizophrenia	male	44	A
+4	SZ3	SZBDMulti-Seq	Schizophrenia	female	67	A
+4	SZ4	SZBDMulti-Seq	Schizophrenia	male	89	A
+4	SZ5	SZBDMulti-Seq	Schizophrenia	male	80	B
+4	SZ6	SZBDMulti-Seq	Schizophrenia	female	64	B
+4	SZ7	SZBDMulti-Seq	Schizophrenia	female	85	B
+4	SZ8	SZBDMulti-Seq	Schizophrenia	male	49	A
+4	SZ9	SZBDMulti-Seq	Schizophrenia	male	77	A
+4	U8DM	UCLA-ASD	Control	female	28	B
+4	UPIT13161	UCLA-ASD	ASD	male	24	B
+4	UPIT3152	UCLA-ASD	Control	male	23	A
+4	WBYA	UCLA-ASD	Control	male	22	A
+4	sc1	PTSDBrainomics	Control	male	39	B
+4	sc11	PTSDBrainomics	Control	female	49	B
+4	sc12	PTSDBrainomics	Control	female	58	A
+4	sc13	PTSDBrainomics	Control	male	60	A
+4	sc18	PTSDBrainomics	MDD	male	53	A
+4	sc2	PTSDBrainomics	Control	male	50	B
+4	sc21	PTSDBrainomics	MDD	male	47	B
+4	sc3	PTSDBrainomics	Control	male	45	B
+4	sc31	PTSDBrainomics	MDD	female	55	B
+4	sc32	PTSDBrainomics	MDD	male	54	B
+4	sc33	PTSDBrainomics	PTSD	male	40	A
+4	sc34	PTSDBrainomics	PTSD	male	47	B
+4	sc35	PTSDBrainomics	PTSD	male	53	A
+4	sc42	PTSDBrainomics	PTSD	male	26	B
+4	sc43	PTSDBrainomics	PTSD	female	50	A
+4	sc44	PTSDBrainomics	PTSD	male	29	A
+4	sc5	PTSDBrainomics	Control	male	40	A
+4	sc6	PTSDBrainomics	Control	male	43	A
+4	sc7	PTSDBrainomics	Control	male	53	A
+5	1041	MultiomeBrain	Schizophrenia	female	37	B
+5	1185	UCLA-ASD	Control	male	4	A
+5	1317	MultiomeBrain	Bipolar Disorder	female	57	B
+5	1320	MultiomeBrain	Schizophrenia	male	53	B
+5	1390	MultiomeBrain	Control	female	43	B
+5	1414	MultiomeBrain	Bipolar Disorder	male	35	A
+5	1461	MultiomeBrain	Bipolar Disorder	male	31	A
+5	1507	MultiomeBrain	Schizophrenia	male	31	A
+5	1601	MultiomeBrain	Bipolar Disorder	male	76	B
+5	1676	MultiomeBrain	Schizophrenia	male	68	B
+5	1713	MultiomeBrain	Bipolar Disorder	male	21	A
+5	1734	MultiomeBrain	Bipolar Disorder	male	26	B
+5	1743	UCLA-ASD	Control	male	44	B
+5	2052	MultiomeBrain	Control	male	40	A
+5	2083	MultiomeBrain	Bipolar Disorder	female	38	B
+5	2275	MultiomeBrain	Bipolar Disorder	female	45	A
+5	2520	MultiomeBrain	Bipolar Disorder	male	25	B
+5	2653	MultiomeBrain	Schizophrenia	female	45	A
+5	2677	MultiomeBrain	Schizophrenia	female	44	A
+5	2686	MultiomeBrain	Bipolar Disorder	female	46	A
+5	2780	MultiomeBrain	Control	male	18	B
+5	2781	MultiomeBrain	Control	male	39	A
+5	2791	MultiomeBrain	Control	male	56	B
+5	285A	UCLA-ASD	ASD	male	8	A
+5	2GGP	UCLA-ASD	Control	male	49	A
+5	2NA6	UCLA-ASD	ASD	male	16	B
+5	2YK7	UCLA-ASD	ASD	female	17	A
+5	35BV	UCLA-ASD	ASD	male	49	B
+5	3HUF	UCLA-ASD	ASD	male	23	A
+5	4341_BA46	Velmeshev-2019.2	Control	male	13	B
+5	4787	UCLA-ASD	Control	male	19	B
+5	5023	UCLA-ASD	ASD	male	16	A
+5	5144	UCLA-ASD	ASD	female	7	B
+5	5144_PFC_Nova	Velmeshev-2019.1	ASD	male	7	A
+5	5278_PFC_Nova	Velmeshev-2019.1	ASD	female	15	B
+5	5294_BA9	Velmeshev-2019.2	ASD	male	19	A
+5	5302	UCLA-ASD	ASD	male	16	B
+5	5308	UCLA-ASD	ASD	male	4	B
+5	5387_BA9	Velmeshev-2019.2	Control	male	12	A
+5	5391	UCLA-ASD	Control	female	8	A
+5	5403_PFC_Nova	Velmeshev-2019.1	ASD	male	16	B
+5	5408	UCLA-ASD	Control	male	6	B
+5	5408_PFC_Nova	Velmeshev-2019.1	Control	male	6	B
+5	5419_PFC	Velmeshev-2019.1	ASD	female	19	A
+5	5531_BA9	Velmeshev-2019.2	ASD	male	15	B
+5	5538_PFC_Nova	Velmeshev-2019.1	Control	female	19	A
+5	5546_BA9_Nova	Velmeshev-2019.2	Control	female	34	B
+5	5565_BA9	Velmeshev-2019.2	ASD	male	12	B
+5	5576	UCLA-ASD	Control	male	2	B
+5	5577_BA9	Velmeshev-2019.2	Control	male	21	A
+5	5670	UCLA-ASD	Control	female	17	B
+5	5787_BA9_Nova	Velmeshev-2019.2	Control	male	39	B
+5	5841_BA9	Velmeshev-2019.2	ASD	male	12	A
+5	5864_BA9	Velmeshev-2019.2	ASD	male	20	B
+5	5879_PFC_Nova	Velmeshev-2019.1	Control	male	15	A
+5	5893_BA9	Velmeshev-2019.2	Control	male	19	B
+5	5893_PFC_Nova	Velmeshev-2019.1	Control	male	19	B
+5	5925	UCLA-ASD	Control	male	7	A
+5	5936_PFC_Nova	Velmeshev-2019.1	Control	female	14	B
+5	5939_BA9	Velmeshev-2019.2	ASD	male	21	B
+5	5945_PFC_Nova	Velmeshev-2019.1	ASD	male	20	B
+5	5958_BA9	Velmeshev-2019.2	Control	male	22	A
+5	5976_BA9	Velmeshev-2019.2	Control	female	4	A
+5	5978_BA9	Velmeshev-2019.2	ASD	male	11	A
+5	5981_BA9_Nova	Velmeshev-2019.2	Control	female	44	B
+5	6033_BA9	Velmeshev-2019.2	ASD	female	14	A
+5	75QW	UCLA-ASD	Control	male	60	A
+5	8XCF	UCLA-ASD	ASD	male	27	B
+5	AN00493	UCLA-ASD	ASD	male	27	A
+5	AN03345	UCLA-ASD	ASD	male	2	A
+5	AN03935	UCLA-ASD	ASD	male	19	A
+5	AN05983	UCLA-ASD	ASD	male	24	A
+5	AN07176	UCLA-ASD	Control	male	21	B
+5	AN07444	UCLA-ASD	Control	male	17	A
+5	AN08792	UCLA-ASD	ASD	male	30	A
+5	AN09714	UCLA-ASD	ASD	male	60	B
+5	AN10679	UCLA-ASD	Control	female	41	B
+5	AN12457	UCLA-ASD	ASD	female	29	B
+5	AN14762	UCLA-ASD	ASD	male	9	A
+5	AN15451	UCLA-ASD	ASD	female	16	A
+5	AN19511	UCLA-ASD	ASD	male	8	B
+5	AN19760	UCLA-ASD	Control	male	28	A
+5	BD1	SZBDMulti-Seq	Bipolar Disorder	female	73	A
+5	BD10	SZBDMulti-Seq	Bipolar Disorder	male	65	A
+5	BD11	SZBDMulti-Seq	Bipolar Disorder	female	89	B
+5	BD12	SZBDMulti-Seq	Bipolar Disorder	female	77	A
+5	BD13	SZBDMulti-Seq	Bipolar Disorder	male	77	B
+5	BD14	SZBDMulti-Seq	Bipolar Disorder	male	36	A
+5	BD15	SZBDMulti-Seq	Bipolar Disorder	male	74	A
+5	BD16	SZBDMulti-Seq	Bipolar Disorder	male	85	B
+5	BD17	SZBDMulti-Seq	Bipolar Disorder	male	51	B
+5	BD18	SZBDMulti-Seq	Bipolar Disorder	male	83	A
+5	BD19	SZBDMulti-Seq	Bipolar Disorder	female	85	A
+5	BD2	SZBDMulti-Seq	Bipolar Disorder	female	80	B
+5	BD20	SZBDMulti-Seq	Bipolar Disorder	female	51	A
+5	BD21	SZBDMulti-Seq	Bipolar Disorder	female	66	A
+5	BD22	SZBDMulti-Seq	Bipolar Disorder	female	64	B
+5	BD23	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+5	BD24	SZBDMulti-Seq	Bipolar Disorder	male	75	B
+5	BD3	SZBDMulti-Seq	Bipolar Disorder	male	24	B
+5	BD4	SZBDMulti-Seq	Bipolar Disorder	female	76	B
+5	BD5	SZBDMulti-Seq	Bipolar Disorder	male	71	B
+5	BD6	SZBDMulti-Seq	Bipolar Disorder	female	61	B
+5	BD7	SZBDMulti-Seq	Bipolar Disorder	male	73	A
+5	BD8	SZBDMulti-Seq	Bipolar Disorder	female	82	B
+5	BD9	SZBDMulti-Seq	Bipolar Disorder	male	82	A
+5	CMC_MSSM_002	CMC	Control	male	42	A
+5	CMC_MSSM_033	CMC	Control	female	81	B
+5	CMC_MSSM_035	CMC	Control	male	75	B
+5	CMC_MSSM_036	CMC	Control	female	82	B
+5	CMC_MSSM_048	CMC	Schizophrenia	male	84	A
+5	CMC_MSSM_049	CMC	Control	female	61	A
+5	CMC_MSSM_056	CMC	Control	female	67	A
+5	CMC_MSSM_058	CMC	Control	female	76	A
+5	CMC_MSSM_060	CMC	Control	male	89	A
+5	CMC_MSSM_067	CMC	Control	female	81	A
+5	CMC_MSSM_072	CMC	Control	female	66	B
+5	CMC_MSSM_077	CMC	Control	female	76	A
+5	CMC_MSSM_080	CMC	Control	male	84	B
+5	CMC_MSSM_081	CMC	Control	female	79	B
+5	CMC_MSSM_083	CMC	Control	male	69	B
+5	CMC_MSSM_085	CMC	Control	male	74	B
+5	CMC_MSSM_086	CMC	Control	male	77	A
+5	CMC_MSSM_089	CMC	Control	male	89	B
+5	CMC_MSSM_090	CMC	Control	male	70	B
+5	CMC_MSSM_094	CMC	Control	female	89	B
+5	CMC_MSSM_104	CMC	Control	male	35	A
+5	CMC_MSSM_105	CMC	Control	female	89	B
+5	CMC_MSSM_108	CMC	Control	male	89	A
+5	CMC_MSSM_113	CMC	Schizophrenia	male	75	B
+5	CMC_MSSM_115	CMC	Schizophrenia	female	50	B
+5	CMC_MSSM_116	CMC	Schizophrenia	female	74	A
+5	CMC_MSSM_117	CMC	Control	male	86	B
+5	CMC_MSSM_130	CMC	Control	male	41	B
+5	CMC_MSSM_131	CMC	Control	male	59	A
+5	CMC_MSSM_140	CMC	Control	female	85	A
+5	CMC_MSSM_148	CMC	Schizophrenia	female	70	B
+5	CMC_MSSM_173	CMC	Control	male	53	B
+5	CMC_MSSM_174	CMC	Control	male	79	A
+5	CMC_MSSM_185	CMC	Control	male	81	B
+5	CMC_MSSM_190	CMC	Control	male	84	A
+5	CMC_MSSM_192	CMC	Schizophrenia	male	86	A
+5	CMC_MSSM_208	CMC	Control	female	89	A
+5	CMC_MSSM_210	CMC	Schizophrenia	male	66	B
+5	CMC_MSSM_212	CMC	Schizophrenia	male	65	A
+5	CMC_MSSM_213	CMC	Schizophrenia	male	62	A
+5	CMC_MSSM_217	CMC	Control	female	79	A
+5	CMC_MSSM_218	CMC	Schizophrenia	male	76	B
+5	CMC_MSSM_219	CMC	Control	female	86	A
+5	CMC_MSSM_221	CMC	Control	female	81	B
+5	CMC_MSSM_223	CMC	Control	male	71	A
+5	CMC_MSSM_224	CMC	Schizophrenia	female	53	A
+5	CMC_MSSM_227	CMC	Control	male	27	B
+5	CMC_MSSM_228	CMC	Control	male	43	B
+5	CMC_MSSM_230	CMC	Control	male	38	B
+5	CMC_MSSM_232	CMC	Control	male	24	A
+5	CMC_MSSM_234	CMC	Control	male	89	A
+5	CMC_MSSM_238	CMC	Control	female	81	A
+5	CMC_MSSM_242	CMC	Control	male	71	A
+5	CMC_MSSM_247	CMC	Control	male	60	A
+5	CMC_MSSM_249	CMC	Control	male	84	A
+5	CMC_MSSM_251	CMC	Control	male	61	B
+5	CMC_MSSM_272	CMC	Control	male	48	A
+5	CMC_MSSM_278	CMC	Control	female	60	B
+5	CMC_MSSM_280	CMC	Control	female	85	B
+5	CMC_MSSM_282	CMC	Control	male	88	B
+5	CMC_MSSM_283	CMC	Control	female	89	B
+5	CMC_MSSM_288	CMC	Schizophrenia	male	69	B
+5	CMC_MSSM_294	CMC	Schizophrenia	male	46	A
+5	CMC_MSSM_295	CMC	Schizophrenia	male	63	A
+5	CMC_MSSM_298	CMC	Schizophrenia	female	65	A
+5	CMC_MSSM_299	CMC	Schizophrenia	female	58	A
+5	CMC_MSSM_300	CMC	Schizophrenia	male	72	A
+5	CMC_MSSM_305	CMC	Schizophrenia	female	86	A
+5	CMC_MSSM_308	CMC	Schizophrenia	male	60	B
+5	CMC_MSSM_309	CMC	Schizophrenia	female	84	B
+5	CMC_MSSM_312	CMC	Schizophrenia	male	68	B
+5	CMC_MSSM_313	CMC	Schizophrenia	male	67	A
+5	CMC_MSSM_315	CMC	Schizophrenia	female	89	A
+5	CMC_MSSM_316	CMC	Schizophrenia	male	40	B
+5	CMC_MSSM_321	CMC	Schizophrenia	male	48	B
+5	CMC_MSSM_323	CMC	Schizophrenia	male	89	B
+5	CMC_MSSM_326	CMC	Schizophrenia	male	82	B
+5	CMC_MSSM_327	CMC	Schizophrenia	female	81	A
+5	CMC_MSSM_338	CMC	Schizophrenia	female	56	B
+5	CMC_MSSM_340	CMC	Schizophrenia	male	76	A
+5	CMC_MSSM_341	CMC	Schizophrenia	male	65	B
+5	CMC_MSSM_347	CMC	Schizophrenia	male	82	A
+5	CMC_MSSM_349	CMC	Schizophrenia	male	79	A
+5	CMC_MSSM_352	CMC	Schizophrenia	male	64	B
+5	CMC_MSSM_355	CMC	Schizophrenia	female	81	B
+5	CMC_MSSM_358	CMC	Control	male	64	A
+5	CMC_MSSM_360	CMC	Schizophrenia	female	89	B
+5	CMC_MSSM_362	CMC	Schizophrenia	male	73	B
+5	CMC_MSSM_369	CMC	Control	male	89	B
+5	CMC_MSSM_371	CMC	Schizophrenia	male	73	A
+5	CMC_MSSM_372	CMC	Schizophrenia	male	89	A
+5	CMC_MSSM_375	CMC	Schizophrenia	male	89	A
+5	CMC_MSSM_377	CMC	Schizophrenia	male	66	A
+5	CMC_MSSM_378	CMC	Schizophrenia	female	70	B
+5	CMC_MSSM_380	CMC	Control	female	74	B
+5	CMC_MSSM_386	CMC	Schizophrenia	male	85	B
+5	CMC_MSSM_390	CMC	Schizophrenia	male	86	B
+5	CMC_MSSM_403	CMC	Schizophrenia	male	69	A
+5	CMC_MSSM_405	CMC	Schizophrenia	male	39	A
+5	CMC_MSSM_443	CMC	Schizophrenia	male	77	B
+5	CON1	SZBDMulti-Seq	Control	female	72	B
+5	CON10	SZBDMulti-Seq	Control	female	62	A
+5	CON11	SZBDMulti-Seq	Control	male	52	A
+5	CON12	SZBDMulti-Seq	Control	male	68	A
+5	CON13	SZBDMulti-Seq	Control	male	68	B
+5	CON14	SZBDMulti-Seq	Control	male	72	B
+5	CON15	SZBDMulti-Seq	Control	female	59	B
+5	CON16	SZBDMulti-Seq	Control	male	42	B
+5	CON17	SZBDMulti-Seq	Control	female	89	A
+5	CON18	SZBDMulti-Seq	Control	female	53	A
+5	CON19	SZBDMulti-Seq	Control	female	58	B
+5	CON2	SZBDMulti-Seq	Control	male	88	B
+5	CON20	SZBDMulti-Seq	Control	female	52	A
+5	CON21	SZBDMulti-Seq	Control	female	58	A
+5	CON22	SZBDMulti-Seq	Control	female	62	B
+5	CON23	SZBDMulti-Seq	Control	male	48	A
+5	CON24	SZBDMulti-Seq	Control	female	44	B
+5	CON3	SZBDMulti-Seq	Control	female	68	B
+5	CON4	SZBDMulti-Seq	Control	male	52	B
+5	CON5	SZBDMulti-Seq	Control	male	36	A
+5	CON6	SZBDMulti-Seq	Control	female	69	A
+5	CON7	SZBDMulti-Seq	Control	male	82	A
+5	CON8	SZBDMulti-Seq	Control	male	80	A
+5	CON9	SZBDMulti-Seq	Control	male	47	B
+5	E4FN	UCLA-ASD	Control	male	27	B
+5	EUFW	UCLA-ASD	Control	male	17	B
+5	FHN9	UCLA-ASD	Control	male	24	A
+5	FXMN	UCLA-ASD	ASD	male	29	B
+5	G7YU	UCLA-ASD	Control	male	27	A
+5	HQ4T	UCLA-ASD	Control	male	17	A
+5	HSB1574_DFC	DevBrain	Williams Syndrome	male	34	A
+5	HSB189_DFC	DevBrain	Control	male	36	A
+5	HSB290_DFC	DevBrain	Control	male	42	A
+5	HSB317_DFC	DevBrain	Control	male	47	B
+5	HSB340_DFC	DevBrain	Control	male	19	B
+5	HSB373_DFC	DevBrain	ASD	male	14	A
+5	HSB375_DFC	DevBrain	ASD	male	46	A
+5	HSB378_DFC	DevBrain	ASD	male	33	B
+5	HSB379_DFC	DevBrain	ASD	female	16	B
+5	HSB380_DFC	DevBrain	ASD	male	19	B
+5	HSB384_DFC	DevBrain	ASD	male	17	B
+5	HSB434_DFC	DevBrain	ASD	male	21	A
+5	HSB517_DFC	DevBrain	ASD	male	27	A
+5	HSB533_DFC	DevBrain	ASD	male	27	B
+5	HSB5437_DFC	DevBrain	Williams Syndrome	male	17	B
+5	HSB5857_DFC	DevBrain	Williams Syndrome	female	42	B
+5	HctZGA002	UCLA-ASD	Control	male	47	B
+5	JU7U	UCLA-ASD	ASD	male	25	A
+5	KMC3	UCLA-ASD	ASD	male	49	A
+5	M9H3	UCLA-ASD	ASD	female	58	B
+5	NEPX	UCLA-ASD	ASD	male	6	B
+5	PA38	UCLA-ASD	ASD	male	19	B
+5	PH2A	UCLA-ASD	Control	male	20	B
+5	PZ65	UCLA-ASD	Control	male	19	A
+5	SZ1	SZBDMulti-Seq	Schizophrenia	female	54	B
+5	SZ10	SZBDMulti-Seq	Schizophrenia	male	42	B
+5	SZ11	SZBDMulti-Seq	Schizophrenia	female	83	B
+5	SZ12	SZBDMulti-Seq	Schizophrenia	male	55	B
+5	SZ13	SZBDMulti-Seq	Schizophrenia	male	58	A
+5	SZ14	SZBDMulti-Seq	Schizophrenia	female	88	A
+5	SZ15	SZBDMulti-Seq	Schizophrenia	female	87	B
+5	SZ16	SZBDMulti-Seq	Schizophrenia	male	46	B
+5	SZ17	SZBDMulti-Seq	Schizophrenia	male	49	A
+5	SZ18	SZBDMulti-Seq	Schizophrenia	female	89	B
+5	SZ19	SZBDMulti-Seq	Schizophrenia	female	79	A
+5	SZ2	SZBDMulti-Seq	Schizophrenia	male	44	B
+5	SZ20	SZBDMulti-Seq	Schizophrenia	female	76	B
+5	SZ21	SZBDMulti-Seq	Schizophrenia	female	56	A
+5	SZ22	SZBDMulti-Seq	Schizophrenia	female	61	A
+5	SZ23	SZBDMulti-Seq	Schizophrenia	male	22	A
+5	SZ24	SZBDMulti-Seq	Schizophrenia	male	44	A
+5	SZ3	SZBDMulti-Seq	Schizophrenia	female	67	A
+5	SZ4	SZBDMulti-Seq	Schizophrenia	male	89	A
+5	SZ5	SZBDMulti-Seq	Schizophrenia	male	80	B
+5	SZ6	SZBDMulti-Seq	Schizophrenia	female	64	B
+5	SZ7	SZBDMulti-Seq	Schizophrenia	female	85	A
+5	SZ8	SZBDMulti-Seq	Schizophrenia	male	49	A
+5	SZ9	SZBDMulti-Seq	Schizophrenia	male	77	B
+5	U8DM	UCLA-ASD	Control	female	28	A
+5	UPIT13161	UCLA-ASD	ASD	male	24	B
+5	UPIT3152	UCLA-ASD	Control	male	23	B
+5	WBYA	UCLA-ASD	Control	male	22	A
+5	sc1	PTSDBrainomics	Control	male	39	B
+5	sc11	PTSDBrainomics	Control	female	49	A
+5	sc12	PTSDBrainomics	Control	female	58	B
+5	sc13	PTSDBrainomics	Control	male	60	B
+5	sc18	PTSDBrainomics	MDD	male	53	A
+5	sc2	PTSDBrainomics	Control	male	50	B
+5	sc21	PTSDBrainomics	MDD	male	47	B
+5	sc3	PTSDBrainomics	Control	male	45	A
+5	sc31	PTSDBrainomics	MDD	female	55	B
+5	sc32	PTSDBrainomics	MDD	male	54	A
+5	sc33	PTSDBrainomics	PTSD	male	40	A
+5	sc34	PTSDBrainomics	PTSD	male	47	B
+5	sc35	PTSDBrainomics	PTSD	male	53	B
+5	sc42	PTSDBrainomics	PTSD	male	26	B
+5	sc43	PTSDBrainomics	PTSD	female	50	B
+5	sc44	PTSDBrainomics	PTSD	male	29	A
+5	sc5	PTSDBrainomics	Control	male	40	A
+5	sc6	PTSDBrainomics	Control	male	43	B
+5	sc7	PTSDBrainomics	Control	male	53	A
+6	1041	MultiomeBrain	Schizophrenia	female	37	B
+6	1185	UCLA-ASD	Control	male	4	A
+6	1317	MultiomeBrain	Bipolar Disorder	female	57	A
+6	1320	MultiomeBrain	Schizophrenia	male	53	A
+6	1390	MultiomeBrain	Control	female	43	B
+6	1414	MultiomeBrain	Bipolar Disorder	male	35	B
+6	1461	MultiomeBrain	Bipolar Disorder	male	31	A
+6	1507	MultiomeBrain	Schizophrenia	male	31	B
+6	1601	MultiomeBrain	Bipolar Disorder	male	76	A
+6	1676	MultiomeBrain	Schizophrenia	male	68	B
+6	1713	MultiomeBrain	Bipolar Disorder	male	21	B
+6	1734	MultiomeBrain	Bipolar Disorder	male	26	B
+6	1743	UCLA-ASD	Control	male	44	A
+6	2052	MultiomeBrain	Control	male	40	A
+6	2083	MultiomeBrain	Bipolar Disorder	female	38	A
+6	2275	MultiomeBrain	Bipolar Disorder	female	45	B
+6	2520	MultiomeBrain	Bipolar Disorder	male	25	A
+6	2653	MultiomeBrain	Schizophrenia	female	45	B
+6	2677	MultiomeBrain	Schizophrenia	female	44	A
+6	2686	MultiomeBrain	Bipolar Disorder	female	46	B
+6	2780	MultiomeBrain	Control	male	18	A
+6	2781	MultiomeBrain	Control	male	39	B
+6	2791	MultiomeBrain	Control	male	56	B
+6	285A	UCLA-ASD	ASD	male	8	A
+6	2GGP	UCLA-ASD	Control	male	49	A
+6	2NA6	UCLA-ASD	ASD	male	16	B
+6	2YK7	UCLA-ASD	ASD	female	17	A
+6	35BV	UCLA-ASD	ASD	male	49	A
+6	3HUF	UCLA-ASD	ASD	male	23	B
+6	4341_BA46	Velmeshev-2019.2	Control	male	13	B
+6	4787	UCLA-ASD	Control	male	19	B
+6	5023	UCLA-ASD	ASD	male	16	A
+6	5144	UCLA-ASD	ASD	female	7	B
+6	5144_PFC_Nova	Velmeshev-2019.1	ASD	male	7	A
+6	5278_PFC_Nova	Velmeshev-2019.1	ASD	female	15	B
+6	5294_BA9	Velmeshev-2019.2	ASD	male	19	A
+6	5302	UCLA-ASD	ASD	male	16	A
+6	5308	UCLA-ASD	ASD	male	4	A
+6	5387_BA9	Velmeshev-2019.2	Control	male	12	A
+6	5391	UCLA-ASD	Control	female	8	B
+6	5403_PFC_Nova	Velmeshev-2019.1	ASD	male	16	B
+6	5408	UCLA-ASD	Control	male	6	B
+6	5408_PFC_Nova	Velmeshev-2019.1	Control	male	6	A
+6	5419_PFC	Velmeshev-2019.1	ASD	female	19	A
+6	5531_BA9	Velmeshev-2019.2	ASD	male	15	A
+6	5538_PFC_Nova	Velmeshev-2019.1	Control	female	19	B
+6	5546_BA9_Nova	Velmeshev-2019.2	Control	female	34	A
+6	5565_BA9	Velmeshev-2019.2	ASD	male	12	B
+6	5576	UCLA-ASD	Control	male	2	B
+6	5577_BA9	Velmeshev-2019.2	Control	male	21	A
+6	5670	UCLA-ASD	Control	female	17	A
+6	5787_BA9_Nova	Velmeshev-2019.2	Control	male	39	A
+6	5841_BA9	Velmeshev-2019.2	ASD	male	12	B
+6	5864_BA9	Velmeshev-2019.2	ASD	male	20	B
+6	5879_PFC_Nova	Velmeshev-2019.1	Control	male	15	B
+6	5893_BA9	Velmeshev-2019.2	Control	male	19	B
+6	5893_PFC_Nova	Velmeshev-2019.1	Control	male	19	A
+6	5925	UCLA-ASD	Control	male	7	A
+6	5936_PFC_Nova	Velmeshev-2019.1	Control	female	14	A
+6	5939_BA9	Velmeshev-2019.2	ASD	male	21	A
+6	5945_PFC_Nova	Velmeshev-2019.1	ASD	male	20	B
+6	5958_BA9	Velmeshev-2019.2	Control	male	22	B
+6	5976_BA9	Velmeshev-2019.2	Control	female	4	B
+6	5978_BA9	Velmeshev-2019.2	ASD	male	11	A
+6	5981_BA9_Nova	Velmeshev-2019.2	Control	female	44	B
+6	6033_BA9	Velmeshev-2019.2	ASD	female	14	A
+6	75QW	UCLA-ASD	Control	male	60	A
+6	8XCF	UCLA-ASD	ASD	male	27	B
+6	AN00493	UCLA-ASD	ASD	male	27	B
+6	AN03345	UCLA-ASD	ASD	male	2	B
+6	AN03935	UCLA-ASD	ASD	male	19	B
+6	AN05983	UCLA-ASD	ASD	male	24	B
+6	AN07176	UCLA-ASD	Control	male	21	A
+6	AN07444	UCLA-ASD	Control	male	17	B
+6	AN08792	UCLA-ASD	ASD	male	30	B
+6	AN09714	UCLA-ASD	ASD	male	60	B
+6	AN10679	UCLA-ASD	Control	female	41	B
+6	AN12457	UCLA-ASD	ASD	female	29	B
+6	AN14762	UCLA-ASD	ASD	male	9	A
+6	AN15451	UCLA-ASD	ASD	female	16	A
+6	AN19511	UCLA-ASD	ASD	male	8	B
+6	AN19760	UCLA-ASD	Control	male	28	B
+6	BD1	SZBDMulti-Seq	Bipolar Disorder	female	73	B
+6	BD10	SZBDMulti-Seq	Bipolar Disorder	male	65	A
+6	BD11	SZBDMulti-Seq	Bipolar Disorder	female	89	A
+6	BD12	SZBDMulti-Seq	Bipolar Disorder	female	77	A
+6	BD13	SZBDMulti-Seq	Bipolar Disorder	male	77	B
+6	BD14	SZBDMulti-Seq	Bipolar Disorder	male	36	B
+6	BD15	SZBDMulti-Seq	Bipolar Disorder	male	74	A
+6	BD16	SZBDMulti-Seq	Bipolar Disorder	male	85	B
+6	BD17	SZBDMulti-Seq	Bipolar Disorder	male	51	B
+6	BD18	SZBDMulti-Seq	Bipolar Disorder	male	83	A
+6	BD19	SZBDMulti-Seq	Bipolar Disorder	female	85	B
+6	BD2	SZBDMulti-Seq	Bipolar Disorder	female	80	B
+6	BD20	SZBDMulti-Seq	Bipolar Disorder	female	51	B
+6	BD21	SZBDMulti-Seq	Bipolar Disorder	female	66	A
+6	BD22	SZBDMulti-Seq	Bipolar Disorder	female	64	B
+6	BD23	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+6	BD24	SZBDMulti-Seq	Bipolar Disorder	male	75	B
+6	BD3	SZBDMulti-Seq	Bipolar Disorder	male	24	A
+6	BD4	SZBDMulti-Seq	Bipolar Disorder	female	76	A
+6	BD5	SZBDMulti-Seq	Bipolar Disorder	male	71	B
+6	BD6	SZBDMulti-Seq	Bipolar Disorder	female	61	A
+6	BD7	SZBDMulti-Seq	Bipolar Disorder	male	73	A
+6	BD8	SZBDMulti-Seq	Bipolar Disorder	female	82	B
+6	BD9	SZBDMulti-Seq	Bipolar Disorder	male	82	A
+6	CMC_MSSM_002	CMC	Control	male	42	A
+6	CMC_MSSM_033	CMC	Control	female	81	A
+6	CMC_MSSM_035	CMC	Control	male	75	B
+6	CMC_MSSM_036	CMC	Control	female	82	A
+6	CMC_MSSM_048	CMC	Schizophrenia	male	84	A
+6	CMC_MSSM_049	CMC	Control	female	61	A
+6	CMC_MSSM_056	CMC	Control	female	67	B
+6	CMC_MSSM_058	CMC	Control	female	76	B
+6	CMC_MSSM_060	CMC	Control	male	89	A
+6	CMC_MSSM_067	CMC	Control	female	81	B
+6	CMC_MSSM_072	CMC	Control	female	66	A
+6	CMC_MSSM_077	CMC	Control	female	76	A
+6	CMC_MSSM_080	CMC	Control	male	84	A
+6	CMC_MSSM_081	CMC	Control	female	79	B
+6	CMC_MSSM_083	CMC	Control	male	69	B
+6	CMC_MSSM_085	CMC	Control	male	74	B
+6	CMC_MSSM_086	CMC	Control	male	77	A
+6	CMC_MSSM_089	CMC	Control	male	89	B
+6	CMC_MSSM_090	CMC	Control	male	70	B
+6	CMC_MSSM_094	CMC	Control	female	89	A
+6	CMC_MSSM_104	CMC	Control	male	35	A
+6	CMC_MSSM_105	CMC	Control	female	89	A
+6	CMC_MSSM_108	CMC	Control	male	89	A
+6	CMC_MSSM_113	CMC	Schizophrenia	male	75	A
+6	CMC_MSSM_115	CMC	Schizophrenia	female	50	B
+6	CMC_MSSM_116	CMC	Schizophrenia	female	74	A
+6	CMC_MSSM_117	CMC	Control	male	86	B
+6	CMC_MSSM_130	CMC	Control	male	41	B
+6	CMC_MSSM_131	CMC	Control	male	59	A
+6	CMC_MSSM_140	CMC	Control	female	85	A
+6	CMC_MSSM_148	CMC	Schizophrenia	female	70	B
+6	CMC_MSSM_173	CMC	Control	male	53	B
+6	CMC_MSSM_174	CMC	Control	male	79	A
+6	CMC_MSSM_185	CMC	Control	male	81	B
+6	CMC_MSSM_190	CMC	Control	male	84	B
+6	CMC_MSSM_192	CMC	Schizophrenia	male	86	B
+6	CMC_MSSM_208	CMC	Control	female	89	B
+6	CMC_MSSM_210	CMC	Schizophrenia	male	66	A
+6	CMC_MSSM_212	CMC	Schizophrenia	male	65	B
+6	CMC_MSSM_213	CMC	Schizophrenia	male	62	A
+6	CMC_MSSM_217	CMC	Control	female	79	B
+6	CMC_MSSM_218	CMC	Schizophrenia	male	76	B
+6	CMC_MSSM_219	CMC	Control	female	86	B
+6	CMC_MSSM_221	CMC	Control	female	81	A
+6	CMC_MSSM_223	CMC	Control	male	71	A
+6	CMC_MSSM_224	CMC	Schizophrenia	female	53	A
+6	CMC_MSSM_227	CMC	Control	male	27	A
+6	CMC_MSSM_228	CMC	Control	male	43	B
+6	CMC_MSSM_230	CMC	Control	male	38	B
+6	CMC_MSSM_232	CMC	Control	male	24	B
+6	CMC_MSSM_234	CMC	Control	male	89	A
+6	CMC_MSSM_238	CMC	Control	female	81	B
+6	CMC_MSSM_242	CMC	Control	male	71	A
+6	CMC_MSSM_247	CMC	Control	male	60	A
+6	CMC_MSSM_249	CMC	Control	male	84	A
+6	CMC_MSSM_251	CMC	Control	male	61	B
+6	CMC_MSSM_272	CMC	Control	male	48	A
+6	CMC_MSSM_278	CMC	Control	female	60	B
+6	CMC_MSSM_280	CMC	Control	female	85	B
+6	CMC_MSSM_282	CMC	Control	male	88	B
+6	CMC_MSSM_283	CMC	Control	female	89	A
+6	CMC_MSSM_288	CMC	Schizophrenia	male	69	B
+6	CMC_MSSM_294	CMC	Schizophrenia	male	46	B
+6	CMC_MSSM_295	CMC	Schizophrenia	male	63	A
+6	CMC_MSSM_298	CMC	Schizophrenia	female	65	A
+6	CMC_MSSM_299	CMC	Schizophrenia	female	58	B
+6	CMC_MSSM_300	CMC	Schizophrenia	male	72	A
+6	CMC_MSSM_305	CMC	Schizophrenia	female	86	B
+6	CMC_MSSM_308	CMC	Schizophrenia	male	60	B
+6	CMC_MSSM_309	CMC	Schizophrenia	female	84	A
+6	CMC_MSSM_312	CMC	Schizophrenia	male	68	B
+6	CMC_MSSM_313	CMC	Schizophrenia	male	67	A
+6	CMC_MSSM_315	CMC	Schizophrenia	female	89	B
+6	CMC_MSSM_316	CMC	Schizophrenia	male	40	B
+6	CMC_MSSM_321	CMC	Schizophrenia	male	48	A
+6	CMC_MSSM_323	CMC	Schizophrenia	male	89	A
+6	CMC_MSSM_326	CMC	Schizophrenia	male	82	A
+6	CMC_MSSM_327	CMC	Schizophrenia	female	81	A
+6	CMC_MSSM_338	CMC	Schizophrenia	female	56	A
+6	CMC_MSSM_340	CMC	Schizophrenia	male	76	A
+6	CMC_MSSM_341	CMC	Schizophrenia	male	65	A
+6	CMC_MSSM_347	CMC	Schizophrenia	male	82	B
+6	CMC_MSSM_349	CMC	Schizophrenia	male	79	A
+6	CMC_MSSM_352	CMC	Schizophrenia	male	64	B
+6	CMC_MSSM_355	CMC	Schizophrenia	female	81	B
+6	CMC_MSSM_358	CMC	Control	male	64	A
+6	CMC_MSSM_360	CMC	Schizophrenia	female	89	A
+6	CMC_MSSM_362	CMC	Schizophrenia	male	73	B
+6	CMC_MSSM_369	CMC	Control	male	89	B
+6	CMC_MSSM_371	CMC	Schizophrenia	male	73	B
+6	CMC_MSSM_372	CMC	Schizophrenia	male	89	B
+6	CMC_MSSM_375	CMC	Schizophrenia	male	89	A
+6	CMC_MSSM_377	CMC	Schizophrenia	male	66	B
+6	CMC_MSSM_378	CMC	Schizophrenia	female	70	B
+6	CMC_MSSM_380	CMC	Control	female	74	A
+6	CMC_MSSM_386	CMC	Schizophrenia	male	85	B
+6	CMC_MSSM_390	CMC	Schizophrenia	male	86	A
+6	CMC_MSSM_403	CMC	Schizophrenia	male	69	A
+6	CMC_MSSM_405	CMC	Schizophrenia	male	39	A
+6	CMC_MSSM_443	CMC	Schizophrenia	male	77	B
+6	CON1	SZBDMulti-Seq	Control	female	72	A
+6	CON10	SZBDMulti-Seq	Control	female	62	A
+6	CON11	SZBDMulti-Seq	Control	male	52	A
+6	CON12	SZBDMulti-Seq	Control	male	68	B
+6	CON13	SZBDMulti-Seq	Control	male	68	A
+6	CON14	SZBDMulti-Seq	Control	male	72	A
+6	CON15	SZBDMulti-Seq	Control	female	59	A
+6	CON16	SZBDMulti-Seq	Control	male	42	B
+6	CON17	SZBDMulti-Seq	Control	female	89	B
+6	CON18	SZBDMulti-Seq	Control	female	53	B
+6	CON19	SZBDMulti-Seq	Control	female	58	A
+6	CON2	SZBDMulti-Seq	Control	male	88	A
+6	CON20	SZBDMulti-Seq	Control	female	52	B
+6	CON21	SZBDMulti-Seq	Control	female	58	B
+6	CON22	SZBDMulti-Seq	Control	female	62	B
+6	CON23	SZBDMulti-Seq	Control	male	48	B
+6	CON24	SZBDMulti-Seq	Control	female	44	A
+6	CON3	SZBDMulti-Seq	Control	female	68	B
+6	CON4	SZBDMulti-Seq	Control	male	52	B
+6	CON5	SZBDMulti-Seq	Control	male	36	A
+6	CON6	SZBDMulti-Seq	Control	female	69	A
+6	CON7	SZBDMulti-Seq	Control	male	82	B
+6	CON8	SZBDMulti-Seq	Control	male	80	B
+6	CON9	SZBDMulti-Seq	Control	male	47	A
+6	E4FN	UCLA-ASD	Control	male	27	B
+6	EUFW	UCLA-ASD	Control	male	17	A
+6	FHN9	UCLA-ASD	Control	male	24	A
+6	FXMN	UCLA-ASD	ASD	male	29	A
+6	G7YU	UCLA-ASD	Control	male	27	A
+6	HQ4T	UCLA-ASD	Control	male	17	A
+6	HSB1574_DFC	DevBrain	Williams Syndrome	male	34	B
+6	HSB189_DFC	DevBrain	Control	male	36	A
+6	HSB290_DFC	DevBrain	Control	male	42	A
+6	HSB317_DFC	DevBrain	Control	male	47	B
+6	HSB340_DFC	DevBrain	Control	male	19	B
+6	HSB373_DFC	DevBrain	ASD	male	14	B
+6	HSB375_DFC	DevBrain	ASD	male	46	B
+6	HSB378_DFC	DevBrain	ASD	male	33	A
+6	HSB379_DFC	DevBrain	ASD	female	16	B
+6	HSB380_DFC	DevBrain	ASD	male	19	B
+6	HSB384_DFC	DevBrain	ASD	male	17	A
+6	HSB434_DFC	DevBrain	ASD	male	21	A
+6	HSB517_DFC	DevBrain	ASD	male	27	A
+6	HSB533_DFC	DevBrain	ASD	male	27	B
+6	HSB5437_DFC	DevBrain	Williams Syndrome	male	17	A
+6	HSB5857_DFC	DevBrain	Williams Syndrome	female	42	A
+6	HctZGA002	UCLA-ASD	Control	male	47	B
+6	JU7U	UCLA-ASD	ASD	male	25	A
+6	KMC3	UCLA-ASD	ASD	male	49	A
+6	M9H3	UCLA-ASD	ASD	female	58	A
+6	NEPX	UCLA-ASD	ASD	male	6	B
+6	PA38	UCLA-ASD	ASD	male	19	A
+6	PH2A	UCLA-ASD	Control	male	20	B
+6	PZ65	UCLA-ASD	Control	male	19	A
+6	SZ1	SZBDMulti-Seq	Schizophrenia	female	54	A
+6	SZ10	SZBDMulti-Seq	Schizophrenia	male	42	B
+6	SZ11	SZBDMulti-Seq	Schizophrenia	female	83	A
+6	SZ12	SZBDMulti-Seq	Schizophrenia	male	55	A
+6	SZ13	SZBDMulti-Seq	Schizophrenia	male	58	B
+6	SZ14	SZBDMulti-Seq	Schizophrenia	female	88	B
+6	SZ15	SZBDMulti-Seq	Schizophrenia	female	87	B
+6	SZ16	SZBDMulti-Seq	Schizophrenia	male	46	A
+6	SZ17	SZBDMulti-Seq	Schizophrenia	male	49	B
+6	SZ18	SZBDMulti-Seq	Schizophrenia	female	89	A
+6	SZ19	SZBDMulti-Seq	Schizophrenia	female	79	B
+6	SZ2	SZBDMulti-Seq	Schizophrenia	male	44	B
+6	SZ20	SZBDMulti-Seq	Schizophrenia	female	76	A
+6	SZ21	SZBDMulti-Seq	Schizophrenia	female	56	B
+6	SZ22	SZBDMulti-Seq	Schizophrenia	female	61	A
+6	SZ23	SZBDMulti-Seq	Schizophrenia	male	22	A
+6	SZ24	SZBDMulti-Seq	Schizophrenia	male	44	A
+6	SZ3	SZBDMulti-Seq	Schizophrenia	female	67	B
+6	SZ4	SZBDMulti-Seq	Schizophrenia	male	89	A
+6	SZ5	SZBDMulti-Seq	Schizophrenia	male	80	B
+6	SZ6	SZBDMulti-Seq	Schizophrenia	female	64	B
+6	SZ7	SZBDMulti-Seq	Schizophrenia	female	85	A
+6	SZ8	SZBDMulti-Seq	Schizophrenia	male	49	B
+6	SZ9	SZBDMulti-Seq	Schizophrenia	male	77	A
+6	U8DM	UCLA-ASD	Control	female	28	A
+6	UPIT13161	UCLA-ASD	ASD	male	24	A
+6	UPIT3152	UCLA-ASD	Control	male	23	B
+6	WBYA	UCLA-ASD	Control	male	22	B
+6	sc1	PTSDBrainomics	Control	male	39	B
+6	sc11	PTSDBrainomics	Control	female	49	B
+6	sc12	PTSDBrainomics	Control	female	58	A
+6	sc13	PTSDBrainomics	Control	male	60	A
+6	sc18	PTSDBrainomics	MDD	male	53	B
+6	sc2	PTSDBrainomics	Control	male	50	B
+6	sc21	PTSDBrainomics	MDD	male	47	A
+6	sc3	PTSDBrainomics	Control	male	45	B
+6	sc31	PTSDBrainomics	MDD	female	55	B
+6	sc32	PTSDBrainomics	MDD	male	54	B
+6	sc33	PTSDBrainomics	PTSD	male	40	B
+6	sc34	PTSDBrainomics	PTSD	male	47	A
+6	sc35	PTSDBrainomics	PTSD	male	53	A
+6	sc42	PTSDBrainomics	PTSD	male	26	B
+6	sc43	PTSDBrainomics	PTSD	female	50	B
+6	sc44	PTSDBrainomics	PTSD	male	29	A
+6	sc5	PTSDBrainomics	Control	male	40	A
+6	sc6	PTSDBrainomics	Control	male	43	A
+6	sc7	PTSDBrainomics	Control	male	53	A
+7	1041	MultiomeBrain	Schizophrenia	female	37	B
+7	1185	UCLA-ASD	Control	male	4	A
+7	1317	MultiomeBrain	Bipolar Disorder	female	57	A
+7	1320	MultiomeBrain	Schizophrenia	male	53	A
+7	1390	MultiomeBrain	Control	female	43	A
+7	1414	MultiomeBrain	Bipolar Disorder	male	35	A
+7	1461	MultiomeBrain	Bipolar Disorder	male	31	B
+7	1507	MultiomeBrain	Schizophrenia	male	31	B
+7	1601	MultiomeBrain	Bipolar Disorder	male	76	B
+7	1676	MultiomeBrain	Schizophrenia	male	68	A
+7	1713	MultiomeBrain	Bipolar Disorder	male	21	B
+7	1734	MultiomeBrain	Bipolar Disorder	male	26	A
+7	1743	UCLA-ASD	Control	male	44	B
+7	2052	MultiomeBrain	Control	male	40	A
+7	2083	MultiomeBrain	Bipolar Disorder	female	38	B
+7	2275	MultiomeBrain	Bipolar Disorder	female	45	A
+7	2520	MultiomeBrain	Bipolar Disorder	male	25	A
+7	2653	MultiomeBrain	Schizophrenia	female	45	A
+7	2677	MultiomeBrain	Schizophrenia	female	44	A
+7	2686	MultiomeBrain	Bipolar Disorder	female	46	B
+7	2780	MultiomeBrain	Control	male	18	A
+7	2781	MultiomeBrain	Control	male	39	B
+7	2791	MultiomeBrain	Control	male	56	B
+7	285A	UCLA-ASD	ASD	male	8	A
+7	2GGP	UCLA-ASD	Control	male	49	A
+7	2NA6	UCLA-ASD	ASD	male	16	A
+7	2YK7	UCLA-ASD	ASD	female	17	B
+7	35BV	UCLA-ASD	ASD	male	49	B
+7	3HUF	UCLA-ASD	ASD	male	23	B
+7	4341_BA46	Velmeshev-2019.2	Control	male	13	B
+7	4787	UCLA-ASD	Control	male	19	A
+7	5023	UCLA-ASD	ASD	male	16	B
+7	5144	UCLA-ASD	ASD	female	7	A
+7	5144_PFC_Nova	Velmeshev-2019.1	ASD	male	7	B
+7	5278_PFC_Nova	Velmeshev-2019.1	ASD	female	15	A
+7	5294_BA9	Velmeshev-2019.2	ASD	male	19	A
+7	5302	UCLA-ASD	ASD	male	16	A
+7	5308	UCLA-ASD	ASD	male	4	A
+7	5387_BA9	Velmeshev-2019.2	Control	male	12	A
+7	5391	UCLA-ASD	Control	female	8	B
+7	5403_PFC_Nova	Velmeshev-2019.1	ASD	male	16	A
+7	5408	UCLA-ASD	Control	male	6	B
+7	5408_PFC_Nova	Velmeshev-2019.1	Control	male	6	B
+7	5419_PFC	Velmeshev-2019.1	ASD	female	19	B
+7	5531_BA9	Velmeshev-2019.2	ASD	male	15	A
+7	5538_PFC_Nova	Velmeshev-2019.1	Control	female	19	B
+7	5546_BA9_Nova	Velmeshev-2019.2	Control	female	34	B
+7	5565_BA9	Velmeshev-2019.2	ASD	male	12	A
+7	5576	UCLA-ASD	Control	male	2	B
+7	5577_BA9	Velmeshev-2019.2	Control	male	21	A
+7	5670	UCLA-ASD	Control	female	17	A
+7	5787_BA9_Nova	Velmeshev-2019.2	Control	male	39	A
+7	5841_BA9	Velmeshev-2019.2	ASD	male	12	B
+7	5864_BA9	Velmeshev-2019.2	ASD	male	20	B
+7	5879_PFC_Nova	Velmeshev-2019.1	Control	male	15	A
+7	5893_BA9	Velmeshev-2019.2	Control	male	19	B
+7	5893_PFC_Nova	Velmeshev-2019.1	Control	male	19	B
+7	5925	UCLA-ASD	Control	male	7	A
+7	5936_PFC_Nova	Velmeshev-2019.1	Control	female	14	A
+7	5939_BA9	Velmeshev-2019.2	ASD	male	21	A
+7	5945_PFC_Nova	Velmeshev-2019.1	ASD	male	20	B
+7	5958_BA9	Velmeshev-2019.2	Control	male	22	B
+7	5976_BA9	Velmeshev-2019.2	Control	female	4	A
+7	5978_BA9	Velmeshev-2019.2	ASD	male	11	B
+7	5981_BA9_Nova	Velmeshev-2019.2	Control	female	44	A
+7	6033_BA9	Velmeshev-2019.2	ASD	female	14	B
+7	75QW	UCLA-ASD	Control	male	60	A
+7	8XCF	UCLA-ASD	ASD	male	27	A
+7	AN00493	UCLA-ASD	ASD	male	27	B
+7	AN03345	UCLA-ASD	ASD	male	2	B
+7	AN03935	UCLA-ASD	ASD	male	19	B
+7	AN05983	UCLA-ASD	ASD	male	24	A
+7	AN07176	UCLA-ASD	Control	male	21	B
+7	AN07444	UCLA-ASD	Control	male	17	B
+7	AN08792	UCLA-ASD	ASD	male	30	A
+7	AN09714	UCLA-ASD	ASD	male	60	B
+7	AN10679	UCLA-ASD	Control	female	41	B
+7	AN12457	UCLA-ASD	ASD	female	29	A
+7	AN14762	UCLA-ASD	ASD	male	9	B
+7	AN15451	UCLA-ASD	ASD	female	16	B
+7	AN19511	UCLA-ASD	ASD	male	8	A
+7	AN19760	UCLA-ASD	Control	male	28	A
+7	BD1	SZBDMulti-Seq	Bipolar Disorder	female	73	B
+7	BD10	SZBDMulti-Seq	Bipolar Disorder	male	65	A
+7	BD11	SZBDMulti-Seq	Bipolar Disorder	female	89	B
+7	BD12	SZBDMulti-Seq	Bipolar Disorder	female	77	A
+7	BD13	SZBDMulti-Seq	Bipolar Disorder	male	77	A
+7	BD14	SZBDMulti-Seq	Bipolar Disorder	male	36	B
+7	BD15	SZBDMulti-Seq	Bipolar Disorder	male	74	B
+7	BD16	SZBDMulti-Seq	Bipolar Disorder	male	85	A
+7	BD17	SZBDMulti-Seq	Bipolar Disorder	male	51	B
+7	BD18	SZBDMulti-Seq	Bipolar Disorder	male	83	B
+7	BD19	SZBDMulti-Seq	Bipolar Disorder	female	85	A
+7	BD2	SZBDMulti-Seq	Bipolar Disorder	female	80	B
+7	BD20	SZBDMulti-Seq	Bipolar Disorder	female	51	B
+7	BD21	SZBDMulti-Seq	Bipolar Disorder	female	66	A
+7	BD22	SZBDMulti-Seq	Bipolar Disorder	female	64	B
+7	BD23	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+7	BD24	SZBDMulti-Seq	Bipolar Disorder	male	75	A
+7	BD3	SZBDMulti-Seq	Bipolar Disorder	male	24	A
+7	BD4	SZBDMulti-Seq	Bipolar Disorder	female	76	A
+7	BD5	SZBDMulti-Seq	Bipolar Disorder	male	71	A
+7	BD6	SZBDMulti-Seq	Bipolar Disorder	female	61	A
+7	BD7	SZBDMulti-Seq	Bipolar Disorder	male	73	B
+7	BD8	SZBDMulti-Seq	Bipolar Disorder	female	82	B
+7	BD9	SZBDMulti-Seq	Bipolar Disorder	male	82	B
+7	CMC_MSSM_002	CMC	Control	male	42	B
+7	CMC_MSSM_033	CMC	Control	female	81	B
+7	CMC_MSSM_035	CMC	Control	male	75	A
+7	CMC_MSSM_036	CMC	Control	female	82	B
+7	CMC_MSSM_048	CMC	Schizophrenia	male	84	B
+7	CMC_MSSM_049	CMC	Control	female	61	A
+7	CMC_MSSM_056	CMC	Control	female	67	A
+7	CMC_MSSM_058	CMC	Control	female	76	A
+7	CMC_MSSM_060	CMC	Control	male	89	B
+7	CMC_MSSM_067	CMC	Control	female	81	B
+7	CMC_MSSM_072	CMC	Control	female	66	B
+7	CMC_MSSM_077	CMC	Control	female	76	A
+7	CMC_MSSM_080	CMC	Control	male	84	B
+7	CMC_MSSM_081	CMC	Control	female	79	B
+7	CMC_MSSM_083	CMC	Control	male	69	A
+7	CMC_MSSM_085	CMC	Control	male	74	A
+7	CMC_MSSM_086	CMC	Control	male	77	B
+7	CMC_MSSM_089	CMC	Control	male	89	B
+7	CMC_MSSM_090	CMC	Control	male	70	B
+7	CMC_MSSM_094	CMC	Control	female	89	A
+7	CMC_MSSM_104	CMC	Control	male	35	A
+7	CMC_MSSM_105	CMC	Control	female	89	A
+7	CMC_MSSM_108	CMC	Control	male	89	A
+7	CMC_MSSM_113	CMC	Schizophrenia	male	75	A
+7	CMC_MSSM_115	CMC	Schizophrenia	female	50	B
+7	CMC_MSSM_116	CMC	Schizophrenia	female	74	B
+7	CMC_MSSM_117	CMC	Control	male	86	B
+7	CMC_MSSM_130	CMC	Control	male	41	A
+7	CMC_MSSM_131	CMC	Control	male	59	A
+7	CMC_MSSM_140	CMC	Control	female	85	B
+7	CMC_MSSM_148	CMC	Schizophrenia	female	70	A
+7	CMC_MSSM_173	CMC	Control	male	53	B
+7	CMC_MSSM_174	CMC	Control	male	79	A
+7	CMC_MSSM_185	CMC	Control	male	81	B
+7	CMC_MSSM_190	CMC	Control	male	84	A
+7	CMC_MSSM_192	CMC	Schizophrenia	male	86	B
+7	CMC_MSSM_208	CMC	Control	female	89	B
+7	CMC_MSSM_210	CMC	Schizophrenia	male	66	A
+7	CMC_MSSM_212	CMC	Schizophrenia	male	65	B
+7	CMC_MSSM_213	CMC	Schizophrenia	male	62	B
+7	CMC_MSSM_217	CMC	Control	female	79	A
+7	CMC_MSSM_218	CMC	Schizophrenia	male	76	B
+7	CMC_MSSM_219	CMC	Control	female	86	B
+7	CMC_MSSM_221	CMC	Control	female	81	A
+7	CMC_MSSM_223	CMC	Control	male	71	A
+7	CMC_MSSM_224	CMC	Schizophrenia	female	53	A
+7	CMC_MSSM_227	CMC	Control	male	27	B
+7	CMC_MSSM_228	CMC	Control	male	43	B
+7	CMC_MSSM_230	CMC	Control	male	38	B
+7	CMC_MSSM_232	CMC	Control	male	24	A
+7	CMC_MSSM_234	CMC	Control	male	89	A
+7	CMC_MSSM_238	CMC	Control	female	81	A
+7	CMC_MSSM_242	CMC	Control	male	71	B
+7	CMC_MSSM_247	CMC	Control	male	60	B
+7	CMC_MSSM_249	CMC	Control	male	84	A
+7	CMC_MSSM_251	CMC	Control	male	61	A
+7	CMC_MSSM_272	CMC	Control	male	48	A
+7	CMC_MSSM_278	CMC	Control	female	60	B
+7	CMC_MSSM_280	CMC	Control	female	85	A
+7	CMC_MSSM_282	CMC	Control	male	88	A
+7	CMC_MSSM_283	CMC	Control	female	89	A
+7	CMC_MSSM_288	CMC	Schizophrenia	male	69	B
+7	CMC_MSSM_294	CMC	Schizophrenia	male	46	A
+7	CMC_MSSM_295	CMC	Schizophrenia	male	63	A
+7	CMC_MSSM_298	CMC	Schizophrenia	female	65	B
+7	CMC_MSSM_299	CMC	Schizophrenia	female	58	A
+7	CMC_MSSM_300	CMC	Schizophrenia	male	72	B
+7	CMC_MSSM_305	CMC	Schizophrenia	female	86	B
+7	CMC_MSSM_308	CMC	Schizophrenia	male	60	A
+7	CMC_MSSM_309	CMC	Schizophrenia	female	84	A
+7	CMC_MSSM_312	CMC	Schizophrenia	male	68	B
+7	CMC_MSSM_313	CMC	Schizophrenia	male	67	A
+7	CMC_MSSM_315	CMC	Schizophrenia	female	89	A
+7	CMC_MSSM_316	CMC	Schizophrenia	male	40	A
+7	CMC_MSSM_321	CMC	Schizophrenia	male	48	B
+7	CMC_MSSM_323	CMC	Schizophrenia	male	89	B
+7	CMC_MSSM_326	CMC	Schizophrenia	male	82	A
+7	CMC_MSSM_327	CMC	Schizophrenia	female	81	A
+7	CMC_MSSM_338	CMC	Schizophrenia	female	56	B
+7	CMC_MSSM_340	CMC	Schizophrenia	male	76	A
+7	CMC_MSSM_341	CMC	Schizophrenia	male	65	A
+7	CMC_MSSM_347	CMC	Schizophrenia	male	82	B
+7	CMC_MSSM_349	CMC	Schizophrenia	male	79	A
+7	CMC_MSSM_352	CMC	Schizophrenia	male	64	B
+7	CMC_MSSM_355	CMC	Schizophrenia	female	81	B
+7	CMC_MSSM_358	CMC	Control	male	64	B
+7	CMC_MSSM_360	CMC	Schizophrenia	female	89	B
+7	CMC_MSSM_362	CMC	Schizophrenia	male	73	A
+7	CMC_MSSM_369	CMC	Control	male	89	B
+7	CMC_MSSM_371	CMC	Schizophrenia	male	73	B
+7	CMC_MSSM_372	CMC	Schizophrenia	male	89	A
+7	CMC_MSSM_375	CMC	Schizophrenia	male	89	A
+7	CMC_MSSM_377	CMC	Schizophrenia	male	66	B
+7	CMC_MSSM_378	CMC	Schizophrenia	female	70	A
+7	CMC_MSSM_380	CMC	Control	female	74	B
+7	CMC_MSSM_386	CMC	Schizophrenia	male	85	A
+7	CMC_MSSM_390	CMC	Schizophrenia	male	86	A
+7	CMC_MSSM_403	CMC	Schizophrenia	male	69	A
+7	CMC_MSSM_405	CMC	Schizophrenia	male	39	B
+7	CMC_MSSM_443	CMC	Schizophrenia	male	77	B
+7	CON1	SZBDMulti-Seq	Control	female	72	B
+7	CON10	SZBDMulti-Seq	Control	female	62	A
+7	CON11	SZBDMulti-Seq	Control	male	52	B
+7	CON12	SZBDMulti-Seq	Control	male	68	A
+7	CON13	SZBDMulti-Seq	Control	male	68	B
+7	CON14	SZBDMulti-Seq	Control	male	72	B
+7	CON15	SZBDMulti-Seq	Control	female	59	B
+7	CON16	SZBDMulti-Seq	Control	male	42	B
+7	CON17	SZBDMulti-Seq	Control	female	89	A
+7	CON18	SZBDMulti-Seq	Control	female	53	A
+7	CON19	SZBDMulti-Seq	Control	female	58	B
+7	CON2	SZBDMulti-Seq	Control	male	88	A
+7	CON20	SZBDMulti-Seq	Control	female	52	B
+7	CON21	SZBDMulti-Seq	Control	female	58	A
+7	CON22	SZBDMulti-Seq	Control	female	62	B
+7	CON23	SZBDMulti-Seq	Control	male	48	A
+7	CON24	SZBDMulti-Seq	Control	female	44	A
+7	CON3	SZBDMulti-Seq	Control	female	68	B
+7	CON4	SZBDMulti-Seq	Control	male	52	A
+7	CON5	SZBDMulti-Seq	Control	male	36	A
+7	CON6	SZBDMulti-Seq	Control	female	69	A
+7	CON7	SZBDMulti-Seq	Control	male	82	B
+7	CON8	SZBDMulti-Seq	Control	male	80	A
+7	CON9	SZBDMulti-Seq	Control	male	47	B
+7	E4FN	UCLA-ASD	Control	male	27	B
+7	EUFW	UCLA-ASD	Control	male	17	A
+7	FHN9	UCLA-ASD	Control	male	24	B
+7	FXMN	UCLA-ASD	ASD	male	29	A
+7	G7YU	UCLA-ASD	Control	male	27	A
+7	HQ4T	UCLA-ASD	Control	male	17	B
+7	HSB1574_DFC	DevBrain	Williams Syndrome	male	34	A
+7	HSB189_DFC	DevBrain	Control	male	36	A
+7	HSB290_DFC	DevBrain	Control	male	42	A
+7	HSB317_DFC	DevBrain	Control	male	47	B
+7	HSB340_DFC	DevBrain	Control	male	19	B
+7	HSB373_DFC	DevBrain	ASD	male	14	A
+7	HSB375_DFC	DevBrain	ASD	male	46	B
+7	HSB378_DFC	DevBrain	ASD	male	33	A
+7	HSB379_DFC	DevBrain	ASD	female	16	B
+7	HSB380_DFC	DevBrain	ASD	male	19	A
+7	HSB384_DFC	DevBrain	ASD	male	17	B
+7	HSB434_DFC	DevBrain	ASD	male	21	B
+7	HSB517_DFC	DevBrain	ASD	male	27	A
+7	HSB533_DFC	DevBrain	ASD	male	27	B
+7	HSB5437_DFC	DevBrain	Williams Syndrome	male	17	B
+7	HSB5857_DFC	DevBrain	Williams Syndrome	female	42	B
+7	HctZGA002	UCLA-ASD	Control	male	47	B
+7	JU7U	UCLA-ASD	ASD	male	25	B
+7	KMC3	UCLA-ASD	ASD	male	49	A
+7	M9H3	UCLA-ASD	ASD	female	58	B
+7	NEPX	UCLA-ASD	ASD	male	6	B
+7	PA38	UCLA-ASD	ASD	male	19	A
+7	PH2A	UCLA-ASD	Control	male	20	A
+7	PZ65	UCLA-ASD	Control	male	19	B
+7	SZ1	SZBDMulti-Seq	Schizophrenia	female	54	A
+7	SZ10	SZBDMulti-Seq	Schizophrenia	male	42	B
+7	SZ11	SZBDMulti-Seq	Schizophrenia	female	83	A
+7	SZ12	SZBDMulti-Seq	Schizophrenia	male	55	B
+7	SZ13	SZBDMulti-Seq	Schizophrenia	male	58	A
+7	SZ14	SZBDMulti-Seq	Schizophrenia	female	88	B
+7	SZ15	SZBDMulti-Seq	Schizophrenia	female	87	B
+7	SZ16	SZBDMulti-Seq	Schizophrenia	male	46	B
+7	SZ17	SZBDMulti-Seq	Schizophrenia	male	49	A
+7	SZ18	SZBDMulti-Seq	Schizophrenia	female	89	A
+7	SZ19	SZBDMulti-Seq	Schizophrenia	female	79	B
+7	SZ2	SZBDMulti-Seq	Schizophrenia	male	44	B
+7	SZ20	SZBDMulti-Seq	Schizophrenia	female	76	A
+7	SZ21	SZBDMulti-Seq	Schizophrenia	female	56	B
+7	SZ22	SZBDMulti-Seq	Schizophrenia	female	61	B
+7	SZ23	SZBDMulti-Seq	Schizophrenia	male	22	A
+7	SZ24	SZBDMulti-Seq	Schizophrenia	male	44	A
+7	SZ3	SZBDMulti-Seq	Schizophrenia	female	67	B
+7	SZ4	SZBDMulti-Seq	Schizophrenia	male	89	A
+7	SZ5	SZBDMulti-Seq	Schizophrenia	male	80	B
+7	SZ6	SZBDMulti-Seq	Schizophrenia	female	64	A
+7	SZ7	SZBDMulti-Seq	Schizophrenia	female	85	A
+7	SZ8	SZBDMulti-Seq	Schizophrenia	male	49	A
+7	SZ9	SZBDMulti-Seq	Schizophrenia	male	77	B
+7	U8DM	UCLA-ASD	Control	female	28	A
+7	UPIT13161	UCLA-ASD	ASD	male	24	B
+7	UPIT3152	UCLA-ASD	Control	male	23	A
+7	WBYA	UCLA-ASD	Control	male	22	A
+7	sc1	PTSDBrainomics	Control	male	39	B
+7	sc11	PTSDBrainomics	Control	female	49	B
+7	sc12	PTSDBrainomics	Control	female	58	A
+7	sc13	PTSDBrainomics	Control	male	60	B
+7	sc18	PTSDBrainomics	MDD	male	53	A
+7	sc2	PTSDBrainomics	Control	male	50	B
+7	sc21	PTSDBrainomics	MDD	male	47	B
+7	sc3	PTSDBrainomics	Control	male	45	B
+7	sc31	PTSDBrainomics	MDD	female	55	B
+7	sc32	PTSDBrainomics	MDD	male	54	A
+7	sc33	PTSDBrainomics	PTSD	male	40	B
+7	sc34	PTSDBrainomics	PTSD	male	47	A
+7	sc35	PTSDBrainomics	PTSD	male	53	A
+7	sc42	PTSDBrainomics	PTSD	male	26	B
+7	sc43	PTSDBrainomics	PTSD	female	50	A
+7	sc44	PTSDBrainomics	PTSD	male	29	A
+7	sc5	PTSDBrainomics	Control	male	40	A
+7	sc6	PTSDBrainomics	Control	male	43	A
+7	sc7	PTSDBrainomics	Control	male	53	A
+8	1041	MultiomeBrain	Schizophrenia	female	37	A
+8	1185	UCLA-ASD	Control	male	4	B
+8	1317	MultiomeBrain	Bipolar Disorder	female	57	B
+8	1320	MultiomeBrain	Schizophrenia	male	53	A
+8	1390	MultiomeBrain	Control	female	43	A
+8	1414	MultiomeBrain	Bipolar Disorder	male	35	A
+8	1461	MultiomeBrain	Bipolar Disorder	male	31	B
+8	1507	MultiomeBrain	Schizophrenia	male	31	B
+8	1601	MultiomeBrain	Bipolar Disorder	male	76	B
+8	1676	MultiomeBrain	Schizophrenia	male	68	B
+8	1713	MultiomeBrain	Bipolar Disorder	male	21	A
+8	1734	MultiomeBrain	Bipolar Disorder	male	26	A
+8	1743	UCLA-ASD	Control	male	44	A
+8	2052	MultiomeBrain	Control	male	40	A
+8	2083	MultiomeBrain	Bipolar Disorder	female	38	A
+8	2275	MultiomeBrain	Bipolar Disorder	female	45	B
+8	2520	MultiomeBrain	Bipolar Disorder	male	25	B
+8	2653	MultiomeBrain	Schizophrenia	female	45	B
+8	2677	MultiomeBrain	Schizophrenia	female	44	B
+8	2686	MultiomeBrain	Bipolar Disorder	female	46	A
+8	2780	MultiomeBrain	Control	male	18	B
+8	2781	MultiomeBrain	Control	male	39	A
+8	2791	MultiomeBrain	Control	male	56	B
+8	285A	UCLA-ASD	ASD	male	8	B
+8	2GGP	UCLA-ASD	Control	male	49	A
+8	2NA6	UCLA-ASD	ASD	male	16	A
+8	2YK7	UCLA-ASD	ASD	female	17	B
+8	35BV	UCLA-ASD	ASD	male	49	B
+8	3HUF	UCLA-ASD	ASD	male	23	A
+8	4341_BA46	Velmeshev-2019.2	Control	male	13	B
+8	4787	UCLA-ASD	Control	male	19	B
+8	5023	UCLA-ASD	ASD	male	16	B
+8	5144	UCLA-ASD	ASD	female	7	B
+8	5144_PFC_Nova	Velmeshev-2019.1	ASD	male	7	B
+8	5278_PFC_Nova	Velmeshev-2019.1	ASD	female	15	B
+8	5294_BA9	Velmeshev-2019.2	ASD	male	19	B
+8	5302	UCLA-ASD	ASD	male	16	A
+8	5308	UCLA-ASD	ASD	male	4	B
+8	5387_BA9	Velmeshev-2019.2	Control	male	12	A
+8	5391	UCLA-ASD	Control	female	8	B
+8	5403_PFC_Nova	Velmeshev-2019.1	ASD	male	16	A
+8	5408	UCLA-ASD	Control	male	6	A
+8	5408_PFC_Nova	Velmeshev-2019.1	Control	male	6	B
+8	5419_PFC	Velmeshev-2019.1	ASD	female	19	A
+8	5531_BA9	Velmeshev-2019.2	ASD	male	15	B
+8	5538_PFC_Nova	Velmeshev-2019.1	Control	female	19	B
+8	5546_BA9_Nova	Velmeshev-2019.2	Control	female	34	B
+8	5565_BA9	Velmeshev-2019.2	ASD	male	12	B
+8	5576	UCLA-ASD	Control	male	2	A
+8	5577_BA9	Velmeshev-2019.2	Control	male	21	B
+8	5670	UCLA-ASD	Control	female	17	A
+8	5787_BA9_Nova	Velmeshev-2019.2	Control	male	39	A
+8	5841_BA9	Velmeshev-2019.2	ASD	male	12	A
+8	5864_BA9	Velmeshev-2019.2	ASD	male	20	A
+8	5879_PFC_Nova	Velmeshev-2019.1	Control	male	15	A
+8	5893_BA9	Velmeshev-2019.2	Control	male	19	A
+8	5893_PFC_Nova	Velmeshev-2019.1	Control	male	19	B
+8	5925	UCLA-ASD	Control	male	7	B
+8	5936_PFC_Nova	Velmeshev-2019.1	Control	female	14	A
+8	5939_BA9	Velmeshev-2019.2	ASD	male	21	A
+8	5945_PFC_Nova	Velmeshev-2019.1	ASD	male	20	A
+8	5958_BA9	Velmeshev-2019.2	Control	male	22	B
+8	5976_BA9	Velmeshev-2019.2	Control	female	4	A
+8	5978_BA9	Velmeshev-2019.2	ASD	male	11	A
+8	5981_BA9_Nova	Velmeshev-2019.2	Control	female	44	B
+8	6033_BA9	Velmeshev-2019.2	ASD	female	14	A
+8	75QW	UCLA-ASD	Control	male	60	B
+8	8XCF	UCLA-ASD	ASD	male	27	A
+8	AN00493	UCLA-ASD	ASD	male	27	B
+8	AN03345	UCLA-ASD	ASD	male	2	A
+8	AN03935	UCLA-ASD	ASD	male	19	B
+8	AN05983	UCLA-ASD	ASD	male	24	B
+8	AN07176	UCLA-ASD	Control	male	21	A
+8	AN07444	UCLA-ASD	Control	male	17	B
+8	AN08792	UCLA-ASD	ASD	male	30	A
+8	AN09714	UCLA-ASD	ASD	male	60	A
+8	AN10679	UCLA-ASD	Control	female	41	B
+8	AN12457	UCLA-ASD	ASD	female	29	A
+8	AN14762	UCLA-ASD	ASD	male	9	B
+8	AN15451	UCLA-ASD	ASD	female	16	A
+8	AN19511	UCLA-ASD	ASD	male	8	A
+8	AN19760	UCLA-ASD	Control	male	28	B
+8	BD1	SZBDMulti-Seq	Bipolar Disorder	female	73	A
+8	BD10	SZBDMulti-Seq	Bipolar Disorder	male	65	B
+8	BD11	SZBDMulti-Seq	Bipolar Disorder	female	89	B
+8	BD12	SZBDMulti-Seq	Bipolar Disorder	female	77	A
+8	BD13	SZBDMulti-Seq	Bipolar Disorder	male	77	B
+8	BD14	SZBDMulti-Seq	Bipolar Disorder	male	36	A
+8	BD15	SZBDMulti-Seq	Bipolar Disorder	male	74	B
+8	BD16	SZBDMulti-Seq	Bipolar Disorder	male	85	A
+8	BD17	SZBDMulti-Seq	Bipolar Disorder	male	51	A
+8	BD18	SZBDMulti-Seq	Bipolar Disorder	male	83	B
+8	BD19	SZBDMulti-Seq	Bipolar Disorder	female	85	A
+8	BD2	SZBDMulti-Seq	Bipolar Disorder	female	80	B
+8	BD20	SZBDMulti-Seq	Bipolar Disorder	female	51	B
+8	BD21	SZBDMulti-Seq	Bipolar Disorder	female	66	A
+8	BD22	SZBDMulti-Seq	Bipolar Disorder	female	64	B
+8	BD23	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+8	BD24	SZBDMulti-Seq	Bipolar Disorder	male	75	A
+8	BD3	SZBDMulti-Seq	Bipolar Disorder	male	24	B
+8	BD4	SZBDMulti-Seq	Bipolar Disorder	female	76	B
+8	BD5	SZBDMulti-Seq	Bipolar Disorder	male	71	A
+8	BD6	SZBDMulti-Seq	Bipolar Disorder	female	61	A
+8	BD7	SZBDMulti-Seq	Bipolar Disorder	male	73	B
+8	BD8	SZBDMulti-Seq	Bipolar Disorder	female	82	B
+8	BD9	SZBDMulti-Seq	Bipolar Disorder	male	82	A
+8	CMC_MSSM_002	CMC	Control	male	42	B
+8	CMC_MSSM_033	CMC	Control	female	81	A
+8	CMC_MSSM_035	CMC	Control	male	75	B
+8	CMC_MSSM_036	CMC	Control	female	82	B
+8	CMC_MSSM_048	CMC	Schizophrenia	male	84	A
+8	CMC_MSSM_049	CMC	Control	female	61	B
+8	CMC_MSSM_056	CMC	Control	female	67	A
+8	CMC_MSSM_058	CMC	Control	female	76	B
+8	CMC_MSSM_060	CMC	Control	male	89	B
+8	CMC_MSSM_067	CMC	Control	female	81	A
+8	CMC_MSSM_072	CMC	Control	female	66	B
+8	CMC_MSSM_077	CMC	Control	female	76	B
+8	CMC_MSSM_080	CMC	Control	male	84	A
+8	CMC_MSSM_081	CMC	Control	female	79	A
+8	CMC_MSSM_083	CMC	Control	male	69	A
+8	CMC_MSSM_085	CMC	Control	male	74	A
+8	CMC_MSSM_086	CMC	Control	male	77	A
+8	CMC_MSSM_089	CMC	Control	male	89	A
+8	CMC_MSSM_090	CMC	Control	male	70	B
+8	CMC_MSSM_094	CMC	Control	female	89	B
+8	CMC_MSSM_104	CMC	Control	male	35	A
+8	CMC_MSSM_105	CMC	Control	female	89	A
+8	CMC_MSSM_108	CMC	Control	male	89	B
+8	CMC_MSSM_113	CMC	Schizophrenia	male	75	B
+8	CMC_MSSM_115	CMC	Schizophrenia	female	50	A
+8	CMC_MSSM_116	CMC	Schizophrenia	female	74	A
+8	CMC_MSSM_117	CMC	Control	male	86	B
+8	CMC_MSSM_130	CMC	Control	male	41	A
+8	CMC_MSSM_131	CMC	Control	male	59	B
+8	CMC_MSSM_140	CMC	Control	female	85	A
+8	CMC_MSSM_148	CMC	Schizophrenia	female	70	B
+8	CMC_MSSM_173	CMC	Control	male	53	A
+8	CMC_MSSM_174	CMC	Control	male	79	A
+8	CMC_MSSM_185	CMC	Control	male	81	B
+8	CMC_MSSM_190	CMC	Control	male	84	B
+8	CMC_MSSM_192	CMC	Schizophrenia	male	86	A
+8	CMC_MSSM_208	CMC	Control	female	89	B
+8	CMC_MSSM_210	CMC	Schizophrenia	male	66	A
+8	CMC_MSSM_212	CMC	Schizophrenia	male	65	B
+8	CMC_MSSM_213	CMC	Schizophrenia	male	62	B
+8	CMC_MSSM_217	CMC	Control	female	79	B
+8	CMC_MSSM_218	CMC	Schizophrenia	male	76	A
+8	CMC_MSSM_219	CMC	Control	female	86	A
+8	CMC_MSSM_221	CMC	Control	female	81	B
+8	CMC_MSSM_223	CMC	Control	male	71	A
+8	CMC_MSSM_224	CMC	Schizophrenia	female	53	B
+8	CMC_MSSM_227	CMC	Control	male	27	B
+8	CMC_MSSM_228	CMC	Control	male	43	B
+8	CMC_MSSM_230	CMC	Control	male	38	B
+8	CMC_MSSM_232	CMC	Control	male	24	A
+8	CMC_MSSM_234	CMC	Control	male	89	A
+8	CMC_MSSM_238	CMC	Control	female	81	A
+8	CMC_MSSM_242	CMC	Control	male	71	B
+8	CMC_MSSM_247	CMC	Control	male	60	A
+8	CMC_MSSM_249	CMC	Control	male	84	A
+8	CMC_MSSM_251	CMC	Control	male	61	B
+8	CMC_MSSM_272	CMC	Control	male	48	A
+8	CMC_MSSM_278	CMC	Control	female	60	A
+8	CMC_MSSM_280	CMC	Control	female	85	B
+8	CMC_MSSM_282	CMC	Control	male	88	A
+8	CMC_MSSM_283	CMC	Control	female	89	A
+8	CMC_MSSM_288	CMC	Schizophrenia	male	69	B
+8	CMC_MSSM_294	CMC	Schizophrenia	male	46	A
+8	CMC_MSSM_295	CMC	Schizophrenia	male	63	B
+8	CMC_MSSM_298	CMC	Schizophrenia	female	65	A
+8	CMC_MSSM_299	CMC	Schizophrenia	female	58	A
+8	CMC_MSSM_300	CMC	Schizophrenia	male	72	B
+8	CMC_MSSM_305	CMC	Schizophrenia	female	86	B
+8	CMC_MSSM_308	CMC	Schizophrenia	male	60	A
+8	CMC_MSSM_309	CMC	Schizophrenia	female	84	A
+8	CMC_MSSM_312	CMC	Schizophrenia	male	68	A
+8	CMC_MSSM_313	CMC	Schizophrenia	male	67	B
+8	CMC_MSSM_315	CMC	Schizophrenia	female	89	A
+8	CMC_MSSM_316	CMC	Schizophrenia	male	40	B
+8	CMC_MSSM_321	CMC	Schizophrenia	male	48	B
+8	CMC_MSSM_323	CMC	Schizophrenia	male	89	A
+8	CMC_MSSM_326	CMC	Schizophrenia	male	82	B
+8	CMC_MSSM_327	CMC	Schizophrenia	female	81	A
+8	CMC_MSSM_338	CMC	Schizophrenia	female	56	B
+8	CMC_MSSM_340	CMC	Schizophrenia	male	76	B
+8	CMC_MSSM_341	CMC	Schizophrenia	male	65	A
+8	CMC_MSSM_347	CMC	Schizophrenia	male	82	A
+8	CMC_MSSM_349	CMC	Schizophrenia	male	79	A
+8	CMC_MSSM_352	CMC	Schizophrenia	male	64	A
+8	CMC_MSSM_355	CMC	Schizophrenia	female	81	B
+8	CMC_MSSM_358	CMC	Control	male	64	B
+8	CMC_MSSM_360	CMC	Schizophrenia	female	89	B
+8	CMC_MSSM_362	CMC	Schizophrenia	male	73	A
+8	CMC_MSSM_369	CMC	Control	male	89	B
+8	CMC_MSSM_371	CMC	Schizophrenia	male	73	A
+8	CMC_MSSM_372	CMC	Schizophrenia	male	89	B
+8	CMC_MSSM_375	CMC	Schizophrenia	male	89	A
+8	CMC_MSSM_377	CMC	Schizophrenia	male	66	B
+8	CMC_MSSM_378	CMC	Schizophrenia	female	70	B
+8	CMC_MSSM_380	CMC	Control	female	74	A
+8	CMC_MSSM_386	CMC	Schizophrenia	male	85	B
+8	CMC_MSSM_390	CMC	Schizophrenia	male	86	B
+8	CMC_MSSM_403	CMC	Schizophrenia	male	69	A
+8	CMC_MSSM_405	CMC	Schizophrenia	male	39	A
+8	CMC_MSSM_443	CMC	Schizophrenia	male	77	B
+8	CON1	SZBDMulti-Seq	Control	female	72	A
+8	CON10	SZBDMulti-Seq	Control	female	62	A
+8	CON11	SZBDMulti-Seq	Control	male	52	A
+8	CON12	SZBDMulti-Seq	Control	male	68	B
+8	CON13	SZBDMulti-Seq	Control	male	68	A
+8	CON14	SZBDMulti-Seq	Control	male	72	B
+8	CON15	SZBDMulti-Seq	Control	female	59	B
+8	CON16	SZBDMulti-Seq	Control	male	42	A
+8	CON17	SZBDMulti-Seq	Control	female	89	B
+8	CON18	SZBDMulti-Seq	Control	female	53	B
+8	CON19	SZBDMulti-Seq	Control	female	58	A
+8	CON2	SZBDMulti-Seq	Control	male	88	A
+8	CON20	SZBDMulti-Seq	Control	female	52	B
+8	CON21	SZBDMulti-Seq	Control	female	58	A
+8	CON22	SZBDMulti-Seq	Control	female	62	B
+8	CON23	SZBDMulti-Seq	Control	male	48	B
+8	CON24	SZBDMulti-Seq	Control	female	44	A
+8	CON3	SZBDMulti-Seq	Control	female	68	B
+8	CON4	SZBDMulti-Seq	Control	male	52	B
+8	CON5	SZBDMulti-Seq	Control	male	36	B
+8	CON6	SZBDMulti-Seq	Control	female	69	A
+8	CON7	SZBDMulti-Seq	Control	male	82	B
+8	CON8	SZBDMulti-Seq	Control	male	80	A
+8	CON9	SZBDMulti-Seq	Control	male	47	A
+8	E4FN	UCLA-ASD	Control	male	27	A
+8	EUFW	UCLA-ASD	Control	male	17	A
+8	FHN9	UCLA-ASD	Control	male	24	A
+8	FXMN	UCLA-ASD	ASD	male	29	A
+8	G7YU	UCLA-ASD	Control	male	27	B
+8	HQ4T	UCLA-ASD	Control	male	17	A
+8	HSB1574_DFC	DevBrain	Williams Syndrome	male	34	B
+8	HSB189_DFC	DevBrain	Control	male	36	B
+8	HSB290_DFC	DevBrain	Control	male	42	B
+8	HSB317_DFC	DevBrain	Control	male	47	A
+8	HSB340_DFC	DevBrain	Control	male	19	A
+8	HSB373_DFC	DevBrain	ASD	male	14	B
+8	HSB375_DFC	DevBrain	ASD	male	46	A
+8	HSB378_DFC	DevBrain	ASD	male	33	B
+8	HSB379_DFC	DevBrain	ASD	female	16	B
+8	HSB380_DFC	DevBrain	ASD	male	19	B
+8	HSB384_DFC	DevBrain	ASD	male	17	A
+8	HSB434_DFC	DevBrain	ASD	male	21	A
+8	HSB517_DFC	DevBrain	ASD	male	27	A
+8	HSB533_DFC	DevBrain	ASD	male	27	B
+8	HSB5437_DFC	DevBrain	Williams Syndrome	male	17	A
+8	HSB5857_DFC	DevBrain	Williams Syndrome	female	42	A
+8	HctZGA002	UCLA-ASD	Control	male	47	B
+8	JU7U	UCLA-ASD	ASD	male	25	B
+8	KMC3	UCLA-ASD	ASD	male	49	B
+8	M9H3	UCLA-ASD	ASD	female	58	A
+8	NEPX	UCLA-ASD	ASD	male	6	A
+8	PA38	UCLA-ASD	ASD	male	19	B
+8	PH2A	UCLA-ASD	Control	male	20	A
+8	PZ65	UCLA-ASD	Control	male	19	B
+8	SZ1	SZBDMulti-Seq	Schizophrenia	female	54	B
+8	SZ10	SZBDMulti-Seq	Schizophrenia	male	42	A
+8	SZ11	SZBDMulti-Seq	Schizophrenia	female	83	B
+8	SZ12	SZBDMulti-Seq	Schizophrenia	male	55	A
+8	SZ13	SZBDMulti-Seq	Schizophrenia	male	58	B
+8	SZ14	SZBDMulti-Seq	Schizophrenia	female	88	B
+8	SZ15	SZBDMulti-Seq	Schizophrenia	female	87	B
+8	SZ16	SZBDMulti-Seq	Schizophrenia	male	46	B
+8	SZ17	SZBDMulti-Seq	Schizophrenia	male	49	A
+8	SZ18	SZBDMulti-Seq	Schizophrenia	female	89	A
+8	SZ19	SZBDMulti-Seq	Schizophrenia	female	79	A
+8	SZ2	SZBDMulti-Seq	Schizophrenia	male	44	B
+8	SZ20	SZBDMulti-Seq	Schizophrenia	female	76	A
+8	SZ21	SZBDMulti-Seq	Schizophrenia	female	56	A
+8	SZ22	SZBDMulti-Seq	Schizophrenia	female	61	A
+8	SZ23	SZBDMulti-Seq	Schizophrenia	male	22	B
+8	SZ24	SZBDMulti-Seq	Schizophrenia	male	44	A
+8	SZ3	SZBDMulti-Seq	Schizophrenia	female	67	B
+8	SZ4	SZBDMulti-Seq	Schizophrenia	male	89	B
+8	SZ5	SZBDMulti-Seq	Schizophrenia	male	80	A
+8	SZ6	SZBDMulti-Seq	Schizophrenia	female	64	B
+8	SZ7	SZBDMulti-Seq	Schizophrenia	female	85	A
+8	SZ8	SZBDMulti-Seq	Schizophrenia	male	49	B
+8	SZ9	SZBDMulti-Seq	Schizophrenia	male	77	A
+8	U8DM	UCLA-ASD	Control	female	28	A
+8	UPIT13161	UCLA-ASD	ASD	male	24	A
+8	UPIT3152	UCLA-ASD	Control	male	23	B
+8	WBYA	UCLA-ASD	Control	male	22	B
+8	sc1	PTSDBrainomics	Control	male	39	A
+8	sc11	PTSDBrainomics	Control	female	49	B
+8	sc12	PTSDBrainomics	Control	female	58	A
+8	sc13	PTSDBrainomics	Control	male	60	A
+8	sc18	PTSDBrainomics	MDD	male	53	B
+8	sc2	PTSDBrainomics	Control	male	50	A
+8	sc21	PTSDBrainomics	MDD	male	47	A
+8	sc3	PTSDBrainomics	Control	male	45	B
+8	sc31	PTSDBrainomics	MDD	female	55	A
+8	sc32	PTSDBrainomics	MDD	male	54	B
+8	sc33	PTSDBrainomics	PTSD	male	40	A
+8	sc34	PTSDBrainomics	PTSD	male	47	B
+8	sc35	PTSDBrainomics	PTSD	male	53	B
+8	sc42	PTSDBrainomics	PTSD	male	26	A
+8	sc43	PTSDBrainomics	PTSD	female	50	B
+8	sc44	PTSDBrainomics	PTSD	male	29	B
+8	sc5	PTSDBrainomics	Control	male	40	B
+8	sc6	PTSDBrainomics	Control	male	43	A
+8	sc7	PTSDBrainomics	Control	male	53	B
+9	1041	MultiomeBrain	Schizophrenia	female	37	A
+9	1185	UCLA-ASD	Control	male	4	B
+9	1317	MultiomeBrain	Bipolar Disorder	female	57	A
+9	1320	MultiomeBrain	Schizophrenia	male	53	B
+9	1390	MultiomeBrain	Control	female	43	A
+9	1414	MultiomeBrain	Bipolar Disorder	male	35	B
+9	1461	MultiomeBrain	Bipolar Disorder	male	31	A
+9	1507	MultiomeBrain	Schizophrenia	male	31	A
+9	1601	MultiomeBrain	Bipolar Disorder	male	76	A
+9	1676	MultiomeBrain	Schizophrenia	male	68	B
+9	1713	MultiomeBrain	Bipolar Disorder	male	21	B
+9	1734	MultiomeBrain	Bipolar Disorder	male	26	B
+9	1743	UCLA-ASD	Control	male	44	B
+9	2052	MultiomeBrain	Control	male	40	A
+9	2083	MultiomeBrain	Bipolar Disorder	female	38	B
+9	2275	MultiomeBrain	Bipolar Disorder	female	45	A
+9	2520	MultiomeBrain	Bipolar Disorder	male	25	A
+9	2653	MultiomeBrain	Schizophrenia	female	45	A
+9	2677	MultiomeBrain	Schizophrenia	female	44	B
+9	2686	MultiomeBrain	Bipolar Disorder	female	46	B
+9	2780	MultiomeBrain	Control	male	18	B
+9	2781	MultiomeBrain	Control	male	39	A
+9	2791	MultiomeBrain	Control	male	56	B
+9	285A	UCLA-ASD	ASD	male	8	A
+9	2GGP	UCLA-ASD	Control	male	49	A
+9	2NA6	UCLA-ASD	ASD	male	16	B
+9	2YK7	UCLA-ASD	ASD	female	17	A
+9	35BV	UCLA-ASD	ASD	male	49	B
+9	3HUF	UCLA-ASD	ASD	male	23	B
+9	4341_BA46	Velmeshev-2019.2	Control	male	13	A
+9	4787	UCLA-ASD	Control	male	19	B
+9	5023	UCLA-ASD	ASD	male	16	A
+9	5144	UCLA-ASD	ASD	female	7	B
+9	5144_PFC_Nova	Velmeshev-2019.1	ASD	male	7	A
+9	5278_PFC_Nova	Velmeshev-2019.1	ASD	female	15	A
+9	5294_BA9	Velmeshev-2019.2	ASD	male	19	A
+9	5302	UCLA-ASD	ASD	male	16	B
+9	5308	UCLA-ASD	ASD	male	4	A
+9	5387_BA9	Velmeshev-2019.2	Control	male	12	B
+9	5391	UCLA-ASD	Control	female	8	A
+9	5403_PFC_Nova	Velmeshev-2019.1	ASD	male	16	B
+9	5408	UCLA-ASD	Control	male	6	B
+9	5408_PFC_Nova	Velmeshev-2019.1	Control	male	6	A
+9	5419_PFC	Velmeshev-2019.1	ASD	female	19	B
+9	5531_BA9	Velmeshev-2019.2	ASD	male	15	A
+9	5538_PFC_Nova	Velmeshev-2019.1	Control	female	19	A
+9	5546_BA9_Nova	Velmeshev-2019.2	Control	female	34	B
+9	5565_BA9	Velmeshev-2019.2	ASD	male	12	B
+9	5576	UCLA-ASD	Control	male	2	A
+9	5577_BA9	Velmeshev-2019.2	Control	male	21	A
+9	5670	UCLA-ASD	Control	female	17	B
+9	5787_BA9_Nova	Velmeshev-2019.2	Control	male	39	A
+9	5841_BA9	Velmeshev-2019.2	ASD	male	12	B
+9	5864_BA9	Velmeshev-2019.2	ASD	male	20	B
+9	5879_PFC_Nova	Velmeshev-2019.1	Control	male	15	B
+9	5893_BA9	Velmeshev-2019.2	Control	male	19	B
+9	5893_PFC_Nova	Velmeshev-2019.1	Control	male	19	A
+9	5925	UCLA-ASD	Control	male	7	A
+9	5936_PFC_Nova	Velmeshev-2019.1	Control	female	14	B
+9	5939_BA9	Velmeshev-2019.2	ASD	male	21	B
+9	5945_PFC_Nova	Velmeshev-2019.1	ASD	male	20	A
+9	5958_BA9	Velmeshev-2019.2	Control	male	22	B
+9	5976_BA9	Velmeshev-2019.2	Control	female	4	A
+9	5978_BA9	Velmeshev-2019.2	ASD	male	11	A
+9	5981_BA9_Nova	Velmeshev-2019.2	Control	female	44	A
+9	6033_BA9	Velmeshev-2019.2	ASD	female	14	B
+9	75QW	UCLA-ASD	Control	male	60	A
+9	8XCF	UCLA-ASD	ASD	male	27	B
+9	AN00493	UCLA-ASD	ASD	male	27	A
+9	AN03345	UCLA-ASD	ASD	male	2	B
+9	AN03935	UCLA-ASD	ASD	male	19	A
+9	AN05983	UCLA-ASD	ASD	male	24	B
+9	AN07176	UCLA-ASD	Control	male	21	B
+9	AN07444	UCLA-ASD	Control	male	17	A
+9	AN08792	UCLA-ASD	ASD	male	30	A
+9	AN09714	UCLA-ASD	ASD	male	60	A
+9	AN10679	UCLA-ASD	Control	female	41	B
+9	AN12457	UCLA-ASD	ASD	female	29	B
+9	AN14762	UCLA-ASD	ASD	male	9	B
+9	AN15451	UCLA-ASD	ASD	female	16	A
+9	AN19511	UCLA-ASD	ASD	male	8	A
+9	AN19760	UCLA-ASD	Control	male	28	A
+9	BD1	SZBDMulti-Seq	Bipolar Disorder	female	73	B
+9	BD10	SZBDMulti-Seq	Bipolar Disorder	male	65	B
+9	BD11	SZBDMulti-Seq	Bipolar Disorder	female	89	A
+9	BD12	SZBDMulti-Seq	Bipolar Disorder	female	77	B
+9	BD13	SZBDMulti-Seq	Bipolar Disorder	male	77	A
+9	BD14	SZBDMulti-Seq	Bipolar Disorder	male	36	A
+9	BD15	SZBDMulti-Seq	Bipolar Disorder	male	74	B
+9	BD16	SZBDMulti-Seq	Bipolar Disorder	male	85	B
+9	BD17	SZBDMulti-Seq	Bipolar Disorder	male	51	A
+9	BD18	SZBDMulti-Seq	Bipolar Disorder	male	83	A
+9	BD19	SZBDMulti-Seq	Bipolar Disorder	female	85	B
+9	BD2	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+9	BD20	SZBDMulti-Seq	Bipolar Disorder	female	51	B
+9	BD21	SZBDMulti-Seq	Bipolar Disorder	female	66	B
+9	BD22	SZBDMulti-Seq	Bipolar Disorder	female	64	A
+9	BD23	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+9	BD24	SZBDMulti-Seq	Bipolar Disorder	male	75	A
+9	BD3	SZBDMulti-Seq	Bipolar Disorder	male	24	B
+9	BD4	SZBDMulti-Seq	Bipolar Disorder	female	76	A
+9	BD5	SZBDMulti-Seq	Bipolar Disorder	male	71	B
+9	BD6	SZBDMulti-Seq	Bipolar Disorder	female	61	A
+9	BD7	SZBDMulti-Seq	Bipolar Disorder	male	73	A
+9	BD8	SZBDMulti-Seq	Bipolar Disorder	female	82	B
+9	BD9	SZBDMulti-Seq	Bipolar Disorder	male	82	B
+9	CMC_MSSM_002	CMC	Control	male	42	A
+9	CMC_MSSM_033	CMC	Control	female	81	A
+9	CMC_MSSM_035	CMC	Control	male	75	A
+9	CMC_MSSM_036	CMC	Control	female	82	A
+9	CMC_MSSM_048	CMC	Schizophrenia	male	84	A
+9	CMC_MSSM_049	CMC	Control	female	61	A
+9	CMC_MSSM_056	CMC	Control	female	67	B
+9	CMC_MSSM_058	CMC	Control	female	76	A
+9	CMC_MSSM_060	CMC	Control	male	89	A
+9	CMC_MSSM_067	CMC	Control	female	81	B
+9	CMC_MSSM_072	CMC	Control	female	66	A
+9	CMC_MSSM_077	CMC	Control	female	76	B
+9	CMC_MSSM_080	CMC	Control	male	84	B
+9	CMC_MSSM_081	CMC	Control	female	79	A
+9	CMC_MSSM_083	CMC	Control	male	69	A
+9	CMC_MSSM_085	CMC	Control	male	74	A
+9	CMC_MSSM_086	CMC	Control	male	77	B
+9	CMC_MSSM_089	CMC	Control	male	89	B
+9	CMC_MSSM_090	CMC	Control	male	70	A
+9	CMC_MSSM_094	CMC	Control	female	89	B
+9	CMC_MSSM_104	CMC	Control	male	35	A
+9	CMC_MSSM_105	CMC	Control	female	89	A
+9	CMC_MSSM_108	CMC	Control	male	89	A
+9	CMC_MSSM_113	CMC	Schizophrenia	male	75	B
+9	CMC_MSSM_115	CMC	Schizophrenia	female	50	B
+9	CMC_MSSM_116	CMC	Schizophrenia	female	74	B
+9	CMC_MSSM_117	CMC	Control	male	86	A
+9	CMC_MSSM_130	CMC	Control	male	41	B
+9	CMC_MSSM_131	CMC	Control	male	59	A
+9	CMC_MSSM_140	CMC	Control	female	85	B
+9	CMC_MSSM_148	CMC	Schizophrenia	female	70	B
+9	CMC_MSSM_173	CMC	Control	male	53	B
+9	CMC_MSSM_174	CMC	Control	male	79	B
+9	CMC_MSSM_185	CMC	Control	male	81	A
+9	CMC_MSSM_190	CMC	Control	male	84	A
+9	CMC_MSSM_192	CMC	Schizophrenia	male	86	B
+9	CMC_MSSM_208	CMC	Control	female	89	B
+9	CMC_MSSM_210	CMC	Schizophrenia	male	66	A
+9	CMC_MSSM_212	CMC	Schizophrenia	male	65	A
+9	CMC_MSSM_213	CMC	Schizophrenia	male	62	B
+9	CMC_MSSM_217	CMC	Control	female	79	B
+9	CMC_MSSM_218	CMC	Schizophrenia	male	76	B
+9	CMC_MSSM_219	CMC	Control	female	86	A
+9	CMC_MSSM_221	CMC	Control	female	81	A
+9	CMC_MSSM_223	CMC	Control	male	71	B
+9	CMC_MSSM_224	CMC	Schizophrenia	female	53	A
+9	CMC_MSSM_227	CMC	Control	male	27	B
+9	CMC_MSSM_228	CMC	Control	male	43	B
+9	CMC_MSSM_230	CMC	Control	male	38	B
+9	CMC_MSSM_232	CMC	Control	male	24	A
+9	CMC_MSSM_234	CMC	Control	male	89	B
+9	CMC_MSSM_238	CMC	Control	female	81	B
+9	CMC_MSSM_242	CMC	Control	male	71	B
+9	CMC_MSSM_247	CMC	Control	male	60	A
+9	CMC_MSSM_249	CMC	Control	male	84	B
+9	CMC_MSSM_251	CMC	Control	male	61	B
+9	CMC_MSSM_272	CMC	Control	male	48	A
+9	CMC_MSSM_278	CMC	Control	female	60	B
+9	CMC_MSSM_280	CMC	Control	female	85	A
+9	CMC_MSSM_282	CMC	Control	male	88	B
+9	CMC_MSSM_283	CMC	Control	female	89	A
+9	CMC_MSSM_288	CMC	Schizophrenia	male	69	B
+9	CMC_MSSM_294	CMC	Schizophrenia	male	46	A
+9	CMC_MSSM_295	CMC	Schizophrenia	male	63	B
+9	CMC_MSSM_298	CMC	Schizophrenia	female	65	A
+9	CMC_MSSM_299	CMC	Schizophrenia	female	58	A
+9	CMC_MSSM_300	CMC	Schizophrenia	male	72	B
+9	CMC_MSSM_305	CMC	Schizophrenia	female	86	B
+9	CMC_MSSM_308	CMC	Schizophrenia	male	60	A
+9	CMC_MSSM_309	CMC	Schizophrenia	female	84	A
+9	CMC_MSSM_312	CMC	Schizophrenia	male	68	B
+9	CMC_MSSM_313	CMC	Schizophrenia	male	67	A
+9	CMC_MSSM_315	CMC	Schizophrenia	female	89	B
+9	CMC_MSSM_316	CMC	Schizophrenia	male	40	B
+9	CMC_MSSM_321	CMC	Schizophrenia	male	48	B
+9	CMC_MSSM_323	CMC	Schizophrenia	male	89	B
+9	CMC_MSSM_326	CMC	Schizophrenia	male	82	A
+9	CMC_MSSM_327	CMC	Schizophrenia	female	81	B
+9	CMC_MSSM_338	CMC	Schizophrenia	female	56	B
+9	CMC_MSSM_340	CMC	Schizophrenia	male	76	A
+9	CMC_MSSM_341	CMC	Schizophrenia	male	65	B
+9	CMC_MSSM_347	CMC	Schizophrenia	male	82	B
+9	CMC_MSSM_349	CMC	Schizophrenia	male	79	A
+9	CMC_MSSM_352	CMC	Schizophrenia	male	64	A
+9	CMC_MSSM_355	CMC	Schizophrenia	female	81	A
+9	CMC_MSSM_358	CMC	Control	male	64	B
+9	CMC_MSSM_360	CMC	Schizophrenia	female	89	A
+9	CMC_MSSM_362	CMC	Schizophrenia	male	73	A
+9	CMC_MSSM_369	CMC	Control	male	89	A
+9	CMC_MSSM_371	CMC	Schizophrenia	male	73	A
+9	CMC_MSSM_372	CMC	Schizophrenia	male	89	A
+9	CMC_MSSM_375	CMC	Schizophrenia	male	89	A
+9	CMC_MSSM_377	CMC	Schizophrenia	male	66	B
+9	CMC_MSSM_378	CMC	Schizophrenia	female	70	A
+9	CMC_MSSM_380	CMC	Control	female	74	B
+9	CMC_MSSM_386	CMC	Schizophrenia	male	85	B
+9	CMC_MSSM_390	CMC	Schizophrenia	male	86	A
+9	CMC_MSSM_403	CMC	Schizophrenia	male	69	A
+9	CMC_MSSM_405	CMC	Schizophrenia	male	39	A
+9	CMC_MSSM_443	CMC	Schizophrenia	male	77	B
+9	CON1	SZBDMulti-Seq	Control	female	72	B
+9	CON10	SZBDMulti-Seq	Control	female	62	A
+9	CON11	SZBDMulti-Seq	Control	male	52	A
+9	CON12	SZBDMulti-Seq	Control	male	68	B
+9	CON13	SZBDMulti-Seq	Control	male	68	A
+9	CON14	SZBDMulti-Seq	Control	male	72	B
+9	CON15	SZBDMulti-Seq	Control	female	59	B
+9	CON16	SZBDMulti-Seq	Control	male	42	B
+9	CON17	SZBDMulti-Seq	Control	female	89	A
+9	CON18	SZBDMulti-Seq	Control	female	53	B
+9	CON19	SZBDMulti-Seq	Control	female	58	A
+9	CON2	SZBDMulti-Seq	Control	male	88	A
+9	CON20	SZBDMulti-Seq	Control	female	52	A
+9	CON21	SZBDMulti-Seq	Control	female	58	A
+9	CON22	SZBDMulti-Seq	Control	female	62	B
+9	CON23	SZBDMulti-Seq	Control	male	48	B
+9	CON24	SZBDMulti-Seq	Control	female	44	B
+9	CON3	SZBDMulti-Seq	Control	female	68	B
+9	CON4	SZBDMulti-Seq	Control	male	52	B
+9	CON5	SZBDMulti-Seq	Control	male	36	A
+9	CON6	SZBDMulti-Seq	Control	female	69	A
+9	CON7	SZBDMulti-Seq	Control	male	82	B
+9	CON8	SZBDMulti-Seq	Control	male	80	A
+9	CON9	SZBDMulti-Seq	Control	male	47	A
+9	E4FN	UCLA-ASD	Control	male	27	A
+9	EUFW	UCLA-ASD	Control	male	17	B
+9	FHN9	UCLA-ASD	Control	male	24	B
+9	FXMN	UCLA-ASD	ASD	male	29	B
+9	G7YU	UCLA-ASD	Control	male	27	B
+9	HQ4T	UCLA-ASD	Control	male	17	A
+9	HSB1574_DFC	DevBrain	Williams Syndrome	male	34	B
+9	HSB189_DFC	DevBrain	Control	male	36	A
+9	HSB290_DFC	DevBrain	Control	male	42	A
+9	HSB317_DFC	DevBrain	Control	male	47	B
+9	HSB340_DFC	DevBrain	Control	male	19	B
+9	HSB373_DFC	DevBrain	ASD	male	14	B
+9	HSB375_DFC	DevBrain	ASD	male	46	B
+9	HSB378_DFC	DevBrain	ASD	male	33	A
+9	HSB379_DFC	DevBrain	ASD	female	16	A
+9	HSB380_DFC	DevBrain	ASD	male	19	B
+9	HSB384_DFC	DevBrain	ASD	male	17	A
+9	HSB434_DFC	DevBrain	ASD	male	21	A
+9	HSB517_DFC	DevBrain	ASD	male	27	B
+9	HSB533_DFC	DevBrain	ASD	male	27	A
+9	HSB5437_DFC	DevBrain	Williams Syndrome	male	17	A
+9	HSB5857_DFC	DevBrain	Williams Syndrome	female	42	A
+9	HctZGA002	UCLA-ASD	Control	male	47	B
+9	JU7U	UCLA-ASD	ASD	male	25	A
+9	KMC3	UCLA-ASD	ASD	male	49	B
+9	M9H3	UCLA-ASD	ASD	female	58	B
+9	NEPX	UCLA-ASD	ASD	male	6	B
+9	PA38	UCLA-ASD	ASD	male	19	A
+9	PH2A	UCLA-ASD	Control	male	20	B
+9	PZ65	UCLA-ASD	Control	male	19	A
+9	SZ1	SZBDMulti-Seq	Schizophrenia	female	54	A
+9	SZ10	SZBDMulti-Seq	Schizophrenia	male	42	A
+9	SZ11	SZBDMulti-Seq	Schizophrenia	female	83	A
+9	SZ12	SZBDMulti-Seq	Schizophrenia	male	55	A
+9	SZ13	SZBDMulti-Seq	Schizophrenia	male	58	A
+9	SZ14	SZBDMulti-Seq	Schizophrenia	female	88	B
+9	SZ15	SZBDMulti-Seq	Schizophrenia	female	87	A
+9	SZ16	SZBDMulti-Seq	Schizophrenia	male	46	A
+9	SZ17	SZBDMulti-Seq	Schizophrenia	male	49	B
+9	SZ18	SZBDMulti-Seq	Schizophrenia	female	89	A
+9	SZ19	SZBDMulti-Seq	Schizophrenia	female	79	B
+9	SZ2	SZBDMulti-Seq	Schizophrenia	male	44	B
+9	SZ20	SZBDMulti-Seq	Schizophrenia	female	76	A
+9	SZ21	SZBDMulti-Seq	Schizophrenia	female	56	B
+9	SZ22	SZBDMulti-Seq	Schizophrenia	female	61	A
+9	SZ23	SZBDMulti-Seq	Schizophrenia	male	22	B
+9	SZ24	SZBDMulti-Seq	Schizophrenia	male	44	A
+9	SZ3	SZBDMulti-Seq	Schizophrenia	female	67	B
+9	SZ4	SZBDMulti-Seq	Schizophrenia	male	89	A
+9	SZ5	SZBDMulti-Seq	Schizophrenia	male	80	B
+9	SZ6	SZBDMulti-Seq	Schizophrenia	female	64	B
+9	SZ7	SZBDMulti-Seq	Schizophrenia	female	85	B
+9	SZ8	SZBDMulti-Seq	Schizophrenia	male	49	B
+9	SZ9	SZBDMulti-Seq	Schizophrenia	male	77	B
+9	U8DM	UCLA-ASD	Control	female	28	A
+9	UPIT13161	UCLA-ASD	ASD	male	24	A
+9	UPIT3152	UCLA-ASD	Control	male	23	A
+9	WBYA	UCLA-ASD	Control	male	22	A
+9	sc1	PTSDBrainomics	Control	male	39	B
+9	sc11	PTSDBrainomics	Control	female	49	B
+9	sc12	PTSDBrainomics	Control	female	58	A
+9	sc13	PTSDBrainomics	Control	male	60	B
+9	sc18	PTSDBrainomics	MDD	male	53	A
+9	sc2	PTSDBrainomics	Control	male	50	B
+9	sc21	PTSDBrainomics	MDD	male	47	B
+9	sc3	PTSDBrainomics	Control	male	45	A
+9	sc31	PTSDBrainomics	MDD	female	55	B
+9	sc32	PTSDBrainomics	MDD	male	54	B
+9	sc33	PTSDBrainomics	PTSD	male	40	B
+9	sc34	PTSDBrainomics	PTSD	male	47	A
+9	sc35	PTSDBrainomics	PTSD	male	53	A
+9	sc42	PTSDBrainomics	PTSD	male	26	A
+9	sc43	PTSDBrainomics	PTSD	female	50	B
+9	sc44	PTSDBrainomics	PTSD	male	29	B
+9	sc5	PTSDBrainomics	Control	male	40	A
+9	sc6	PTSDBrainomics	Control	male	43	B
+9	sc7	PTSDBrainomics	Control	male	53	A
+10	1041	MultiomeBrain	Schizophrenia	female	37	B
+10	1185	UCLA-ASD	Control	male	4	B
+10	1317	MultiomeBrain	Bipolar Disorder	female	57	A
+10	1320	MultiomeBrain	Schizophrenia	male	53	B
+10	1390	MultiomeBrain	Control	female	43	A
+10	1414	MultiomeBrain	Bipolar Disorder	male	35	B
+10	1461	MultiomeBrain	Bipolar Disorder	male	31	A
+10	1507	MultiomeBrain	Schizophrenia	male	31	A
+10	1601	MultiomeBrain	Bipolar Disorder	male	76	A
+10	1676	MultiomeBrain	Schizophrenia	male	68	A
+10	1713	MultiomeBrain	Bipolar Disorder	male	21	A
+10	1734	MultiomeBrain	Bipolar Disorder	male	26	B
+10	1743	UCLA-ASD	Control	male	44	B
+10	2052	MultiomeBrain	Control	male	40	A
+10	2083	MultiomeBrain	Bipolar Disorder	female	38	A
+10	2275	MultiomeBrain	Bipolar Disorder	female	45	B
+10	2520	MultiomeBrain	Bipolar Disorder	male	25	B
+10	2653	MultiomeBrain	Schizophrenia	female	45	B
+10	2677	MultiomeBrain	Schizophrenia	female	44	A
+10	2686	MultiomeBrain	Bipolar Disorder	female	46	B
+10	2780	MultiomeBrain	Control	male	18	B
+10	2781	MultiomeBrain	Control	male	39	A
+10	2791	MultiomeBrain	Control	male	56	B
+10	285A	UCLA-ASD	ASD	male	8	B
+10	2GGP	UCLA-ASD	Control	male	49	A
+10	2NA6	UCLA-ASD	ASD	male	16	A
+10	2YK7	UCLA-ASD	ASD	female	17	B
+10	35BV	UCLA-ASD	ASD	male	49	B
+10	3HUF	UCLA-ASD	ASD	male	23	A
+10	4341_BA46	Velmeshev-2019.2	Control	male	13	A
+10	4787	UCLA-ASD	Control	male	19	A
+10	5023	UCLA-ASD	ASD	male	16	B
+10	5144	UCLA-ASD	ASD	female	7	B
+10	5144_PFC_Nova	Velmeshev-2019.1	ASD	male	7	A
+10	5278_PFC_Nova	Velmeshev-2019.1	ASD	female	15	A
+10	5294_BA9	Velmeshev-2019.2	ASD	male	19	B
+10	5302	UCLA-ASD	ASD	male	16	B
+10	5308	UCLA-ASD	ASD	male	4	B
+10	5387_BA9	Velmeshev-2019.2	Control	male	12	B
+10	5391	UCLA-ASD	Control	female	8	B
+10	5403_PFC_Nova	Velmeshev-2019.1	ASD	male	16	B
+10	5408	UCLA-ASD	Control	male	6	A
+10	5408_PFC_Nova	Velmeshev-2019.1	Control	male	6	A
+10	5419_PFC	Velmeshev-2019.1	ASD	female	19	B
+10	5531_BA9	Velmeshev-2019.2	ASD	male	15	B
+10	5538_PFC_Nova	Velmeshev-2019.1	Control	female	19	B
+10	5546_BA9_Nova	Velmeshev-2019.2	Control	female	34	B
+10	5565_BA9	Velmeshev-2019.2	ASD	male	12	B
+10	5576	UCLA-ASD	Control	male	2	A
+10	5577_BA9	Velmeshev-2019.2	Control	male	21	B
+10	5670	UCLA-ASD	Control	female	17	A
+10	5787_BA9_Nova	Velmeshev-2019.2	Control	male	39	A
+10	5841_BA9	Velmeshev-2019.2	ASD	male	12	A
+10	5864_BA9	Velmeshev-2019.2	ASD	male	20	A
+10	5879_PFC_Nova	Velmeshev-2019.1	Control	male	15	B
+10	5893_BA9	Velmeshev-2019.2	Control	male	19	A
+10	5893_PFC_Nova	Velmeshev-2019.1	Control	male	19	A
+10	5925	UCLA-ASD	Control	male	7	B
+10	5936_PFC_Nova	Velmeshev-2019.1	Control	female	14	A
+10	5939_BA9	Velmeshev-2019.2	ASD	male	21	A
+10	5945_PFC_Nova	Velmeshev-2019.1	ASD	male	20	A
+10	5958_BA9	Velmeshev-2019.2	Control	male	22	B
+10	5976_BA9	Velmeshev-2019.2	Control	female	4	A
+10	5978_BA9	Velmeshev-2019.2	ASD	male	11	A
+10	5981_BA9_Nova	Velmeshev-2019.2	Control	female	44	A
+10	6033_BA9	Velmeshev-2019.2	ASD	female	14	B
+10	75QW	UCLA-ASD	Control	male	60	A
+10	8XCF	UCLA-ASD	ASD	male	27	A
+10	AN00493	UCLA-ASD	ASD	male	27	B
+10	AN03345	UCLA-ASD	ASD	male	2	A
+10	AN03935	UCLA-ASD	ASD	male	19	A
+10	AN05983	UCLA-ASD	ASD	male	24	A
+10	AN07176	UCLA-ASD	Control	male	21	A
+10	AN07444	UCLA-ASD	Control	male	17	B
+10	AN08792	UCLA-ASD	ASD	male	30	A
+10	AN09714	UCLA-ASD	ASD	male	60	A
+10	AN10679	UCLA-ASD	Control	female	41	A
+10	AN12457	UCLA-ASD	ASD	female	29	A
+10	AN14762	UCLA-ASD	ASD	male	9	B
+10	AN15451	UCLA-ASD	ASD	female	16	A
+10	AN19511	UCLA-ASD	ASD	male	8	A
+10	AN19760	UCLA-ASD	Control	male	28	A
+10	BD1	SZBDMulti-Seq	Bipolar Disorder	female	73	A
+10	BD10	SZBDMulti-Seq	Bipolar Disorder	male	65	A
+10	BD11	SZBDMulti-Seq	Bipolar Disorder	female	89	B
+10	BD12	SZBDMulti-Seq	Bipolar Disorder	female	77	A
+10	BD13	SZBDMulti-Seq	Bipolar Disorder	male	77	A
+10	BD14	SZBDMulti-Seq	Bipolar Disorder	male	36	A
+10	BD15	SZBDMulti-Seq	Bipolar Disorder	male	74	B
+10	BD16	SZBDMulti-Seq	Bipolar Disorder	male	85	B
+10	BD17	SZBDMulti-Seq	Bipolar Disorder	male	51	B
+10	BD18	SZBDMulti-Seq	Bipolar Disorder	male	83	A
+10	BD19	SZBDMulti-Seq	Bipolar Disorder	female	85	A
+10	BD2	SZBDMulti-Seq	Bipolar Disorder	female	80	B
+10	BD20	SZBDMulti-Seq	Bipolar Disorder	female	51	B
+10	BD21	SZBDMulti-Seq	Bipolar Disorder	female	66	B
+10	BD22	SZBDMulti-Seq	Bipolar Disorder	female	64	A
+10	BD23	SZBDMulti-Seq	Bipolar Disorder	female	80	A
+10	BD24	SZBDMulti-Seq	Bipolar Disorder	male	75	A
+10	BD3	SZBDMulti-Seq	Bipolar Disorder	male	24	B
+10	BD4	SZBDMulti-Seq	Bipolar Disorder	female	76	B
+10	BD5	SZBDMulti-Seq	Bipolar Disorder	male	71	A
+10	BD6	SZBDMulti-Seq	Bipolar Disorder	female	61	A
+10	BD7	SZBDMulti-Seq	Bipolar Disorder	male	73	B
+10	BD8	SZBDMulti-Seq	Bipolar Disorder	female	82	B
+10	BD9	SZBDMulti-Seq	Bipolar Disorder	male	82	B
+10	CMC_MSSM_002	CMC	Control	male	42	A
+10	CMC_MSSM_033	CMC	Control	female	81	A
+10	CMC_MSSM_035	CMC	Control	male	75	A
+10	CMC_MSSM_036	CMC	Control	female	82	A
+10	CMC_MSSM_048	CMC	Schizophrenia	male	84	A
+10	CMC_MSSM_049	CMC	Control	female	61	A
+10	CMC_MSSM_056	CMC	Control	female	67	B
+10	CMC_MSSM_058	CMC	Control	female	76	A
+10	CMC_MSSM_060	CMC	Control	male	89	A
+10	CMC_MSSM_067	CMC	Control	female	81	A
+10	CMC_MSSM_072	CMC	Control	female	66	A
+10	CMC_MSSM_077	CMC	Control	female	76	A
+10	CMC_MSSM_080	CMC	Control	male	84	A
+10	CMC_MSSM_081	CMC	Control	female	79	B
+10	CMC_MSSM_083	CMC	Control	male	69	A
+10	CMC_MSSM_085	CMC	Control	male	74	A
+10	CMC_MSSM_086	CMC	Control	male	77	B
+10	CMC_MSSM_089	CMC	Control	male	89	A
+10	CMC_MSSM_090	CMC	Control	male	70	A
+10	CMC_MSSM_094	CMC	Control	female	89	B
+10	CMC_MSSM_104	CMC	Control	male	35	B
+10	CMC_MSSM_105	CMC	Control	female	89	B
+10	CMC_MSSM_108	CMC	Control	male	89	B
+10	CMC_MSSM_113	CMC	Schizophrenia	male	75	B
+10	CMC_MSSM_115	CMC	Schizophrenia	female	50	B
+10	CMC_MSSM_116	CMC	Schizophrenia	female	74	B
+10	CMC_MSSM_117	CMC	Control	male	86	A
+10	CMC_MSSM_130	CMC	Control	male	41	B
+10	CMC_MSSM_131	CMC	Control	male	59	A
+10	CMC_MSSM_140	CMC	Control	female	85	B
+10	CMC_MSSM_148	CMC	Schizophrenia	female	70	A
+10	CMC_MSSM_173	CMC	Control	male	53	B
+10	CMC_MSSM_174	CMC	Control	male	79	B
+10	CMC_MSSM_185	CMC	Control	male	81	A
+10	CMC_MSSM_190	CMC	Control	male	84	B
+10	CMC_MSSM_192	CMC	Schizophrenia	male	86	B
+10	CMC_MSSM_208	CMC	Control	female	89	A
+10	CMC_MSSM_210	CMC	Schizophrenia	male	66	B
+10	CMC_MSSM_212	CMC	Schizophrenia	male	65	A
+10	CMC_MSSM_213	CMC	Schizophrenia	male	62	B
+10	CMC_MSSM_217	CMC	Control	female	79	B
+10	CMC_MSSM_218	CMC	Schizophrenia	male	76	A
+10	CMC_MSSM_219	CMC	Control	female	86	A
+10	CMC_MSSM_221	CMC	Control	female	81	B
+10	CMC_MSSM_223	CMC	Control	male	71	B
+10	CMC_MSSM_224	CMC	Schizophrenia	female	53	A
+10	CMC_MSSM_227	CMC	Control	male	27	B
+10	CMC_MSSM_228	CMC	Control	male	43	B
+10	CMC_MSSM_230	CMC	Control	male	38	A
+10	CMC_MSSM_232	CMC	Control	male	24	A
+10	CMC_MSSM_234	CMC	Control	male	89	A
+10	CMC_MSSM_238	CMC	Control	female	81	B
+10	CMC_MSSM_242	CMC	Control	male	71	B
+10	CMC_MSSM_247	CMC	Control	male	60	A
+10	CMC_MSSM_249	CMC	Control	male	84	B
+10	CMC_MSSM_251	CMC	Control	male	61	B
+10	CMC_MSSM_272	CMC	Control	male	48	A
+10	CMC_MSSM_278	CMC	Control	female	60	B
+10	CMC_MSSM_280	CMC	Control	female	85	A
+10	CMC_MSSM_282	CMC	Control	male	88	B
+10	CMC_MSSM_283	CMC	Control	female	89	B
+10	CMC_MSSM_288	CMC	Schizophrenia	male	69	B
+10	CMC_MSSM_294	CMC	Schizophrenia	male	46	A
+10	CMC_MSSM_295	CMC	Schizophrenia	male	63	A
+10	CMC_MSSM_298	CMC	Schizophrenia	female	65	B
+10	CMC_MSSM_299	CMC	Schizophrenia	female	58	B
+10	CMC_MSSM_300	CMC	Schizophrenia	male	72	A
+10	CMC_MSSM_305	CMC	Schizophrenia	female	86	A
+10	CMC_MSSM_308	CMC	Schizophrenia	male	60	A
+10	CMC_MSSM_309	CMC	Schizophrenia	female	84	B
+10	CMC_MSSM_312	CMC	Schizophrenia	male	68	A
+10	CMC_MSSM_313	CMC	Schizophrenia	male	67	B
+10	CMC_MSSM_315	CMC	Schizophrenia	female	89	B
+10	CMC_MSSM_316	CMC	Schizophrenia	male	40	B
+10	CMC_MSSM_321	CMC	Schizophrenia	male	48	B
+10	CMC_MSSM_323	CMC	Schizophrenia	male	89	A
+10	CMC_MSSM_326	CMC	Schizophrenia	male	82	B
+10	CMC_MSSM_327	CMC	Schizophrenia	female	81	A
+10	CMC_MSSM_338	CMC	Schizophrenia	female	56	A
+10	CMC_MSSM_340	CMC	Schizophrenia	male	76	B
+10	CMC_MSSM_341	CMC	Schizophrenia	male	65	B
+10	CMC_MSSM_347	CMC	Schizophrenia	male	82	A
+10	CMC_MSSM_349	CMC	Schizophrenia	male	79	B
+10	CMC_MSSM_352	CMC	Schizophrenia	male	64	B
+10	CMC_MSSM_355	CMC	Schizophrenia	female	81	B
+10	CMC_MSSM_358	CMC	Control	male	64	B
+10	CMC_MSSM_360	CMC	Schizophrenia	female	89	A
+10	CMC_MSSM_362	CMC	Schizophrenia	male	73	B
+10	CMC_MSSM_369	CMC	Control	male	89	B
+10	CMC_MSSM_371	CMC	Schizophrenia	male	73	A
+10	CMC_MSSM_372	CMC	Schizophrenia	male	89	B
+10	CMC_MSSM_375	CMC	Schizophrenia	male	89	A
+10	CMC_MSSM_377	CMC	Schizophrenia	male	66	A
+10	CMC_MSSM_378	CMC	Schizophrenia	female	70	A
+10	CMC_MSSM_380	CMC	Control	female	74	B
+10	CMC_MSSM_386	CMC	Schizophrenia	male	85	B
+10	CMC_MSSM_390	CMC	Schizophrenia	male	86	A
+10	CMC_MSSM_403	CMC	Schizophrenia	male	69	A
+10	CMC_MSSM_405	CMC	Schizophrenia	male	39	A
+10	CMC_MSSM_443	CMC	Schizophrenia	male	77	A
+10	CON1	SZBDMulti-Seq	Control	female	72	B
+10	CON10	SZBDMulti-Seq	Control	female	62	A
+10	CON11	SZBDMulti-Seq	Control	male	52	A
+10	CON12	SZBDMulti-Seq	Control	male	68	B
+10	CON13	SZBDMulti-Seq	Control	male	68	A
+10	CON14	SZBDMulti-Seq	Control	male	72	A
+10	CON15	SZBDMulti-Seq	Control	female	59	B
+10	CON16	SZBDMulti-Seq	Control	male	42	B
+10	CON17	SZBDMulti-Seq	Control	female	89	A
+10	CON18	SZBDMulti-Seq	Control	female	53	B
+10	CON19	SZBDMulti-Seq	Control	female	58	A
+10	CON2	SZBDMulti-Seq	Control	male	88	B
+10	CON20	SZBDMulti-Seq	Control	female	52	A
+10	CON21	SZBDMulti-Seq	Control	female	58	A
+10	CON22	SZBDMulti-Seq	Control	female	62	B
+10	CON23	SZBDMulti-Seq	Control	male	48	B
+10	CON24	SZBDMulti-Seq	Control	female	44	B
+10	CON3	SZBDMulti-Seq	Control	female	68	A
+10	CON4	SZBDMulti-Seq	Control	male	52	B
+10	CON5	SZBDMulti-Seq	Control	male	36	A
+10	CON6	SZBDMulti-Seq	Control	female	69	B
+10	CON7	SZBDMulti-Seq	Control	male	82	A
+10	CON8	SZBDMulti-Seq	Control	male	80	B
+10	CON9	SZBDMulti-Seq	Control	male	47	A
+10	E4FN	UCLA-ASD	Control	male	27	B
+10	EUFW	UCLA-ASD	Control	male	17	A
+10	FHN9	UCLA-ASD	Control	male	24	A
+10	FXMN	UCLA-ASD	ASD	male	29	A
+10	G7YU	UCLA-ASD	Control	male	27	A
+10	HQ4T	UCLA-ASD	Control	male	17	B
+10	HSB1574_DFC	DevBrain	Williams Syndrome	male	34	B
+10	HSB189_DFC	DevBrain	Control	male	36	B
+10	HSB290_DFC	DevBrain	Control	male	42	B
+10	HSB317_DFC	DevBrain	Control	male	47	A
+10	HSB340_DFC	DevBrain	Control	male	19	A
+10	HSB373_DFC	DevBrain	ASD	male	14	B
+10	HSB375_DFC	DevBrain	ASD	male	46	A
+10	HSB378_DFC	DevBrain	ASD	male	33	B
+10	HSB379_DFC	DevBrain	ASD	female	16	B
+10	HSB380_DFC	DevBrain	ASD	male	19	B
+10	HSB384_DFC	DevBrain	ASD	male	17	A
+10	HSB434_DFC	DevBrain	ASD	male	21	A
+10	HSB517_DFC	DevBrain	ASD	male	27	B
+10	HSB533_DFC	DevBrain	ASD	male	27	A
+10	HSB5437_DFC	DevBrain	Williams Syndrome	male	17	A
+10	HSB5857_DFC	DevBrain	Williams Syndrome	female	42	B
+10	HctZGA002	UCLA-ASD	Control	male	47	B
+10	JU7U	UCLA-ASD	ASD	male	25	B
+10	KMC3	UCLA-ASD	ASD	male	49	B
+10	M9H3	UCLA-ASD	ASD	female	58	B
+10	NEPX	UCLA-ASD	ASD	male	6	A
+10	PA38	UCLA-ASD	ASD	male	19	B
+10	PH2A	UCLA-ASD	Control	male	20	A
+10	PZ65	UCLA-ASD	Control	male	19	B
+10	SZ1	SZBDMulti-Seq	Schizophrenia	female	54	A
+10	SZ10	SZBDMulti-Seq	Schizophrenia	male	42	B
+10	SZ11	SZBDMulti-Seq	Schizophrenia	female	83	B
+10	SZ12	SZBDMulti-Seq	Schizophrenia	male	55	A
+10	SZ13	SZBDMulti-Seq	Schizophrenia	male	58	A
+10	SZ14	SZBDMulti-Seq	Schizophrenia	female	88	A
+10	SZ15	SZBDMulti-Seq	Schizophrenia	female	87	A
+10	SZ16	SZBDMulti-Seq	Schizophrenia	male	46	B
+10	SZ17	SZBDMulti-Seq	Schizophrenia	male	49	A
+10	SZ18	SZBDMulti-Seq	Schizophrenia	female	89	B
+10	SZ19	SZBDMulti-Seq	Schizophrenia	female	79	A
+10	SZ2	SZBDMulti-Seq	Schizophrenia	male	44	A
+10	SZ20	SZBDMulti-Seq	Schizophrenia	female	76	B
+10	SZ21	SZBDMulti-Seq	Schizophrenia	female	56	B
+10	SZ22	SZBDMulti-Seq	Schizophrenia	female	61	B
+10	SZ23	SZBDMulti-Seq	Schizophrenia	male	22	A
+10	SZ24	SZBDMulti-Seq	Schizophrenia	male	44	B
+10	SZ3	SZBDMulti-Seq	Schizophrenia	female	67	A
+10	SZ4	SZBDMulti-Seq	Schizophrenia	male	89	B
+10	SZ5	SZBDMulti-Seq	Schizophrenia	male	80	A
+10	SZ6	SZBDMulti-Seq	Schizophrenia	female	64	A
+10	SZ7	SZBDMulti-Seq	Schizophrenia	female	85	B
+10	SZ8	SZBDMulti-Seq	Schizophrenia	male	49	B
+10	SZ9	SZBDMulti-Seq	Schizophrenia	male	77	B
+10	U8DM	UCLA-ASD	Control	female	28	B
+10	UPIT13161	UCLA-ASD	ASD	male	24	B
+10	UPIT3152	UCLA-ASD	Control	male	23	B
+10	WBYA	UCLA-ASD	Control	male	22	B
+10	sc1	PTSDBrainomics	Control	male	39	A
+10	sc11	PTSDBrainomics	Control	female	49	A
+10	sc12	PTSDBrainomics	Control	female	58	B
+10	sc13	PTSDBrainomics	Control	male	60	B
+10	sc18	PTSDBrainomics	MDD	male	53	A
+10	sc2	PTSDBrainomics	Control	male	50	B
+10	sc21	PTSDBrainomics	MDD	male	47	B
+10	sc3	PTSDBrainomics	Control	male	45	A
+10	sc31	PTSDBrainomics	MDD	female	55	A
+10	sc32	PTSDBrainomics	MDD	male	54	A
+10	sc33	PTSDBrainomics	PTSD	male	40	B
+10	sc34	PTSDBrainomics	PTSD	male	47	A
+10	sc35	PTSDBrainomics	PTSD	male	53	A
+10	sc42	PTSDBrainomics	PTSD	male	26	A
+10	sc43	PTSDBrainomics	PTSD	female	50	A
+10	sc44	PTSDBrainomics	PTSD	male	29	B
+10	sc5	PTSDBrainomics	Control	male	40	B
+10	sc6	PTSDBrainomics	Control	male	43	B
+10	sc7	PTSDBrainomics	Control	male	53	A

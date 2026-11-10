@@ -1,0 +1,16 @@
+group	scheme	celltype	mean_se_ratio	sd_se_ratio	mean_median_abs_t	mean_n_fdr05	n_contrasts
+IT	merged	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron			1.213	3405	8
+IT	ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron	0.9979	0.001835	1.218	3422	8
+IT	author	L2.3_IT	1.086	0.02627	1.09	2698	8
+IT	author	L4_IT	1.223	0.09027	0.9921	1503	8
+IT	author	L5_IT	1.131	0.03766	1.198	2939	8
+IT	author	L6_IT	1.17	0.06319	1.116	2665	8
+IT	author	L6_IT_Car3	1.618	0.07335	1.125	1102	8
+Lamp5	merged	lamp5.GABAergic.cortical.interneuron			0.9654	802.2	8
+Lamp5	ours	lamp5.GABAergic.cortical.interneuron	1.034	0.00659	0.9688	680.8	8
+Lamp5	author	Lamp5	1.062	0.008037	1.015	1242	8
+Lamp5	author	Lamp5_Lhx6	1.196	0.03149	0.8228	260.5	8
+Sst	merged	sst.GABAergic.cortical.interneuron			1.205	1912	8
+Sst	ours	sst.GABAergic.cortical.interneuron	0.9635	0.004295	1.207	1981	8
+Sst	author	Sst	1.003	0.0009738	1.218	1938	8
+Sst	author	Sst_Chodl	1.848	0.2523	0.835	1090	8
