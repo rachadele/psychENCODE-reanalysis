@@ -1,0 +1,7 @@
+test	arm	n_pairs	n_matched	n_clusters	model	group	estimate	formula	ci_low	ci_high	p	coef_la	coef_lb	se
+labels	subclass	3528	168	21	observed_mean	matched	0.876121							
+labels	subclass	3528	168	21	observed_mean	mismatched	0.350986							
+labels	subclass	3528	168	21	unadjusted	matched - mismatched	0.525135	rho ~ matched	0.484264	0.566005	6.10996e-140			
+labels	subclass	3528	168	21	adjusted	matched - mismatched	0.525135	rho ~ matched + la + lb + C(contrast)	0.493106	0.557163	1.41954e-226	0.0697024	0.0550272	
+labels	subclass	3528	168	21	adjusted_mean	matched	0.876121	rho ~ matched + la + lb + C(contrast)	0.830392	0.92185				0.0233314
+labels	subclass	3528	168	21	adjusted_mean	mismatched	0.350986	rho ~ matched + la + lb + C(contrast)	0.316782	0.38519				0.0174514

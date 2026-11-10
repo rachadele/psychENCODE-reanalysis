@@ -2,6 +2,25 @@
 
 Figure 4 of sc-manuscript. Producer: `bin/de_agreement_vs_annotation.py`; outputs in `results_v2.1.2_limma/de_agreement_vs_annotation/`.
 
+## 2026-11-10: Figure 4 uses moderated t, decided by Rachel
+
+For consistency with Figure S7, Figure 4 now correlates limma moderated t statistics (column `stat`) instead of log2 fold changes. All other rules were unchanged. `bin/fig_de_agreement.py --stat t` and `bin/merged_author_fig4_inputs.py --stat t` wrote `fig_de_agreement_subclass_merged_t.png`, `fig4_inputs/fig4b_rho_ci_merged_t.tsv`, `fig4_inputs/fig4_agreement_summary_t.tsv`, `fig4_inputs/null_t/` and `fig4_inputs/manifest_fig4_t.json` (sha256, data version, timestamps). The default `--stat log2FoldChange` reproduces the previous outputs.
+
+| | log2FC | t |
+|---|---|---|
+| Mean ± SD ρ, 21 merged types | 0.88 ± 0.19 | 0.88 ± 0.17 |
+| Mean ± SD ρ, class level (27 types) | 0.78 ± 0.25 | 0.79 ± 0.22 |
+| Null of matched mean | 0.36 | 0.38 |
+| Adjusted means, matched / mismatched | 0.88 / 0.34 | 0.88 / 0.35 |
+| ρ, agreement vs F1 (21) | 0.91 | 0.94 |
+| ρ, agreement vs cells per donor (21) | 0.84 | 0.92 |
+| Partial ρ, F1 given cells (21) | 0.67 (p = 0.0011) | 0.76 (p = 1.1e-4) |
+| Partial ρ, cells given F1 (21) | 0.33 (p = 0.15) | 0.66 (p = 0.0015) |
+| Partial ρ, F1 given cells (27) | −0.17 (p = 0.42) | −0.12 (p = 0.57) |
+| Partial ρ, cells given F1 (27) | 0.53 (p = 0.0050) | 0.60 (p = 0.0013) |
+
+With t, cells per donor stayed significantly associated with agreement once F1 was controlled for.
+
 ## 2026-11-09: merged-author arm, decided by Rachel and adopted for Figure 4
 
 We reran the author-label DE with author types mapped to pipeline subclass labels before pseudobulking (`assets/author_to_pipeline_map.subclass.json`), so the five IT types, LAMP5 with LAMP5 LHX6, and SST with SST Chodl each formed one group. All 21 groups matched one pipeline label and none were excluded. QC masks, limma-voom model, donors and contrasts were unchanged. The 18 unpooled types reproduced the current DE exactly. F1 and cells per donor followed the de_donors rule above. Outputs, README and manifest: `results_v2.1.2_limma/merged_author_2026-11-09/`. Rachel approved the merged arm on 2026-11-09. It replaced the exclusion of pooled types: Figure 4 (`bin/fig_de_agreement.py --merged_dir`, inputs from `bin/merged_author_fig4_inputs.py`) now shows the 21 merged types, with the 27-type rows kept in 4B for comparison, and the manuscript text uses the merged values. Choosing one representative author type per pooled label after seeing the results was rejected as data dredging.

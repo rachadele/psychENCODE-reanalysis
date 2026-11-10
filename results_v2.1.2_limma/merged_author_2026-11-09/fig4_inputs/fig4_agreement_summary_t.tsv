@@ -1,0 +1,4 @@
+statistic	set	level	n_types	n_pairs	mean_rho	sd_rho
+t	21 merged types	subclass	21	168	0.876121	0.171842
+t	27 author types	subclass	27	216	0.835469	0.189159
+t	27 author types	class	27	216	0.79335	0.215434

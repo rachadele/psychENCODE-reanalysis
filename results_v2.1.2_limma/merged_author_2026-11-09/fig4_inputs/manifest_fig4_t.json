@@ -1,0 +1,89 @@
+{
+ "created": "2026-11-10T13:10:31-07:00",
+ "statistic": "Spearman rho of t (spearman_stat)",
+ "data_version": "merged_author_2026-11-09 (author arm, 21 merged types) vs results_v2.1.2_limma pipeline-subclass DE; sc-annotation-pipeline 2.1.2 labels; limma-voom",
+ "script": {
+  "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/bin/fig_de_agreement.py",
+  "sha256": "ca44c64ead93f6831f13b414d5815df8e9171852ef94051c09b7e867d2f5bc37",
+  "mtime": "2026-11-10T13:07:36-07:00"
+ },
+ "inputs": [
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/merged_author_2026-11-09/comparison/subclass/average_corr/combined_filtered_corr.tsv",
+   "sha256": "268f99ba867713054d57028ccb6e155dcea10dbd37b155738bedceb366a185ed",
+   "mtime": "2026-11-09T16:23:50-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/merged_author_2026-11-09/de_agreement/celltype_merged.tsv",
+   "sha256": "cbd63bb976943453c2e82698661b914e85c0ffbb16de648da0226af26a0a24ce",
+   "mtime": "2026-11-09T16:24:21-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/merged_author_2026-11-09/fig4_inputs/celltype_f1_cells_class_merged.tsv",
+   "sha256": "c84bf2f613b469cef41440a5f3f7bea2a902578f996fb718ea78e1c75cabf2b7",
+   "mtime": "2026-11-09T20:31:43-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/de_agreement_vs_annotation/fig4b_rho_ci.tsv",
+   "sha256": "8f6c93e23239f7b495337efde275b4ef3b6a769230914db2976d3440c3c4214d",
+   "mtime": "2026-11-09T15:59:50-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/comparison/subclass/average_corr/combined/combined_filtered_corr.tsv",
+   "sha256": "68ee15f47aef2c685be31f0fb6395dc3ba22c48f096b198ab176bde557d3c466",
+   "mtime": "2026-10-28T14:25:55-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/comparison/class/average_corr/combined/combined_filtered_corr.tsv",
+   "sha256": "e5d0a41bf4dc5fdbb7cf747f6722d759d048d0f162e8c9add682e69da6980f13",
+   "mtime": "2026-10-28T14:25:25-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/de_agreement_vs_annotation/celltype_summary.tsv",
+   "sha256": "e19017841fd90466a727e94bdfc4964893500f8184c350e495250327718d6a8e",
+   "mtime": "2026-11-09T15:59:50-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/assets/author_to_pipeline_map.subclass.json",
+   "sha256": "a6df2ab72f1508793efdc2e9f0cd21059fd82428c9e5dd2003626143c8ede82a",
+   "mtime": "2026-10-27T17:42:26-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/merged_author_2026-11-09/fig4_inputs/null_t/pairs.tsv",
+   "sha256": "d211b4a5dc275e36c61efe83d36e13b8910e9c9b77bbb187edbcff8c19f000a1",
+   "mtime": "2026-11-10T13:10:10-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/merged_author_2026-11-09/fig4_inputs/null_t/null_summary.tsv",
+   "sha256": "5fa275fd205f321c5ff21a8e43b082249f5a2c2f3eeda8113b4e93d61357ff0a",
+   "mtime": "2026-11-10T13:10:10-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/merged_author_2026-11-09/fig4_inputs/null_t/matched_effect_adjusted.tsv",
+   "sha256": "3f53cc1d5b861d78fc2017e589bbcf2a3de3104de003f612e77e55440bb284a1",
+   "mtime": "2026-11-10T13:10:15-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/merged_author_2026-11-09/fig4_inputs/null_t/manifest.json",
+   "sha256": "acfb126001b985a759ac1b4830b68b812d55e1a33d21be45bf3fa1f5d7daf19f",
+   "mtime": "2026-11-10T13:10:15-07:00"
+  }
+ ],
+ "outputs": [
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/merged_author_2026-11-09/de_agreement/fig_de_agreement_subclass_merged_t.png",
+   "sha256": "4fb60f333425130872ea9dd7fb8fb925902266e0e6330c6f25203e89603470b9",
+   "mtime": "2026-11-10T13:10:31-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/merged_author_2026-11-09/fig4_inputs/fig4b_rho_ci_merged_t.tsv",
+   "sha256": "051ef7f05da9ecdf831c2aa58a04a693f1bfd6fe1f03a43f392f9e612fdf9b39",
+   "mtime": "2026-11-10T13:10:27-07:00"
+  },
+  {
+   "path": "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/results_v2.1.2_limma/merged_author_2026-11-09/fig4_inputs/fig4_agreement_summary_t.tsv",
+   "sha256": "29561260161cb1f2bd9829cabc8e31bd57b32b134ffcb9fd480752d2b8b1cbba",
+   "mtime": "2026-11-10T13:10:27-07:00"
+  }
+ ]
+}

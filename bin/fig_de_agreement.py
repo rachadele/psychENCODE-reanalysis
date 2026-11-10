@@ -1,7 +1,7 @@
 """Manuscript figure: DE agreement vs annotation F1 and cell support (sc-manuscript Figure 4).
 
 At final size (183 mm, double column). A: heatmap of DE agreement (Spearman rho of log2 fold
-changes, author vs pipeline labels) per contrast and author type, with bars for cohort F1
+changes, or of limma moderated t with merged_figure(stat="t"), author vs pipeline labels) per contrast and author type, with bars for cohort F1
 (PsychENCODE donors) of the subclass and class labels and cell class, and brackets over author types pooled into one pipeline label.
 B: Spearman rho of mean agreement with log10 median cells per donor (27 types) and with F1
 (27 types; the one-to-one types, by default the 18 whose pipeline label pools no other type), plain
@@ -556,7 +556,13 @@ def plot_scatter(tab, cols, corr, out_png):
     plt.close(fig)
 
 
-def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None):
+# merged_figure(stat=...): per-pair agreement column (combined_filtered_corr.tsv), per-type mean column
+# (celltype_merged.tsv), permutation-null folder and output suffix
+MERGED_STATS = {"log2FoldChange": ("spearman_log2FoldChange", "mean_rho_log2FC", "null", ""),
+                "t": ("spearman_stat", "mean_rho_t", "null_t", "_t")}
+
+
+def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None, stat="log2FoldChange"):
     """Figure 4 from the merged-author arm (DE_AGREEMENT_DECISIONS.md, 2026-11-09): author types the
     pipeline pools were summed into one pseudobulk per donor, 21 types each matching one pipeline label.
     Inputs, all under merged_dir (results_v2.1.2_limma/merged_author_2026-11-09):
@@ -565,11 +571,17 @@ def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None):
       fig4_inputs/celltype_f1_cells_class_merged.tsv                class F1 (A)
       fig4_inputs/null/                                             permutation null, adjusted means (C)
     (fig4_inputs from bin/merged_author_fig4_inputs.py). current_rho_ci: fig4b_rho_ci.tsv of the
-    27-type analysis, whose two 27-type rows sit beside the 21-type rows in B. Writes
-    fig4b_rho_ci_merged.tsv next to out_png's inputs (fig4_inputs/)."""
+    27-type analysis, whose two 27-type rows sit beside the 21-type rows in B. stat: log2FoldChange
+    (default) or t (limma moderated t, column spearman_stat; null from fig4_inputs/null_t). The 27-type
+    rows are recomputed from the current comparison table with the same statistic (for log2FoldChange
+    they must equal current_rho_ci). Writes fig4b_rho_ci_merged<suffix>.tsv and
+    fig4_agreement_summary<suffix>.tsv (mean +- SD per pair: 21 merged types, 27 author types, class
+    level) to fig4_inputs/, and manifest_fig4<suffix>.json beside them."""
     import json
     from utils import CONTRAST_DISPLAY, PIPELINE_TO_BENCH
     from de_agreement_vs_annotation import rho_ci_row
+    import datetime, hashlib
+    corr_col, mean_col, null_sub, suffix = MERGED_STATS[stat]
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     amap = json.load(open(os.path.join(root, "assets", "author_to_pipeline_map.subclass.json")))
     members = {}
@@ -579,10 +591,10 @@ def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None):
     comb = pd.read_csv(os.path.join(merged_dir, "comparison", "subclass", "average_corr", "combined_filtered_corr.tsv"), sep="\t")
     comb = comb[(comb["ct_author"] == comb["ct_sc_pipeline"]) & comb["contrast"].isin(CONTRAST_DISPLAY)]
     comb = comb.assign(c=comb["contrast"].map(CONTRAST_DISPLAY))
-    pivot = comb.pivot_table(index="c", columns="ct_author", values="spearman_log2FoldChange")
+    pivot = comb.pivot_table(index="c", columns="ct_author", values=corr_col)
     pivot = pivot.loc[[c for c in ["SCZ", "BD", "ASD", "MDD", "PTSD", "WS", "Age", "Sex"] if c in pivot.index]]
     tab = pd.DataFrame({"ct_author": mc["celltype"], "pipeline_label": mc["celltype"], "f1": mc["f1"],
-                        "mean_rho": mc["mean_rho_log2FC"], "log10_cells": mc["log10_cells"]})
+                        "mean_rho": mc[mean_col], "log10_cells": mc["log10_cells"]})
     assert set(tab["ct_author"]) == set(pivot.columns) == set(members)
     display = {lab: (author_display(ms[0]) if len(ms) == 1 else PIPELINE_TO_BENCH["subclass"][lab])
                for lab, ms in members.items()}
@@ -592,20 +604,73 @@ def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None):
     rho_ci = pd.DataFrame([
         rho_ci_row(f"Cells per donor, {n} types", tab["log10_cells"], tab["mean_rho"], tab["f1"], "F1"),
         rho_ci_row(f"F1, {n} types", tab["f1"], tab["mean_rho"], tab["log10_cells"], "log10 cells per donor")])
+    assert np.allclose(tab.set_index("ct_author")["mean_rho"], pivot.mean().reindex(tab["ct_author"]).values)
+    # 27 author types without merging, same statistic: per-type mean over the eight contrasts
+    rdir = os.path.dirname(os.path.dirname(os.path.abspath(merged_dir)) + "/")
+    cur_corr = os.path.join(rdir, "comparison", "subclass", "average_corr", "combined", "combined_filtered_corr.tsv")
+    cls_corr = os.path.join(rdir, "comparison", "class", "average_corr", "combined", "combined_filtered_corr.tsv")
+    cur_sum = os.path.join(os.path.dirname(os.path.abspath(current_rho_ci)), "celltype_summary.tsv")
+    cc = pd.read_csv(cur_corr, sep="\t")
+    cc = cc[cc["contrast"].isin(CONTRAST_DISPLAY)]
+    cs = pd.read_csv(cur_sum, sep="\t").set_index("ct_author")
+    cs["mean_rho"] = cc.groupby("ct_author")[corr_col].mean().reindex(cs.index)
+    assert cs["mean_rho"].notna().all() and len(cs) == 27
+    n27 = len(cs)
+    c27 = pd.DataFrame([
+        rho_ci_row(f"Cells per donor, {n27} types", cs["log10_cells"], cs["mean_rho"], cs["f1"], "F1"),
+        rho_ci_row(f"F1, {n27} types", cs["f1"], cs["mean_rho"], cs["log10_cells"], "log10 cells per donor")])
+    if stat == "log2FoldChange":  # must reproduce the 27-type rows of the current analysis
+        cur = pd.read_csv(current_rho_ci, sep="\t")
+        cur = cur[cur["label"].str.contains("27 types")].set_index("label").loc[c27["label"]]
+        num = [k for k in c27.columns if k not in ("label", "controlled_for")]
+        assert np.allclose(cur[num].values.astype(float), c27[num].values.astype(float), atol=1e-5)
     fin = os.path.join(merged_dir, "fig4_inputs")
-    rho_ci.to_csv(os.path.join(fin, "fig4b_rho_ci_merged.tsv"), sep="\t", index=False, float_format="%.6g")
-    cur = pd.read_csv(current_rho_ci, sep="\t")
+    pd.concat([rho_ci, c27]).to_csv(os.path.join(fin, f"fig4b_rho_ci_merged{suffix}.tsv"), sep="\t",
+                                    index=False, float_format="%.6g")
+    cl = pd.read_csv(cls_corr, sep="\t")
+    cl = cl[cl["contrast"].isin(CONTRAST_DISPLAY)]
+    summ = pd.DataFrame([{"set": s_, "level": lv, "n_types": nt, "n_pairs": len(v), "mean_rho": v.mean(),
+                          "sd_rho": v.std(ddof=1)} for s_, lv, nt, v in
+                         [(f"{n} merged types", "subclass", n, pd.Series(pivot.values.ravel()).dropna()),
+                          (f"{n27} author types", "subclass", n27, cc[corr_col]),
+                          (f"{n27} author types", "class", cl["ct_author"].nunique(), cl[corr_col])]])
+    summ.insert(0, "statistic", stat)
+    summ_path = os.path.join(fin, f"fig4_agreement_summary{suffix}.tsv")
+    summ.to_csv(summ_path, sep="\t", index=False, float_format="%.6g")
     pick = lambda d, s: d[d["label"].str.startswith(s)].iloc[0]
-    c27 = cur[cur["label"].str.contains("27 types")]
-    assert len(c27) == 2
     groups = [("Cells per donor", [("27 author types", pick(c27, "Cells per donor")),
                                    (f"{n} merged types", pick(rho_ci, "Cells per donor"))]),
               ("F1", [("27 author types", pick(c27, "F1")), (f"{n} merged types", pick(rho_ci, "F1"))])]
     plot_figure(pivot, tab, {lab: lab for lab in members}, PIPELINE_TO_BENCH["subclass"], out_png, rho_ci,
-                os.path.join(fin, "null"), qa_dir=qa_dir,
+                os.path.join(fin, null_sub), qa_dir=qa_dir,
                 class_f1_tsv=os.path.join(fin, "celltype_f1_cells_class_merged.tsv"),
                 display=display, class_of=class_of, brackets=False, b_groups=groups)
-    return rho_ci
+
+    def sha(f):
+        h = hashlib.sha256()
+        with open(f, "rb") as fh:
+            for b in iter(lambda: fh.read(1 << 20), b""):
+                h.update(b)
+        return h.hexdigest()
+    rec = lambda f: {"path": os.path.abspath(f), "sha256": sha(f), "mtime": datetime.datetime.fromtimestamp(
+        os.path.getmtime(f)).astimezone().isoformat(timespec="seconds")}
+    nd = os.path.join(fin, null_sub)
+    ins = [os.path.join(merged_dir, "comparison", "subclass", "average_corr", "combined_filtered_corr.tsv"),
+           os.path.join(merged_dir, "de_agreement", "celltype_merged.tsv"),
+           os.path.join(fin, "celltype_f1_cells_class_merged.tsv"), current_rho_ci, cur_corr, cls_corr, cur_sum,
+           os.path.join(root, "assets", "author_to_pipeline_map.subclass.json"),
+           os.path.join(nd, "pairs.tsv"), os.path.join(nd, "null_summary.tsv"),
+           os.path.join(nd, "matched_effect_adjusted.tsv"), os.path.join(nd, "manifest.json")]
+    json.dump({"created": datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
+               "statistic": f"Spearman rho of {stat} ({corr_col})",
+               "data_version": "merged_author_2026-11-09 (author arm, 21 merged types) vs results_v2.1.2_limma "
+                               "pipeline-subclass DE; sc-annotation-pipeline 2.1.2 labels; limma-voom",
+               "script": rec(os.path.abspath(__file__)),
+               "inputs": [rec(f) for f in ins],
+               "outputs": [rec(f) for f in (out_png, os.path.join(fin, f"fig4b_rho_ci_merged{suffix}.tsv"), summ_path)]},
+              open(os.path.join(fin, f"manifest_fig4{suffix}.json"), "w"), indent=1)
+    print(summ.round(4).to_string(index=False))
+    return pd.concat([rho_ci, c27])
 
 
 if __name__ == "__main__":
@@ -615,6 +680,8 @@ if __name__ == "__main__":
     ap.add_argument("--current_rho_ci", required=True, help="27-type fig4b_rho_ci.tsv")
     ap.add_argument("--out_png", required=True)
     ap.add_argument("--qa_dir", default=None)
+    ap.add_argument("--stat", choices=sorted(MERGED_STATS), default="log2FoldChange",
+                    help="DE statistic correlated between author and pipeline DE (t = limma moderated t)")
     a = ap.parse_args()
-    print(merged_figure(a.merged_dir, a.current_rho_ci, a.out_png, a.qa_dir).round(4).to_string(index=False))
+    print(merged_figure(a.merged_dir, a.current_rho_ci, a.out_png, a.qa_dir, a.stat).round(4).to_string(index=False))
 

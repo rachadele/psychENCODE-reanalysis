@@ -1,0 +1,5 @@
+label	n	controlled_for	plain_rho	plain_p	plain_ci_low	plain_ci_high	partial_rho	partial_p	partial_ci_low	partial_ci_high
+Cells per donor, 21 types	21	F1	0.915232	6.1757e-09	0.799373	0.965469	0.662314	0.00146436	0.310921	0.854416
+F1, 21 types	21	log10 cells per donor	0.936364	4.40676e-10	0.84708	0.974245	0.757591	0.000109416	0.473968	0.898792
+Cells per donor, 27 types	27	F1	0.68417	8.31154e-05	0.411019	0.844595	0.596099	0.00131072	0.271417	0.798969
+F1, 27 types	27	log10 cells per donor	0.431624	0.024572	0.0617361	0.69727	-0.117515	0.567505	-0.482886	0.282705

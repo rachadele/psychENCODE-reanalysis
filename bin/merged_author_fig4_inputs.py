@@ -8,7 +8,10 @@ results_v2.1.2_limma/merged_author_2026-11-09/fig4_inputs/ (each step skipped wh
      same seed and permutation counts) on the 168 merged pairs, and matched_effect_adjusted.main, both
      imported unchanged with their input and output paths pointed at the merged arm;
      celltype_f1_cells_merged.tsv (merged author rows plus the current pipeline rows) feeds the latter.
+--stat chooses the DE statistic correlated per pair: log2FoldChange (default, writes null/) or t, the
+limma moderated t (column "stat" of the DE tables, writes null_t/). Only step 2 depends on it.
 """
+import argparse
 import glob
 import json
 import os
@@ -78,8 +81,14 @@ def f1_cells_table():
     return out
 
 
-def null():
-    nd = f"{D}/null"
+# --stat -> (DE table column, combined_filtered_corr.tsv column, null output folder)
+STATS = {"log2FoldChange": ("log2FoldChange", "spearman_log2FoldChange", "null"),
+         "t": ("stat", "spearman_stat", "null_t")}
+
+
+def null(stat="log2FoldChange"):
+    col, corr_col, sub = STATS[stat]
+    nd = f"{D}/{sub}"
     os.makedirs(nd, exist_ok=True)
     sys.path.insert(0, NULL_REPO)
     import de_permutation_null as dpn
@@ -96,25 +105,33 @@ def null():
                     pp = f"{pdir}/{lab}/{c}/{c}_{lab}_results.tsv"
                     if not (os.path.exists(ap) and os.path.exists(pp)):
                         continue
-                    auth[lab] = dpn.read_our(ap)[["gene", "log2FoldChange"]]
-                    pipe[lab] = dpn.read_our(pp)[["gene", "log2FoldChange"]]
+                    auth[lab] = dpn.read_our(ap)[["gene", col]]
+                    pipe[lab] = dpn.read_our(pp)[["gene", col]]
                     match[lab] = lab
                 out[c] = (auth, pipe, match)
             return out
 
+        def pair(a, b):  # dpn.pair_labels with the chosen column (as aggregate_pairwise.py)
+            m = pd.merge(a, b, on="gene", suffixes=("_author", "_gemma"), how="inner")
+            return dpn.spearman_ranks(m[f"{col}_author"].to_numpy(float), m[f"{col}_gemma"].to_numpy(float))
+
         rng = np.random.default_rng(dpn.SEED)
-        pairs, summ, nulls = dpn.run_test("labels", "subclass", label_tables(), dpn.pair_labels, rng)
+        pairs, summ, nulls = dpn.run_test("labels", "subclass", label_tables(), pair, rng)
         # matched rho must equal the merged arm's comparison table
         src = f"{S}/comparison/subclass/average_corr/combined_filtered_corr.tsv"
         ref = pd.read_csv(src, sep="\t")
-        ref = ref[ref["ct_author"] == ref["ct_sc_pipeline"]].set_index(["contrast", "ct_author"])["spearman_log2FoldChange"]
+        ref = ref[ref["ct_author"] == ref["ct_sc_pipeline"]].set_index(["contrast", "ct_author"])[corr_col]
         got = pairs[pairs["matched"]].set_index(["contrast", "celltype"])["rho"]
         j = pd.concat([got.rename("g"), ref.rename("r")], axis=1, join="inner")
         assert len(j) == len(got) and np.allclose(j["g"], j["r"], atol=1e-8)
         pairs.to_csv(f"{nd}/pairs.tsv", sep="\t", index=False, float_format="%.6g")
         pd.DataFrame(summ).to_csv(f"{nd}/null_summary.tsv", sep="\t", index=False, float_format="%.6g")
         nulls.to_csv(f"{nd}/null_means.tsv.gz", sep="\t", index=False, float_format="%.6g")
-        json.dump({"script": os.path.abspath(__file__), "null_module_sha256": dpn.sha(dpn.__file__),
+        json.dump({"script": os.path.abspath(__file__), "script_sha256": dpn.sha(os.path.abspath(__file__)),
+                   "statistic": f"Spearman rho of {stat} (DE column {col})",
+                   "data_version": "merged_author_2026-11-09 (author arm) vs results_v2.1.2_limma pipeline-subclass DE, limma-voom",
+                   "created": __import__("datetime").datetime.now().astimezone().isoformat(timespec="seconds"),
+                   "null_module_sha256": dpn.sha(dpn.__file__),
                    "seed": dpn.SEED, "n_perm_celltype": dpn.N_PERM_CT, "n_perm_gene": dpn.N_PERM_GENE,
                    "inputs": {p: dpn.sha(p) for p in sorted(dpn.INPUTS)},
                    "outputs": {o: dpn.sha(f"{nd}/{o}") for o in ("pairs.tsv", "null_summary.tsv", "null_means.tsv.gz")}},
@@ -128,10 +145,13 @@ def null():
 
 
 def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--stat", choices=sorted(STATS), default="log2FoldChange")
+    a = ap.parse_args()
     os.makedirs(D, exist_ok=True)
     class_f1()
-    null()
-    print(pd.read_csv(f"{D}/null/null_summary.tsv", sep="\t").round(4).to_string(index=False))
+    nd = null(a.stat)
+    print(pd.read_csv(f"{nd}/null_summary.tsv", sep="\t").round(4).to_string(index=False))
 
 
 if __name__ == "__main__":
