@@ -214,17 +214,57 @@ def check_layout(fig, ax_a, panels, W):
     return {"n_text": len(texts), "failures": fails}
 
 
+def _panel_b_groups(ba, groups):
+    """Panel B as grouped rows: a bold heading per variable, then one row per type set, plain (filled)
+    and partial (open, controlling for the other variable) rho with 95% CI, p plain -> partial on the right."""
+    rows, ys, heads, y = [], [], [], 0
+    for head, items in groups[::-1]:          # bottom-up
+        for name, r in items[::-1]:
+            rows.append((name, r)); ys.append(y); y += 1
+        heads.append((head, y - 0.25)); y += 0.7
+    off = 0.15
+    tr = mpl.transforms.blended_transform_factory(ba.transAxes, ba.transData)
+    for (name, r), yy in zip(rows, ys):
+        for kind, dy, mfc in (("plain", off, "0.2"), ("partial", -off, "white")):
+            ba.plot([r[f"{kind}_ci_low"], r[f"{kind}_ci_high"]], [yy + dy] * 2, color="0.2", lw=1.2, zorder=2,
+                    solid_capstyle="butt")
+            ba.plot([r[f"{kind}_rho"]], [yy + dy], marker="o", ms=7, mfc=mfc, mec="0.2", mew=1.4, ls="", zorder=4)
+        ba.text(1.032, yy, f"{fmt_p(r['plain_p'])} → {fmt_p(r['partial_p'])}", transform=tr,
+                ha="left", va="center", fontsize=TXT)
+    for head, yy in heads:
+        ba.text(-0.02, yy, head, transform=tr, ha="right", va="bottom", fontsize=TXT, fontweight="bold")
+    ba.text(1.032, max(ys) + 0.45, "p", transform=tr, ha="left", va="bottom", fontsize=TXT)
+    ba.axvline(0, color="0.5", lw=0.8, ls="--", zorder=1)
+    ba.set_xlim(-1, 1); ba.set_xticks([-1, -0.5, 0, 0.5, 1])
+    ba.set_ylim(-0.55, y - 0.2)
+    ba.set_yticks(ys); ba.set_yticklabels([n for n, _ in rows])
+    ba.tick_params(axis="y", length=0)
+    ba.spines["left"].set_visible(False)
+    ba.set_xlabel("Spearman ρ with mean agreement")
+    ba.legend(handles=[mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="0.2", mec="0.2", label="Plain"),
+                       mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="white", mec="0.2", mew=1.4,
+                                     label="Partial, controlling for the other variable"),
+                       mlines.Line2D([], [], color="0.2", lw=1.2, label="95% CI")],
+              loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=3, borderaxespad=0.2, handlelength=1.4,
+              columnspacing=0.9, handletextpad=0.4)
+
+
 def fmt_p(p):
     return "<0.001" if p < 0.001 else f"{p:.2g}"
 
 
 def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, study="CMC", qa_dir=None,
-                class_f1_tsv=None):
+                class_f1_tsv=None, display=None, class_of=None, brackets=True, b_groups=None):
     """pivot: contrast x author type (log2FC rho); tab: celltype_summary rows;
     class_f1_tsv: class-level cohort F1 per author type (class_f1_de_donors.py output); default: env
     FIG4_CLASS_F1_TSV, else celltype_f1_cells_class.tsv beside out_png;
     rho_ci: plain and partial Spearman rho with CIs, one row per test (panel B; fig4b_rho_ci.tsv);
-    null_dir: benchmark-post-hoc/de_permutation_null (panel C)."""
+    null_dir: benchmark-post-hoc/de_permutation_null (panel C).
+    Merged-author build (merged_figure()): display / class_of map column keys to tick labels and cell
+    classes (default author_display, cell_class); brackets=False drops the pooled-type bracket strip;
+    b_groups = [(heading, [(row label, rho_ci row), ...]), ...] draws panel B as grouped rows."""
+    disp_of = (lambda c: display[c]) if display else author_display
+    class_fn = (lambda c: class_of[c]) if class_of else cell_class
     t = tab.set_index("ct_author")
     class_f1_tsv = class_f1_tsv or os.environ.get("FIG4_CLASS_F1_TSV") or \
         os.path.join(os.path.dirname(os.path.abspath(out_png)), "celltype_f1_cells_class.tsv")
@@ -249,13 +289,15 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     hm_h = nrow * cell_h
     y_e, e_h = 0.62, 1.45                     # panel C: matched vs mismatched pairs
     y_b, b_h = y_e + e_h + 1.3, 1.45          # panel B: plain and partial rho
+    if b_groups:
+        b_h = 0.7 + 0.5 * sum(len(rows) for _, rows in b_groups)  # grouped rows need more height
     b_left, p_col = 2.2, 1.3                 # B row labels on the left, p values on the right
     y_key, key_h = y_b + b_h + 0.45, 0.62    # key row: colour bars
     y_cls, cls_h = y_key + key_h + 0.05, 0.72  # class legend row
     y_hm = y_cls + cls_h + 0.05 + 1.45        # A tick labels and axis title
     y_br = y_hm + hm_h + gap
-    br_h = 0.30
-    bars_y0 = y_br + br_h + gap
+    br_h = 0.30 if brackets else 0.0
+    bars_y0 = y_br + br_h + gap if brackets else y_br
     H = bars_y0 + 3 * (bar_h + gap) + top
     fig = plt.figure(figsize=(W, H))
     fx, fy = (lambda v: v / W), (lambda v: v / H)
@@ -268,7 +310,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
                          edgecolors="white", linewidth=0.5)
     ax.set_xlim(0, ncol); ax.set_ylim(nrow, 0)
     ax.set_xticks(np.arange(ncol) + 0.5)
-    ax.set_xticklabels([author_display(c) for c in cols], rotation=90, ha="right", va="center",
+    ax.set_xticklabels([disp_of(c) for c in cols], rotation=90, ha="right", va="center",
                        rotation_mode="anchor")
     ax.set_yticks(np.arange(nrow) + 0.5); ax.set_yticklabels(pv.index)
     ax.tick_params(length=0, pad=3)
@@ -293,15 +335,16 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
         for s in b.spines.values():
             s.set_visible(False)
 
-    bar(bars_y0, [mpl.colors.to_rgba(CLASS_COLORS[cell_class(c)]) for c in cols], "Cell class", outline=True)
+    bar(bars_y0, [mpl.colors.to_rgba(CLASS_COLORS[class_fn(c)]) for c in cols], "Cell class", outline=True)
     bar(bars_y0 + (bar_h + gap), [f1c(t.loc[c, "f1"]) for c in cols], "Subclass F1")
     bar(bars_y0 + 2 * (bar_h + gap), [f1c(t.loc[c, "class_f1"]) for c in cols], "Class F1")
 
     # brackets over author types pooled into one pipeline label
-    bax = fig.add_axes([fx(left), fy(y_br), fx(hm_w), fy(br_h)])
-    bax.set_xlim(0, ncol); bax.set_ylim(0, 1); bax.axis("off")
+    if brackets:
+        bax = fig.add_axes([fx(left), fy(y_br), fx(hm_w), fy(br_h)])
+        bax.set_xlim(0, ncol); bax.set_ylim(0, 1); bax.axis("off")
     i = 0
-    while i < ncol:
+    while brackets and i < ncol:
         j = i
         while j + 1 < ncol and label_map[cols[j + 1]] == label_map[cols[i]]:
             j += 1
@@ -311,7 +354,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
         i = j + 1
 
     # ---------- key row: class legend, colour bars ----------
-    present = [k for k in CLASS_COLORS if any(cell_class(c) == k for c in cols)]
+    present = [k for k in CLASS_COLORS if any(class_fn(c) == k for c in cols)]
     cax_ = fig.add_axes([fx(left - 0.9), fy(y_cls), fx(W - left + 0.9 - right), fy(cls_h)])
     cax_.axis("off")
     cax_.legend(handles=[mpatches.Patch(facecolor=CLASS_COLORS[k], edgecolor=EDGE, lw=0.5, label=k) for k in present],
@@ -332,37 +375,40 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
 
     # ---------- B: plain and partial Spearman rho of agreement, with 95% CIs ----------
     ba = fig.add_axes([fx(b_left), fy(y_b), fx(W - right - b_left - p_col), fy(b_h)])
-    rows_b = list(rho_ci.itertuples())
-    n_r = len(rows_b)
-    off = 0.14
-    for i, r in enumerate(rows_b):
-        yy = n_r - 1 - i
-        for kind, dy, mfc in (("plain", off, "0.2"), ("partial", -off, "white")):
-            rho, lo_, hi_ = getattr(r, f"{kind}_rho"), getattr(r, f"{kind}_ci_low"), getattr(r, f"{kind}_ci_high")
-            ba.plot([lo_, hi_], [yy + dy] * 2, color="0.2", lw=1.2, zorder=2, solid_capstyle="butt")
-            ba.plot([rho], [yy + dy], marker="o", ms=7, mfc=mfc, mec="0.2", mew=1.4, ls="", zorder=4)
-        ba.text(1.0 + 0.02 * 1.6, yy, f"{fmt_p(r.plain_p)} → {fmt_p(r.partial_p)}",
-                transform=mpl.transforms.blended_transform_factory(ba.transAxes, ba.transData),
-                ha="left", va="center", fontsize=TXT)
-    ba.axvline(0, color="0.5", lw=0.8, ls="--", zorder=1)
-    ba.set_xlim(-1, 1)
-    ba.set_xticks([-1, -0.5, 0, 0.5, 1])
-    ba.set_ylim(-0.6, n_r - 0.4)
-    ba.set_yticks(range(n_r))
-    # each row names the variable its open (partial) point controls for
-    ctrl = lambda v: "cells per donor" if "cells" in str(v) else str(v)
-    ba.set_yticklabels([f"{r.label}\nopen: given {ctrl(r.controlled_for)}" for r in rows_b][::-1])
-    ba.tick_params(axis="y", length=0)
-    ba.spines["left"].set_visible(False)
-    ba.set_xlabel("Spearman ρ with mean agreement")
-    ba.text(1.0 + 0.02 * 1.6, n_r - 0.4, "p", transform=mpl.transforms.blended_transform_factory(ba.transAxes, ba.transData),
-            ha="left", va="bottom", fontsize=TXT)
-    ba.legend(handles=[mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="0.2", mec="0.2", label="Plain"),
-                       mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="white", mec="0.2", mew=1.4,
-                                     label="Partial (open), given the variable named on the row"),
-                       mlines.Line2D([], [], color="0.2", lw=1.2, label="95% CI")],
-              loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=3, borderaxespad=0.2, handlelength=1.4,
-              columnspacing=0.9, handletextpad=0.4)
+    if b_groups:
+        _panel_b_groups(ba, b_groups)
+    else:
+        rows_b = list(rho_ci.itertuples())
+        n_r = len(rows_b)
+        off = 0.14
+        for i, r in enumerate(rows_b):
+            yy = n_r - 1 - i
+            for kind, dy, mfc in (("plain", off, "0.2"), ("partial", -off, "white")):
+                rho, lo_, hi_ = getattr(r, f"{kind}_rho"), getattr(r, f"{kind}_ci_low"), getattr(r, f"{kind}_ci_high")
+                ba.plot([lo_, hi_], [yy + dy] * 2, color="0.2", lw=1.2, zorder=2, solid_capstyle="butt")
+                ba.plot([rho], [yy + dy], marker="o", ms=7, mfc=mfc, mec="0.2", mew=1.4, ls="", zorder=4)
+            ba.text(1.0 + 0.02 * 1.6, yy, f"{fmt_p(r.plain_p)} → {fmt_p(r.partial_p)}",
+                    transform=mpl.transforms.blended_transform_factory(ba.transAxes, ba.transData),
+                    ha="left", va="center", fontsize=TXT)
+        ba.axvline(0, color="0.5", lw=0.8, ls="--", zorder=1)
+        ba.set_xlim(-1, 1)
+        ba.set_xticks([-1, -0.5, 0, 0.5, 1])
+        ba.set_ylim(-0.6, n_r - 0.4)
+        ba.set_yticks(range(n_r))
+        # each row names the variable its open (partial) point controls for
+        ctrl = lambda v: "cells per donor" if "cells" in str(v) else str(v)
+        ba.set_yticklabels([f"{r.label}\nopen: given {ctrl(r.controlled_for)}" for r in rows_b][::-1])
+        ba.tick_params(axis="y", length=0)
+        ba.spines["left"].set_visible(False)
+        ba.set_xlabel("Spearman ρ with mean agreement")
+        ba.text(1.0 + 0.02 * 1.6, n_r - 0.4, "p", transform=mpl.transforms.blended_transform_factory(ba.transAxes, ba.transData),
+                ha="left", va="bottom", fontsize=TXT)
+        ba.legend(handles=[mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="0.2", mec="0.2", label="Plain"),
+                           mlines.Line2D([], [], ls="", marker="o", ms=7, mfc="white", mec="0.2", mew=1.4,
+                                         label="Partial (open), given the variable named on the row"),
+                           mlines.Line2D([], [], color="0.2", lw=1.2, label="95% CI")],
+                  loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=3, borderaxespad=0.2, handlelength=1.4,
+                  columnspacing=0.9, handletextpad=0.4)
     fig.text(fx(0.03), fy(H - 0.03), "A", fontsize=LET, fontweight="bold", va="top")
     fig.text(fx(0.03), fy(y_b + b_h + 0.62), "B", fontsize=LET, fontweight="bold", va="top")
 
@@ -508,3 +554,67 @@ def plot_scatter(tab, cols, corr, out_png):
         raise RuntimeError("Scatter figure QA failed: " + "; ".join(qa["failures"]))
     fig.savefig(out_png, dpi=300, facecolor="white")
     plt.close(fig)
+
+
+def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None):
+    """Figure 4 from the merged-author arm (DE_AGREEMENT_DECISIONS.md, 2026-11-09): author types the
+    pipeline pools were summed into one pseudobulk per donor, 21 types each matching one pipeline label.
+    Inputs, all under merged_dir (results_v2.1.2_limma/merged_author_2026-11-09):
+      comparison/subclass/average_corr/combined_filtered_corr.tsv  rho per type x contrast (A)
+      de_agreement/celltype_merged.tsv                              F1, cells per donor, mean rho (A, B)
+      fig4_inputs/celltype_f1_cells_class_merged.tsv                class F1 (A)
+      fig4_inputs/null/                                             permutation null, adjusted means (C)
+    (fig4_inputs from bin/merged_author_fig4_inputs.py). current_rho_ci: fig4b_rho_ci.tsv of the
+    27-type analysis, whose two 27-type rows sit beside the 21-type rows in B. Writes
+    fig4b_rho_ci_merged.tsv next to out_png's inputs (fig4_inputs/)."""
+    import json
+    from utils import CONTRAST_DISPLAY, PIPELINE_TO_BENCH
+    from de_agreement_vs_annotation import rho_ci_row
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    amap = json.load(open(os.path.join(root, "assets", "author_to_pipeline_map.subclass.json")))
+    members = {}
+    for t_, lab in amap.items():
+        members.setdefault(lab, []).append(t_)
+    mc = pd.read_csv(os.path.join(merged_dir, "de_agreement", "celltype_merged.tsv"), sep="\t")
+    comb = pd.read_csv(os.path.join(merged_dir, "comparison", "subclass", "average_corr", "combined_filtered_corr.tsv"), sep="\t")
+    comb = comb[(comb["ct_author"] == comb["ct_sc_pipeline"]) & comb["contrast"].isin(CONTRAST_DISPLAY)]
+    comb = comb.assign(c=comb["contrast"].map(CONTRAST_DISPLAY))
+    pivot = comb.pivot_table(index="c", columns="ct_author", values="spearman_log2FoldChange")
+    pivot = pivot.loc[[c for c in ["SCZ", "BD", "ASD", "MDD", "PTSD", "WS", "Age", "Sex"] if c in pivot.index]]
+    tab = pd.DataFrame({"ct_author": mc["celltype"], "pipeline_label": mc["celltype"], "f1": mc["f1"],
+                        "mean_rho": mc["mean_rho_log2FC"], "log10_cells": mc["log10_cells"]})
+    assert set(tab["ct_author"]) == set(pivot.columns) == set(members)
+    display = {lab: (author_display(ms[0]) if len(ms) == 1 else PIPELINE_TO_BENCH["subclass"][lab])
+               for lab, ms in members.items()}
+    assert all(len({CLASS_OF[m] for m in ms}) == 1 for ms in members.values())
+    class_of = {lab: CLASS_OF[ms[0]] for lab, ms in members.items()}
+    n = len(tab)
+    rho_ci = pd.DataFrame([
+        rho_ci_row(f"Cells per donor, {n} types", tab["log10_cells"], tab["mean_rho"], tab["f1"], "F1"),
+        rho_ci_row(f"F1, {n} types", tab["f1"], tab["mean_rho"], tab["log10_cells"], "log10 cells per donor")])
+    fin = os.path.join(merged_dir, "fig4_inputs")
+    rho_ci.to_csv(os.path.join(fin, "fig4b_rho_ci_merged.tsv"), sep="\t", index=False, float_format="%.6g")
+    cur = pd.read_csv(current_rho_ci, sep="\t")
+    pick = lambda d, s: d[d["label"].str.startswith(s)].iloc[0]
+    c27 = cur[cur["label"].str.contains("27 types")]
+    assert len(c27) == 2
+    groups = [("Cells per donor", [("27 author types", pick(c27, "Cells per donor")),
+                                   (f"{n} merged types", pick(rho_ci, "Cells per donor"))]),
+              ("F1", [("27 author types", pick(c27, "F1")), (f"{n} merged types", pick(rho_ci, "F1"))])]
+    plot_figure(pivot, tab, {lab: lab for lab in members}, PIPELINE_TO_BENCH["subclass"], out_png, rho_ci,
+                os.path.join(fin, "null"), qa_dir=qa_dir,
+                class_f1_tsv=os.path.join(fin, "celltype_f1_cells_class_merged.tsv"),
+                display=display, class_of=class_of, brackets=False, b_groups=groups)
+    return rho_ci
+
+
+if __name__ == "__main__":
+    import argparse
+    ap = argparse.ArgumentParser(description="Figure 4 from the merged-author arm (merged_figure)")
+    ap.add_argument("--merged_dir", required=True)
+    ap.add_argument("--current_rho_ci", required=True, help="27-type fig4b_rho_ci.tsv")
+    ap.add_argument("--out_png", required=True)
+    ap.add_argument("--qa_dir", default=None)
+    a = ap.parse_args()
+    print(merged_figure(a.merged_dir, a.current_rho_ci, a.out_png, a.qa_dir).round(4).to_string(index=False))
+

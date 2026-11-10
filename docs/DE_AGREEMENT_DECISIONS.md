@@ -2,9 +2,9 @@
 
 Figure 4 of sc-manuscript. Producer: `bin/de_agreement_vs_annotation.py`; outputs in `results_v2.1.2_limma/de_agreement_vs_annotation/`.
 
-## 2026-11-09: merged-author arm run, pending Rachel's decision
+## 2026-11-09: merged-author arm, decided by Rachel and adopted for Figure 4
 
-We reran the author-label DE with author types mapped to pipeline subclass labels before pseudobulking (`assets/author_to_pipeline_map.subclass.json`), so the five IT types, LAMP5 with LAMP5 LHX6, and SST with SST Chodl each formed one group. All 21 groups matched one pipeline label and none were excluded. QC masks, limma-voom model, donors and contrasts were unchanged. The 18 unpooled types reproduced the current DE exactly. F1 and cells per donor followed the de_donors rule above. Outputs, README and manifest: `results_v2.1.2_limma/merged_author_2026-11-09/`. Figure 4 and the manuscript were not changed.
+We reran the author-label DE with author types mapped to pipeline subclass labels before pseudobulking (`assets/author_to_pipeline_map.subclass.json`), so the five IT types, LAMP5 with LAMP5 LHX6, and SST with SST Chodl each formed one group. All 21 groups matched one pipeline label and none were excluded. QC masks, limma-voom model, donors and contrasts were unchanged. The 18 unpooled types reproduced the current DE exactly. F1 and cells per donor followed the de_donors rule above. Outputs, README and manifest: `results_v2.1.2_limma/merged_author_2026-11-09/`. Rachel approved the merged arm on 2026-11-09. It replaced the exclusion of pooled types: Figure 4 (`bin/fig_de_agreement.py --merged_dir`, inputs from `bin/merged_author_fig4_inputs.py`) now shows the 21 merged types, with the 27-type rows kept in 4B for comparison, and the manuscript text uses the merged values. Choosing one representative author type per pooled label after seeing the results was rejected as data dredging.
 
 | | Current, 27 types | Current, strict 18 | Merged, 21 types |
 |---|---|---|---|
