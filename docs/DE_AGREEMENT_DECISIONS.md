@@ -21,6 +21,8 @@ For consistency with Figure S7, Figure 4 now correlates limma moderated t statis
 
 With t, cells per donor stayed significantly associated with agreement once F1 was controlled for.
 
+Panels D and E (`--pooling_dir subtype_vs_pooled`, approved by Rachel 2026-11-10) add the author subtype vs pooled test from `subtype_vs_pooled/summary.tsv` and `pairwise_rho.tsv`; their inputs are in `manifest_fig4_t.json`.
+
 ## 2026-11-09: merged-author arm, decided by Rachel and adopted for Figure 4
 
 We reran the author-label DE with author types mapped to pipeline subclass labels before pseudobulking (`assets/author_to_pipeline_map.subclass.json`), so the five IT types, LAMP5 with LAMP5 LHX6, and SST with SST Chodl each formed one group. All 21 groups matched one pipeline label and none were excluded. QC masks, limma-voom model, donors and contrasts were unchanged. The 18 unpooled types reproduced the current DE exactly. F1 and cells per donor followed the de_donors rule above. Outputs, README and manifest: `results_v2.1.2_limma/merged_author_2026-11-09/`. Rachel approved the merged arm on 2026-11-09. It replaced the exclusion of pooled types: Figure 4 (`bin/fig_de_agreement.py --merged_dir`, inputs from `bin/merged_author_fig4_inputs.py`) now shows the 21 merged types, with the 27-type rows kept in 4B for comparison, and the manuscript text uses the merged values. Choosing one representative author type per pooled label after seeing the results was rejected as data dredging.

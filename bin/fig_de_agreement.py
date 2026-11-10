@@ -253,8 +253,69 @@ def fmt_p(p):
     return "<0.001" if p < 0.001 else f"{p:.2g}"
 
 
+# ---------- D, E: author subtypes vs pooled author types (subtype_vs_pooled/) ----------
+POOL_COMPARISONS = [("subtype_vs_pooled", "Subtype vs\npooled"), ("subtype_vs_subtype", "Subtype vs\nsubtype"),
+                    ("nearest", "vs nearest\nseparate"), ("vs_glia", "vs glia")]
+POOL_PUBLISHED = [("published_vs_author_subtype", "Our\nsubtype"), ("published_vs_merged", "Our pooled\ntype"),
+                  ("published_vs_ours", "Our\nlabel")]
+POOL_GROUPS = {"IT": ("L2/3-6 IT", "o", "IT (5 subtypes)"), "Lamp5": ("LAMP5", "s", "Lamp5 (2)"),
+               "Sst": ("SST", "D", "Sst (2)")}
+# nearest separate group of author types: deep-layer non-IT for IT, other GABAergic for Lamp5 and Sst
+POOL_NEAREST = {"IT": "vs_deep_non_it", "Lamp5": "vs_gaba", "Sst": "vs_gaba"}
+
+
+def pooling_data(pooling_dir):
+    """Per-contrast rho of t (mean over pairs within a contrast) and the mean over contrasts per group and
+    comparison, from pooling_dir/pairwise_rho.tsv, checked against summary.tsv (as
+    subtype_vs_pooled/plot_subtype_vs_pooled_t.py). Category order: highest to lowest mean of group means."""
+    pair = pd.read_csv(os.path.join(pooling_dir, "pairwise_rho.tsv"), sep="\t")
+    summ = pd.read_csv(os.path.join(pooling_dir, "summary.tsv"), sep="\t")
+    per_c = pair.groupby(["group", "comparison", "contrast"])["rho_t"].mean().reset_index()
+    means = per_c.groupby(["group", "comparison"])["rho_t"].mean()
+    sg = summ[summ["level"] == "group"].set_index(["group", "comparison"])["mean_rho_t"]
+    for k, v in means.items():
+        assert abs(v - sg[k]) < 1e-3, (k, v, sg[k])
+    for g, c in POOL_NEAREST.items():
+        means[(g, "nearest")] = means[(g, c)]
+    per_c = pd.concat([per_c] + [per_c[(per_c["group"] == g) & (per_c["comparison"] == c)].assign(comparison="nearest")
+                                 for g, c in POOL_NEAREST.items()], ignore_index=True)
+    om = {c: np.mean([means[(g, c)] for g in POOL_GROUPS]) for c, _ in POOL_COMPARISONS + POOL_PUBLISHED}
+    return (per_c, means, sorted(POOL_COMPARISONS, key=lambda c: -om[c[0]]),
+            sorted(POOL_PUBLISHED, key=lambda c: -om[c[0]]))
+
+
+def draw_pooling(axD, axE, pooling_dir):
+    per_c, means, comps, pubs = pooling_data(pooling_dir)
+    dodge = {"IT": -0.25, "Lamp5": 0.0, "Sst": 0.25}
+    rng = np.random.default_rng(0)
+    for ax, cats in ((axD, comps), (axE, pubs)):
+        for i, (comp, _) in enumerate(cats):
+            for g, (cls, mk, _) in POOL_GROUPS.items():
+                v = per_c[(per_c["group"] == g) & (per_c["comparison"] == comp)]["rho_t"].to_numpy()
+                x = i + dodge[g]
+                ax.scatter(x + rng.uniform(-0.06, 0.06, len(v)), v, s=16, color=CLASS_COLORS[cls], marker=mk,
+                           alpha=0.75, edgecolor="0.3", linewidth=0.3, zorder=2)
+                ax.plot([x - 0.11, x + 0.11], [means[(g, comp)]] * 2, color="black", lw=1.8, zorder=3)
+        ax.set_xticks(range(len(cats)))
+        ax.set_xticklabels([lab for _, lab in cats])
+        ax.tick_params(axis="x", length=0)
+        ax.set_xlim(-0.5, len(cats) - 0.5)
+        for i in range(1, len(cats)):
+            ax.axvline(i - 0.5, color="0.88", lw=0.6, zorder=0)
+        ax.set_ylim(-0.05, 1.03)
+        ax.set_yticks([0, 0.5, 1])
+    axD.set_ylabel("Spearman ρ of t")
+    axE.tick_params(axis="y", labelleft=False)
+    axD.set_title("Our DE on author subtypes\n(8 contrasts)", fontsize=TXT, pad=4)
+    axE.set_title("Published subtype DE\nvs our DE", fontsize=TXT, pad=4)
+    handles = [mlines.Line2D([], [], ls="", marker=mk, color=CLASS_COLORS[cls], mec="0.3", ms=6, label=lab)
+               for cls, mk, lab in POOL_GROUPS.values()]
+    handles.append(mlines.Line2D([], [], color="black", lw=1.8, label="Mean over contrasts"))
+    return handles
+
+
 def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, study="CMC", qa_dir=None,
-                class_f1_tsv=None, display=None, class_of=None, brackets=True, b_groups=None):
+                class_f1_tsv=None, display=None, class_of=None, brackets=True, b_groups=None, pooling_dir=None):
     """pivot: contrast x author type (log2FC rho); tab: celltype_summary rows;
     class_f1_tsv: class-level cohort F1 per author type (class_f1_de_donors.py output); default: env
     FIG4_CLASS_F1_TSV, else celltype_f1_cells_class.tsv beside out_png;
@@ -262,7 +323,9 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     null_dir: benchmark-post-hoc/de_permutation_null (panel C).
     Merged-author build (merged_figure()): display / class_of map column keys to tick labels and cell
     classes (default author_display, cell_class); brackets=False drops the pooled-type bracket strip;
-    b_groups = [(heading, [(row label, rho_ci row), ...]), ...] draws panel B as grouped rows."""
+    b_groups = [(heading, [(row label, rho_ci row), ...]), ...] draws panel B as grouped rows.
+    pooling_dir: subtype_vs_pooled/ folder; adds panels D (author subtypes vs pooled types) and E
+    (published subtype DE vs our DE) below C."""
     disp_of = (lambda c: display[c]) if display else author_display
     class_fn = (lambda c: class_of[c]) if class_of else cell_class
     t = tab.set_index("ct_author")
@@ -287,7 +350,8 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     hm_w = W - left - right
     cell_h, bar_h, gap = 0.21, 0.17, 0.04
     hm_h = nrow * cell_h
-    y_e, e_h = 0.62, 1.45                     # panel C: matched vs mismatched pairs
+    y_d, d_h = 0.78, 1.9                      # panels D, E: subtypes vs pooled types (optional)
+    y_e, e_h = (y_d + d_h + 1.55 if pooling_dir else 0.62), 1.45  # panel C: matched vs mismatched pairs
     y_b, b_h = y_e + e_h + 1.3, 1.45          # panel B: plain and partial rho
     if b_groups:
         b_h = 0.7 + 0.5 * sum(len(rows) for _, rows in b_groups)  # grouped rows need more height
@@ -424,7 +488,19 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     null_legend(ea, h, e_h)
     fig.text(fx(0.03), fy(y_e + e_h + 0.65), "C", fontsize=LET, fontweight="bold", va="top")
 
-    qa = check_layout(fig, ax, [ba, ea], W)
+    extra = []
+    if pooling_dir:
+        d_w = 3.5
+        axD = fig.add_axes([fx(left), fy(y_d), fx(d_w), fy(d_h)])
+        e_x0 = left + d_w + 0.3
+        axE = fig.add_axes([fx(e_x0), fy(y_d), fx(W - right - e_x0), fy(d_h)])
+        hd = draw_pooling(axD, axE, pooling_dir)
+        fig.legend(handles=hd, loc="lower center", bbox_to_anchor=(fx(W / 2), fy(y_d + d_h + 0.5)), ncol=4,
+                   borderaxespad=0, handlelength=1.4, columnspacing=1.2, handletextpad=0.4)
+        fig.text(fx(0.03), fy(y_d + d_h + 0.45), "D", fontsize=LET, fontweight="bold", va="top")
+        fig.text(fx(e_x0 - 0.25), fy(y_d + d_h + 0.45), "E", fontsize=LET, fontweight="bold", va="top")
+        extra = [axD, axE]
+    qa = check_layout(fig, ax, [ba, ea, *extra], W)
     if qa_dir:
         import json
         os.makedirs(qa_dir, exist_ok=True)
@@ -562,7 +638,7 @@ MERGED_STATS = {"log2FoldChange": ("spearman_log2FoldChange", "mean_rho_log2FC",
                 "t": ("spearman_stat", "mean_rho_t", "null_t", "_t")}
 
 
-def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None, stat="log2FoldChange"):
+def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None, stat="log2FoldChange", pooling_dir=None):
     """Figure 4 from the merged-author arm (DE_AGREEMENT_DECISIONS.md, 2026-11-09): author types the
     pipeline pools were summed into one pseudobulk per donor, 21 types each matching one pipeline label.
     Inputs, all under merged_dir (results_v2.1.2_limma/merged_author_2026-11-09):
@@ -644,7 +720,7 @@ def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None, stat="log2Fo
     plot_figure(pivot, tab, {lab: lab for lab in members}, PIPELINE_TO_BENCH["subclass"], out_png, rho_ci,
                 os.path.join(fin, null_sub), qa_dir=qa_dir,
                 class_f1_tsv=os.path.join(fin, "celltype_f1_cells_class_merged.tsv"),
-                display=display, class_of=class_of, brackets=False, b_groups=groups)
+                display=display, class_of=class_of, brackets=False, b_groups=groups, pooling_dir=pooling_dir)
 
     def sha(f):
         h = hashlib.sha256()
@@ -660,7 +736,9 @@ def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None, stat="log2Fo
            os.path.join(fin, "celltype_f1_cells_class_merged.tsv"), current_rho_ci, cur_corr, cls_corr, cur_sum,
            os.path.join(root, "assets", "author_to_pipeline_map.subclass.json"),
            os.path.join(nd, "pairs.tsv"), os.path.join(nd, "null_summary.tsv"),
-           os.path.join(nd, "matched_effect_adjusted.tsv"), os.path.join(nd, "manifest.json")]
+           os.path.join(nd, "matched_effect_adjusted.tsv"), os.path.join(nd, "manifest.json"), PALETTE_TSV]
+    if pooling_dir:  # panels D, E
+        ins += [os.path.join(pooling_dir, f) for f in ("pairwise_rho.tsv", "summary.tsv", "manifest.json")]
     json.dump({"created": datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
                "statistic": f"Spearman rho of {stat} ({corr_col})",
                "data_version": "merged_author_2026-11-09 (author arm, 21 merged types) vs results_v2.1.2_limma "
@@ -682,6 +760,7 @@ if __name__ == "__main__":
     ap.add_argument("--qa_dir", default=None)
     ap.add_argument("--stat", choices=sorted(MERGED_STATS), default="log2FoldChange",
                     help="DE statistic correlated between author and pipeline DE (t = limma moderated t)")
+    ap.add_argument("--pooling_dir", default=None, help="subtype_vs_pooled/ folder: adds panels D and E")
     a = ap.parse_args()
-    print(merged_figure(a.merged_dir, a.current_rho_ci, a.out_png, a.qa_dir, a.stat).round(4).to_string(index=False))
+    print(merged_figure(a.merged_dir, a.current_rho_ci, a.out_png, a.qa_dir, a.stat, a.pooling_dir).round(4).to_string(index=False))
 
