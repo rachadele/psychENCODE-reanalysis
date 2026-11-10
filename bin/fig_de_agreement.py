@@ -281,63 +281,77 @@ def _split_half_module(pooling_dir):
 
 
 def pooling_data(pooling_dir):
-    """One value per author subtype and comparison: mean over contrasts of rho of t (summary.tsv, type
-    rows; "vs other subtypes" = subtype_vs_siblings, nearest = POOL_NEAREST), and the group mean over
-    contrasts (group rows) for the bars. Subtypes ordered by median cells per donor (most first) within
-    each group, coloured with the split-half figure's shades of the group colour (darker = more cells).
-    Category order: highest to lowest mean of the group means."""
+    """Long table of rho of t per author subtype x contrast and comparison, from pairwise_rho.tsv (per
+    contrast, mean over the pairs that involve the subtype: one pair for vs pooled and the published
+    comparisons, the sibling pairs for vs other subtypes, the comparator types for nearest and glia).
+    Checked against the per-subtype means of summary.tsv (type rows; subtype_vs_siblings). Subtypes
+    ordered by median cells per donor (most first) within each group and coloured with the split-half
+    figure's shades of the group colour (darker = more cells). Category order: highest to lowest mean of
+    the group means (summary.tsv group rows)."""
     summ = pd.read_csv(os.path.join(pooling_dir, "summary.tsv"), sep="\t")
     pair = pd.read_csv(os.path.join(pooling_dir, "pairwise_rho.tsv"), sep="\t")
     sh, _ = _split_half_module(pooling_dir)
-    typ = summ[summ["level"] == "type"].copy()
-    typ.loc[typ["comparison"] == "subtype_vs_siblings", "comparison"] = "subtype_vs_subtype"
+    typ = summ[summ["level"] == "type"]
     grp = summ[summ["level"] == "group"].set_index(["group", "comparison"])["mean_rho_t"]
-    # type rows must equal the mean over contrasts of pairwise_rho.tsv (per-contrast mean over pairs)
-    pc = pair.groupby(["group", "comparison", "type_a", "contrast"])["rho_t"].mean().groupby(
-        ["group", "comparison", "type_a"]).mean()
-    vals, means, subtypes = {}, {}, []
+    sib = pair[pair["comparison"] == "subtype_vs_subtype"]
+    sib = pd.concat([sib, sib.assign(type_a=sib["type_b"])])          # each pair counts for both subtypes
+    long_, subtypes, means = [], [], {}
     for g, (cls, mk, _) in POOL_GROUPS.items():
-        t = typ[(typ["group"] == g) & (typ["comparison"] == "subtype_vs_pooled")]
-        order = t.sort_values("median_cells_per_donor_a", ascending=False)
-        cols = sh.shades(CLASS_COLORS[cls], len(order))
-        for (_, r), c in zip(order.iterrows(), cols):
+        order = typ[(typ["group"] == g) & (typ["comparison"] == "subtype_vs_pooled")] \
+            .sort_values("median_cells_per_donor_a", ascending=False)
+        for (_, r), c in zip(order.iterrows(), sh.shades(CLASS_COLORS[cls], len(order))):
             subtypes.append((g, r["type_a"], sh.SUB_NAME[r["type_a"]], c, mk))
         for comp, _ in POOL_COMPARISONS + POOL_PUBLISHED:
             src = POOL_NEAREST[g] if comp == "nearest" else comp
             means[(g, comp)] = grp[(g, src)]
-            tt = typ[(typ["group"] == g) & (typ["comparison"] == comp.replace("nearest", src))]
-            for r in tt.itertuples():
-                vals[(g, comp, r.type_a)] = r.mean_rho_t
-                if comp != "subtype_vs_subtype":  # sibling means pool pairs in both directions
-                    k = (g, src, r.type_a)
-                    assert abs(pc[k] - r.mean_rho_t) < 1e-3, (k, pc[k], r.mean_rho_t)
+            q = sib[sib["group"] == g] if comp == "subtype_vs_subtype" else \
+                pair[(pair["group"] == g) & (pair["comparison"] == src)]
+            v = q.groupby(["type_a", "contrast"])["rho_t"].mean().reset_index()
+            chk = typ[(typ["group"] == g) & (typ["comparison"] ==
+                                              ("subtype_vs_siblings" if comp == "subtype_vs_subtype" else src))]
+            m = v.groupby("type_a")["rho_t"].mean()
+            for r in chk.itertuples():
+                assert abs(m[r.type_a] - r.mean_rho_t) < 1e-3, (g, comp, r.type_a, m[r.type_a], r.mean_rho_t)
+            long_.append(v.assign(group=g, comparison=comp))
+    long_ = pd.concat(long_, ignore_index=True)
     om = {c: np.mean([means[(g, c)] for g in POOL_GROUPS]) for c, _ in POOL_COMPARISONS + POOL_PUBLISHED}
-    return (vals, means, subtypes, sorted(POOL_COMPARISONS, key=lambda c: -om[c[0]]),
+    return (long_, subtypes, sorted(POOL_COMPARISONS, key=lambda c: -om[c[0]]),
             sorted(POOL_PUBLISHED, key=lambda c: -om[c[0]]))
 
 
 def draw_pooling(axD, axE, pooling_dir):
-    vals, means, subtypes, comps, pubs = pooling_data(pooling_dir)
+    """Boxes of all subtype x contrast values per group and comparison (outline in the group colour,
+    black median, no fliers), with the values as jittered points coloured by subtype."""
+    long_, subtypes, comps, pubs = pooling_data(pooling_dir)
+    colour = {t: (c, mk) for _, t, _, c, mk in subtypes}
     dodge = {"IT": -0.27, "Lamp5": 0.0, "Sst": 0.27}
+    rng = np.random.default_rng(0)
     for ax, cats in ((axD, comps), (axE, pubs)):
         for i, (comp, _) in enumerate(cats):
-            for g in POOL_GROUPS:
+            for g, (cls, _, _) in POOL_GROUPS.items():
+                q = long_[(long_["group"] == g) & (long_["comparison"] == comp)]
+                if q.empty:
+                    continue
                 x = i + dodge[g]
-                subs = [st for st in subtypes if st[0] == g]
-                offs = np.linspace(-0.1, 0.1, len(subs)) if len(subs) > 1 else [0.0]
-                for (_, t, _, c, mk), o in zip(subs, offs):
-                    v = vals.get((g, comp, t))
-                    if v is not None:
-                        ax.scatter([x + o], [v], s=30, color=c, marker=mk, edgecolor="0.2", linewidth=0.5, zorder=3)
-                ax.plot([x - 0.12, x + 0.12], [means[(g, comp)]] * 2, color="black", lw=1.6, zorder=2)
+                gc = CLASS_COLORS[cls]
+                ax.boxplot(q["rho_t"].values, positions=[x], widths=0.22, showfliers=False, patch_artist=True,
+                           whis=1.5, zorder=2,
+                           boxprops=dict(facecolor="white", edgecolor=gc, lw=1.2),
+                           whiskerprops=dict(color=gc, lw=1.0), capprops=dict(color=gc, lw=1.0),
+                           medianprops=dict(color="black", lw=1.4))
+                for r in q.itertuples():
+                    c, mk = colour[r.type_a]
+                    ax.scatter([x + rng.uniform(-0.08, 0.08)], [r.rho_t], s=9, color=c, marker=mk,
+                               edgecolor="0.2", linewidth=0.3, zorder=3, alpha=0.9)
         ax.set_xticks(range(len(cats)))
         ax.set_xticklabels([lab for _, lab in cats])
         ax.tick_params(axis="x", length=0)
         ax.set_xlim(-0.5, len(cats) - 0.5)
         for i in range(1, len(cats)):
             ax.axvline(i - 0.5, color="0.88", lw=0.6, zorder=0)
-        ax.set_ylim(-0.05, 1.03)
+        ax.set_ylim(min(-0.05, long_["rho_t"].min() - 0.04), 1.03)
         ax.set_yticks([0, 0.5, 1])
+    axE.set_ylim(axD.get_ylim())
     axD.set_ylabel("Spearman ρ of t")
     axE.tick_params(axis="y", labelleft=False)
     axD.set_title("Our DE on author subtypes\n(8 contrasts)", fontsize=TXT, pad=4)
@@ -345,7 +359,7 @@ def draw_pooling(axD, axE, pooling_dir):
     handles = [mlines.Line2D([], [], ls="", marker=mk, color=c, mec="0.2", ms=6,
                              label=name + (" (not in E)" if t == "Sst_Chodl" else ""))
                for _, t, name, c, mk in subtypes]
-    handles.append(mlines.Line2D([], [], color="black", lw=1.6, label="Group mean"))
+    handles.append(mpatches.Patch(facecolor="white", edgecolor="0.3", lw=1.2, label="Box: subtype × contrast"))
     # two legend rows (IT subtypes; Lamp5, Sst and the mean), filled column by column
     return [h for pair in zip(handles[:5], handles[5:]) for h in pair]
 
