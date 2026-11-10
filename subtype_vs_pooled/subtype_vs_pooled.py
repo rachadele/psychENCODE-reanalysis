@@ -6,9 +6,9 @@ Sst: Sst + Sst_Chodl) and the eight Figure 4 contrasts, Spearman rho of log2FC a
 moderated t between:
   subtype_vs_pooled    each author subtype (unmerged author DE) and the merged author DE of its group
   subtype_vs_subtype   pairs of author subtypes within a group
-  baseline_same_class  each subtype and author types outside its group of the same class
-                       (glutamatergic for IT, GABAergic for Lamp5/Sst)
-  baseline_all_other   each subtype and every author type outside its group
+  vs_<named group>     each subtype and the author types of a named group outside its own pooled
+                       group (COMPARATORS: IT types, GABAergic types, deep-layer non-IT types,
+                       glia, vascular and immune types)
   pooled_vs_ours       merged author DE of the group and our pipeline-label DE (Figure 4 value)
 Genes: inner join of the two tables, as bin/aggregate_pairwise.py. The DE is one limma fit per
 cell type over all eight cohorts (no cohort term), so each contrast is one table per type.
@@ -44,8 +44,17 @@ GROUPS = {"IT": ("L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
                  ["L2.3_IT", "L4_IT", "L5_IT", "L6_IT", "L6_IT_Car3"]),
           "Lamp5": ("lamp5.GABAergic.cortical.interneuron", ["Lamp5", "Lamp5_Lhx6"]),
           "Sst": ("sst.GABAergic.cortical.interneuron", ["Sst", "Sst_Chodl"])}
-GLUT = ["L2.3_IT", "L4_IT", "L5_IT", "L6_IT", "L6_IT_Car3", "L5_ET", "L6b", "L5.6_NP", "L6_CT"]
+IT_TYPES = ["L2.3_IT", "L4_IT", "L5_IT", "L6_IT", "L6_IT_Car3"]
+DEEP_NON_IT = ["L5_ET", "L6_CT", "L6b", "L5.6_NP"]
 GABA = ["Lamp5", "Lamp5_Lhx6", "Pax6", "Pvalb", "Sncg", "Sst", "Sst_Chodl", "Chandelier", "Vip"]
+GLIA = ["Astro", "Oligo", "OPC", "Micro"]
+VASC_IMMUNE = ["Endo", "PC", "SMC", "VLMC", "Immune"]
+# named comparator groups; a subtype's own pooled group is always left out
+COMPARATORS = {"vs_it": IT_TYPES, "vs_gaba": GABA, "vs_deep_non_it": DEEP_NON_IT,
+               "vs_glia": GLIA, "vs_vascular_immune": VASC_IMMUNE}
+GROUP_COMPARATORS = {"IT": ["vs_gaba", "vs_deep_non_it", "vs_glia", "vs_vascular_immune"],
+                     "Lamp5": ["vs_gaba", "vs_it", "vs_deep_non_it", "vs_glia", "vs_vascular_immune"],
+                     "Sst": ["vs_gaba", "vs_it", "vs_deep_non_it", "vs_glia", "vs_vascular_immune"]}
 
 
 def path(scheme, ct, contrast):
@@ -85,8 +94,9 @@ def cells_per_donor():
 
 
 def main():
-    authors = sorted(os.listdir(DE["author"]))
-    authors = [a for a in authors if os.path.isdir(f"{DE['author']}/{a}")]
+    authors = sorted(a for a in os.listdir(DE["author"]) if os.path.isdir(f"{DE['author']}/{a}"))
+    named = sorted(set(sum(COMPARATORS.values(), [])))
+    assert named == authors, ("author types not covered by COMPARATORS", set(authors) ^ set(named))
     rows = []
     for contrast, short in CONTRASTS.items():
         def add(group, comparison, sa, a, sb, b):
@@ -98,14 +108,11 @@ def main():
                 add(g, "subtype_vs_pooled", "author", s, "merged", label)
             for s1, s2 in itertools.combinations(subs, 2):
                 add(g, "subtype_vs_subtype", "author", s1, "author", s2)
-            same_class = GLUT if g == "IT" else GABA
-            for s in subs:
-                for o in authors:
-                    if o in subs:
-                        continue
-                    add(g, "baseline_all_other", "author", s, "author", o)
-                    if o in same_class:
-                        add(g, "baseline_same_class", "author", s, "author", o)
+            for comp in GROUP_COMPARATORS[g]:
+                for s in subs:
+                    for o in COMPARATORS[comp]:
+                        if o not in subs:
+                            add(g, comp, "author", s, "author", o)
             add(g, "pooled_vs_ours", "merged", label, "ours", label)
     pairs = pd.DataFrame(rows)
     pairs.to_csv(f"{OUT}/pairwise_rho.tsv", sep="\t", index=False, float_format="%.6g")
@@ -120,7 +127,8 @@ def main():
         n_pairs = df.groupby(keys + ["contrast"]).size().groupby(keys).max().rename("pairs_per_contrast")
         return s.merge(n_pairs.reset_index(), on=keys)
 
-    order = ["subtype_vs_pooled", "subtype_vs_subtype", "baseline_same_class", "baseline_all_other", "pooled_vs_ours"]
+    order = ["subtype_vs_pooled", "subtype_vs_subtype", "vs_it", "vs_gaba", "vs_deep_non_it", "vs_glia",
+             "vs_vascular_immune", "pooled_vs_ours"]
     by_group = summarise(pairs, ["group", "comparison"]).assign(level="group", type_a="all")
     by_type = summarise(pairs[pairs["comparison"] != "subtype_vs_subtype"], ["group", "comparison", "type_a"]).assign(level="type")
     by_pair = summarise(pairs[pairs["comparison"] == "subtype_vs_subtype"], ["group", "comparison", "type_a", "type_b"]).assign(level="pair")
@@ -178,6 +186,8 @@ def main():
            "repo": {"branch": git("rev-parse", "--abbrev-ref", "HEAD"), "commit_at_run": git("rev-parse", "HEAD")},
            "script": {os.path.relpath(__file__, REPO): {"sha256": sha(__file__)}},
            "check_pooled_vs_ours_equals_fig4": chk,
+           "comparator_groups": {"author_types": COMPARATORS, "used_per_pooled_group": GROUP_COMPARATORS,
+                                 "rule": "a subtype's own pooled group is left out of every comparator group"},
            "inputs": rec(inputs),
            "outputs": rec([f"{OUT}/pairwise_rho.tsv", f"{OUT}/summary.tsv", f"{OUT}/cells_per_donor.tsv"])}
     json.dump(man, open(f"{OUT}/manifest.json", "w"), indent=1)

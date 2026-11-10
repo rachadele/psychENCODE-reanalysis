@@ -1,24 +1,36 @@
 group	level	comparison	type_a	type_b	mean_rho_log2FC	sd_rho_log2FC	mean_rho_t	sd_rho_t	n_contrasts	pairs_per_contrast	median_cells_per_donor_a	n_de_donors_a	median_cells_per_donor_b	median_cells_per_donor_pooled	median_cells_per_donor_ours
 IT	group	subtype_vs_pooled	all		0.7589	0.0757	0.8169	0.07179	8	5		0		2314	2284
 IT	group	subtype_vs_subtype	all		0.655	0.1501	0.7026	0.1255	8	10		0		2314	2284
-IT	group	baseline_same_class	all		0.555	0.1587	0.5824	0.1195	8	20		0		2314	2284
-IT	group	baseline_all_other	all		0.3679	0.1496	0.3983	0.1365	8	110		0		2314	2284
+IT	group	vs_gaba	all		0.4417	0.1868	0.4778	0.174	8	45		0		2314	2284
+IT	group	vs_deep_non_it	all		0.555	0.1587	0.5824	0.1195	8	20		0		2314	2284
+IT	group	vs_glia	all		0.2707	0.174	0.2832	0.1127	8	20		0		2314	2284
+IT	group	vs_vascular_immune	all		0.1633	0.135	0.1998	0.1396	8	25		0		2314	2284
 IT	group	pooled_vs_ours	all		0.9975	0.002318	0.9985	0.00172	8	1		0		2314	2284
 IT	type	subtype_vs_pooled	L2.3_IT		0.9168	0.04303	0.9435	0.02705	8	1	1082	306		2314	2284
 IT	type	subtype_vs_pooled	L4_IT		0.7096	0.0952	0.7988	0.06854	8	1	268	305		2314	2284
 IT	type	subtype_vs_pooled	L5_IT		0.8358	0.05079	0.8758	0.05903	8	1	401.5	304		2314	2284
 IT	type	subtype_vs_pooled	L6_IT		0.7763	0.1499	0.855	0.0861	8	1	308.5	304		2314	2284
 IT	type	subtype_vs_pooled	L6_IT_Car3		0.5562	0.09634	0.6114	0.1321	8	1	35	286		2314	2284
-IT	type	baseline_same_class	L2.3_IT		0.5237	0.1221	0.5865	0.1056	8	4	1082	306		2314	2284
-IT	type	baseline_same_class	L4_IT		0.5741	0.1602	0.5806	0.1197	8	4	268	305		2314	2284
-IT	type	baseline_same_class	L5_IT		0.594	0.146	0.6178	0.1033	8	4	401.5	304		2314	2284
-IT	type	baseline_same_class	L6_IT		0.5253	0.2069	0.5857	0.1409	8	4	308.5	304		2314	2284
-IT	type	baseline_same_class	L6_IT_Car3		0.5578	0.2254	0.5413	0.1422	8	4	35	286		2314	2284
-IT	type	baseline_all_other	L2.3_IT		0.3442	0.1436	0.3984	0.1355	8	22	1082	306		2314	2284
-IT	type	baseline_all_other	L4_IT		0.392	0.1478	0.4055	0.1352	8	22	268	305		2314	2284
-IT	type	baseline_all_other	L5_IT		0.3899	0.1567	0.4195	0.1333	8	22	401.5	304		2314	2284
-IT	type	baseline_all_other	L6_IT		0.3518	0.1176	0.3995	0.1175	8	22	308.5	304		2314	2284
-IT	type	baseline_all_other	L6_IT_Car3		0.3617	0.2379	0.3685	0.1771	8	22	35	286		2314	2284
+IT	type	vs_gaba	L2.3_IT		0.4154	0.175	0.4825	0.1705	8	9	1082	306		2314	2284
+IT	type	vs_gaba	L4_IT		0.4911	0.1928	0.4961	0.179	8	9	268	305		2314	2284
+IT	type	vs_gaba	L5_IT		0.4636	0.2003	0.5011	0.1734	8	9	401.5	304		2314	2284
+IT	type	vs_gaba	L6_IT		0.4133	0.1568	0.4743	0.1545	8	9	308.5	304		2314	2284
+IT	type	vs_gaba	L6_IT_Car3		0.4251	0.2996	0.4351	0.2208	8	9	35	286		2314	2284
+IT	type	vs_deep_non_it	L2.3_IT		0.5237	0.1221	0.5865	0.1056	8	4	1082	306		2314	2284
+IT	type	vs_deep_non_it	L4_IT		0.5741	0.1602	0.5806	0.1197	8	4	268	305		2314	2284
+IT	type	vs_deep_non_it	L5_IT		0.594	0.146	0.6178	0.1033	8	4	401.5	304		2314	2284
+IT	type	vs_deep_non_it	L6_IT		0.5253	0.2069	0.5857	0.1409	8	4	308.5	304		2314	2284
+IT	type	vs_deep_non_it	L6_IT_Car3		0.5578	0.2254	0.5413	0.1422	8	4	35	286		2314	2284
+IT	type	vs_glia	L2.3_IT		0.2509	0.1483	0.2789	0.1015	8	4	1082	306		2314	2284
+IT	type	vs_glia	L4_IT		0.2724	0.1899	0.2829	0.1147	8	4	268	305		2314	2284
+IT	type	vs_glia	L5_IT		0.2916	0.18	0.2973	0.1088	8	4	401.5	304		2314	2284
+IT	type	vs_glia	L6_IT		0.2631	0.1566	0.2866	0.08943	8	4	308.5	304		2314	2284
+IT	type	vs_glia	L6_IT_Car3		0.2755	0.2614	0.2704	0.1703	8	4	35	286		2314	2284
+IT	type	vs_vascular_immune	L2.3_IT		0.1473	0.1432	0.1921	0.1442	8	5	1082	306		2314	2284
+IT	type	vs_vascular_immune	L4_IT		0.1635	0.1194	0.2004	0.13	8	5	268	305		2314	2284
+IT	type	vs_vascular_immune	L5_IT		0.1726	0.1411	0.2116	0.1371	8	5	401.5	304		2314	2284
+IT	type	vs_vascular_immune	L6_IT		0.1734	0.06728	0.2062	0.1149	8	5	308.5	304		2314	2284
+IT	type	vs_vascular_immune	L6_IT_Car3		0.1598	0.2319	0.1889	0.1896	8	5	35	286		2314	2284
 IT	type	pooled_vs_ours	L2.3.6.intratelencephalic.projecting.glutamatergic.neuron		0.9975	0.002318	0.9985	0.00172	8	1	2314	306		2314	2284
 IT	pair	subtype_vs_subtype	L2.3_IT	L4_IT	0.6936	0.08999	0.7502	0.08833	8	1	1082	306	268	2314	2284
 IT	pair	subtype_vs_subtype	L2.3_IT	L5_IT	0.7762	0.09391	0.799	0.09872	8	1	1082	306	401.5	2314	2284
@@ -32,27 +44,45 @@ IT	pair	subtype_vs_subtype	L5_IT	L6_IT_Car3	0.6257	0.133	0.6163	0.1356	8	1	401.5
 IT	pair	subtype_vs_subtype	L6_IT	L6_IT_Car3	0.5368	0.2506	0.6002	0.1856	8	1	308.5	304	35	2314	2284
 Lamp5	group	subtype_vs_pooled	all		0.8629	0.06414	0.8586	0.05458	8	2		0		148	145
 Lamp5	group	subtype_vs_subtype	all		0.6365	0.1725	0.6066	0.1502	8	1		0		148	145
-Lamp5	group	baseline_same_class	all		0.5346	0.201	0.5222	0.1683	8	14		0		148	145
-Lamp5	group	baseline_all_other	all		0.425	0.152	0.4216	0.1359	8	50		0		148	145
+Lamp5	group	vs_it	all		0.4743	0.2171	0.5056	0.1821	8	10		0		148	145
+Lamp5	group	vs_gaba	all		0.5346	0.201	0.5222	0.1683	8	14		0		148	145
+Lamp5	group	vs_deep_non_it	all		0.5104	0.2135	0.4703	0.1787	8	8		0		148	145
+Lamp5	group	vs_glia	all		0.3313	0.2096	0.3115	0.1344	8	8		0		148	145
+Lamp5	group	vs_vascular_immune	all		0.2289	0.1196	0.2457	0.1022	8	10		0		148	145
 Lamp5	group	pooled_vs_ours	all		0.9813	0.01478	0.9836	0.01009	8	1		0		148	145
 Lamp5	type	subtype_vs_pooled	Lamp5		0.9243	0.03548	0.9207	0.03822	8	1	88.5	298		148	145
 Lamp5	type	subtype_vs_pooled	Lamp5_Lhx6		0.8014	0.09653	0.7966	0.07403	8	1	50	295		148	145
-Lamp5	type	baseline_same_class	Lamp5		0.5701	0.1976	0.5483	0.1752	8	7	88.5	298		148	145
-Lamp5	type	baseline_same_class	Lamp5_Lhx6		0.4991	0.214	0.4961	0.1637	8	7	50	295		148	145
-Lamp5	type	baseline_all_other	Lamp5		0.4382	0.153	0.4368	0.1389	8	25	88.5	298		148	145
-Lamp5	type	baseline_all_other	Lamp5_Lhx6		0.4118	0.1517	0.4063	0.1335	8	25	50	295		148	145
+Lamp5	type	vs_it	Lamp5		0.4733	0.2279	0.513	0.1906	8	5	88.5	298		148	145
+Lamp5	type	vs_it	Lamp5_Lhx6		0.4753	0.2094	0.4982	0.1754	8	5	50	295		148	145
+Lamp5	type	vs_gaba	Lamp5		0.5701	0.1976	0.5483	0.1752	8	7	88.5	298		148	145
+Lamp5	type	vs_gaba	Lamp5_Lhx6		0.4991	0.214	0.4961	0.1637	8	7	50	295		148	145
+Lamp5	type	vs_deep_non_it	Lamp5		0.5159	0.2128	0.4801	0.1772	8	4	88.5	298		148	145
+Lamp5	type	vs_deep_non_it	Lamp5_Lhx6		0.5048	0.2161	0.4606	0.1808	8	4	50	295		148	145
+Lamp5	type	vs_glia	Lamp5		0.3282	0.2328	0.3172	0.1443	8	4	88.5	298		148	145
+Lamp5	type	vs_glia	Lamp5_Lhx6		0.3345	0.1903	0.3058	0.1266	8	4	50	295		148	145
+Lamp5	type	vs_vascular_immune	Lamp5		0.2444	0.1195	0.2655	0.1027	8	5	88.5	298		148	145
+Lamp5	type	vs_vascular_immune	Lamp5_Lhx6		0.2135	0.1204	0.2259	0.1021	8	5	50	295		148	145
 Lamp5	type	pooled_vs_ours	lamp5.GABAergic.cortical.interneuron		0.9813	0.01478	0.9836	0.01009	8	1	148	299		148	145
 Lamp5	pair	subtype_vs_subtype	Lamp5	Lamp5_Lhx6	0.6365	0.1725	0.6066	0.1502	8	1	88.5	298	50	148	145
 Sst	group	subtype_vs_pooled	all		0.6789	0.1213	0.6849	0.08942	8	2		0		172	195
 Sst	group	subtype_vs_subtype	all		0.3214	0.2582	0.3284	0.1943	8	1		0		172	195
-Sst	group	baseline_same_class	all		0.4654	0.206	0.4521	0.1735	8	14		0		172	195
-Sst	group	baseline_all_other	all		0.3472	0.1616	0.3525	0.1389	8	50		0		172	195
+Sst	group	vs_it	all		0.3897	0.1393	0.4146	0.1381	8	10		0		172	195
+Sst	group	vs_gaba	all		0.4654	0.206	0.4521	0.1735	8	14		0		172	195
+Sst	group	vs_deep_non_it	all		0.4126	0.1824	0.3943	0.1337	8	8		0		172	195
+Sst	group	vs_glia	all		0.2434	0.2078	0.2448	0.1473	8	8		0		172	195
+Sst	group	vs_vascular_immune	all		0.1697	0.1498	0.2039	0.1523	8	10		0		172	195
 Sst	group	pooled_vs_ours	all		0.9809	0.01396	0.9776	0.01467	8	1		0		172	195
 Sst	type	subtype_vs_pooled	Sst		0.9942	0.00531	0.993	0.005775	8	1	168.5	302		172	195
 Sst	type	subtype_vs_pooled	Sst_Chodl		0.3635	0.2387	0.3767	0.1745	8	1	4	213		172	195
-Sst	type	baseline_same_class	Sst		0.6316	0.1825	0.6067	0.161	8	7	168.5	302		172	195
-Sst	type	baseline_same_class	Sst_Chodl		0.2993	0.2369	0.2975	0.1897	8	7	4	213		172	195
-Sst	type	baseline_all_other	Sst		0.4628	0.1553	0.4606	0.1347	8	25	168.5	302		172	195
-Sst	type	baseline_all_other	Sst_Chodl		0.2315	0.1735	0.2444	0.1461	8	25	4	213		172	195
+Sst	type	vs_it	Sst		0.5048	0.2143	0.539	0.1853	8	5	168.5	302		172	195
+Sst	type	vs_it	Sst_Chodl		0.2746	0.1007	0.2902	0.1113	8	5	4	213		172	195
+Sst	type	vs_gaba	Sst		0.6316	0.1825	0.6067	0.161	8	7	168.5	302		172	195
+Sst	type	vs_gaba	Sst_Chodl		0.2993	0.2369	0.2975	0.1897	8	7	4	213		172	195
+Sst	type	vs_deep_non_it	Sst		0.5507	0.2205	0.5088	0.176	8	4	168.5	302		172	195
+Sst	type	vs_deep_non_it	Sst_Chodl		0.2744	0.1823	0.2798	0.118	8	4	4	213		172	195
+Sst	type	vs_glia	Sst		0.3265	0.2523	0.3122	0.154	8	4	168.5	302		172	195
+Sst	type	vs_glia	Sst_Chodl		0.1603	0.1826	0.1775	0.1469	8	4	4	213		172	195
+Sst	type	vs_vascular_immune	Sst		0.2232	0.1392	0.2581	0.1363	8	5	168.5	302		172	195
+Sst	type	vs_vascular_immune	Sst_Chodl		0.1162	0.2089	0.1496	0.1821	8	5	4	213		172	195
 Sst	type	pooled_vs_ours	sst.GABAergic.cortical.interneuron		0.9809	0.01396	0.9776	0.01467	8	1	172	302		172	195
 Sst	pair	subtype_vs_subtype	Sst	Sst_Chodl	0.3214	0.2582	0.3284	0.1943	8	1	168.5	302	4	172	195

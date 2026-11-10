@@ -32,8 +32,11 @@ OUT_MAN = os.path.join(HERE, "manifest_plot_t.json")
 COMPARISONS = [
     ("subtype_vs_subtype", "Author subtype\nvs subtype"),
     ("subtype_vs_pooled", "Author subtype\nvs pooled"),
-    ("baseline_same_class", "Unrelated types,\nsame class"),
-    ("baseline_all_other", "Unrelated types,\nall"),
+    ("vs_it", "vs IT\ntypes"),
+    ("vs_gaba", "vs GABAergic\ntypes"),
+    ("vs_deep_non_it", "vs deep-layer\nnon-IT types"),
+    ("vs_glia", "vs glia"),
+    ("vs_vascular_immune", "vs vascular\nand immune\ntypes"),
     ("pooled_vs_ours", "Pooled author\nvs our label"),
 ]
 GROUPS = ["IT", "Lamp5", "Sst"]
@@ -79,13 +82,15 @@ def main():
 
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12, "axes.spines.top": False,
                          "axes.spines.right": False, "axes.linewidth": 1.2})
-    fig, (axA, axB) = plt.subplots(1, 2, figsize=(13.5, 5.6), gridspec_kw={"width_ratios": [1.75, 1]})
+    fig, (axA, axB) = plt.subplots(1, 2, figsize=(17, 6.2), gridspec_kw={"width_ratios": [2.5, 1]})
 
     rng = np.random.default_rng(0)
     dodge = {"IT": -0.25, "Lamp5": 0.0, "Sst": 0.25}
     for i, (comp, _) in enumerate(COMPARISONS):
         for g in GROUPS:
             v = per_c[(per_c.group == g) & (per_c.comparison == comp)]["rho_t"].to_numpy()
+            if len(v) == 0:  # IT has no "vs IT types" comparison
+                continue
             x = i + dodge[g]
             axA.scatter(x + rng.uniform(-0.06, 0.06, len(v)), v, s=30, color=col[g],
                         marker=GROUP_MARKER[g], alpha=0.55, edgecolor="0.3", linewidth=0.4, zorder=2)
@@ -93,7 +98,7 @@ def main():
     axA.set_xticks(range(len(COMPARISONS)))
     axA.set_xticklabels([lab for _, lab in COMPARISONS], fontsize=11)
     axA.set_xlim(-0.5, len(COMPARISONS) - 0.5)
-    axA.set_ylim(-0.05, 1.03)
+    axA.set_ylim(min(-0.05, per_c.rho_t.min() - 0.04), 1.03)
     axA.set_ylabel("Spearman ρ of t statistics", fontsize=13)
     axA.tick_params(axis="y", labelsize=11)
     for i in range(1, len(COMPARISONS)):
@@ -103,7 +108,7 @@ def main():
     handles.append(plt.Line2D([], [], color="black", lw=2.5, label="Mean of 8 contrasts"))
     axA.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, 1.01), fontsize=11, frameon=False,
                ncol=4, handletextpad=0.3, columnspacing=1.2)
-    axA.text(-0.09, 1.06, "A", transform=axA.transAxes, fontsize=16, fontweight="bold")
+    axA.text(-0.065, 1.06, "A", transform=axA.transAxes, fontsize=16, fontweight="bold")
 
     # panel B
     st = summ[(summ.level == "type") & (summ.comparison == "subtype_vs_pooled")].copy()
@@ -156,7 +161,9 @@ def main():
         "inputs": {os.path.relpath(p, os.path.dirname(HERE)) if p.startswith(os.path.dirname(HERE)) else p:
                    {"sha256": sha(p), "mtime": stamp(p)} for p in [IN_PAIR, IN_SUM, IN_CELLS, PALETTE_TSV]},
         "outputs": {"subtype_vs_pooled/subtype_vs_pooled_t.png": {"sha256": sha(OUT_PNG), "mtime": stamp(OUT_PNG)}},
-        "group_mean_rho_t": {f"{g}|{c}": round(float(means[(g, c)]), 4) for g in GROUPS for c, _ in COMPARISONS},
+        "group_mean_rho_t": {f"{g}|{c}": round(float(means[(g, c)]), 4) for g in GROUPS for c, _ in COMPARISONS
+                             if (g, c) in means.index},
+        "comparator_groups": up.get("comparator_groups"),
     }
     json.dump(man, open(OUT_MAN, "w"), indent=2)
     print(json.dumps(man["group_mean_rho_t"], indent=1))

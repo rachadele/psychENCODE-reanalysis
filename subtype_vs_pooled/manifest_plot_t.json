@@ -1,29 +1,29 @@
 {
-  "created": "2026-11-10T13:06:43-07:00",
+  "created": "2026-11-10T13:10:06-07:00",
   "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (limma-voom, 27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types)",
   "upstream_manifest": {
     "path": "subtype_vs_pooled/manifest.json",
-    "created": "2026-11-10T13:02:52-07:00",
-    "sha256": "aa871bf3867d2702ff7e34a0d38e0bcfbf038021ef4d9b1781db243478beba48"
+    "created": "2026-11-10T13:09:38-07:00",
+    "sha256": "78160f1131c0d185b37632a7f46a1e796ee2167b2219896904b7e097ae6659cd"
   },
-  "repo_commit_at_run": "c289161c36501fb84b06ce96c0f6d57225dcbe2b",
+  "repo_commit_at_run": "13909a844ea556f0dd2f5d4ca3f62ce8c771669a",
   "script": {
     "subtype_vs_pooled/plot_subtype_vs_pooled_t.py": {
-      "sha256": "0242d09f9d2768c26efb9fbd893e677d186194339f05a43c2a25f71824327631"
+      "sha256": "b890a09308e6ef570001ec854a2e9f30df4613afbafc6a0d6cdfcee99d7d2ff4"
     }
   },
   "inputs": {
     "subtype_vs_pooled/pairwise_rho.tsv": {
-      "sha256": "65390e8da2d1b7cee3b0da11628d88a1df25c478483697b6a1f4e90ec8e380e9",
-      "mtime": "2026-11-10T13:02:52-07:00"
+      "sha256": "fd4c1ffcbe035aac33bd29876ffcdbadc2d51f481c59599b921c1de04fbd83b4",
+      "mtime": "2026-11-10T13:09:38-07:00"
     },
     "subtype_vs_pooled/summary.tsv": {
-      "sha256": "41c40138cbba7ee0cac87aedb4acc66c03b8568230587e3dcca53113c0ab2d01",
-      "mtime": "2026-11-10T13:02:52-07:00"
+      "sha256": "45293d274ab6c9cd7a0ed204a6ec55588d90b5ca712b78d62b9d65b7b39e1305",
+      "mtime": "2026-11-10T13:09:38-07:00"
     },
     "subtype_vs_pooled/cells_per_donor.tsv": {
       "sha256": "9fa3d0f71b856fca49cc7f7d935220a4b8748205849b0a2ac15d2d8a1f4a1607",
-      "mtime": "2026-11-10T13:02:52-07:00"
+      "mtime": "2026-11-10T13:09:38-07:00"
     },
     "/space/grp/rschwartz/rschwartz/benchmark-post-hoc/manuscript_palette.tsv": {
       "sha256": "315178c26a73a506a214452d86f154020c50a4b6601ff2ece9db6e20a92e4eb1",
@@ -32,25 +32,97 @@
   },
   "outputs": {
     "subtype_vs_pooled/subtype_vs_pooled_t.png": {
-      "sha256": "bdcfc85773517ca83c7cf1d2efad09a461063b74d2ce73da2b755900d73ae3f8",
-      "mtime": "2026-11-10T13:06:43-07:00"
+      "sha256": "f1cb7e9d584b477baa9ad49803ce047e914b81073a305b672371d17b31b66e75",
+      "mtime": "2026-11-10T13:10:06-07:00"
     }
   },
   "group_mean_rho_t": {
     "IT|subtype_vs_subtype": 0.7026,
     "IT|subtype_vs_pooled": 0.8169,
-    "IT|baseline_same_class": 0.5824,
-    "IT|baseline_all_other": 0.3983,
+    "IT|vs_gaba": 0.4778,
+    "IT|vs_deep_non_it": 0.5824,
+    "IT|vs_glia": 0.2832,
+    "IT|vs_vascular_immune": 0.1998,
     "IT|pooled_vs_ours": 0.9985,
     "Lamp5|subtype_vs_subtype": 0.6066,
     "Lamp5|subtype_vs_pooled": 0.8586,
-    "Lamp5|baseline_same_class": 0.5222,
-    "Lamp5|baseline_all_other": 0.4216,
+    "Lamp5|vs_it": 0.5056,
+    "Lamp5|vs_gaba": 0.5222,
+    "Lamp5|vs_deep_non_it": 0.4703,
+    "Lamp5|vs_glia": 0.3115,
+    "Lamp5|vs_vascular_immune": 0.2457,
     "Lamp5|pooled_vs_ours": 0.9836,
     "Sst|subtype_vs_subtype": 0.3284,
     "Sst|subtype_vs_pooled": 0.6849,
-    "Sst|baseline_same_class": 0.4521,
-    "Sst|baseline_all_other": 0.3525,
+    "Sst|vs_it": 0.4146,
+    "Sst|vs_gaba": 0.4521,
+    "Sst|vs_deep_non_it": 0.3943,
+    "Sst|vs_glia": 0.2448,
+    "Sst|vs_vascular_immune": 0.2039,
     "Sst|pooled_vs_ours": 0.9776
+  },
+  "comparator_groups": {
+    "author_types": {
+      "vs_it": [
+        "L2.3_IT",
+        "L4_IT",
+        "L5_IT",
+        "L6_IT",
+        "L6_IT_Car3"
+      ],
+      "vs_gaba": [
+        "Lamp5",
+        "Lamp5_Lhx6",
+        "Pax6",
+        "Pvalb",
+        "Sncg",
+        "Sst",
+        "Sst_Chodl",
+        "Chandelier",
+        "Vip"
+      ],
+      "vs_deep_non_it": [
+        "L5_ET",
+        "L6_CT",
+        "L6b",
+        "L5.6_NP"
+      ],
+      "vs_glia": [
+        "Astro",
+        "Oligo",
+        "OPC",
+        "Micro"
+      ],
+      "vs_vascular_immune": [
+        "Endo",
+        "PC",
+        "SMC",
+        "VLMC",
+        "Immune"
+      ]
+    },
+    "used_per_pooled_group": {
+      "IT": [
+        "vs_gaba",
+        "vs_deep_non_it",
+        "vs_glia",
+        "vs_vascular_immune"
+      ],
+      "Lamp5": [
+        "vs_gaba",
+        "vs_it",
+        "vs_deep_non_it",
+        "vs_glia",
+        "vs_vascular_immune"
+      ],
+      "Sst": [
+        "vs_gaba",
+        "vs_it",
+        "vs_deep_non_it",
+        "vs_glia",
+        "vs_vascular_immune"
+      ]
+    },
+    "rule": "a subtype's own pooled group is left out of every comparator group"
   }
 }

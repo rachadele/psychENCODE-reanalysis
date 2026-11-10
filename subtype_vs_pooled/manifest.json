@@ -1,13 +1,13 @@
 {
- "created": "2026-11-10T13:02:52-07:00",
+ "created": "2026-11-10T13:09:38-07:00",
  "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (limma-voom, 27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types)",
  "repo": {
   "branch": "label-map-param",
-  "commit_at_run": "a2384c334494debced645df6afb20b9067f979c4"
+  "commit_at_run": "13909a844ea556f0dd2f5d4ca3f62ce8c771669a"
  },
  "script": {
   "subtype_vs_pooled/subtype_vs_pooled.py": {
-   "sha256": "73999d1bb9315a3a0f7a4c74567325ab3e1d14ed064824f7b10136dafc21f5b0"
+   "sha256": "086d36f704b097f66baa28072a9a3abded1593075463ed3c2618349a4e94d01a"
   }
  },
  "check_pooled_vs_ours_equals_fig4": {
@@ -23,6 +23,70 @@
    "here": 0.9809394059821281,
    "celltype_merged.tsv": 0.980939
   }
+ },
+ "comparator_groups": {
+  "author_types": {
+   "vs_it": [
+    "L2.3_IT",
+    "L4_IT",
+    "L5_IT",
+    "L6_IT",
+    "L6_IT_Car3"
+   ],
+   "vs_gaba": [
+    "Lamp5",
+    "Lamp5_Lhx6",
+    "Pax6",
+    "Pvalb",
+    "Sncg",
+    "Sst",
+    "Sst_Chodl",
+    "Chandelier",
+    "Vip"
+   ],
+   "vs_deep_non_it": [
+    "L5_ET",
+    "L6_CT",
+    "L6b",
+    "L5.6_NP"
+   ],
+   "vs_glia": [
+    "Astro",
+    "Oligo",
+    "OPC",
+    "Micro"
+   ],
+   "vs_vascular_immune": [
+    "Endo",
+    "PC",
+    "SMC",
+    "VLMC",
+    "Immune"
+   ]
+  },
+  "used_per_pooled_group": {
+   "IT": [
+    "vs_gaba",
+    "vs_deep_non_it",
+    "vs_glia",
+    "vs_vascular_immune"
+   ],
+   "Lamp5": [
+    "vs_gaba",
+    "vs_it",
+    "vs_deep_non_it",
+    "vs_glia",
+    "vs_vascular_immune"
+   ],
+   "Sst": [
+    "vs_gaba",
+    "vs_it",
+    "vs_deep_non_it",
+    "vs_glia",
+    "vs_vascular_immune"
+   ]
+  },
+  "rule": "a subtype's own pooled group is left out of every comparator group"
  },
  "inputs": {
   "gemma/metadata/CMC_sample_meta.tsv": {
@@ -1133,15 +1197,15 @@
  "outputs": {
   "subtype_vs_pooled/cells_per_donor.tsv": {
    "sha256": "9fa3d0f71b856fca49cc7f7d935220a4b8748205849b0a2ac15d2d8a1f4a1607",
-   "mtime": "2026-11-10T13:02:52-07:00"
+   "mtime": "2026-11-10T13:09:38-07:00"
   },
   "subtype_vs_pooled/pairwise_rho.tsv": {
-   "sha256": "65390e8da2d1b7cee3b0da11628d88a1df25c478483697b6a1f4e90ec8e380e9",
-   "mtime": "2026-11-10T13:02:52-07:00"
+   "sha256": "fd4c1ffcbe035aac33bd29876ffcdbadc2d51f481c59599b921c1de04fbd83b4",
+   "mtime": "2026-11-10T13:09:38-07:00"
   },
   "subtype_vs_pooled/summary.tsv": {
-   "sha256": "41c40138cbba7ee0cac87aedb4acc66c03b8568230587e3dcca53113c0ab2d01",
-   "mtime": "2026-11-10T13:02:52-07:00"
+   "sha256": "45293d274ab6c9cd7a0ed204a6ec55588d90b5ca712b78d62b9d65b7b39e1305",
+   "mtime": "2026-11-10T13:09:38-07:00"
   }
  }
 }
