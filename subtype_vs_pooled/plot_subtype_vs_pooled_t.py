@@ -39,6 +39,12 @@ COMPARISONS = [
     ("nearest", "vs nearest\nseparate types"),
     ("vs_glia", "vs glia"),
 ]
+# Panel B: Emani et al. 2024 published DE of each author subtype vs our DE (three references)
+PUBLISHED = [
+    ("published_vs_author_subtype", "vs our\nauthor subtype"),
+    ("published_vs_merged", "vs our pooled\nauthor type"),
+    ("published_vs_ours", "vs our label"),
+]
 GROUPS = ["IT", "Lamp5", "Sst"]
 GROUP_CLASS = {"IT": "L2/3-6 IT", "Lamp5": "LAMP5", "Sst": "SST"}
 GROUP_LABEL = {"IT": "IT (5 subtypes); nearest: deep-layer non-IT",
@@ -86,41 +92,60 @@ def main():
         means[(g, "nearest")] = means[(g, c)]
     per_c = pd.concat([per_c] + [per_c[(per_c.group == g) & (per_c.comparison == c)].assign(comparison="nearest")
                                  for g, c in NEAREST.items()], ignore_index=True)
-    # one category order for all groups: highest to lowest mean of the group means
-    order_mean = pd.Series({c: np.mean([means[(g, c)] for g in GROUPS]) for c, _ in COMPARISONS})
+    # one category order for all groups (per panel): highest to lowest mean of the group means
+    order_mean = pd.Series({c: np.mean([means[(g, c)] for g in GROUPS]) for c, _ in COMPARISONS + PUBLISHED})
     comps = sorted(COMPARISONS, key=lambda c: -order_mean[c[0]])
+    pubs = sorted(PUBLISHED, key=lambda c: -order_mean[c[0]])
 
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12, "axes.spines.top": False,
                          "axes.spines.right": False, "axes.linewidth": 1.2})
-    fig, axA = plt.subplots(figsize=(9, 6.6))
-
+    fig, (axA, axB) = plt.subplots(1, 2, figsize=(14, 7), sharey=True,
+                                   gridspec_kw={"width_ratios": [len(comps), len(pubs)]})
     rng = np.random.default_rng(0)
     dodge = {"IT": -0.25, "Lamp5": 0.0, "Sst": 0.25}
-    for i, (comp, _) in enumerate(comps):
-        for g in GROUPS:
-            v = per_c[(per_c.group == g) & (per_c.comparison == comp)]["rho_t"].to_numpy()
-            x = i + dodge[g]
-            axA.scatter(x + rng.uniform(-0.06, 0.06, len(v)), v, s=36, color=col[g],
-                        marker=GROUP_MARKER[g], alpha=0.6, edgecolor="0.3", linewidth=0.4, zorder=2)
-            axA.plot([x - 0.11, x + 0.11], [means[(g, comp)]] * 2, color="black", lw=2.5, zorder=3)
-    axA.set_xticks(range(len(comps)))
-    axA.set_xticklabels([lab for _, lab in comps], fontsize=11)
-    axA.set_xlim(-0.5, len(comps) - 0.5)
-    ylo = min(-0.05, per_c[per_c.comparison.isin([c for c, _ in comps])].rho_t.min() - 0.04)
-    axA.set_ylim(ylo, 1.03)
+
+    def strip(ax, cats):
+        for i, (comp, _) in enumerate(cats):
+            for g in GROUPS:
+                v = per_c[(per_c.group == g) & (per_c.comparison == comp)]["rho_t"].to_numpy()
+                x = i + dodge[g]
+                ax.scatter(x + rng.uniform(-0.06, 0.06, len(v)), v, s=36, color=col[g], marker=GROUP_MARKER[g],
+                           alpha=0.6, edgecolor="0.3", linewidth=0.4, zorder=2)
+                ax.plot([x - 0.11, x + 0.11], [means[(g, comp)]] * 2, color="black", lw=2.5, zorder=3)
+        ax.set_xticks(range(len(cats)))
+        ax.set_xticklabels([lab for _, lab in cats], fontsize=11)
+        ax.set_xlim(-0.5, len(cats) - 0.5)
+        for i in range(1, len(cats)):
+            ax.axvline(i - 0.5, color="0.88", lw=0.8, zorder=0)
+
+    strip(axA, comps)
+    strip(axB, pubs)
+    shown = per_c[per_c.comparison.isin([c for c, _ in comps + pubs])]
+    axA.set_ylim(min(-0.05, shown.rho_t.min() - 0.04), 1.03)
     axA.set_ylabel("Spearman ρ of t statistics", fontsize=13)
     axA.tick_params(axis="y", labelsize=11)
-    for i in range(1, len(comps)):
-        axA.axvline(i - 0.5, color="0.88", lw=0.8, zorder=0)
+    axB.tick_params(axis="y", labelsize=11, labelleft=True)
+    axA.set_title("Our DE: author subtypes (8 contrasts)", fontsize=12, pad=8)
+    axB.set_title("Published subtype DE vs our DE\n(Emani et al. 2024; 3 or 4 contrasts)", fontsize=12, pad=8)
+    axA.text(-0.13, 1.02, "A", transform=axA.transAxes, fontsize=16, fontweight="bold")
+    axB.text(-0.17, 1.02, "B", transform=axB.transAxes, fontsize=16, fontweight="bold")
 
     handles = [plt.Line2D([], [], ls="", marker=GROUP_MARKER[g], color=col[g], markeredgecolor="0.3",
                           markersize=8, label=GROUP_LABEL[g]) for g in GROUPS]
-    handles.append(plt.Line2D([], [], color="black", lw=2.5, label="Mean of 8 contrasts"))
-    axA.legend(handles=handles, loc="lower left", bbox_to_anchor=(0, 1.01), fontsize=10.5, frameon=False,
-               ncol=2, handletextpad=0.3, columnspacing=1.0)
-
-    fig.tight_layout()
+    handles.append(plt.Line2D([], [], color="black", lw=2.5, label="Mean over contrasts"))
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 1.0), fontsize=10.5, frameon=False,
+               ncol=4, handletextpad=0.3, columnspacing=1.2)
+    fig.tight_layout(rect=(0, 0, 1, 0.94))
     fig.savefig(OUT_PNG, dpi=300, facecolor="white")
+
+    # contrasts and genes behind each published comparison
+    pub_counts = {}
+    for c, _ in PUBLISHED:
+        q = pair[pair.comparison == c]
+        pub_counts[c] = {g: {"contrasts": sorted(q[q.group == g].contrast.unique().tolist()),
+                             "subtypes": sorted(q[q.group == g].type_a.unique().tolist()),
+                             "n_genes_min": int(q[q.group == g].n_genes.min()),
+                             "n_genes_max": int(q[q.group == g].n_genes.max())} for g in GROUPS}
 
     try:
         commit = subprocess.check_output(["git", "-C", HERE, "rev-parse", "HEAD"], text=True).strip()
@@ -137,10 +162,11 @@ def main():
         "inputs": {os.path.relpath(p, os.path.dirname(HERE)) if p.startswith(os.path.dirname(HERE)) else p:
                    {"sha256": sha(p), "mtime": stamp(p)} for p in [IN_PAIR, IN_SUM, IN_CELLS, PALETTE_TSV]},
         "outputs": {"subtype_vs_pooled/subtype_vs_pooled_t.png": {"sha256": sha(OUT_PNG), "mtime": stamp(OUT_PNG)}},
-        "category_order": [c for c, _ in comps],
-        "category_order_mean_rho_t": {c: round(float(order_mean[c]), 4) for c, _ in comps},
+        "category_order": {"A": [c for c, _ in comps], "B": [c for c, _ in pubs]},
+        "category_order_mean_rho_t": {c: round(float(order_mean[c]), 4) for c, _ in comps + pubs},
+        "published_counts": pub_counts,
         "nearest_separate_types": NEAREST,
-        "group_mean_rho_t": {f"{g}|{c}": round(float(means[(g, c)]), 4) for g in GROUPS for c, _ in comps},
+        "group_mean_rho_t": {f"{g}|{c}": round(float(means[(g, c)]), 4) for g in GROUPS for c, _ in comps + pubs},
     }
     json.dump(man, open(OUT_MAN, "w"), indent=2)
     print(json.dumps({k: man[k] for k in ["category_order_mean_rho_t", "group_mean_rho_t"]}, indent=1))

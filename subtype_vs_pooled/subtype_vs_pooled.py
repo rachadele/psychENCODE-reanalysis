@@ -11,6 +11,14 @@ moderated t between:
                        glia, vascular and immune types)
   subtype_vs_siblings  (summary only) each subtype against its sibling subtypes: mean over its
                        subtype_vs_subtype pairs within a contrast, then over contrasts
+  published_vs_*       Emani et al. 2024 published DE of each author subtype (source_data/DEGs,
+                       signed Wald lfc/lfcSE, as psychENCODE-author-de-comparison
+                       bin/compare_de_results.py for Figure S7) against our DE on the same author
+                       subtype (published_vs_author_subtype), on the merged author type
+                       (published_vs_merged) and on our pipeline label (published_vs_ours). Our
+                       limma t equals lfc/lfcSE in our tables. Published contrasts: Schizophrenia,
+                       Bipolar, ASD, Aging (-> Age_death); Aging-schizophrenia has no match.
+                       Published tables lack Sst_Chodl, and ASD lacks L6_IT_Car3 and Lamp5_Lhx6.
   pooled_vs_ours       merged author DE of the group and our pipeline-label DE (Figure 4 value)
 Genes: inner join of the two tables, as bin/aggregate_pairwise.py. The DE is one limma fit per
 cell type over all eight cohorts (no cohort term), so each contrast is one table per type.
@@ -38,10 +46,16 @@ DE = {"author": f"{R}/author_submitted_true/subclass/limma_voom/gemma",
 COUNTS = {"author": f"{R}/pseudobulks/author/ct_pseudobulks/cell_counts.tsv",
           "merged": f"{M}/pseudobulks/author_merged/ct_pseudobulks/cell_counts.tsv",
           "ours": f"{R}/pseudobulks/pavlab_subclass/ct_pseudobulks/cell_counts.tsv"}
+PUB_DIR = f"{REPO}/source_data/DEGs"
+# published contrast -> ours (CONTRAST_MAP of psychENCODE-author-de-comparison/bin/compare_de_results.py)
+PUB_CONTRASTS = {"Schizophrenia": "Disorder_Schizophrenia_vs_Control", "Bipolar": "Disorder_Bipolar.Disorder_vs_Control",
+                 "ASD": "Disorder_ASD_vs_Control", "Aging": "Age_death"}
+MIN_GENES = 10
 CONTRASTS = {"Disorder_Schizophrenia_vs_Control": "SCZ", "Disorder_Bipolar.Disorder_vs_Control": "BD",
              "Disorder_ASD_vs_Control": "ASD", "Disorder_MDD_vs_Control": "MDD",
              "Disorder_PTSD_vs_Control": "PTSD", "Disorder_Williams.Syndrome_vs_Control": "WS",
              "Age_death": "Age", "Biological_Sex_male_vs_female": "Sex"}
+SHORT_PUB = {"Schizophrenia": "SCZ", "Bipolar": "BD", "ASD": "ASD", "Aging": "Age"}
 GROUPS = {"IT": ("L2.3.6.intratelencephalic.projecting.glutamatergic.neuron",
                  ["L2.3_IT", "L4_IT", "L5_IT", "L6_IT", "L6_IT_Car3"]),
           "Lamp5": ("lamp5.GABAergic.cortical.interneuron", ["Lamp5", "Lamp5_Lhx6"]),
@@ -82,6 +96,42 @@ def rho(a, b):
             j["stat_a"].corr(j["stat_b"], method="spearman"), len(j))
 
 
+def norm_ct(c):
+    """author dots vs our underscores (compare_de_results.norm_ct)"""
+    return c.replace(".", "").replace("_", "").lower()
+
+
+def published_rows():
+    """Spearman rho of the published signed Wald statistic with our t, per subtype and contrast."""
+    rows, files = [], []
+    for pub, ours in PUB_CONTRASTS.items():
+        f = f"{PUB_DIR}/{pub}_DEGcombined.csv"
+        files.append(f)
+        adf = pd.read_csv(f, index_col=0)
+        by_ct = {norm_ct(ct): sub for ct, sub in adf.groupby("cell_type")}
+        for g, (label, subs) in GROUPS.items():
+            for s in subs:
+                sub = by_ct.get(norm_ct(s))
+                if sub is None:
+                    continue
+                a = (sub[["gene", "log2FoldChange", "lfcSE"]].dropna(subset=["gene"])
+                     .drop_duplicates(subset=["gene"]).set_index("gene"))
+                a = (a["log2FoldChange"] / a["lfcSE"]).replace([float("inf"), -float("inf")], float("nan"))
+                for comp, scheme, ct in [("published_vs_author_subtype", "author", s),
+                                         ("published_vs_merged", "merged", label),
+                                         ("published_vs_ours", "ours", label)]:
+                    o = table(scheme, ct, ours)
+                    o = o[~o.index.duplicated()]["stat"]
+                    j = pd.concat([a.rename("pub"), o.rename("ours")], axis=1, join="inner").dropna()
+                    if len(j) < MIN_GENES:
+                        continue
+                    rows.append({"contrast": SHORT_PUB[pub], "group": g, "comparison": comp, "type_a": s,
+                                 "scheme_a": "published", "type_b": ct, "scheme_b": scheme,
+                                 "rho_log2FC": float("nan"), "rho_t": j["pub"].corr(j["ours"], method="spearman"),
+                                 "n_genes": len(j)})
+    return rows, files
+
+
 def cells_per_donor():
     ids = set(pd.concat([pd.read_csv(f, sep="\t", dtype=str) for f in
                          sorted(glob.glob(f"{REPO}/gemma/metadata/*_sample_meta.tsv"))])["Individual_ID"])
@@ -116,7 +166,8 @@ def main():
                         if o not in subs:
                             add(g, comp, "author", s, "author", o)
             add(g, "pooled_vs_ours", "merged", label, "ours", label)
-    pairs = pd.DataFrame(rows)
+    pub_rows, pub_files = published_rows()
+    pairs = pd.DataFrame(rows + pub_rows)
     pairs.to_csv(f"{OUT}/pairwise_rho.tsv", sep="\t", index=False, float_format="%.6g")
 
     cpd = cells_per_donor()
@@ -127,10 +178,12 @@ def main():
                                     mean_rho_t=("rho_t", "mean"), sd_rho_t=("rho_t", "std"),
                                     n_contrasts=("contrast", "nunique")).reset_index()
         n_pairs = df.groupby(keys + ["contrast"]).size().groupby(keys).max().rename("pairs_per_contrast")
-        return s.merge(n_pairs.reset_index(), on=keys)
+        genes = df.groupby(keys)["n_genes"].agg(min_n_genes="min", median_n_genes="median").reset_index()
+        return s.merge(n_pairs.reset_index(), on=keys).merge(genes, on=keys)
 
     order = ["subtype_vs_pooled", "subtype_vs_subtype", "subtype_vs_siblings", "vs_it", "vs_gaba", "vs_deep_non_it", "vs_glia",
-             "vs_vascular_immune", "pooled_vs_ours"]
+             "vs_vascular_immune", "pooled_vs_ours",
+             "published_vs_author_subtype", "published_vs_merged", "published_vs_ours"]
     by_group = summarise(pairs, ["group", "comparison"]).assign(level="group", type_a="all")
     by_type = summarise(pairs[pairs["comparison"] != "subtype_vs_subtype"], ["group", "comparison", "type_a"]).assign(level="type")
     by_pair = summarise(pairs[pairs["comparison"] == "subtype_vs_subtype"], ["group", "comparison", "type_a", "type_b"]).assign(level="pair")
@@ -157,7 +210,7 @@ def main():
     summ["level"] = pd.Categorical(summ["level"], ["group", "type", "pair"], ordered=True)
     summ = summ.sort_values(["group", "level", "comparison", "type_a", "type_b"])
     cols = ["group", "level", "comparison", "type_a", "type_b", "mean_rho_log2FC", "sd_rho_log2FC", "mean_rho_t",
-            "sd_rho_t", "n_contrasts", "pairs_per_contrast", "median_cells_per_donor_a", "n_de_donors_a",
+            "sd_rho_t", "n_contrasts", "pairs_per_contrast", "min_n_genes", "median_n_genes", "median_cells_per_donor_a", "n_de_donors_a",
             "median_cells_per_donor_b", "median_cells_per_donor_pooled", "median_cells_per_donor_ours"]
     summ[cols].to_csv(f"{OUT}/summary.tsv", sep="\t", index=False, float_format="%.4g")
 
@@ -184,10 +237,11 @@ def main():
     rec = lambda fs: {os.path.relpath(f, REPO): {"sha256": sha(f), "mtime": ts(f)} for f in sorted(fs)}
     git = lambda *a: subprocess.check_output(["git", "-C", REPO, *a], text=True).strip()
     inputs = sorted(used) + list(COUNTS.values()) + [f"{M}/de_agreement/celltype_merged.tsv"] \
-        + sorted(glob.glob(f"{REPO}/gemma/metadata/*_sample_meta.tsv"))
+        + sorted(glob.glob(f"{REPO}/gemma/metadata/*_sample_meta.tsv")) + pub_files
     man = {"created": datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
            "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (limma-voom, "
-                           "27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types)",
+                           "27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types); "
+                           "published DE: Emani et al. 2024 source_data/DEGs/*_DEGcombined.csv",
            "repo": {"branch": git("rev-parse", "--abbrev-ref", "HEAD"), "commit_at_run": git("rev-parse", "HEAD")},
            "script": {os.path.relpath(__file__, REPO): {"sha256": sha(__file__)}},
            "check_pooled_vs_ours_equals_fig4": chk,

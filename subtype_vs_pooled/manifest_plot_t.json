@@ -1,29 +1,29 @@
 {
-  "created": "2026-11-10T13:25:40-07:00",
-  "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (limma-voom, 27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types)",
+  "created": "2026-11-10T13:29:51-07:00",
+  "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (limma-voom, 27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types); published DE: Emani et al. 2024 source_data/DEGs/*_DEGcombined.csv",
   "upstream_manifest": {
     "path": "subtype_vs_pooled/manifest.json",
-    "created": "2026-11-10T13:22:49-07:00",
-    "sha256": "1d90218490563039a20fa196b216e765839901e7a835a5090b1641d8d698802d"
+    "created": "2026-11-10T13:29:16-07:00",
+    "sha256": "ac13cd5a003ad8e8be883abf79b634ef972dd9651773eb1353a83e71b964bc21"
   },
-  "repo_commit_at_run": "0a5cbd3a44727e325b6118ac66e3f6ca5e0cad9b",
+  "repo_commit_at_run": "8ac55032ef14cf4a4b51a4c1b6ea31fefbf61070",
   "script": {
     "subtype_vs_pooled/plot_subtype_vs_pooled_t.py": {
-      "sha256": "def60b3da823f352162e8ab4abb53868929f3f6aea1456da6002c7206986cd10"
+      "sha256": "6e46120f97fc8bb8f05098f3c8b0e5c046bb4b13022ac7fa58e514db8d6963e7"
     }
   },
   "inputs": {
     "subtype_vs_pooled/pairwise_rho.tsv": {
-      "sha256": "fd4c1ffcbe035aac33bd29876ffcdbadc2d51f481c59599b921c1de04fbd83b4",
-      "mtime": "2026-11-10T13:22:49-07:00"
+      "sha256": "23ce4d3e66c38e341f7867577c24b4156f25eb5fbba160932d034b3718b384a2",
+      "mtime": "2026-11-10T13:29:15-07:00"
     },
     "subtype_vs_pooled/summary.tsv": {
-      "sha256": "9201fe3dfae8cc6bf6425b1bfffcbe5db417df264b0399ecc2727755374282d6",
-      "mtime": "2026-11-10T13:22:49-07:00"
+      "sha256": "c9a70d2feb32e330dd41e12ccfc58d0c61bc66ef2af5ce580f9e5466449c635a",
+      "mtime": "2026-11-10T13:29:15-07:00"
     },
     "subtype_vs_pooled/cells_per_donor.tsv": {
       "sha256": "9fa3d0f71b856fca49cc7f7d935220a4b8748205849b0a2ac15d2d8a1f4a1607",
-      "mtime": "2026-11-10T13:22:49-07:00"
+      "mtime": "2026-11-10T13:29:15-07:00"
     },
     "/space/grp/rschwartz/rschwartz/benchmark-post-hoc/manuscript_palette.tsv": {
       "sha256": "315178c26a73a506a214452d86f154020c50a4b6601ff2ece9db6e20a92e4eb1",
@@ -32,21 +32,171 @@
   },
   "outputs": {
     "subtype_vs_pooled/subtype_vs_pooled_t.png": {
-      "sha256": "ab53e7175aec13672ba9c20053571005f42bd2c6769b2381e0ba9361d7b20a78",
-      "mtime": "2026-11-10T13:25:40-07:00"
+      "sha256": "2c441c28f20a9f8051ca8bf9037c0fc7f2fb719462e05107ec9365c5a2f957f9",
+      "mtime": "2026-11-10T13:29:51-07:00"
     }
   },
-  "category_order": [
-    "subtype_vs_pooled",
-    "subtype_vs_subtype",
-    "nearest",
-    "vs_glia"
-  ],
+  "category_order": {
+    "A": [
+      "subtype_vs_pooled",
+      "subtype_vs_subtype",
+      "nearest",
+      "vs_glia"
+    ],
+    "B": [
+      "published_vs_author_subtype",
+      "published_vs_merged",
+      "published_vs_ours"
+    ]
+  },
   "category_order_mean_rho_t": {
     "subtype_vs_pooled": 0.7868,
     "subtype_vs_subtype": 0.5458,
     "nearest": 0.5189,
-    "vs_glia": 0.2799
+    "vs_glia": 0.2799,
+    "published_vs_author_subtype": 0.5398,
+    "published_vs_merged": 0.5095,
+    "published_vs_ours": 0.5089
+  },
+  "published_counts": {
+    "published_vs_author_subtype": {
+      "IT": {
+        "contrasts": [
+          "ASD",
+          "Age",
+          "BD",
+          "SCZ"
+        ],
+        "subtypes": [
+          "L2.3_IT",
+          "L4_IT",
+          "L5_IT",
+          "L6_IT",
+          "L6_IT_Car3"
+        ],
+        "n_genes_min": 13894,
+        "n_genes_max": 15322
+      },
+      "Lamp5": {
+        "contrasts": [
+          "ASD",
+          "Age",
+          "BD",
+          "SCZ"
+        ],
+        "subtypes": [
+          "Lamp5",
+          "Lamp5_Lhx6"
+        ],
+        "n_genes_min": 13052,
+        "n_genes_max": 14495
+      },
+      "Sst": {
+        "contrasts": [
+          "ASD",
+          "Age",
+          "BD",
+          "SCZ"
+        ],
+        "subtypes": [
+          "Sst"
+        ],
+        "n_genes_min": 13854,
+        "n_genes_max": 14867
+      }
+    },
+    "published_vs_merged": {
+      "IT": {
+        "contrasts": [
+          "ASD",
+          "Age",
+          "BD",
+          "SCZ"
+        ],
+        "subtypes": [
+          "L2.3_IT",
+          "L4_IT",
+          "L5_IT",
+          "L6_IT",
+          "L6_IT_Car3"
+        ],
+        "n_genes_min": 13894,
+        "n_genes_max": 15322
+      },
+      "Lamp5": {
+        "contrasts": [
+          "ASD",
+          "Age",
+          "BD",
+          "SCZ"
+        ],
+        "subtypes": [
+          "Lamp5",
+          "Lamp5_Lhx6"
+        ],
+        "n_genes_min": 13052,
+        "n_genes_max": 14495
+      },
+      "Sst": {
+        "contrasts": [
+          "ASD",
+          "Age",
+          "BD",
+          "SCZ"
+        ],
+        "subtypes": [
+          "Sst"
+        ],
+        "n_genes_min": 13854,
+        "n_genes_max": 14867
+      }
+    },
+    "published_vs_ours": {
+      "IT": {
+        "contrasts": [
+          "ASD",
+          "Age",
+          "BD",
+          "SCZ"
+        ],
+        "subtypes": [
+          "L2.3_IT",
+          "L4_IT",
+          "L5_IT",
+          "L6_IT",
+          "L6_IT_Car3"
+        ],
+        "n_genes_min": 13894,
+        "n_genes_max": 15322
+      },
+      "Lamp5": {
+        "contrasts": [
+          "ASD",
+          "Age",
+          "BD",
+          "SCZ"
+        ],
+        "subtypes": [
+          "Lamp5",
+          "Lamp5_Lhx6"
+        ],
+        "n_genes_min": 13052,
+        "n_genes_max": 14495
+      },
+      "Sst": {
+        "contrasts": [
+          "ASD",
+          "Age",
+          "BD",
+          "SCZ"
+        ],
+        "subtypes": [
+          "Sst"
+        ],
+        "n_genes_min": 13854,
+        "n_genes_max": 14867
+      }
+    }
   },
   "nearest_separate_types": {
     "IT": "vs_deep_non_it",
@@ -58,13 +208,22 @@
     "IT|subtype_vs_subtype": 0.7026,
     "IT|nearest": 0.5824,
     "IT|vs_glia": 0.2832,
+    "IT|published_vs_author_subtype": 0.5725,
+    "IT|published_vs_merged": 0.5289,
+    "IT|published_vs_ours": 0.5293,
     "Lamp5|subtype_vs_pooled": 0.8586,
     "Lamp5|subtype_vs_subtype": 0.6066,
     "Lamp5|nearest": 0.5222,
     "Lamp5|vs_glia": 0.3115,
+    "Lamp5|published_vs_author_subtype": 0.5023,
+    "Lamp5|published_vs_merged": 0.459,
+    "Lamp5|published_vs_ours": 0.4568,
     "Sst|subtype_vs_pooled": 0.6849,
     "Sst|subtype_vs_subtype": 0.3284,
     "Sst|nearest": 0.4521,
-    "Sst|vs_glia": 0.2448
+    "Sst|vs_glia": 0.2448,
+    "Sst|published_vs_author_subtype": 0.5446,
+    "Sst|published_vs_merged": 0.5404,
+    "Sst|published_vs_ours": 0.5405
   }
 }
