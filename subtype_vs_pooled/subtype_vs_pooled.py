@@ -9,6 +9,8 @@ moderated t between:
   vs_<named group>     each subtype and the author types of a named group outside its own pooled
                        group (COMPARATORS: IT types, GABAergic types, deep-layer non-IT types,
                        glia, vascular and immune types)
+  subtype_vs_siblings  (summary only) each subtype against its sibling subtypes: mean over its
+                       subtype_vs_subtype pairs within a contrast, then over contrasts
   pooled_vs_ours       merged author DE of the group and our pipeline-label DE (Figure 4 value)
 Genes: inner join of the two tables, as bin/aggregate_pairwise.py. The DE is one limma fit per
 cell type over all eight cohorts (no cohort term), so each contrast is one table per type.
@@ -127,12 +129,15 @@ def main():
         n_pairs = df.groupby(keys + ["contrast"]).size().groupby(keys).max().rename("pairs_per_contrast")
         return s.merge(n_pairs.reset_index(), on=keys)
 
-    order = ["subtype_vs_pooled", "subtype_vs_subtype", "vs_it", "vs_gaba", "vs_deep_non_it", "vs_glia",
+    order = ["subtype_vs_pooled", "subtype_vs_subtype", "subtype_vs_siblings", "vs_it", "vs_gaba", "vs_deep_non_it", "vs_glia",
              "vs_vascular_immune", "pooled_vs_ours"]
     by_group = summarise(pairs, ["group", "comparison"]).assign(level="group", type_a="all")
     by_type = summarise(pairs[pairs["comparison"] != "subtype_vs_subtype"], ["group", "comparison", "type_a"]).assign(level="type")
     by_pair = summarise(pairs[pairs["comparison"] == "subtype_vs_subtype"], ["group", "comparison", "type_a", "type_b"]).assign(level="pair")
-    summ = pd.concat([by_group, by_type, by_pair], ignore_index=True)
+    sub = pairs[pairs["comparison"] == "subtype_vs_subtype"]
+    sib = pd.concat([sub, sub.rename(columns={"type_a": "type_b", "type_b": "type_a"})], ignore_index=True)
+    by_sib = summarise(sib.assign(comparison="subtype_vs_siblings"), ["group", "comparison", "type_a"]).assign(level="type")
+    summ = pd.concat([by_group, by_type, by_sib, by_pair], ignore_index=True)
     summ["type_b"] = summ.get("type_b").fillna("") if "type_b" in summ else ""
 
     def cells(row, col):

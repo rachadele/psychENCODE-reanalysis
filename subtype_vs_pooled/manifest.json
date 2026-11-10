@@ -1,13 +1,13 @@
 {
- "created": "2026-11-10T13:09:38-07:00",
+ "created": "2026-11-10T13:22:49-07:00",
  "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (limma-voom, 27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types)",
  "repo": {
   "branch": "label-map-param",
-  "commit_at_run": "13909a844ea556f0dd2f5d4ca3f62ce8c771669a"
+  "commit_at_run": "8507ff071bfb3be4e9573529de20acb4c605cabb"
  },
  "script": {
   "subtype_vs_pooled/subtype_vs_pooled.py": {
-   "sha256": "086d36f704b097f66baa28072a9a3abded1593075463ed3c2618349a4e94d01a"
+   "sha256": "5818763de4b772f9e50bbdda736c710d12743e6e3a7f0495bd7b220941e34ca1"
   }
  },
  "check_pooled_vs_ours_equals_fig4": {
@@ -1197,15 +1197,15 @@
  "outputs": {
   "subtype_vs_pooled/cells_per_donor.tsv": {
    "sha256": "9fa3d0f71b856fca49cc7f7d935220a4b8748205849b0a2ac15d2d8a1f4a1607",
-   "mtime": "2026-11-10T13:09:38-07:00"
+   "mtime": "2026-11-10T13:22:49-07:00"
   },
   "subtype_vs_pooled/pairwise_rho.tsv": {
    "sha256": "fd4c1ffcbe035aac33bd29876ffcdbadc2d51f481c59599b921c1de04fbd83b4",
-   "mtime": "2026-11-10T13:09:38-07:00"
+   "mtime": "2026-11-10T13:22:49-07:00"
   },
   "subtype_vs_pooled/summary.tsv": {
-   "sha256": "45293d274ab6c9cd7a0ed204a6ec55588d90b5ca712b78d62b9d65b7b39e1305",
-   "mtime": "2026-11-10T13:09:38-07:00"
+   "sha256": "9201fe3dfae8cc6bf6425b1bfffcbe5db417df264b0399ecc2727755374282d6",
+   "mtime": "2026-11-10T13:22:49-07:00"
   }
  }
 }

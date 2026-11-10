@@ -1,29 +1,29 @@
 {
-  "created": "2026-11-10T13:11:30-07:00",
+  "created": "2026-11-10T13:23:42-07:00",
   "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (limma-voom, 27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types)",
   "upstream_manifest": {
     "path": "subtype_vs_pooled/manifest.json",
-    "created": "2026-11-10T13:09:38-07:00",
-    "sha256": "78160f1131c0d185b37632a7f46a1e796ee2167b2219896904b7e097ae6659cd"
+    "created": "2026-11-10T13:22:49-07:00",
+    "sha256": "1d90218490563039a20fa196b216e765839901e7a835a5090b1641d8d698802d"
   },
-  "repo_commit_at_run": "b7f52a1e06842ca630add7803153b620636a2144",
+  "repo_commit_at_run": "8507ff071bfb3be4e9573529de20acb4c605cabb",
   "script": {
     "subtype_vs_pooled/plot_subtype_vs_pooled_t.py": {
-      "sha256": "7d6600ec86c057011bbd192716c71766df77a705559790d54ea5ce9e46097ef0"
+      "sha256": "9b98d1d718b5f30dbab05bcc42b20c58bba08b05dd13edb8db3926490d92a44f"
     }
   },
   "inputs": {
     "subtype_vs_pooled/pairwise_rho.tsv": {
       "sha256": "fd4c1ffcbe035aac33bd29876ffcdbadc2d51f481c59599b921c1de04fbd83b4",
-      "mtime": "2026-11-10T13:09:38-07:00"
+      "mtime": "2026-11-10T13:22:49-07:00"
     },
     "subtype_vs_pooled/summary.tsv": {
-      "sha256": "45293d274ab6c9cd7a0ed204a6ec55588d90b5ca712b78d62b9d65b7b39e1305",
-      "mtime": "2026-11-10T13:09:38-07:00"
+      "sha256": "9201fe3dfae8cc6bf6425b1bfffcbe5db417df264b0399ecc2727755374282d6",
+      "mtime": "2026-11-10T13:22:49-07:00"
     },
     "subtype_vs_pooled/cells_per_donor.tsv": {
       "sha256": "9fa3d0f71b856fca49cc7f7d935220a4b8748205849b0a2ac15d2d8a1f4a1607",
-      "mtime": "2026-11-10T13:09:38-07:00"
+      "mtime": "2026-11-10T13:22:49-07:00"
     },
     "/space/grp/rschwartz/rschwartz/benchmark-post-hoc/manuscript_palette.tsv": {
       "sha256": "315178c26a73a506a214452d86f154020c50a4b6601ff2ece9db6e20a92e4eb1",
@@ -32,54 +32,46 @@
   },
   "outputs": {
     "subtype_vs_pooled/subtype_vs_pooled_t.png": {
-      "sha256": "407df98cbad4e4270532411b86d9ba3841b4d052ae10f1ea9138e828f5051e4a",
-      "mtime": "2026-11-10T13:11:30-07:00"
+      "sha256": "ae9068e73128548d38f9ac69ed9664a52901f040d0517754eb2d40cdcfd4a1b7",
+      "mtime": "2026-11-10T13:23:42-07:00"
     }
   },
   "panel_A_order": [
-    "pooled_vs_ours",
-    "subtype_vs_pooled",
     "subtype_vs_subtype",
-    "vs_gaba",
-    "vs_deep_non_it",
-    "vs_it",
-    "vs_glia",
-    "vs_vascular_immune"
+    "nearest",
+    "vs_glia"
   ],
   "panel_A_order_mean_rho_t": {
-    "pooled_vs_ours": 0.9866,
-    "subtype_vs_pooled": 0.7868,
     "subtype_vs_subtype": 0.5458,
-    "vs_gaba": 0.484,
-    "vs_deep_non_it": 0.4823,
-    "vs_it": 0.4601,
-    "vs_glia": 0.2799,
-    "vs_vascular_immune": 0.2165
+    "nearest": 0.5189,
+    "vs_glia": 0.2799
   },
-  "group_mean_rho_t": {
+  "nearest_separate_types": {
+    "IT": "vs_deep_non_it",
+    "Lamp5": "vs_gaba",
+    "Sst": "vs_gaba"
+  },
+  "panel_A_mean_rho_t": {
     "IT|subtype_vs_subtype": 0.7026,
-    "IT|subtype_vs_pooled": 0.8169,
-    "IT|vs_gaba": 0.4778,
-    "IT|vs_deep_non_it": 0.5824,
+    "IT|nearest": 0.5824,
     "IT|vs_glia": 0.2832,
-    "IT|vs_vascular_immune": 0.1998,
-    "IT|pooled_vs_ours": 0.9985,
     "Lamp5|subtype_vs_subtype": 0.6066,
-    "Lamp5|subtype_vs_pooled": 0.8586,
-    "Lamp5|vs_it": 0.5056,
-    "Lamp5|vs_gaba": 0.5222,
-    "Lamp5|vs_deep_non_it": 0.4703,
+    "Lamp5|nearest": 0.5222,
     "Lamp5|vs_glia": 0.3115,
-    "Lamp5|vs_vascular_immune": 0.2457,
-    "Lamp5|pooled_vs_ours": 0.9836,
     "Sst|subtype_vs_subtype": 0.3284,
-    "Sst|subtype_vs_pooled": 0.6849,
-    "Sst|vs_it": 0.4146,
-    "Sst|vs_gaba": 0.4521,
-    "Sst|vs_deep_non_it": 0.3943,
-    "Sst|vs_glia": 0.2448,
-    "Sst|vs_vascular_immune": 0.2039,
-    "Sst|pooled_vs_ours": 0.9776
+    "Sst|nearest": 0.4521,
+    "Sst|vs_glia": 0.2448
+  },
+  "panel_B_subtype_vs_siblings_mean_rho_t": {
+    "L2.3_IT": 0.7319,
+    "L4_IT": 0.7095,
+    "L5_IT": 0.7461,
+    "L6_IT": 0.7253,
+    "L6_IT_Car3": 0.6,
+    "Lamp5": 0.6066,
+    "Lamp5_Lhx6": 0.6066,
+    "Sst": 0.3284,
+    "Sst_Chodl": 0.3284
   },
   "comparator_groups": {
     "author_types": {

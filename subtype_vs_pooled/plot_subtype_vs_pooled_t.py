@@ -4,7 +4,8 @@
 Reads pairwise_rho.tsv, summary.tsv and cells_per_donor.tsv (written by subtype_vs_pooled.py) and
 writes subtype_vs_pooled_t.png plus manifest_plot_t.json. Panel A: per-contrast rho (mean over
 pairs within a contrast) for each comparison and group, with the mean over the eight contrasts.
-Panel B: each subtype's mean rho with its pooled author type against median cells per donor.
+Panel A shows author subtype vs subtype, vs the nearest separate types (NEAREST) and vs glia.
+Panel B: each subtype's mean rho with its sibling subtypes against median cells per donor.
 Colours come from the shared manuscript palette (class level).
 """
 import csv
@@ -29,19 +30,19 @@ IN_CELLS = os.path.join(HERE, "cells_per_donor.tsv")
 OUT_PNG = os.path.join(HERE, "subtype_vs_pooled_t.png")
 OUT_MAN = os.path.join(HERE, "manifest_plot_t.json")
 
+# Panel A categories. "nearest" is the closest separate group of author types: deep-layer non-IT
+# types for IT subtypes, GABAergic types outside the pooled group for Lamp5 and Sst subtypes.
+NEAREST = {"IT": "vs_deep_non_it", "Lamp5": "vs_gaba", "Sst": "vs_gaba"}
 COMPARISONS = [
     ("subtype_vs_subtype", "Author subtype\nvs subtype"),
-    ("subtype_vs_pooled", "Author subtype\nvs pooled"),
-    ("vs_it", "vs IT\ntypes"),
-    ("vs_gaba", "vs GABAergic\ntypes"),
-    ("vs_deep_non_it", "vs deep-layer\nnon-IT types"),
+    ("nearest", "vs nearest\nseparate types"),
     ("vs_glia", "vs glia"),
-    ("vs_vascular_immune", "vs vascular\nand immune\ntypes"),
-    ("pooled_vs_ours", "Pooled author\nvs our label"),
 ]
 GROUPS = ["IT", "Lamp5", "Sst"]
 GROUP_CLASS = {"IT": "L2/3-6 IT", "Lamp5": "LAMP5", "Sst": "SST"}
-GROUP_LABEL = {"IT": "IT (5 subtypes)", "Lamp5": "Lamp5 (2)", "Sst": "Sst (2)"}
+GROUP_LABEL = {"IT": "IT (5 subtypes); nearest: deep-layer non-IT",
+               "Lamp5": "Lamp5 (2); nearest: other GABAergic",
+               "Sst": "Sst (2); nearest: other GABAergic"}
 GROUP_MARKER = {"IT": "o", "Lamp5": "s", "Sst": "D"}
 SUBTYPE_LABEL = {"L2.3_IT": "L2/3 IT", "L4_IT": "L4 IT", "L5_IT": "L5 IT", "L6_IT": "L6 IT",
                  "L6_IT_Car3": "L6 IT Car3", "Lamp5": "Lamp5", "Lamp5_Lhx6": "Lamp5 Lhx6",
@@ -79,73 +80,67 @@ def main():
     sg = summ[summ.level == "group"].set_index(["group", "comparison"])["mean_rho_t"]
     for k, v in means.items():
         assert abs(v - sg[k]) < 1e-3, (k, v, sg[k])
+    # map each group's nearest separate types onto one "nearest" category
+    for g, c in NEAREST.items():
+        means[(g, "nearest")] = means[(g, c)]
+    per_c = pd.concat([per_c] + [per_c[(per_c.group == g) & (per_c.comparison == c)].assign(comparison="nearest")
+                                 for g, c in NEAREST.items()], ignore_index=True)
     # one category order for all groups: highest to lowest mean of the group means
-    # (vs IT types averages Lamp5 and Sst only, as IT has no such comparison)
-    order_mean = means.groupby(level="comparison").mean()
+    order_mean = pd.Series({c: np.mean([means[(g, c)] for g in GROUPS]) for c, _ in COMPARISONS})
     comps = sorted(COMPARISONS, key=lambda c: -order_mean[c[0]])
 
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12, "axes.spines.top": False,
                          "axes.spines.right": False, "axes.linewidth": 1.2})
-    fig, (axA, axB) = plt.subplots(1, 2, figsize=(17, 6.2), gridspec_kw={"width_ratios": [2.5, 1]})
+    fig, (axA, axB) = plt.subplots(1, 2, figsize=(13, 6), sharey=True, gridspec_kw={"width_ratios": [1, 1.15]})
 
     rng = np.random.default_rng(0)
     dodge = {"IT": -0.25, "Lamp5": 0.0, "Sst": 0.25}
     for i, (comp, _) in enumerate(comps):
         for g in GROUPS:
             v = per_c[(per_c.group == g) & (per_c.comparison == comp)]["rho_t"].to_numpy()
-            if len(v) == 0:  # IT has no "vs IT types" comparison
-                continue
             x = i + dodge[g]
-            axA.scatter(x + rng.uniform(-0.06, 0.06, len(v)), v, s=30, color=col[g],
-                        marker=GROUP_MARKER[g], alpha=0.55, edgecolor="0.3", linewidth=0.4, zorder=2)
-            axA.plot([x - 0.1, x + 0.1], [means[(g, comp)]] * 2, color="black", lw=2.5, zorder=3)
-    axA.set_xticks(range(len(COMPARISONS)))
+            axA.scatter(x + rng.uniform(-0.06, 0.06, len(v)), v, s=36, color=col[g],
+                        marker=GROUP_MARKER[g], alpha=0.6, edgecolor="0.3", linewidth=0.4, zorder=2)
+            axA.plot([x - 0.11, x + 0.11], [means[(g, comp)]] * 2, color="black", lw=2.5, zorder=3)
+    axA.set_xticks(range(len(comps)))
     axA.set_xticklabels([lab for _, lab in comps], fontsize=11)
-    axA.set_xlim(-0.5, len(COMPARISONS) - 0.5)
-    axA.set_ylim(min(-0.05, per_c.rho_t.min() - 0.04), 1.03)
+    axA.set_xlim(-0.5, len(comps) - 0.5)
+    ylo = min(-0.05, per_c[per_c.comparison.isin([c for c, _ in comps])].rho_t.min() - 0.04)
+    axA.set_ylim(ylo, 1.0)
     axA.set_ylabel("Spearman ρ of t statistics", fontsize=13)
     axA.tick_params(axis="y", labelsize=11)
-    for i in range(1, len(COMPARISONS)):
+    for i in range(1, len(comps)):
         axA.axvline(i - 0.5, color="0.88", lw=0.8, zorder=0)
-    handles = [plt.Line2D([], [], ls="", marker=GROUP_MARKER[g], color=col[g], markeredgecolor="0.3",
-                          markersize=8, label=GROUP_LABEL[g]) for g in GROUPS]
-    handles.append(plt.Line2D([], [], color="black", lw=2.5, label="Mean of 8 contrasts"))
-    axA.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, 1.01), fontsize=11, frameon=False,
-               ncol=4, handletextpad=0.3, columnspacing=1.2)
-    axA.text(-0.065, 1.06, "A", transform=axA.transAxes, fontsize=16, fontweight="bold")
+    axA.text(-0.16, 1.02, "A", transform=axA.transAxes, fontsize=16, fontweight="bold")
 
-    # panel B
-    st = summ[(summ.level == "type") & (summ.comparison == "subtype_vs_pooled")].copy()
+    # panel B: each subtype vs its sibling subtypes (no shared cells)
+    st = summ[(summ.level == "type") & (summ.comparison == "subtype_vs_siblings")].copy()
     cpd = cells[cells.scheme == "author"].set_index("celltype")["median_cells_per_donor"]
     st["cells"] = st["type_a"].map(cpd)
-    # label positions in data coordinates (None = offset next to the point), chosen by eye on the PNG
-    label_at = {"L2.3_IT": ((1082, 1.0), "center"), "L5_IT": ((750, 0.80), "left"),
-                "L6_IT": ((750, 0.72), "left"), "L4_IT": ((750, 0.64), "left"),
-                "L6_IT_Car3": (None, (9, 0, "left")), "Lamp5": (None, (-10, 0, "right")),
-                "Lamp5_Lhx6": (None, (-10, 0, "right")), "Sst": (None, (-10, 0, "right")),
-                "Sst_Chodl": (None, (9, 0, "left"))}
+    for g in ["Lamp5", "Sst"]:  # two subtypes share one value: join them
+        q = st[st.group == g]
+        axB.plot(q["cells"], q["mean_rho_t"], color=col[g], lw=1.2, zorder=2)
+    # label offsets in points (dx, dy, ha), chosen by eye on the PNG
+    off = {"L2.3_IT": (0, -15, "center"), "L4_IT": (-6, -15, "right"), "L5_IT": (4, 14, "left"),
+           "L6_IT": (-4, 14, "right"), "L6_IT_Car3": (-10, 0, "right"), "Lamp5": (0, 15, "center"),
+           "Lamp5_Lhx6": (0, -15, "center"), "Sst": (0, 15, "center"), "Sst_Chodl": (0, 15, "center")}
     for _, r in st.iterrows():
         g = r["group"]
-        axB.errorbar(r["cells"], r["mean_rho_t"], yerr=r["sd_rho_t"], fmt=GROUP_MARKER[g], ms=9,
-                     color=col[g], mec="0.3", mew=0.6, ecolor=col[g], elinewidth=1.4, capsize=3, zorder=3)
-        pos, how = label_at[r["type_a"]]
-        xy = (r["cells"], r["mean_rho_t"])
-        if pos is None:
-            dx, dy, ha = how
-            axB.annotate(SUBTYPE_LABEL[r["type_a"]], xy, xytext=(dx, dy), textcoords="offset points",
-                         ha=ha, va="center", fontsize=11)
-        else:
-            same = abs(pos[0] - xy[0]) < 1
-            axB.annotate(SUBTYPE_LABEL[r["type_a"]], xy, xytext=pos, ha=how, va="center", fontsize=11,
-                         arrowprops=None if same else dict(arrowstyle="-", color="0.5", lw=0.8,
-                                                           shrinkA=2, shrinkB=5))
+        axB.scatter(r["cells"], r["mean_rho_t"], marker=GROUP_MARKER[g], s=90, color=col[g],
+                    edgecolor="0.3", linewidth=0.6, zorder=3)
+        dx, dy, ha = off[r["type_a"]]
+        axB.annotate(SUBTYPE_LABEL[r["type_a"]], (r["cells"], r["mean_rho_t"]), xytext=(dx, dy),
+                     textcoords="offset points", ha=ha, va="center", fontsize=11)
     axB.set_xscale("log")
     axB.set_xlim(2, 4000)
-    axB.set_ylim(-0.05, 1.05)
     axB.set_xlabel("Median cells per donor (subtype)", fontsize=13)
-    axB.set_ylabel("ρ of t, subtype vs pooled", fontsize=13)
-    axB.tick_params(labelsize=11)
-    axB.text(-0.2, 1.06, "B", transform=axB.transAxes, fontsize=16, fontweight="bold")
+    axB.set_title("Subtype vs its sibling subtypes", fontsize=12)
+    axB.tick_params(labelsize=11, labelleft=True)
+    handles = [plt.Line2D([], [], ls="", marker=GROUP_MARKER[g], color=col[g], markeredgecolor="0.3",
+                          markersize=8, label=GROUP_LABEL[g]) for g in GROUPS]
+    handles.append(plt.Line2D([], [], color="black", lw=2.5, label="A: mean of 8 contrasts"))
+    axB.legend(handles=handles, loc="lower right", fontsize=10.5, frameon=False, handletextpad=0.3)
+    axB.text(-0.1, 1.02, "B", transform=axB.transAxes, fontsize=16, fontweight="bold")
 
     fig.tight_layout()
     fig.savefig(OUT_PNG, dpi=300, facecolor="white")
@@ -167,12 +162,14 @@ def main():
         "outputs": {"subtype_vs_pooled/subtype_vs_pooled_t.png": {"sha256": sha(OUT_PNG), "mtime": stamp(OUT_PNG)}},
         "panel_A_order": [c for c, _ in comps],
         "panel_A_order_mean_rho_t": {c: round(float(order_mean[c]), 4) for c, _ in comps},
-        "group_mean_rho_t": {f"{g}|{c}": round(float(means[(g, c)]), 4) for g in GROUPS for c, _ in COMPARISONS
-                             if (g, c) in means.index},
+        "nearest_separate_types": NEAREST,
+        "panel_A_mean_rho_t": {f"{g}|{c}": round(float(means[(g, c)]), 4) for g in GROUPS for c, _ in comps},
+        "panel_B_subtype_vs_siblings_mean_rho_t": {r["type_a"]: round(float(r["mean_rho_t"]), 4)
+                                                   for _, r in st.iterrows()},
         "comparator_groups": up.get("comparator_groups"),
     }
     json.dump(man, open(OUT_MAN, "w"), indent=2)
-    print(json.dumps(man["group_mean_rho_t"], indent=1))
+    print(json.dumps({k: man[k] for k in ["panel_A_order_mean_rho_t", "panel_A_mean_rho_t", "panel_B_subtype_vs_siblings_mean_rho_t"]}, indent=1))
 
 
 if __name__ == "__main__":
