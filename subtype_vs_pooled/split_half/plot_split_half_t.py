@@ -2,9 +2,9 @@
 
 Reads rho_per_contrast.tsv, summary.tsv, se_ratio_per_contrast.tsv (this folder) and writes
 split_half_t.png, then adds the figure and its inputs to manifest.json (section "figure").
-A: Spearman rho of moderated t between donor halves, one dot per contrast (mean over 10 donor
-splits), black bar = mean over the eight contrasts. B: median ratio of standard errors, type over
-pooled author type, one dot per contrast, from the full-data fits. Same x axis in both panels.
+A: Spearman rho of moderated t between donor halves; one box per type over the eight contrasts
+(median line, no fliers), dots = contrasts (mean over 10 donor splits). B: median ratio of standard errors, type over pooled
+author type (1 for the pooled type itself), from the full-data fits, same style. Same x axis in both panels.
 Within each group, subtypes are ordered by median cells per donor (most first), then the pooled
 author type and our label. Subtype colours are shades of the group's class colour in the shared
 manuscript palette (darker = more cells per donor); pooled author type and our label are greys.
@@ -84,16 +84,25 @@ def main():
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12, "axes.spines.top": False,
                          "axes.spines.right": False, "axes.linewidth": 1.2})
     fig, (axA, axB) = plt.subplots(2, 1, figsize=(16, 9.5), sharex=True, gridspec_kw={"height_ratios": [2.4, 1]})
+    # boxes over the eight per-contrast values (no fliers), raw values on top (small horizontal jitter)
     rng = np.random.default_rng(0)
-    for c in cols:
-        sel = lambda d: d[(d.scheme == c["scheme"]) & (d.celltype == c["celltype"]) & (d.group == c["group"])]
-        for ax, d, ycol in [(axA, sel(rho), "mean_rho_t"), (axB, sel(se), "median_se_ratio_vs_pooled")]:
-            v = d[ycol].dropna().to_numpy()
-            if len(v) == 0:
-                continue
-            ax.scatter(c["x"] + rng.uniform(-0.15, 0.15, len(v)), v, s=60, marker=c["marker"], color=c["color"],
-                       edgecolor="0.2", linewidth=0.6, zorder=2)
-            ax.plot([c["x"] - 0.32, c["x"] + 0.32], [v.mean()] * 2, color="black", lw=2.8, zorder=3)
+    for ax, d, ycol in [(axA, rho, "mean_rho_t"), (axB, se, "median_se_ratio_vs_pooled")]:
+        for g in GROUPS:
+            gc = [c for c in cols if c["group"] == g]
+            wide = pd.DataFrame({c["x"]: d[(d.group == g) & (d.scheme == c["scheme"]) & (d.celltype == c["celltype"])]
+                                 .set_index("contrast")[ycol] for c in gc})
+            if ax is axB:  # pooled author type is the reference: ratio 1 in every contrast by definition
+                xm = next(c["x"] for c in gc if c["scheme"] == "merged")
+                wide[xm] = 1.0
+            for c in gc:
+                v = wide[c["x"]].dropna().to_numpy()
+                if len(v) == 0:
+                    continue
+                ax.boxplot(v, positions=[c["x"]], widths=0.6, showfliers=False, patch_artist=True, zorder=2,
+                           boxprops=dict(facecolor=c["color"], edgecolor="0.15", lw=1.2, alpha=0.85),
+                           medianprops=dict(color="black", lw=2.4), whiskerprops=dict(color="0.15", lw=1.2),
+                           capprops=dict(color="0.15", lw=1.2))
+                ax.scatter(c["x"] + rng.uniform(-0.1, 0.1, len(v)), v, s=22, color="white", edgecolor="0.15", linewidth=0.8, zorder=3)
     for g in GROUPS:
         a, b = pos[g]
         axA.text((a + b) / 2, 1.0, GROUP_TITLE[g], transform=axA.get_xaxis_transform(), ha="center",
@@ -102,9 +111,6 @@ def main():
             if g != GROUPS[0]:
                 ax.axvline(a - 0.9, color="0.8", lw=1, zorder=0)
     axB.axhline(1, color="0.4", lw=1.2, ls="--", zorder=1)
-    for c in cols:  # the pooled author column is empty in B (ratio 1 by definition): label the line there
-        if c["scheme"] == "merged":
-            axB.text(c["x"], 1.06, "= 1", ha="center", va="bottom", fontsize=11, color="0.3")
     axB.set_xticks([c["x"] for c in cols])
     axB.set_xticklabels([c["label"] for c in cols], fontsize=11)
     axB.set_xlim(-0.6, cols[-1]["x"] + 0.6)
@@ -112,17 +118,18 @@ def main():
     axB.set_ylabel("Standard error\nrelative to pooled", fontsize=13)
     axA.set_ylim(-0.15, 1.0)
     axA.axhline(0, color="0.7", lw=0.8, zorder=1)
-    axA.text(0.995, 0.97, "One dot = one contrast (mean over 10 donor splits)\nBar = mean over 8 contrasts",
-             transform=axA.transAxes, ha="right", va="top", fontsize=12)
     for ax in (axA, axB):
         ax.tick_params(axis="y", labelsize=11)
     axA.text(-0.075, 1.04, "A", transform=axA.transAxes, fontsize=16, fontweight="bold")
     axB.text(-0.075, 1.04, "B", transform=axB.transAxes, fontsize=16, fontweight="bold")
-    handles = sub_handles + [plt.Line2D([], [], ls="", marker=NEUTRAL[k][1], color=NEUTRAL[k][0], markersize=10,
-                                        label=NEUTRAL[k][2]) for k in ("merged", "ours")]
+    from matplotlib.patches import Patch
+    handles = [Patch(facecolor=h.get_color(), edgecolor="0.15", label=h.get_label()) for h in sub_handles] + \
+        [Patch(facecolor=NEUTRAL[k][0], edgecolor="0.15", label=NEUTRAL[k][2]) for k in ("merged", "ours")]
     fig.legend(handles=handles, loc="center left", bbox_to_anchor=(0.835, 0.6), fontsize=12, frameon=False,
                title="Cell type", title_fontsize=13, alignment="left")
     fig.tight_layout(rect=(0.02, 0, 0.83, 0.97))
+    fig.text(0.84, 0.30, "Box: 8 contrasts\n(median line)\nDot: one contrast\n(in A, mean over\n10 donor splits)",
+             fontsize=12, ha="left", va="top", linespacing=1.3)
     # row label for the third tick-label line (cells per donor), placed after layout
     fig.canvas.draw()
     bb = axB.get_xticklabels()[0].get_window_extent().transformed(fig.transFigure.inverted())

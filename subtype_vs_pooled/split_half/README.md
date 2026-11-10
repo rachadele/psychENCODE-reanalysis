@@ -4,7 +4,7 @@ We asked if pooling author subtypes gave more stable DE. `se_ratio.py` computed 
 
 Subtype standard errors exceeded pooled ones (ratios 1.00 to 1.85). Pooled IT (ρ = 0.51) beat every IT subtype (0.39 to 0.50). Pooled Lamp5 and Sst matched their largest subtype (0.36, 0.41) and exceeded Lamp5 Lhx6 (0.27) and Sst Chodl (0.10).
 
-`split_half_t.png`: agreement between donor halves (A) and relative standard error (B); one dot per contrast, bars at the mean.
+`split_half_t.png`: agreement between donor halves (A) and relative standard error (B); boxes over the eight contrasts, dots for single contrasts.
 
 `split_half_example_scatter.png`: gene t in each donor half for bipolar disorder, split 9, chosen as closest to the mean pooled-minus-subtype difference and the 10-split mean ρ.
 

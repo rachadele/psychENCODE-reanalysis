@@ -1,9 +1,9 @@
 {
- "created": "2026-11-10T16:22:50.438913-07:00",
+ "created": "2026-11-10T16:37:24.623081-07:00",
  "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (author, ours) and results_v2.1.2_limma/merged_author_2026-11-09 (merged author); limma-voom, ~ Disorder + Age_death + PMI + Biological_Sex + X1000G_ancestry, no cohort term",
  "repo": {
   "branch": "label-map-param",
-  "commit": "6b0a3a1aa0d4666142316ef04bef15f0380a896b"
+  "commit": "fee99bf04f1c3cd3664191a6faf19f297893cf6d"
  },
  "seeds": [
   1,
@@ -715,8 +715,8 @@
    "mtime": "2026-11-10T16:22:34.237208-07:00"
   },
   "subtype_vs_pooled/split_half/plot_split_half_t.py": {
-   "sha256": "76b8bc7d8caa3912420a0ae27eadae96b6cb659529597d635e08735694115464",
-   "mtime": "2026-11-10T16:21:08.316773-07:00"
+   "sha256": "6e03c316d2ce1769f40679b11b5521f8a6cfb9e7cac97f4f0d317524497680b2",
+   "mtime": "2026-11-10T16:37:24.551622-07:00"
   },
   "subtype_vs_pooled/split_half/run_split_half.sh": {
    "sha256": "dd73af486dac2d6a01e521fefd7f780c778798d3b71752a4f3b6d61e2423b22f",
@@ -762,10 +762,10 @@
   }
  },
  "figure": {
-  "created": "2026-11-10T16:22:55.886153-07:00",
+  "created": "2026-11-10T16:37:30.349024-07:00",
   "script": {
    "subtype_vs_pooled/split_half/plot_split_half_t.py": {
-    "sha256": "76b8bc7d8caa3912420a0ae27eadae96b6cb659529597d635e08735694115464"
+    "sha256": "6e03c316d2ce1769f40679b11b5521f8a6cfb9e7cac97f4f0d317524497680b2"
    }
   },
   "inputs": {
@@ -788,13 +788,13 @@
   },
   "output": {
    "subtype_vs_pooled/split_half/split_half_t.png": {
-    "sha256": "034c3c6c83623a8f05465ba28617d2310a715bfe5668f30a21badf5a94d65108",
-    "mtime": "2026-11-10T16:22:55.880577-07:00"
+    "sha256": "14d10a331dc0f112b607afb788d5d7f6dba64f9e6f2429f4ee53d573847b7423",
+    "mtime": "2026-11-10T16:37:30.342988-07:00"
    }
   }
  },
  "figure_example": {
-  "created": "2026-11-10T16:22:59.799634-07:00",
+  "created": "2026-11-10T16:37:34.515149-07:00",
   "contrast": "BD",
   "seed": 9,
   "contrast_rule": "IT pooled author rho minus mean IT subtype rho per contrast (WS excluded); closest to mean",
@@ -872,7 +872,7 @@
   "output": {
    "subtype_vs_pooled/split_half/split_half_example_scatter.png": {
     "sha256": "2c4aaa5e6e81dde53c8f9c052128c3e565715024284fa4df3d918d8c3f007588",
-    "mtime": "2026-11-10T16:22:59.787824-07:00"
+    "mtime": "2026-11-10T16:37:34.500252-07:00"
    }
   }
  }
