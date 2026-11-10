@@ -35,7 +35,7 @@ OUT_MAN = os.path.join(HERE, "manifest_plot_t.json")
 NEAREST = {"IT": "vs_deep_non_it", "Lamp5": "vs_gaba", "Sst": "vs_gaba"}
 COMPARISONS = [
     ("subtype_vs_pooled", "Author subtype\nvs pooled"),
-    ("subtype_vs_subtype", "Author subtype\nvs subtype"),
+    ("subtype_vs_subtype", "vs other\nsubtypes"),
     ("nearest", "vs nearest\nseparate types"),
     ("vs_glia", "vs glia"),
 ]

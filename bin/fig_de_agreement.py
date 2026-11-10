@@ -259,7 +259,7 @@ def fmt_p(p):
 
 
 # ---------- D, E: author subtypes vs pooled author types (subtype_vs_pooled/) ----------
-POOL_COMPARISONS = [("subtype_vs_pooled", "Subtype vs\npooled"), ("subtype_vs_subtype", "Subtype vs\nsubtype"),
+POOL_COMPARISONS = [("subtype_vs_pooled", "Subtype vs\npooled"), ("subtype_vs_subtype", "vs other\nsubtypes"),
                     ("nearest", "vs nearest\nseparate"), ("vs_glia", "vs glia")]
 POOL_PUBLISHED = [("published_vs_author_subtype", "Our\nsubtype"), ("published_vs_merged", "Our pooled\ntype"),
                   ("published_vs_ours", "Our\nlabel")]

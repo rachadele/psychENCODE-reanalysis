@@ -1,15 +1,15 @@
 {
-  "created": "2026-11-10T13:29:51-07:00",
+  "created": "2026-11-10T13:59:58-07:00",
   "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (limma-voom, 27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types); published DE: Emani et al. 2024 source_data/DEGs/*_DEGcombined.csv",
   "upstream_manifest": {
     "path": "subtype_vs_pooled/manifest.json",
     "created": "2026-11-10T13:29:16-07:00",
     "sha256": "ac13cd5a003ad8e8be883abf79b634ef972dd9651773eb1353a83e71b964bc21"
   },
-  "repo_commit_at_run": "8ac55032ef14cf4a4b51a4c1b6ea31fefbf61070",
+  "repo_commit_at_run": "2eaf5580c35d2920ce1b923266f61f9be210f6c7",
   "script": {
     "subtype_vs_pooled/plot_subtype_vs_pooled_t.py": {
-      "sha256": "6e46120f97fc8bb8f05098f3c8b0e5c046bb4b13022ac7fa58e514db8d6963e7"
+      "sha256": "57785f7b6a9c56a16e10fdc17724228de3b59beae36e0ea8dc175a7af3c1c17c"
     }
   },
   "inputs": {
@@ -32,8 +32,8 @@
   },
   "outputs": {
     "subtype_vs_pooled/subtype_vs_pooled_t.png": {
-      "sha256": "2c441c28f20a9f8051ca8bf9037c0fc7f2fb719462e05107ec9365c5a2f957f9",
-      "mtime": "2026-11-10T13:29:51-07:00"
+      "sha256": "b46d08d5b23e6b9c3fc417398b3bba48cae79eecd7ee6424f1bf9a2f64dcc624",
+      "mtime": "2026-11-10T13:59:58-07:00"
     }
   },
   "category_order": {
