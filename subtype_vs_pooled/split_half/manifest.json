@@ -1,9 +1,9 @@
 {
- "created": "2026-11-10T16:12:16.313313-07:00",
+ "created": "2026-11-10T16:17:44.966484-07:00",
  "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (author, ours) and results_v2.1.2_limma/merged_author_2026-11-09 (merged author); limma-voom, ~ Disorder + Age_death + PMI + Biological_Sex + X1000G_ancestry, no cohort term",
  "repo": {
   "branch": "label-map-param",
-  "commit": "37a81929eeaeb941459d457463ab604f9b0b45fe"
+  "commit": "e9ee7023a347ddc74ac4f545d5bbf4c4a022defc"
  },
  "seeds": [
   1,
@@ -710,6 +710,10 @@
    "sha256": "b1c3682a10b7082e77dfa792b081fe7da824745e098377ea796a5bf441711151",
    "mtime": "2026-11-10T15:56:40.834958-07:00"
   },
+  "subtype_vs_pooled/split_half/plot_split_half_t.py": {
+   "sha256": "8f2b02ced3046ec5ba7331543ad8e78b035f30556043d6a29819b3b8bbdbd4c0",
+   "mtime": "2026-11-10T16:17:30.320985-07:00"
+  },
   "subtype_vs_pooled/split_half/run_split_half.sh": {
    "sha256": "dd73af486dac2d6a01e521fefd7f780c778798d3b71752a4f3b6d61e2423b22f",
    "mtime": "2026-11-10T15:58:10.904660-07:00"
@@ -751,6 +755,38 @@
   "subtype_vs_pooled/split_half/summary.tsv": {
    "sha256": "d416c7cc7df203361bce2257a67e93e824ad6fed0ecdcc005247327e4bd2c4bd",
    "mtime": "2026-11-10T16:12:06.147482-07:00"
+  }
+ },
+ "figure": {
+  "created": "2026-11-10T16:17:50.120417-07:00",
+  "script": {
+   "subtype_vs_pooled/split_half/plot_split_half_t.py": {
+    "sha256": "8f2b02ced3046ec5ba7331543ad8e78b035f30556043d6a29819b3b8bbdbd4c0"
+   }
+  },
+  "inputs": {
+   "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/subtype_vs_pooled/split_half/rho_per_contrast.tsv": {
+    "sha256": "62677775851acca322405fb65b07df496ee6a536de433b489188090f09840bfa",
+    "mtime": "2026-11-10T16:12:06.128480-07:00"
+   },
+   "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/subtype_vs_pooled/split_half/summary.tsv": {
+    "sha256": "d416c7cc7df203361bce2257a67e93e824ad6fed0ecdcc005247327e4bd2c4bd",
+    "mtime": "2026-11-10T16:12:06.147482-07:00"
+   },
+   "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/subtype_vs_pooled/split_half/se_ratio_per_contrast.tsv": {
+    "sha256": "069ea9455e8f272e5aaa9fce6c83bc00c492c2bb4fbca32643492b4dbc94a454",
+    "mtime": "2026-11-10T15:56:23.910885-07:00"
+   },
+   "/space/grp/rschwartz/rschwartz/benchmark-post-hoc/manuscript_palette.tsv": {
+    "sha256": "315178c26a73a506a214452d86f154020c50a4b6601ff2ece9db6e20a92e4eb1",
+    "mtime": "2026-10-29T12:19:17.529655-07:00"
+   }
+  },
+  "output": {
+   "subtype_vs_pooled/split_half/split_half_t.png": {
+    "sha256": "991ea359df7826b4d2baf2720b1fc039d7b5aa4565e5d592caaf6eb6981927f6",
+    "mtime": "2026-11-10T16:17:50.115237-07:00"
+   }
   }
  }
 }
