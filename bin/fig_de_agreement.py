@@ -269,38 +269,67 @@ POOL_GROUPS = {"IT": ("L2/3-6 IT", "o", "IT (5 subtypes)"), "Lamp5": ("LAMP5", "
 POOL_NEAREST = {"IT": "vs_deep_non_it", "Lamp5": "vs_gaba", "Sst": "vs_gaba"}
 
 
+def _split_half_module(pooling_dir):
+    """subtype_vs_pooled/split_half/plot_split_half_t.py, for its subtype shades and names (so the
+    split-half figure and Figure 4D, E colour each subtype alike)."""
+    import importlib.util
+    path = os.path.join(pooling_dir, "split_half", "plot_split_half_t.py")
+    spec = importlib.util.spec_from_file_location("plot_split_half_t", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod, path
+
+
 def pooling_data(pooling_dir):
-    """Per-contrast rho of t (mean over pairs within a contrast) and the mean over contrasts per group and
-    comparison, from pooling_dir/pairwise_rho.tsv, checked against summary.tsv (as
-    subtype_vs_pooled/plot_subtype_vs_pooled_t.py). Category order: highest to lowest mean of group means."""
-    pair = pd.read_csv(os.path.join(pooling_dir, "pairwise_rho.tsv"), sep="\t")
+    """One value per author subtype and comparison: mean over contrasts of rho of t (summary.tsv, type
+    rows; "vs other subtypes" = subtype_vs_siblings, nearest = POOL_NEAREST), and the group mean over
+    contrasts (group rows) for the bars. Subtypes ordered by median cells per donor (most first) within
+    each group, coloured with the split-half figure's shades of the group colour (darker = more cells).
+    Category order: highest to lowest mean of the group means."""
     summ = pd.read_csv(os.path.join(pooling_dir, "summary.tsv"), sep="\t")
-    per_c = pair.groupby(["group", "comparison", "contrast"])["rho_t"].mean().reset_index()
-    means = per_c.groupby(["group", "comparison"])["rho_t"].mean()
-    sg = summ[summ["level"] == "group"].set_index(["group", "comparison"])["mean_rho_t"]
-    for k, v in means.items():
-        assert abs(v - sg[k]) < 1e-3, (k, v, sg[k])
-    for g, c in POOL_NEAREST.items():
-        means[(g, "nearest")] = means[(g, c)]
-    per_c = pd.concat([per_c] + [per_c[(per_c["group"] == g) & (per_c["comparison"] == c)].assign(comparison="nearest")
-                                 for g, c in POOL_NEAREST.items()], ignore_index=True)
+    pair = pd.read_csv(os.path.join(pooling_dir, "pairwise_rho.tsv"), sep="\t")
+    sh, _ = _split_half_module(pooling_dir)
+    typ = summ[summ["level"] == "type"].copy()
+    typ.loc[typ["comparison"] == "subtype_vs_siblings", "comparison"] = "subtype_vs_subtype"
+    grp = summ[summ["level"] == "group"].set_index(["group", "comparison"])["mean_rho_t"]
+    # type rows must equal the mean over contrasts of pairwise_rho.tsv (per-contrast mean over pairs)
+    pc = pair.groupby(["group", "comparison", "type_a", "contrast"])["rho_t"].mean().groupby(
+        ["group", "comparison", "type_a"]).mean()
+    vals, means, subtypes = {}, {}, []
+    for g, (cls, mk, _) in POOL_GROUPS.items():
+        t = typ[(typ["group"] == g) & (typ["comparison"] == "subtype_vs_pooled")]
+        order = t.sort_values("median_cells_per_donor_a", ascending=False)
+        cols = sh.shades(CLASS_COLORS[cls], len(order))
+        for (_, r), c in zip(order.iterrows(), cols):
+            subtypes.append((g, r["type_a"], sh.SUB_NAME[r["type_a"]], c, mk))
+        for comp, _ in POOL_COMPARISONS + POOL_PUBLISHED:
+            src = POOL_NEAREST[g] if comp == "nearest" else comp
+            means[(g, comp)] = grp[(g, src)]
+            tt = typ[(typ["group"] == g) & (typ["comparison"] == comp.replace("nearest", src))]
+            for r in tt.itertuples():
+                vals[(g, comp, r.type_a)] = r.mean_rho_t
+                if comp != "subtype_vs_subtype":  # sibling means pool pairs in both directions
+                    k = (g, src, r.type_a)
+                    assert abs(pc[k] - r.mean_rho_t) < 1e-3, (k, pc[k], r.mean_rho_t)
     om = {c: np.mean([means[(g, c)] for g in POOL_GROUPS]) for c, _ in POOL_COMPARISONS + POOL_PUBLISHED}
-    return (per_c, means, sorted(POOL_COMPARISONS, key=lambda c: -om[c[0]]),
+    return (vals, means, subtypes, sorted(POOL_COMPARISONS, key=lambda c: -om[c[0]]),
             sorted(POOL_PUBLISHED, key=lambda c: -om[c[0]]))
 
 
 def draw_pooling(axD, axE, pooling_dir):
-    per_c, means, comps, pubs = pooling_data(pooling_dir)
-    dodge = {"IT": -0.25, "Lamp5": 0.0, "Sst": 0.25}
-    rng = np.random.default_rng(0)
+    vals, means, subtypes, comps, pubs = pooling_data(pooling_dir)
+    dodge = {"IT": -0.27, "Lamp5": 0.0, "Sst": 0.27}
     for ax, cats in ((axD, comps), (axE, pubs)):
         for i, (comp, _) in enumerate(cats):
-            for g, (cls, mk, _) in POOL_GROUPS.items():
-                v = per_c[(per_c["group"] == g) & (per_c["comparison"] == comp)]["rho_t"].to_numpy()
+            for g in POOL_GROUPS:
                 x = i + dodge[g]
-                ax.scatter(x + rng.uniform(-0.06, 0.06, len(v)), v, s=16, color=CLASS_COLORS[cls], marker=mk,
-                           alpha=0.75, edgecolor="0.3", linewidth=0.3, zorder=2)
-                ax.plot([x - 0.11, x + 0.11], [means[(g, comp)]] * 2, color="black", lw=1.8, zorder=3)
+                subs = [st for st in subtypes if st[0] == g]
+                offs = np.linspace(-0.1, 0.1, len(subs)) if len(subs) > 1 else [0.0]
+                for (_, t, _, c, mk), o in zip(subs, offs):
+                    v = vals.get((g, comp, t))
+                    if v is not None:
+                        ax.scatter([x + o], [v], s=30, color=c, marker=mk, edgecolor="0.2", linewidth=0.5, zorder=3)
+                ax.plot([x - 0.12, x + 0.12], [means[(g, comp)]] * 2, color="black", lw=1.6, zorder=2)
         ax.set_xticks(range(len(cats)))
         ax.set_xticklabels([lab for _, lab in cats])
         ax.tick_params(axis="x", length=0)
@@ -313,10 +342,12 @@ def draw_pooling(axD, axE, pooling_dir):
     axE.tick_params(axis="y", labelleft=False)
     axD.set_title("Our DE on author subtypes\n(8 contrasts)", fontsize=TXT, pad=4)
     axE.set_title("Published subtype DE\nvs our DE", fontsize=TXT, pad=4)
-    handles = [mlines.Line2D([], [], ls="", marker=mk, color=CLASS_COLORS[cls], mec="0.3", ms=6, label=lab)
-               for cls, mk, lab in POOL_GROUPS.values()]
-    handles.append(mlines.Line2D([], [], color="black", lw=1.8, label="Mean over contrasts"))
-    return handles
+    handles = [mlines.Line2D([], [], ls="", marker=mk, color=c, mec="0.2", ms=6,
+                             label=name + (" (not in E)" if t == "Sst_Chodl" else ""))
+               for _, t, name, c, mk in subtypes]
+    handles.append(mlines.Line2D([], [], color="black", lw=1.6, label="Group mean"))
+    # two legend rows (IT subtypes; Lamp5, Sst and the mean), filled column by column
+    return [h for pair in zip(handles[:5], handles[5:]) for h in pair]
 
 
 def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, study="CMC", qa_dir=None,
@@ -356,7 +387,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     cell_h, bar_h, gap = 0.21, 0.17, 0.04
     hm_h = nrow * cell_h
     y_d, d_h = 0.78, 1.9                      # panels D, E: subtypes vs pooled types (optional)
-    y_e, e_h = (y_d + d_h + 1.55 if pooling_dir else 0.62), 1.45  # panel C: matched vs mismatched pairs
+    y_e, e_h = (y_d + d_h + 1.7 if pooling_dir else 0.62), 1.45  # panel C: matched vs mismatched pairs
     y_b, b_h = y_e + e_h + 1.3, 1.45          # panel B: plain and partial rho
     b_left, p_col = 2.2, 1.3                 # B row labels on the left, p values on the right
     side = bool(b_groups)                    # grouped B sits beside C on one row (left B, right C)
@@ -516,7 +547,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
         e_x0 = left + d_w + 0.3
         axE = fig.add_axes([fx(e_x0), fy(y_d), fx(W - right - e_x0), fy(d_h)])
         hd = draw_pooling(axD, axE, pooling_dir)
-        fig.legend(handles=hd, loc="lower center", bbox_to_anchor=(fx(W / 2), fy(y_d + d_h + 0.5)), ncol=4,
+        fig.legend(handles=hd, loc="lower center", bbox_to_anchor=(fx(W / 2), fy(y_d + d_h + 0.5)), ncol=5,
                    borderaxespad=0, handlelength=1.4, columnspacing=1.2, handletextpad=0.4)
         fig.text(fx(0.03), fy(y_d + d_h + 0.45), "D", fontsize=LET, fontweight="bold", va="top")
         fig.text(fx(e_x0 - 0.25), fy(y_d + d_h + 0.45), "E", fontsize=LET, fontweight="bold", va="top")
@@ -759,7 +790,8 @@ def merged_figure(merged_dir, current_rho_ci, out_png, qa_dir=None, stat="log2Fo
            os.path.join(nd, "pairs.tsv"), os.path.join(nd, "null_summary.tsv"),
            os.path.join(nd, "matched_effect_adjusted.tsv"), os.path.join(nd, "manifest.json"), PALETTE_TSV]
     if pooling_dir:  # panels D, E
-        ins += [os.path.join(pooling_dir, f) for f in ("pairwise_rho.tsv", "summary.tsv", "manifest.json")]
+        ins += [os.path.join(pooling_dir, f) for f in ("pairwise_rho.tsv", "summary.tsv", "manifest.json",
+                                                    "split_half/plot_split_half_t.py")]
     json.dump({"created": datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
                "statistic": f"Spearman rho of {stat} ({corr_col})",
                "data_version": "merged_author_2026-11-09 (author arm, 21 merged types) vs results_v2.1.2_limma "
