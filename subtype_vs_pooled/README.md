@@ -2,7 +2,7 @@
 
 We asked whether the author subtypes that our pipeline pools (five IT types into L2/3-6 IT, Lamp5 with Lamp5_Lhx6, Sst with Sst_Chodl) gave the same DE as their pooled group. We reused existing limma-voom results: 27 unmerged author types and 21 merged author types (`results_v2.1.2_limma/merged_author_2026-11-09`). For the eight Figure 4 contrasts, `subtype_vs_pooled.py` computed Spearman ρ of log2FC and of t over shared genes between each subtype and its merged group, between subtypes of a group, between each subtype and named groups of author types outside its pooled group (below), and between the merged group and our label. We averaged pairs within each contrast and report mean ± SD over contrasts (`summary.tsv`; all pairs in `pairwise_rho.tsv`). Cells per donor was the median over DE donors (`cells_per_donor.tsv`). The merged-vs-ours values matched `de_agreement/celltype_merged.tsv`.
 
-Subtypes agreed with their merged group at ρ = 0.76 ± 0.08 (IT), 0.86 ± 0.06 (Lamp5) and 0.68 ± 0.12 (Sst), and with each other at 0.66, 0.64 and 0.32. Agreement fell with subtype size: Sst_Chodl (4 cells per donor) agreed with Sst at 0.32. `manifest.json` holds sha256 and timestamps.
+`manifest.json` holds sha256 and timestamps.
 
 ## Comparator groups
 
