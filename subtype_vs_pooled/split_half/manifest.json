@@ -1,9 +1,9 @@
 {
- "created": "2026-11-10T16:21:34.147314-07:00",
+ "created": "2026-11-10T16:22:50.438913-07:00",
  "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (author, ours) and results_v2.1.2_limma/merged_author_2026-11-09 (merged author); limma-voom, ~ Disorder + Age_death + PMI + Biological_Sex + X1000G_ancestry, no cohort term",
  "repo": {
   "branch": "label-map-param",
-  "commit": "5507e6cc72972082bf71d6076842eb71285a8324"
+  "commit": "6b0a3a1aa0d4666142316ef04bef15f0380a896b"
  },
  "seeds": [
   1,
@@ -710,6 +710,10 @@
    "sha256": "b1c3682a10b7082e77dfa792b081fe7da824745e098377ea796a5bf441711151",
    "mtime": "2026-11-10T15:56:40.834958-07:00"
   },
+  "subtype_vs_pooled/split_half/plot_split_half_example.py": {
+   "sha256": "5490856e7b63d21db377b88e89c7e4972ac430efb2bd30de75764a703165b06b",
+   "mtime": "2026-11-10T16:22:34.237208-07:00"
+  },
   "subtype_vs_pooled/split_half/plot_split_half_t.py": {
    "sha256": "76b8bc7d8caa3912420a0ae27eadae96b6cb659529597d635e08735694115464",
    "mtime": "2026-11-10T16:21:08.316773-07:00"
@@ -758,7 +762,7 @@
   }
  },
  "figure": {
-  "created": "2026-11-10T16:21:39.465325-07:00",
+  "created": "2026-11-10T16:22:55.886153-07:00",
   "script": {
    "subtype_vs_pooled/split_half/plot_split_half_t.py": {
     "sha256": "76b8bc7d8caa3912420a0ae27eadae96b6cb659529597d635e08735694115464"
@@ -785,7 +789,90 @@
   "output": {
    "subtype_vs_pooled/split_half/split_half_t.png": {
     "sha256": "034c3c6c83623a8f05465ba28617d2310a715bfe5668f30a21badf5a94d65108",
-    "mtime": "2026-11-10T16:21:39.459743-07:00"
+    "mtime": "2026-11-10T16:22:55.880577-07:00"
+   }
+  }
+ },
+ "figure_example": {
+  "created": "2026-11-10T16:22:59.799634-07:00",
+  "contrast": "BD",
+  "seed": 9,
+  "contrast_rule": "IT pooled author rho minus mean IT subtype rho per contrast (WS excluded); closest to mean",
+  "pooled_minus_subtype_rho": {
+   "ASD": 0.0752,
+   "Age": 0.0934,
+   "BD": 0.0562,
+   "MDD": 0.0392,
+   "PTSD": 0.1112,
+   "SCZ": 0.0379,
+   "Sex": -0.0358
+  },
+  "seed_rule": "min summed squared deviation of the four shown types' rho from their 10-seed means",
+  "rho": {
+   "author|L6_IT_Car3": 0.515,
+   "author|L2.3_IT": 0.5276,
+   "merged|L2.3.6.intratelencephalic.projecting.glutamatergic.neuron": 0.5553,
+   "ours|L2.3.6.intratelencephalic.projecting.glutamatergic.neuron": 0.5582
+  },
+  "script": {
+   "subtype_vs_pooled/split_half/plot_split_half_example.py": {
+    "sha256": "5490856e7b63d21db377b88e89c7e4972ac430efb2bd30de75764a703165b06b"
+   }
+  },
+  "inputs": {
+   "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/subtype_vs_pooled/split_half/rho_per_contrast.tsv": {
+    "sha256": "62677775851acca322405fb65b07df496ee6a536de433b489188090f09840bfa",
+    "mtime": "2026-11-10T16:12:06.128480-07:00"
+   },
+   "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/subtype_vs_pooled/split_half/rho_per_split.tsv": {
+    "sha256": "56c26f50ce1dc1ebfec5fe5049a85dca9a5598fd00781a083aa015ad764b29bd",
+    "mtime": "2026-11-10T16:12:06.115480-07:00"
+   },
+   "/space/grp/rschwartz/rschwartz/psychENCODE-reanalysis/subtype_vs_pooled/split_half/summary.tsv": {
+    "sha256": "d416c7cc7df203361bce2257a67e93e824ad6fed0ecdcc005247327e4bd2c4bd",
+    "mtime": "2026-11-10T16:12:06.147482-07:00"
+   },
+   "/space/grp/rschwartz/rschwartz/benchmark-post-hoc/manuscript_palette.tsv": {
+    "sha256": "315178c26a73a506a214452d86f154020c50a4b6601ff2ece9db6e20a92e4eb1",
+    "mtime": "2026-10-29T12:19:17.529655-07:00"
+   },
+   "/space/scratch/rschwartz_psyrerun_work/split_half/fits/9/A/author__L6_IT_Car3.tsv.gz": {
+    "sha256": "2a849fe2bf7cd583d3ee93c4c6c50662e39f58fc345b295288ffe15de559e190",
+    "mtime": "2026-11-10T16:09:00.969769-07:00"
+   },
+   "/space/scratch/rschwartz_psyrerun_work/split_half/fits/9/B/author__L6_IT_Car3.tsv.gz": {
+    "sha256": "660d715c2bf21a968e84b4329eef00e48a0f36490b8925f535d4f4ef5307821e",
+    "mtime": "2026-11-10T16:08:59.727691-07:00"
+   },
+   "/space/scratch/rschwartz_psyrerun_work/split_half/fits/9/A/author__L2.3_IT.tsv.gz": {
+    "sha256": "c625d2ac79a03cb64463586872b735934e3beb48431e85ccc795e52f8a851583",
+    "mtime": "2026-11-10T16:09:04.347983-07:00"
+   },
+   "/space/scratch/rschwartz_psyrerun_work/split_half/fits/9/B/author__L2.3_IT.tsv.gz": {
+    "sha256": "a6d9c2f27f7a693994e998db6435c58bd0f296475ad6cf2143e9cee68b942c79",
+    "mtime": "2026-11-10T16:09:02.654876-07:00"
+   },
+   "/space/scratch/rschwartz_psyrerun_work/split_half/fits/9/A/merged__L2.3.6.intratelencephalic.projecting.glutamatergic.neuron.tsv.gz": {
+    "sha256": "3005e348bfdfb0eba60ee554dc514c08f085aa41750afd18822ebc67856dd156",
+    "mtime": "2026-11-10T16:09:05.293043-07:00"
+   },
+   "/space/scratch/rschwartz_psyrerun_work/split_half/fits/9/B/merged__L2.3.6.intratelencephalic.projecting.glutamatergic.neuron.tsv.gz": {
+    "sha256": "fce65e0c6a90dae0a8b9139b6e9d019dea54e98757b0885fef73fa5d0dd727cb",
+    "mtime": "2026-11-10T16:09:04.353983-07:00"
+   },
+   "/space/scratch/rschwartz_psyrerun_work/split_half/fits/9/A/ours__L2.3.6.intratelencephalic.projecting.glutamatergic.neuron.tsv.gz": {
+    "sha256": "13bc30a4d3e31c69a7493932831fb575499621000443fe0043b2838b6c1fc9ed",
+    "mtime": "2026-11-10T16:09:28.967540-07:00"
+   },
+   "/space/scratch/rschwartz_psyrerun_work/split_half/fits/9/B/ours__L2.3.6.intratelencephalic.projecting.glutamatergic.neuron.tsv.gz": {
+    "sha256": "09cdab001ef17e742a6b93feb75cf5efa2b53cc06d973c853b8f8a01a2135e23",
+    "mtime": "2026-11-10T16:09:28.096485-07:00"
+   }
+  },
+  "output": {
+   "subtype_vs_pooled/split_half/split_half_example_scatter.png": {
+    "sha256": "2c4aaa5e6e81dde53c8f9c052128c3e565715024284fa4df3d918d8c3f007588",
+    "mtime": "2026-11-10T16:22:59.787824-07:00"
    }
   }
  }
