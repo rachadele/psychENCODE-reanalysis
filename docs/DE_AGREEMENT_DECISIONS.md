@@ -17,7 +17,7 @@ We reran the author-label DE with author types mapped to pipeline subclass label
 
 Source: `merged_author_2026-11-09/de_agreement/agreement_summary.tsv` and `correlations_merged_vs_current.tsv` (agreement = mean ρ of log2FC over eight contrasts).
 
-## 2026-11-09, decided by Rachel. Status: provisional, pending a check of Emani et al.'s code
+## 2026-11-09, decided by Rachel. Status: final (2026-11-10). Emani et al. released no DE code; our model pools all donors
 
 1. F1 and cells per donor came from every donor in the DE: all eight cohorts and the same donors for every contrast, because limma fitted one model per cell type across all cohorts without a cohort term. A donor was in a type's model when it had metadata and at least one unmasked cell of the type. F1 was the plain mean of per-sample F1 over those donors (cells never pooled, no mean of cohort means). Cells per donor was the median over the same donors, zeros excluded. Option `--support_rule de_donors` (default).
 2. One-to-one types were the strict 18: every author type whose pipeline label includes no other author type. LAMP5 and SST were dropped because they share a label with LAMP5 LHX6 and SST Chodl. Option `--one_to_one strict` (default; `own_label` gives the former 20).
