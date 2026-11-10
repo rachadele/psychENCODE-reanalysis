@@ -1,0 +1,1147 @@
+{
+ "created": "2026-11-10T13:02:52-07:00",
+ "data_version": "pipeline labels sc-annotation-pipeline 2.1.2; DE results_v2.1.2_limma (limma-voom, 27 author types, our subclass labels) and merged_author_2026-11-09 (21 merged author types)",
+ "repo": {
+  "branch": "label-map-param",
+  "commit_at_run": "a2384c334494debced645df6afb20b9067f979c4"
+ },
+ "script": {
+  "subtype_vs_pooled/subtype_vs_pooled.py": {
+   "sha256": "73999d1bb9315a3a0f7a4c74567325ab3e1d14ed064824f7b10136dafc21f5b0"
+  }
+ },
+ "check_pooled_vs_ours_equals_fig4": {
+  "IT": {
+   "here": 0.9974562577500802,
+   "celltype_merged.tsv": 0.997456
+  },
+  "Lamp5": {
+   "here": 0.9813157548565068,
+   "celltype_merged.tsv": 0.981316
+  },
+  "Sst": {
+   "here": 0.9809394059821281,
+   "celltype_merged.tsv": 0.980939
+  }
+ },
+ "inputs": {
+  "gemma/metadata/CMC_sample_meta.tsv": {
+   "sha256": "11d2a20512ac10d137f5d4b5cffa2d88569f9f05b6b59ae75b3d093cccc202c6",
+   "mtime": "2025-06-03T18:16:42-07:00"
+  },
+  "gemma/metadata/DevBrain_sample_meta.tsv": {
+   "sha256": "adaa5dc28fd92a11f2581e6fb5008bb72681d4b0a7a197963e3460592f2b6e0b",
+   "mtime": "2025-06-03T18:16:42-07:00"
+  },
+  "gemma/metadata/MultiomeBrain_sample_meta.tsv": {
+   "sha256": "901bd218bf7e6595cadede31e50873826b3b099a281aaa7fb0e04e446221b89e",
+   "mtime": "2025-06-03T18:16:42-07:00"
+  },
+  "gemma/metadata/PTSDBrainomics_sample_meta.tsv": {
+   "sha256": "d0ec5cec358df380d748d9a746c1361e9ba76e3c9db11dfa9e87d595ab898ffc",
+   "mtime": "2025-06-03T18:16:42-07:00"
+  },
+  "gemma/metadata/SZBDMulti-Seq_sample_meta.tsv": {
+   "sha256": "b74bf7d59a65d8d30967cede99e6ba5169518bf2a327b140ae68b477a618d96c",
+   "mtime": "2025-06-03T18:16:42-07:00"
+  },
+  "gemma/metadata/UCLA-ASD_sample_meta.tsv": {
+   "sha256": "9b3f5229abff030a59455abe792be5c7ef26cb64f460cfe934dc09890489ebe5",
+   "mtime": "2025-06-03T18:16:42-07:00"
+  },
+  "gemma/metadata/Velmeshev-2019.1_sample_meta.tsv": {
+   "sha256": "6dd9ef6e6e3817e166455bae852cb85ffad554751757be2c1f1150591019d6f5",
+   "mtime": "2025-08-13T15:45:30-07:00"
+  },
+  "gemma/metadata/Velmeshev-2019.2_sample_meta.tsv": {
+   "sha256": "72d6ff01c4b7916d653b2a86cb34c027f5f464cd987b130542fc90b46d90508a",
+   "mtime": "2025-08-13T15:46:06-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Age_death/Age_death_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "f08be04a95ffdfd7155081106f057133b760e808bdd53b49e245bb7076ccc5cf",
+   "mtime": "2026-10-28T10:41:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "9710b38792e2275d0d54aa75c99cfb17d1baf5ed209039b69211bea22d8e740b",
+   "mtime": "2026-10-28T10:41:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "35f58d81231c0e919b5616ae710621c0e1d62da54bf73b0736553c2002060223",
+   "mtime": "2026-10-28T10:41:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "61f65a6404aa3a0784559fc3ad177dea51c178d7a4704b9e3059695af6822f59",
+   "mtime": "2026-10-28T10:41:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "b196cebc4d1846a438ee419c7e5117e63a57831c159d0045fff45b544a99f12b",
+   "mtime": "2026-10-28T10:41:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "160dd602bb768864892f1f1748cb9e7ff2c033ae96612c896e6470acfdfa5426",
+   "mtime": "2026-10-28T10:41:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "b44e88d13fa11f0289a8f9d29829a5db3ee5ad057d352a8400833d7f425edb44",
+   "mtime": "2026-10-28T10:41:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "9a12c5773aff736271df7425537a551878ec8c445cbdaedd6003e4a2fe347989",
+   "mtime": "2026-10-28T10:41:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Age_death/Age_death_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "92d7253de83bb92f00c2a1dcb97b2e3573a09899b3daebf1c264981dcbb27e63",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "b5c1c2b99a82945f52542ec661ae0746f4a10c770becc64a6ffb3bdee4d4b5d4",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "af753253d7f30c6c2267f6e172284a69b1ab5a265a71fc605120769440117892",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "bc5a5412347ca554cf09e72b99fc2c252f254dbaa5fcc3f3d69dc5772d6adbbe",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "e5bce9aea4c8df5a52220633a740a742f0c8dd62a315aa3d690dbe8dc0349a9f",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "266bd7373770b68ae0c0b412e722fe6e257f2929bdf6d199835a78e09a1c41d6",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "d74da3a60678032bae8ba9843b01a1e55e6d3fe920ca31d10d0473a7f9913ea2",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "bc99fbf96f894c9204dc60c60abaae61a6ca8c8975b94949e6467937a4d8ef64",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Age_death/Age_death_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "eb85016a5a72fbf85bbaf8af1641add7e1d2b389fc383f12087ee1c44a50e905",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "709a455daf0da63df7831b769fd4eb8d670515f4de95e8f0bf001eb3c78c4dfa",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "d429da216aac745a19bc61de6cfe5f5e4c13519d05f6abf0bcd333a8beafac84",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "266da2ae5b31997c4de20f69fd4e56f866d07263fcff2952825cd2f56dc522f1",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "2e14802fb627704c60f101e01b11ab2990b6493e4be5f1b827084f04178024e1",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "88344fbe2ed742d2cb699c6e569cc0c6564d5d9cf0fb989316ce5960786d3480",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "bcf5b64bf6054e39e28aca54b0e8ed0614282f9f0c356d581bd4a665ce22b183",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_false/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "dcc07ab4850bf861ee1684b8b08af8b3cf5cd5e5a6ec56a3791c42de4e9d77bd",
+   "mtime": "2026-10-28T10:41:17-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Astro/Age_death/Age_death_Astro_results.tsv": {
+   "sha256": "1fcabcac565297bb9a4226445b7a8459bdaed5552a98a7d07c517c9de4eebb0f",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Astro/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Astro_results.tsv": {
+   "sha256": "75568082ae13facbe17de0a94626ce6748b525dfe7b547a5eaf81b76d404e8b3",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Astro/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Astro_results.tsv": {
+   "sha256": "1c97b04d8279e30cc3ae1d9f017a7fc5acc0e7de8f7703057e02f4e861982a28",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Astro/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Astro_results.tsv": {
+   "sha256": "35f87f2fd6ac59cda66ea68fdd41a370045eaebbb76362c208a9a613d7f76eed",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Astro/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Astro_results.tsv": {
+   "sha256": "70a49b11ffda5108f15abc4adcb65422c773c8a681507d23563d6a55a65a58cd",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Astro/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Astro_results.tsv": {
+   "sha256": "978ff5e68dfbf8f4138c611cd87759f393e755a52a63ed6edd6f5ef9f4f1d04a",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Astro/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Astro_results.tsv": {
+   "sha256": "14cb89e89ff0201d16420a1977903cc4d26424bc09ffe5d4e13767e7fcc21e16",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Astro/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Astro_results.tsv": {
+   "sha256": "bcfdd02072f27e16364438069018ca61fb61a49ed89c8c1237f2deacd28657bf",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Chandelier/Age_death/Age_death_Chandelier_results.tsv": {
+   "sha256": "9faa52984c1e8f27d52b97d7b2b62d8f0b96d0bc3b3139674655c58c09fa80e8",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Chandelier/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Chandelier_results.tsv": {
+   "sha256": "fdb72f25bad75945c0d67a61d1bf9b5a09458f1a119d31c949799edb1c9e60d9",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Chandelier/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Chandelier_results.tsv": {
+   "sha256": "d0efd604b392dc446843d8939ca83d42208584d619a117be9a1e4b0d65cc9bdd",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Chandelier/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Chandelier_results.tsv": {
+   "sha256": "93ea1c27ba3a7a5daafd05300d545f84658c91519f15340b1068437b79929631",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Chandelier/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Chandelier_results.tsv": {
+   "sha256": "20983a4f46aafea6f8179b12207d523ff7c00ab23b18a1dd59211d7f8f3ada6e",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Chandelier/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Chandelier_results.tsv": {
+   "sha256": "5f41ffa395eab00c7e9f67090f5a5f8539d085ba7733dd75197324f0f395d103",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Chandelier/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Chandelier_results.tsv": {
+   "sha256": "1d9207dedb29feb9e6646455aafda6d3e2186a8ba36139faed4aec1508fd43c4",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Chandelier/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Chandelier_results.tsv": {
+   "sha256": "1b3ca6ff72c3eafa37a3c344295e5f6fea430448dc2e09a8918f6b4e135011cd",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Endo/Age_death/Age_death_Endo_results.tsv": {
+   "sha256": "2755cdfc6f2a42f52c9dc09dad8e79899c92c8dd388c58da7deed841f2494c11",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Endo/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Endo_results.tsv": {
+   "sha256": "7226e62648f6c5bd1d605f2d3b0ac7b633b8ea4a4ad7077278ca99be14e2538b",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Endo/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Endo_results.tsv": {
+   "sha256": "e075fb0a72842b1053f5fb76bedea765ba5b868c4bed2b69439f642e3424f964",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Endo/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Endo_results.tsv": {
+   "sha256": "c9f00c65e97aaa0316a9287b7bcd457023063bf26744ff2befa7cb0a0857c45c",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Endo/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Endo_results.tsv": {
+   "sha256": "e5b053b83af5beb35693e8e3352723b87f478f5a02644939858d7f65ca4b68cc",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Endo/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Endo_results.tsv": {
+   "sha256": "2184a8a44d34b9094a9547dff4ecc95e38f43777e1ea14dbeb2c3594bda60a4b",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Endo/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Endo_results.tsv": {
+   "sha256": "24644dee87039aa68358efa80d92489e2b6c56dfb58366b1ea447c589fa1845e",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Endo/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Endo_results.tsv": {
+   "sha256": "5e5d95f9c30211120b095f8a81af4e372a487e5744aa799219ed8ac75cc29e10",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Immune/Age_death/Age_death_Immune_results.tsv": {
+   "sha256": "bcfc50b907dac37d1c87a22073c49c417465f7ea7fc458ff2475c3b0de10efd1",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Immune/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Immune_results.tsv": {
+   "sha256": "eb5b248e3b67cd198f40a702cdc5a5cc391d655f5c5b87f22ccdbc428289e610",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Immune/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Immune_results.tsv": {
+   "sha256": "e492b8f93f209963d83e5c1ff86543f06cd8eb35dc90bf132437f0c5f06dc5bd",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Immune/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Immune_results.tsv": {
+   "sha256": "c29b8d302419492ed7eeba545c139c528f22303efc9717920048921f1f47f2ea",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Immune/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Immune_results.tsv": {
+   "sha256": "607a658bb17a187400f3a02a79728bbca272a31b481d7f8bddf75ac8c3a0f557",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Immune/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Immune_results.tsv": {
+   "sha256": "935069240a6e05b1c2fbd9d71e6f1989358feb507d8f42cf26b738562d3e0f0c",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Immune/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Immune_results.tsv": {
+   "sha256": "70f0aa66022d70407d2ce29571d27d83b0158b984c28c7f9845d48e90c9a7ecf",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Immune/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Immune_results.tsv": {
+   "sha256": "3bb659828d1a54e6e0b261c1d6ebe031078157f6eae3237686dce60bdb9cc296",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L2.3_IT/Age_death/Age_death_L2.3_IT_results.tsv": {
+   "sha256": "7a43e6eaf2891e944210070eebf2ae94c0c7e9139260f161f8a6442b0c7973fb",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L2.3_IT/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L2.3_IT_results.tsv": {
+   "sha256": "45c2ea7a95426fe2a5b4b105a837686e696b2c2d5fa776b8bf88e6a6dc290284",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L2.3_IT/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L2.3_IT_results.tsv": {
+   "sha256": "a40424a7486d295569acaf263694fb585ee1f43e76ab70c148353cdb52cac334",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L2.3_IT/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L2.3_IT_results.tsv": {
+   "sha256": "ed955d192c59685f872d3c2fbd7892583b2bbc0c544e6ce237c0cea8332605ae",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L2.3_IT/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L2.3_IT_results.tsv": {
+   "sha256": "8f5351d3ed618d4d4b671c3e0e528767126156977265a401fceb316a3c1960d1",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L2.3_IT/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L2.3_IT_results.tsv": {
+   "sha256": "a6723885ecdd20e700d48dcc565b55ffe86006fae34161038a120f735933dfb0",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L2.3_IT/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L2.3_IT_results.tsv": {
+   "sha256": "bfb0ffee0ef1643acaf3c8b86431ecdfba78fd901e44e674344243dd8c4af30e",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L2.3_IT/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L2.3_IT_results.tsv": {
+   "sha256": "08a28f415fe0034350737b242cefd19fcc78b4e9a72717ac0784f2eb0abf4eaf",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L4_IT/Age_death/Age_death_L4_IT_results.tsv": {
+   "sha256": "bb0b609d10aca2dc3217ccacb196cae903b4c2d4df7580069843b3fdd8a5bd66",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L4_IT/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L4_IT_results.tsv": {
+   "sha256": "d40359c178cfe20f3efe7b0e02316098806bb3b0cf0433ec768eab34a83faee3",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L4_IT/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L4_IT_results.tsv": {
+   "sha256": "072a723ddb4b88acee9352d93342efd6052dff110d10a3a7c2c1fb347cbe2ee0",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L4_IT/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L4_IT_results.tsv": {
+   "sha256": "6a5cf8070c85b643e86f147a7fce77985c85136ddcc3b02bf8e4c0f31e36ed3e",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L4_IT/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L4_IT_results.tsv": {
+   "sha256": "0ce90e3f433b74dfc120373a1234f7b6bc7eb8ae75f2010d77863ee1a7e31ef0",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L4_IT/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L4_IT_results.tsv": {
+   "sha256": "91e7d15886619f5f144bd75dc3b76483dad4b8ab13e2b915acd543780762a13b",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L4_IT/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L4_IT_results.tsv": {
+   "sha256": "eaf5ca3babf8b1c0a617c56f0d92413af364b0689be2ff681b2d1feb8e81e5a8",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L4_IT/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L4_IT_results.tsv": {
+   "sha256": "9d697dd80260185262b148131399f9b223fb0c5b02616d0ee0975050439978e4",
+   "mtime": "2026-10-28T10:40:09-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5.6_NP/Age_death/Age_death_L5.6_NP_results.tsv": {
+   "sha256": "779e9dccebd527b7c762bff17e9e3272b89d5d1c15922d9145f32396f300cf48",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5.6_NP/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L5.6_NP_results.tsv": {
+   "sha256": "971c6728fad2154484f17866587285f76588a15b2972653c0a786713212b3efd",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5.6_NP/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L5.6_NP_results.tsv": {
+   "sha256": "dadfdb8680e784381f5f27c4ec1b6a3698218dec18eb06d83deceda1ef8283ce",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5.6_NP/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L5.6_NP_results.tsv": {
+   "sha256": "8a521dd51ada352c92c42fd78bbc16e7450dd6e7be75abe5d5892ce41577209f",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5.6_NP/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L5.6_NP_results.tsv": {
+   "sha256": "3d2da0f54850194564e285206de6c38dbc865a47e2c8ddc6e8c96e00dcabb736",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5.6_NP/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L5.6_NP_results.tsv": {
+   "sha256": "e8739271e4e7a92c0d5b0cc1e826c376a21b86158e81954f332abf3e59589d18",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5.6_NP/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L5.6_NP_results.tsv": {
+   "sha256": "056ad59e7f3cdb7d3864d36e0fd735eeecf7781e000239d6d21c966b641a3917",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5.6_NP/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L5.6_NP_results.tsv": {
+   "sha256": "4767bf704c554963ebc9df3a99aa78477b98b5ebe0818c22a3ab4ab11f5c9920",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_ET/Age_death/Age_death_L5_ET_results.tsv": {
+   "sha256": "4ba2e0ecf3c95fdabc423c70e64ea23ba4dcb361e2e29f1b5e1e91d543f20eed",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_ET/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L5_ET_results.tsv": {
+   "sha256": "751cf6cb068b7c146987647f3a069eaacab3a8efbc857388a6a2dfb8a9a24ab4",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_ET/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L5_ET_results.tsv": {
+   "sha256": "4663ea736c82193ef55f549a291271fcd158a4173a28b180291ada6d2db1ed39",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_ET/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L5_ET_results.tsv": {
+   "sha256": "7617b01612a047083ff9322e1b9ccb676b7bbcff5f80d9f6dbbebfdf552424f2",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_ET/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L5_ET_results.tsv": {
+   "sha256": "84c79eabd1e50a944e4147d3e6305d7aa1946abfb79868296b0942d582db3ed2",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_ET/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L5_ET_results.tsv": {
+   "sha256": "c8673a114c78d71f000ed95b0e8abc467a230df3648dd9831fec6750f230fc26",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_ET/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L5_ET_results.tsv": {
+   "sha256": "d5fa3362f3cd1fa579c7b4d9aa35db4ae5bbc5eecbfe7e6e61a7a2634d6a0f44",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_ET/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L5_ET_results.tsv": {
+   "sha256": "e15a8ca2d124ab3a1d3f2184c2fe93272f6ba1d4716030956cd30b160f5bdb13",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_IT/Age_death/Age_death_L5_IT_results.tsv": {
+   "sha256": "bdf52aecbb2e8bd3c6f3d0533420fa959967a41607fdf877b59399dd325efb33",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_IT/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L5_IT_results.tsv": {
+   "sha256": "af063be485135ce9b15107b44dfea22fa1839fca2a95834dfff8225a6d2d2edc",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_IT/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L5_IT_results.tsv": {
+   "sha256": "d82692939244849c24f98792375309a6e445afc1dafec5a150aa08d03da054f1",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_IT/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L5_IT_results.tsv": {
+   "sha256": "448bf7bc29cc72e25ee80f48814412d717c48ce114860272ab809179962b865f",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_IT/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L5_IT_results.tsv": {
+   "sha256": "b9d4e11d00eaddac390bebf0ccf46c95272413c4d2357969dcbc9d894d0f6138",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_IT/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L5_IT_results.tsv": {
+   "sha256": "f0dcf4500d54d442d345bf48311d4e378b85487fc0ef20458cc761e907f2cd9d",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_IT/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L5_IT_results.tsv": {
+   "sha256": "13a5d69564f6cb40065d9b1303d1e5de720d62f34028afe9f2343c3534d93fab",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L5_IT/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L5_IT_results.tsv": {
+   "sha256": "5026fd493f1daad9cace4e74a201ce4140fb3eb7abf94647edd32ab9d8907566",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_CT/Age_death/Age_death_L6_CT_results.tsv": {
+   "sha256": "6605fed3b322c0e0e386c6c75e9abae2261a6bb45911936c1003ef54cf317236",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_CT/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L6_CT_results.tsv": {
+   "sha256": "df7bd65a9c572503dcf4a9fe10a6cdbad19358f6c214a214a63f6ad293d36361",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_CT/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L6_CT_results.tsv": {
+   "sha256": "08f03d52ca04b650d88e61ec615260d6080fe008708dc5e40f4f47a3ccba0153",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_CT/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L6_CT_results.tsv": {
+   "sha256": "b8961e3e94fa1fcaa145f6b9c318e16c1b2b3b07d986c6104e4b07be9d147027",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_CT/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L6_CT_results.tsv": {
+   "sha256": "dcaf7e30a2272ff09954cb17eaae815e8e0d541ac79dc86186cca7af88f4fac8",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_CT/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L6_CT_results.tsv": {
+   "sha256": "337927734472dd581491d92e8f6e46b316ed3df19eed112d798c6d8426ed0ee5",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_CT/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L6_CT_results.tsv": {
+   "sha256": "8b01b7aca5736da87998c9e4ecc4729a7f19cf45b19bb779262c23307704545b",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_CT/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L6_CT_results.tsv": {
+   "sha256": "1188c65d71f543292956ea9d308e481c436f4f8d40444df180c869e691a388c0",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT/Age_death/Age_death_L6_IT_results.tsv": {
+   "sha256": "44a5026e5fe42d1952cf721ad23ed00381713dcc59277ac27c81766ff4c71532",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L6_IT_results.tsv": {
+   "sha256": "8ff41f8be0521749cbe1fca7305d69f28abeeee4681bd4f0c3457af2be903898",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L6_IT_results.tsv": {
+   "sha256": "a6e2d5c8ae45aa5c01f90d85b66ae537af5956f73bb25b87c4af821760852ddc",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L6_IT_results.tsv": {
+   "sha256": "00c8bb4ee619c4b12e7ed1b543f5934c453a8ebe87b23430fcdb5b34d23bd930",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L6_IT_results.tsv": {
+   "sha256": "37a775a9ca826b6ea953908b3a23c9af5dce8b48a45e4f0ba917c770aa0bf27a",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L6_IT_results.tsv": {
+   "sha256": "5f3dd694056a7d3af54ee525bff9cf47863094f1d910ae912788d8fdfcd9916b",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L6_IT_results.tsv": {
+   "sha256": "6380c140dc582bfc5d62a8ec492d30cfec888b571bb659f576e0e6beb45fe968",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L6_IT_results.tsv": {
+   "sha256": "2ad9f54afeb9d3560c5c1c36d6386d72b44b504e2727779adff4aee4d96c8801",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT_Car3/Age_death/Age_death_L6_IT_Car3_results.tsv": {
+   "sha256": "240a1be87fd362f2442af4b0a40222c415cf1788b3ac1653419b892ed321a67e",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT_Car3/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L6_IT_Car3_results.tsv": {
+   "sha256": "725509ba524680db49339fe61e7ff7da4b240e95a8470539569c6ff8237b1e9d",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT_Car3/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L6_IT_Car3_results.tsv": {
+   "sha256": "d6373460521325d0e6983f412cf5b4fef311f84a5c315b6091a43d663f4bd4f0",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT_Car3/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L6_IT_Car3_results.tsv": {
+   "sha256": "4341e1e61a9e8585cf61cdca4a653e75ae4fcc373df657e99b184c37167b9402",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT_Car3/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L6_IT_Car3_results.tsv": {
+   "sha256": "0d7f813cfc8d482026967b96610b359c3d06cc2f4267d89cafec0922841817cc",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT_Car3/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L6_IT_Car3_results.tsv": {
+   "sha256": "f593c8db82336c6f169e544c51de7f9ba6357e806a64900ed02a65099081b627",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT_Car3/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L6_IT_Car3_results.tsv": {
+   "sha256": "a6c639321a825ccea85b9aab7a72b5b35719b018801e7b800ee3024158035403",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6_IT_Car3/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L6_IT_Car3_results.tsv": {
+   "sha256": "ef0952cf8c68dd5be17522769f9446f1382528f9a4509e62e65625b30de663ef",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6b/Age_death/Age_death_L6b_results.tsv": {
+   "sha256": "28b3e84f65ea850523885e68abb82623d32bde09c7e8b402c959f5380720a1de",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6b/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L6b_results.tsv": {
+   "sha256": "42c63795b3d90f5603012015f4c620f6f9374837bb84e3cb3863a6587676bce7",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6b/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L6b_results.tsv": {
+   "sha256": "68ecd0b6d450681cef47528b79fc379541ae9a56136efe3565a6d19b6c6e407d",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6b/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L6b_results.tsv": {
+   "sha256": "d4c8ccbf5f747e96bf1672df8912247782a204252378760b74ade59a36247e65",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6b/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L6b_results.tsv": {
+   "sha256": "54e5d2a177565042c6daff4341db935ce82a8e42e857f81e543cdf476b63f821",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6b/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L6b_results.tsv": {
+   "sha256": "9bf102652bc1729d49fc76f3bd145509afcdeeacb4dab5c12c37ad8cfdaec64e",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6b/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L6b_results.tsv": {
+   "sha256": "3f055bb1add4778ea81d16c5c102b22a83a6163753b7a623657b9c34faf53a9a",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/L6b/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L6b_results.tsv": {
+   "sha256": "c07d172a2cc4ba53fd402b8ded5c55a8071efac6637337b7824b36c4a3604f95",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5/Age_death/Age_death_Lamp5_results.tsv": {
+   "sha256": "61c4cc3579a82068a77b17142f34155c90a24d51f5090b51651f04f208f43981",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Lamp5_results.tsv": {
+   "sha256": "9f1a2c7d3cb24d8d917a954cfb6eb5f46feb7965b395d31c675674d0ea7f0c74",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Lamp5_results.tsv": {
+   "sha256": "5b7c77e10196aada84a30022ea289830420491214b24a0c8405c614c34a708fe",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Lamp5_results.tsv": {
+   "sha256": "dd62c56e48de20cae94ebcd26479856671dd869c194be19d8a01e37ed463e0bc",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Lamp5_results.tsv": {
+   "sha256": "03b079087f32944e87f3d0628c89882e5900a89c0ca5885e2aa9a9af9dc26b66",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Lamp5_results.tsv": {
+   "sha256": "6971c6121426f97d9d7aa1eef3b760bcc264a7e244fb0cb08d0cb05d7cd3cbc4",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Lamp5_results.tsv": {
+   "sha256": "af1dbcb51a9397010cafca7e73f1d8c6cece21ca0bdbbc6989c488492a0c930d",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Lamp5_results.tsv": {
+   "sha256": "21874743265098dd013161863ae518109208fb6f55171d7ab28cb9f6bd8b425c",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5_Lhx6/Age_death/Age_death_Lamp5_Lhx6_results.tsv": {
+   "sha256": "426c2bff8d7c67d84a5d55bf3653fad66b48117025d04e7cdf01403a249793fe",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5_Lhx6/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Lamp5_Lhx6_results.tsv": {
+   "sha256": "ac651a555bdf2ed904874ac49b435a2a993b63ee85cdaae4189b53f1022cfa15",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5_Lhx6/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Lamp5_Lhx6_results.tsv": {
+   "sha256": "abe6a5b5d31c923f6e9683f8daea9669a1f4ca08df6a586f69ce384bd4d4655e",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5_Lhx6/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Lamp5_Lhx6_results.tsv": {
+   "sha256": "03fed0e03f1f8729020b3d8c4a5acebbbb1673a121bf8893c8d2240b6a74a014",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5_Lhx6/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Lamp5_Lhx6_results.tsv": {
+   "sha256": "e113ca8ef1ac7a8cb286c08a5c0a6f2463e9e7b52040173728ff7742da87ae96",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5_Lhx6/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Lamp5_Lhx6_results.tsv": {
+   "sha256": "a51cc2d71af82e364baad36203684234b1f6297e9142585aadb4c488e2d3a0ce",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5_Lhx6/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Lamp5_Lhx6_results.tsv": {
+   "sha256": "07cea1327848613c0629989d3fc9c86d89e8f7a105dfb08ff84c747d4d053cf2",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Lamp5_Lhx6/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Lamp5_Lhx6_results.tsv": {
+   "sha256": "87f4419a14d2b0d1bb1fd9770ed64f3ecaabe9bb9d5b39aa988bd1ecaaf0395d",
+   "mtime": "2026-10-28T10:40:15-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Micro/Age_death/Age_death_Micro_results.tsv": {
+   "sha256": "a3c97ec93ea889fc90b222d2e3dbebd50a6cf806074d6421cc80ea7a53d8e1d2",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Micro/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Micro_results.tsv": {
+   "sha256": "f68e7d40a8033d65621582373bfd6eb0f021bf5d5e7706ddbb48957399108c22",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Micro/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Micro_results.tsv": {
+   "sha256": "52c6963a876aebe674cca3752ee333bd2afcf61495702ae1e58f535af0c0cbde",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Micro/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Micro_results.tsv": {
+   "sha256": "6edafe683d38ffcea73adbc3fff0ff23bd12d4cf54ed4a3a7d025dd0b7473130",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Micro/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Micro_results.tsv": {
+   "sha256": "839266cc8213db65f46083ca0e7701060db0e0bb2821bb0239ffb23f78bfb3af",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Micro/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Micro_results.tsv": {
+   "sha256": "ca7e6d2db70009693b42fb1717f963bd52e769ea7134571760b3e46a9f942cdb",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Micro/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Micro_results.tsv": {
+   "sha256": "ced90fd0e5d0b958653658e3b343c7b6df9e6e1c100611ddbacdb008287236bb",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Micro/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Micro_results.tsv": {
+   "sha256": "c241ab3ac6e3f0af532e8a9fc21a9b0c4f95c6adfafbb2cffb107f06bebd5ca0",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/OPC/Age_death/Age_death_OPC_results.tsv": {
+   "sha256": "7360401577c15b5347b15f5e7291a8951a9f486f132a0404984602b0551cc0b6",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/OPC/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_OPC_results.tsv": {
+   "sha256": "3b7314cabdbb04b4549dce2b11b708a52b1950ae38f413094738f4d451dd1afd",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/OPC/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_OPC_results.tsv": {
+   "sha256": "fbbbf13b1037c4fafcea96fe7a9acad8ba30ca4dcd186dc7f421ae5cc90e4518",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/OPC/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_OPC_results.tsv": {
+   "sha256": "ab895ab4d1198ae572c8c4ae78be243d5806070303c46a606360dff88cd391b6",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/OPC/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_OPC_results.tsv": {
+   "sha256": "765a7c54511c6635172b24da191a7b675cb63f86509e2d2794c47a90da8650a1",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/OPC/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_OPC_results.tsv": {
+   "sha256": "4d0b1b17a74a33824f7603adafca9fcbc5c6a65a16638a301ddd5444b3ab4c32",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/OPC/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_OPC_results.tsv": {
+   "sha256": "7c31301fe06dfded18111628eecd79172dee8ff8660de4acb2b6b1420448c3b1",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/OPC/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_OPC_results.tsv": {
+   "sha256": "6a03a9e13d481cb5aacefbb05ca3585b503dad2918d124fbe3fc555f18745407",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Oligo/Age_death/Age_death_Oligo_results.tsv": {
+   "sha256": "7e055f30432be3cb3eb1cce21fabda61e1d3f331c5771b08f9742755d75ba34e",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Oligo/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Oligo_results.tsv": {
+   "sha256": "6408d4ea0ab4a5c729136ce1d058da397d8c8443c172a24cb0e3a758a8adb42e",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Oligo/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Oligo_results.tsv": {
+   "sha256": "58e4d68ef3100eaeb704416f8983b7371da1f29faf6189901b87f3042acfb707",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Oligo/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Oligo_results.tsv": {
+   "sha256": "537018aa5c803662437d9aeea6fbd0c041661b8d095415c767e2b56154f5cf15",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Oligo/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Oligo_results.tsv": {
+   "sha256": "a4d381bb8eb7630574f67ee2d735d525eb87881ed559be1dd5004079decdf435",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Oligo/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Oligo_results.tsv": {
+   "sha256": "ade92c6de803c45185f09a60347c47bcd1ca23ede3061c03f6d83aae2a6c40c5",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Oligo/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Oligo_results.tsv": {
+   "sha256": "78e4a26fbbd9d4b51c960fbc1685d8bc1a48ccb9cda3109b9fd80fa692968444",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Oligo/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Oligo_results.tsv": {
+   "sha256": "4bc3e9f97fa20e9a0b2897aad0be0cab6b1a4175d6bc10efe85a6fc1dc51658d",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/PC/Age_death/Age_death_PC_results.tsv": {
+   "sha256": "4eba6a54b1f690d4f889f044c1a662bc713d63603505a276cb650ede968e6d73",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/PC/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_PC_results.tsv": {
+   "sha256": "d9da411dc0b31dce36b6c02b8df1f511df44a15e88e15312d323b1608490aae7",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/PC/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_PC_results.tsv": {
+   "sha256": "9d5b583c924a1dda53ecf1c41eb6be64080843c6feb945733fde53112da9b4ad",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/PC/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_PC_results.tsv": {
+   "sha256": "bb0051e483bcc414c9e91c21224e772beb1c3161841f08fe4b57743994dd1e9f",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/PC/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_PC_results.tsv": {
+   "sha256": "43ef00bba552c8ca83315d80c356401462fb7e6d0cb9878e7a1653d0f10aed70",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/PC/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_PC_results.tsv": {
+   "sha256": "8908b3846fa80ca5e9fe6d68853fc486fd85f71cdf80ed3f7bd67906105e6a2b",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/PC/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_PC_results.tsv": {
+   "sha256": "acc922c45c9ca2b5845543cbe9b58f82e5bfa6272fe82264709b980417c8679b",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/PC/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_PC_results.tsv": {
+   "sha256": "cf0b2ebaaaed812cf9d1040cc1a2ff16f3383733e2fd05d77cf48dc012bf189c",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pax6/Age_death/Age_death_Pax6_results.tsv": {
+   "sha256": "a2c9003cdba80c170d1f50b7eb6fea8ab415ecd6baf82e625bb79654f42ccd10",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pax6/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Pax6_results.tsv": {
+   "sha256": "43d83a183241b11d360550b7ae1725ea75fc3c67797831fb585d69c801c39951",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pax6/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Pax6_results.tsv": {
+   "sha256": "a30737996ff1c87b9f1f81bf4d43647737ea19c6d3e791927c1b439a1881e87a",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pax6/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Pax6_results.tsv": {
+   "sha256": "4dd505a4b1d67bee570b902fef3f6df0d7de3d85821138aba7deb37499b7286f",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pax6/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Pax6_results.tsv": {
+   "sha256": "f08497fef3e741283f80f2266e88bc1e112f8de86758e53643edddd7026bd0be",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pax6/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Pax6_results.tsv": {
+   "sha256": "c2f8239b335deb0c5595133a74879a5ed46df467b3384e167fb9762c41b90469",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pax6/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Pax6_results.tsv": {
+   "sha256": "89e8771100a067030469770155db9eb5b8cef0c5215839c8ae69d7023b374618",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pax6/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Pax6_results.tsv": {
+   "sha256": "58974903170671fa9c4fa681e2dcac068383dbeba2712e487857798d6c81694b",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pvalb/Age_death/Age_death_Pvalb_results.tsv": {
+   "sha256": "7b598611d43854c802f88a2aaaead26946c3cd08f9eb56aaaf0541836c540ede",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pvalb/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Pvalb_results.tsv": {
+   "sha256": "1ed439462e08999d35e87c20345cc5ad6e6304a04e90ff023af7d59ba2320cc4",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pvalb/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Pvalb_results.tsv": {
+   "sha256": "4124a666748c2d75b9b3c1499b51a64de0df2a43f7e8e9ea9e2244d01a5c95d1",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pvalb/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Pvalb_results.tsv": {
+   "sha256": "58cdf11af20bb909d4ddc481f549a5bd4168116e5e89283e84f48ef36c5ff12d",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pvalb/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Pvalb_results.tsv": {
+   "sha256": "49a438bdb22a8ae6585033a9f6893d29197dbdb9af4e2197e2827d6dd237d074",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pvalb/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Pvalb_results.tsv": {
+   "sha256": "72a25d91e4d8222841d232b6fb52da887eb7dd8fef6f7a002c1f3bf007448c50",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pvalb/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Pvalb_results.tsv": {
+   "sha256": "7860da4d38e71e8bdc0508f5e1603b9580601f59a83ba6c4c48152ec5f4829c7",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Pvalb/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Pvalb_results.tsv": {
+   "sha256": "6c6eeb8f63ffe44d5b9a73be2a0ea359ee52a7fc6b9bc38f03b1494bac4d6f28",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/SMC/Age_death/Age_death_SMC_results.tsv": {
+   "sha256": "9d7e6cf74db79ced17863c643d35f1d818e0cfd5f01f897f6a5bb5ab757fbdf2",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/SMC/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_SMC_results.tsv": {
+   "sha256": "ec020ce6d1abc6628fe682923998244fb954f5f87bef26bce645b9f645c2836f",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/SMC/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_SMC_results.tsv": {
+   "sha256": "d3e5bd6cad7d698c44f46c687609a57918479ae2487318ea194b0b66ad6fa00e",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/SMC/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_SMC_results.tsv": {
+   "sha256": "5b3300dd5560fcca1161b2b3bee8caf0df5bbc3ba414c80df142fb60db3b2b10",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/SMC/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_SMC_results.tsv": {
+   "sha256": "6a2cbe378f1933e6be12e5458c43c70dcc5bd970242bcf007dd8560cacebd4ff",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/SMC/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_SMC_results.tsv": {
+   "sha256": "cfe87d9d6d89109b571e3e54fa3f9a064f2de62913fe3ac448a96f94cb2d851b",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/SMC/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_SMC_results.tsv": {
+   "sha256": "4fe656788bae49f16bff880184003a3770a4591a6d0630514010860b5590d185",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/SMC/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_SMC_results.tsv": {
+   "sha256": "1c7531dc6c71ea6fe416243ff03d8cc138e6e38057cebef4dda2362028b91f20",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sncg/Age_death/Age_death_Sncg_results.tsv": {
+   "sha256": "a1d4d5f2eaf8343521daa49e56d65d565ac5f9650ebd54a00e951b7fbb1d0643",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sncg/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Sncg_results.tsv": {
+   "sha256": "4a4cbf3f396b588b35a5713bc7a3a3b1f5cc5e412d074b6b833a15a30de3d267",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sncg/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Sncg_results.tsv": {
+   "sha256": "c4aefae616612bad90403bdb89f57b22ccc9883db0700fbf2c1534b5bd94a97e",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sncg/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Sncg_results.tsv": {
+   "sha256": "e3ca83af36707f90bcef92c14738e3f77b634a6783c5fd0c722383c2f56c7bd4",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sncg/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Sncg_results.tsv": {
+   "sha256": "535a856fee1830df45634c34cf7697e02afd28708481bbd628a6fd8bba61ad95",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sncg/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Sncg_results.tsv": {
+   "sha256": "fdd6e4df16bcf031e4dd0ba3f9954026a55f2bb2a17babb0e6676c49d008a490",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sncg/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Sncg_results.tsv": {
+   "sha256": "3b375a3f202a5bf0a01bf232943e7a096a0e3e3bde8f867a5a09009b55f7d2a9",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sncg/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Sncg_results.tsv": {
+   "sha256": "943d00a754190cf4fbc95f2c0fa533c7298011bb57eb363e930aaf22ea45f273",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst/Age_death/Age_death_Sst_results.tsv": {
+   "sha256": "7fa180828c9c27671a6acad59a0b8ab004518c3d5b863dc9e62c82fd02995f38",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Sst_results.tsv": {
+   "sha256": "fccddbdacd4720cf96923274918096e586aabbdeb535fdc5f2587e50edd21287",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Sst_results.tsv": {
+   "sha256": "992e6f48bd8731e249bcb3937fc945ce47844d5e4e6fbc400c71e7ade3d32914",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Sst_results.tsv": {
+   "sha256": "3eb5f47782f6d881e5f63e789a986ff01eed2429b118bc4d66730831c9749bd8",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Sst_results.tsv": {
+   "sha256": "9987001cdd7550eb085abea27a9c1c5149b649aeb114333de928bc3981dc7904",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Sst_results.tsv": {
+   "sha256": "eaec952a107542044ace5040b70a1f47bafdce17016afb42af91649ba552876e",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Sst_results.tsv": {
+   "sha256": "c0f5e2e50599a13421fa625bc5ced73b97fcc79f71c1f03f7b1ced866d339287",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Sst_results.tsv": {
+   "sha256": "ac210bfea4de9a7f85f59613fe32879adc07900455907373333e087cf6c7fa7f",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst_Chodl/Age_death/Age_death_Sst_Chodl_results.tsv": {
+   "sha256": "a8b35a5ca5d4850008f99c3a3c0b3dbc8b48815e6a0c351a6dfb965e202f8b4d",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst_Chodl/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Sst_Chodl_results.tsv": {
+   "sha256": "8dc8b3e7a0001872ee6c67a80b019a97208e3cb19e6e9bc634c462745f0c59f4",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst_Chodl/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Sst_Chodl_results.tsv": {
+   "sha256": "455a87c45724793687082daa989a88c50ddba864273d4c2423e1bbf56bde666c",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst_Chodl/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Sst_Chodl_results.tsv": {
+   "sha256": "adc2baaaef6efde3e0ddeb80299baf7188f6d922a9709520ffc1174e4c8b5cdf",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst_Chodl/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Sst_Chodl_results.tsv": {
+   "sha256": "b1eea94d3a9f801164a5c22750458b35bc8b490778e729ded9ff04e01c8a0736",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst_Chodl/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Sst_Chodl_results.tsv": {
+   "sha256": "3c03be83c2c03e524f59c76de0d04ae1d6c689b02e2382758828147efa610574",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst_Chodl/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Sst_Chodl_results.tsv": {
+   "sha256": "f18bb5834bec4e09fff70071fe667452836b57b23303219aa2fdb80f19eb730f",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Sst_Chodl/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Sst_Chodl_results.tsv": {
+   "sha256": "ecc60ecd8b662f070e335241e122c5f2ea6bb4776fa05655f36ee378f37cc9fa",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/VLMC/Age_death/Age_death_VLMC_results.tsv": {
+   "sha256": "78fa0804b8bc29b64f65943b002535f9fe03e46463fe3bcdfb6cc29c91cd7b48",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/VLMC/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_VLMC_results.tsv": {
+   "sha256": "e8d1084ca30f38afaf3f179b5bd558830bb6c683fd844c552db37d1c044d879b",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/VLMC/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_VLMC_results.tsv": {
+   "sha256": "bc7363f41eb3977eb3e387b29e3a1860949543088a2383ab0b1aa5c414c672a2",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/VLMC/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_VLMC_results.tsv": {
+   "sha256": "1a0e5bf8f18b30c39b35fee267d6c7004b3f7f4f42b69dc7e2362f4eb9c2b94a",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/VLMC/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_VLMC_results.tsv": {
+   "sha256": "f525cff03c74f2211b23668bba6ee0bf022cdeed47665a2855e9130f5119e078",
+   "mtime": "2026-10-28T10:40:12-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/VLMC/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_VLMC_results.tsv": {
+   "sha256": "6132019c6f66357fed7451a87fc93ec62a5d394fd872f7363ac1b1be534d64ff",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/VLMC/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_VLMC_results.tsv": {
+   "sha256": "bbdc2125b985e8cb98c1658148a335f06997045d23acda63da61fe05a5cab0bb",
+   "mtime": "2026-10-28T10:40:13-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/VLMC/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_VLMC_results.tsv": {
+   "sha256": "647e481c14e459211bff9b57afe6185d3713dd23fb40d14326523a93699b0d2a",
+   "mtime": "2026-10-28T10:40:14-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Vip/Age_death/Age_death_Vip_results.tsv": {
+   "sha256": "a1deccb91052d06f58339885a0b49a99d2a7896d63ee5bf57b5e3fde54c2c50d",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Vip/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_Vip_results.tsv": {
+   "sha256": "71c7098e14ae89c754d2d122f35e9b344e03a42251bb431693fc656a8a17abc9",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Vip/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_Vip_results.tsv": {
+   "sha256": "426bf5579e5bf2f9cdca07215d0b6dea18c78d358d3b58d4588d81a6b72fd629",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Vip/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_Vip_results.tsv": {
+   "sha256": "999cfa067d8d137ad28bb5005e959cbb998daa1a4376c79d50893c4fb54fe8d1",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Vip/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_Vip_results.tsv": {
+   "sha256": "12b33fe8525f82bb6ffd09764670b1db069afbe1095cac91bef117948d7547f0",
+   "mtime": "2026-10-28T10:40:10-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Vip/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_Vip_results.tsv": {
+   "sha256": "5e36f1b1d0f98291b0a891d7401a52447ea32bb53dc79562675c10bc49cdf7d5",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Vip/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_Vip_results.tsv": {
+   "sha256": "da0b9a2f78175da2cce52c2205849e92accb0077314629a6565aa34f62d25a9b",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/author_submitted_true/subclass/limma_voom/gemma/Vip/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_Vip_results.tsv": {
+   "sha256": "0d2c6f8849bdc20b6d0b9afac6f6c72a195a70a3e051d7ce11f1636282f8cdae",
+   "mtime": "2026-10-28T10:40:11-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Age_death/Age_death_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "b0d5d6e3077c9ede04e32a12651c02e9a2c1b6433d0360e9bd8b389f0b263a62",
+   "mtime": "2026-11-09T16:05:32-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "e851e3564beea3d70e16bbe5cc095135a14e304c970e26d2b2fab7027152f308",
+   "mtime": "2026-11-09T16:05:32-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "a8e111eb76390497d99ab053cb5dd60526dd8b45f52e6f861b65ea7b4d76b7ca",
+   "mtime": "2026-11-09T16:05:32-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "4ea469c062eb9ed6625fa54cec9947b864c8f0583c9d73bc2640681153fd3207",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "56eebba24d4e7ab239f3632ea1ceffbf13ce86ffcb5d7cb605d3931263c9cc10",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "1bc159eca80e9aa2f2b4939162db73887ad9cfc9a111c20cd43f112db6ad92ea",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "aa82bdd0e7234acaa0e07e0fd80122067fa70826bf322d22377be10956e7ea9b",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/L2.3.6.intratelencephalic.projecting.glutamatergic.neuron/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_L2.3.6.intratelencephalic.projecting.glutamatergic.neuron_results.tsv": {
+   "sha256": "ea00daed2018d60e2e0708982d5699c5c77d5b9e1e12c0f77b922cf86cd17a70",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Age_death/Age_death_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "6e9b20fb9893fce21f0c5ca69d8a814cb50896faf77062f593baf94cf797b864",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "26bb8ca8a8a366751dd8d18a2c30d2c60ea6e28468af51c4283f0274ef673d5b",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "e62bcdeeb6bc0e0b6df5e30f8d3fbcebabdcbc23277a7057863d33bca856c7c8",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "c78726b4a9407603e338aabf1be3d530178a61ddbb44f839ebdf18043dcd7aad",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "10aca6df3f93b26c32340a33be5900043608884c78574afe620e09c9c3b9b3c9",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "5d6e18c3ee0daea5d1949ecbb53a1e4ebdee2e20de3acb496b4d9c0b27935654",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "5815ec8471aee09b11c36de8981fca0d2ca954f9a2806debeb43dd66028caa71",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/lamp5.GABAergic.cortical.interneuron/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_lamp5.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "4ae4e84f1901684a56b22cf7a1ae0e6ca9047f958980f52a3cd2522b5c5c07ad",
+   "mtime": "2026-11-09T16:05:33-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Age_death/Age_death_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "6353354c9338f20ee5dd2431ddf4d751b151cdf93f77385a9cf1cd9996440c0f",
+   "mtime": "2026-11-09T16:05:35-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Biological_Sex_male_vs_female/Biological_Sex_male_vs_female_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "9ab8fe14682ecdbd6f05509ad1c8c26f4484c3a1217e73f243977b304c579c6b",
+   "mtime": "2026-11-09T16:05:35-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_ASD_vs_Control/Disorder_ASD_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "76008da42d20941172c49881ac135ea6a42ce27098d6352eb4580fcdf81839d6",
+   "mtime": "2026-11-09T16:05:35-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_Bipolar.Disorder_vs_Control/Disorder_Bipolar.Disorder_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "579de1a1d19d5f1d36796afd538b9281a30318e902d5475a81fa9cf53b913a2e",
+   "mtime": "2026-11-09T16:05:35-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_MDD_vs_Control/Disorder_MDD_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "b399e35efae7d98827c33a49b58ed3fc721c7c12ca3164274341162e6da21baa",
+   "mtime": "2026-11-09T16:05:35-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_PTSD_vs_Control/Disorder_PTSD_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "72c0bb36bd27a2e0ab0d40dbcd137cd9a5f9561fb58e284d65563902527483a4",
+   "mtime": "2026-11-09T16:05:35-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_Schizophrenia_vs_Control/Disorder_Schizophrenia_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "78ec495489e573874d2cc96243070df4528e2ba85d9292bc685889b9f4259571",
+   "mtime": "2026-11-09T16:05:35-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/author_submitted_true/subclass/limma_voom/gemma/sst.GABAergic.cortical.interneuron/Disorder_Williams.Syndrome_vs_Control/Disorder_Williams.Syndrome_vs_Control_sst.GABAergic.cortical.interneuron_results.tsv": {
+   "sha256": "5359c2827f97c167c89603bb4d426c8441e0d1a438127b89c9c20f7fd357ab52",
+   "mtime": "2026-11-09T16:05:35-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/de_agreement/celltype_merged.tsv": {
+   "sha256": "cbd63bb976943453c2e82698661b914e85c0ffbb16de648da0226af26a0a24ce",
+   "mtime": "2026-11-09T16:24:21-07:00"
+  },
+  "results_v2.1.2_limma/merged_author_2026-11-09/pseudobulks/author_merged/ct_pseudobulks/cell_counts.tsv": {
+   "sha256": "b724e28f6c4b8548a03b291ebe2c2e1e2c678c8ea2b8a143a75fe0a6ddb35531",
+   "mtime": "2026-11-09T16:03:47-07:00"
+  },
+  "results_v2.1.2_limma/pseudobulks/author/ct_pseudobulks/cell_counts.tsv": {
+   "sha256": "8adc74f2ec8c1c274fb860067409792b9245abad9cae8ebbabbf9850f1b0c13e",
+   "mtime": "2026-10-28T10:35:52-07:00"
+  },
+  "results_v2.1.2_limma/pseudobulks/pavlab_subclass/ct_pseudobulks/cell_counts.tsv": {
+   "sha256": "7ca73d31341c5846c799350bf138cfe68fa0abb6d825e95ca9de1b63c3df92e4",
+   "mtime": "2026-10-28T10:29:09-07:00"
+  }
+ },
+ "outputs": {
+  "subtype_vs_pooled/cells_per_donor.tsv": {
+   "sha256": "9fa3d0f71b856fca49cc7f7d935220a4b8748205849b0a2ac15d2d8a1f4a1607",
+   "mtime": "2026-11-10T13:02:52-07:00"
+  },
+  "subtype_vs_pooled/pairwise_rho.tsv": {
+   "sha256": "65390e8da2d1b7cee3b0da11628d88a1df25c478483697b6a1f4e90ec8e380e9",
+   "mtime": "2026-11-10T13:02:52-07:00"
+  },
+  "subtype_vs_pooled/summary.tsv": {
+   "sha256": "41c40138cbba7ee0cac87aedb4acc66c03b8568230587e3dcca53113c0ab2d01",
+   "mtime": "2026-11-10T13:02:52-07:00"
+  }
+ }
+}
