@@ -259,11 +259,11 @@ def fmt_p(p):
 
 
 # ---------- D, E: author subtypes vs pooled author types (subtype_vs_pooled/) ----------
-POOL_COMPARISONS = [("subtype_vs_pooled", "Subtype vs\npooled"), ("subtype_vs_subtype", "vs other\nsubtypes"),
+POOL_COMPARISONS = [("subtype_vs_pooled", "Author type\nvs pool"), ("subtype_vs_subtype", "vs other\nauthor types"),
                     ("nearest", "vs nearest\nseparate"), ("vs_glia", "vs glia")]
-POOL_PUBLISHED = [("published_vs_author_subtype", "Our\nsubtype"), ("published_vs_merged", "Our pooled\ntype"),
+POOL_PUBLISHED = [("published_vs_author_subtype", "Same\ntype"), ("published_vs_merged", "Pooled\ntype"),
                   ("published_vs_ours", "Our\nlabel")]
-POOL_GROUPS = {"IT": ("L2/3-6 IT", "o", "IT (5 subtypes)"), "Lamp5": ("LAMP5", "s", "Lamp5 (2)"),
+POOL_GROUPS = {"IT": ("L2/3-6 IT", "o", "IT (5 author types)"), "Lamp5": ("LAMP5", "s", "Lamp5 (2)"),
                "Sst": ("SST", "D", "Sst (2)")}
 # nearest separate group of author types: deep-layer non-IT for IT, other GABAergic for Lamp5 and Sst
 POOL_NEAREST = {"IT": "vs_deep_non_it", "Lamp5": "vs_gaba", "Sst": "vs_gaba"}
@@ -354,12 +354,12 @@ def draw_pooling(axD, axE, pooling_dir):
     axE.set_ylim(axD.get_ylim())
     axD.set_ylabel("Spearman ρ of t")
     axE.tick_params(axis="y", labelleft=False)
-    axD.set_title("Our DE on author subtypes\n(8 contrasts)", fontsize=TXT, pad=4)
-    axE.set_title("Published subtype DE\nvs our DE", fontsize=TXT, pad=4)
+    axD.set_title("Our DE on author types\n(8 contrasts)", fontsize=TXT, pad=4)
+    axE.set_title("Published author-type DE\nvs our DE", fontsize=TXT, pad=4)
     handles = [mlines.Line2D([], [], ls="", marker=mk, color=c, mec="0.2", ms=6,
                              label=name + (" (not in E)" if t == "Sst_Chodl" else ""))
                for _, t, name, c, mk in subtypes]
-    handles.append(mpatches.Patch(facecolor="white", edgecolor="0.3", lw=1.2, label="Box: subtype × contrast"))
+    handles.append(mpatches.Patch(facecolor="white", edgecolor="0.3", lw=1.2, label="Box: author type × contrast"))
     # two legend rows (IT subtypes; Lamp5, Sst and the mean), filled column by column
     return [h for pair in zip(handles[:5], handles[5:]) for h in pair]
 
@@ -401,7 +401,7 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
     cell_h, bar_h, gap = 0.21, 0.17, 0.04
     hm_h = nrow * cell_h
     y_d, d_h = 0.78, 1.9                      # panels D, E: subtypes vs pooled types (optional)
-    y_e, e_h = (y_d + d_h + 1.7 if pooling_dir else 0.62), 1.45  # panel C: matched vs mismatched pairs
+    y_e, e_h = (y_d + d_h + 1.95 if pooling_dir else 0.62), 1.45  # panel C: matched vs mismatched pairs
     y_b, b_h = y_e + e_h + 1.3, 1.45          # panel B: plain and partial rho
     b_left, p_col = 2.2, 1.3                 # B row labels on the left, p values on the right
     side = bool(b_groups)                    # grouped B sits beside C on one row (left B, right C)
@@ -562,7 +562,8 @@ def plot_figure(pivot, tab, label_map, bench_label, out_png, rho_ci, null_dir, s
         axE = fig.add_axes([fx(e_x0), fy(y_d), fx(W - right - e_x0), fy(d_h)])
         hd = draw_pooling(axD, axE, pooling_dir)
         fig.legend(handles=hd, loc="lower center", bbox_to_anchor=(fx(W / 2), fy(y_d + d_h + 0.5)), ncol=5,
-                   borderaxespad=0, handlelength=1.4, columnspacing=1.2, handletextpad=0.4)
+                   borderaxespad=0, handlelength=1.4, columnspacing=1.2, handletextpad=0.4,
+                   title="Author type", title_fontsize=TXT, alignment="left")
         fig.text(fx(0.03), fy(y_d + d_h + 0.45), "D", fontsize=LET, fontweight="bold", va="top")
         fig.text(fx(e_x0 - 0.25), fy(y_d + d_h + 0.45), "E", fontsize=LET, fontweight="bold", va="top")
         extra = [axD, axE]
